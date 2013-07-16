@@ -1,8 +1,9 @@
 package nodes
 
 case class Empty() extends Node {
-  def isTerminal = true
+  def isTerminal: Boolean = throw new scala.RuntimeException
+  def canTerminate(stepsRemaining: Integer): Boolean = throw new scala.RuntimeException
+  def toRawScala: String = throw new scala.RuntimeException
 }
 
-case object Empty{
-}
+case object Empty{}
