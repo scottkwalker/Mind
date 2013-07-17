@@ -10,7 +10,8 @@ object ApplicationBuild extends Build {
   val appDependencies = Seq(
     // Add your project dependencies here,
     jdbc,
-    anorm
+    anorm,
+	"com.twitter" % "util-eval_2.10" % "6.3.7" withSources()
   )
 
 

@@ -1,15 +1,15 @@
 package fitness
 
-import org.specs2.mutable._
-
-import play.api.test._
-import play.api.test.Helpers._
-import fitness.Fitness._
+import org.specs2.mutable.Specification
+import com.twitter.util.Eval
+import fitness.Fitness.maxFitness
+import nodes.NodeTree
 
 class AdditionSpec extends Specification {
   "Addition" should {
     "1 add 1 equals 2" in {
-      val f: Fitness = new Addition
+      val nodeTree = new NodeTree
+      val f: Fitness = new Addition(nodeTree)
       f.fitness mustEqual maxFitness
     }
   }
