@@ -10,7 +10,7 @@ class Addition(val nodeTree: NodeTree) extends Fitness {
     val expected = 2
 
     val eval = new Eval
-    eval.compile(nodeTree.rawScala)
+    eval.compile(nodeTree.toRawScala)
     val result = eval.inPlace[Int](s"Individual.f1(${a}, ${b})")
 
     val delta = (result - expected).abs

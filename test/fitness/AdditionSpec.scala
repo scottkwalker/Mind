@@ -4,12 +4,21 @@ import org.specs2.mutable.Specification
 import com.twitter.util.Eval
 import fitness.Fitness.maxFitness
 import nodes.NodeTree
+import org.specs2.mock.Mockito
+import nodes.ObjectM
 
-class AdditionSpec extends Specification {
+class AdditionSpec extends Specification with Mockito {
   "Addition" should {
-    "1 add 1 equals 2" in {
-      val nodeTree = new NodeTree
-      val f: Fitness = new Addition(nodeTree)
+    "1 add 1 equals 2 with NodeTree that returns hard coded raw Scala" in {
+      val nodeTree = mock[NodeTree]
+      nodeTree.toRawScala returns "object Individual { def f1(a: Int, b: Int) = a + b }"
+      val f = new Addition(nodeTree)
+      f.fitness mustEqual maxFitness
+    }
+
+    "1 add 1 equals 2 with NodeTree that converts nodes to raw Scala" in {
+      val nodeTree = new NodeTree(ObjectM())
+      val f = new Addition(nodeTree)
       f.fitness mustEqual maxFitness
     }
   }
