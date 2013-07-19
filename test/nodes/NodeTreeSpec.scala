@@ -4,13 +4,36 @@ import org.specs2.mutable.Specification
 import com.twitter.util.Eval
 import nodes._
 import org.specs2.mock.Mockito
+import org.specs2.execute.PendingUntilFixed
 
-class NodeTreeSpec extends Specification with Mockito {
+class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTree" should {
     "return expected when rawScala called" in {
-      val nodeTree = new NodeTree(ObjectM())
+      val nodeTree = new NodeTree(ObjectM(Seq(Method())))
 
       nodeTree.toRawScala mustEqual "object Individual { def f1(a: Int, b: Int) = { a + b } }"
+    }
+    
+    "validate true when does not contain any empty nodes" in {
+      val nodeTree = new NodeTree(ObjectM(Seq(Method())))
+      nodeTree.validate mustEqual true
+    }
+    
+    "validate false given" in {
+      "empty root node" in {
+        val nodeTree = new NodeTree(Empty())
+        nodeTree.validate mustEqual false
+      }
+      
+      "single empty method node" in {
+        val nodeTree = new NodeTree(ObjectM(Seq(Empty())))
+        nodeTree.validate mustEqual false
+      }
+      
+      "empty method node in a sequence" in {
+        val nodeTree = new NodeTree(ObjectM(Seq(Method(), Empty())))
+        nodeTree.validate mustEqual false
+      }
     }
   }
 }

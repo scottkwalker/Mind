@@ -6,4 +6,5 @@ case class AddOperator() extends Node {
   def toRawScala: String = s"${left} + ${right}"
   val left: String = "a"
   val right: String = "b"
+  def validate = true
 }

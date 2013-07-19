@@ -7,4 +7,5 @@ case class Method() extends Node {
   val name = "f1"
   val params: Seq[String] = Seq("a: Int", "b: Int")
   val nodes: Seq[Node] = Seq(AddOperator())
+  def validate = nodes.forall(f => f.validate)
 }
