@@ -16,7 +16,7 @@ class AdditionSpec extends Specification with Mockito {
     }
 
     "1 add 1 equals 2 with NodeTree that converts nodes to raw Scala" in {
-      val nodeTree = new NodeTree(ObjectM(Seq(Method())))
+      val nodeTree = new NodeTree(ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b")))))))
       val f = new Addition(nodeTree)
       f.fitness mustEqual maxFitness
     }
