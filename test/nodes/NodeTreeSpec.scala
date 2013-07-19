@@ -7,9 +7,23 @@ import org.specs2.execute.PendingUntilFixed
 
 class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTree" should {
-    "return expected when rawScala called" in {
+    "is not terminal" in {
       val nodeTree = new NodeTree(ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b")))))))
-
+      nodeTree.isTerminal mustEqual false
+    }
+    
+    "canTerminate in 4 steps" in {
+      val nodeTree = new NodeTree(ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b")))))))
+      nodeTree.canTerminate(4) mustEqual true
+    }
+    
+    "can not terminate in 3 steps" in {
+      val nodeTree = new NodeTree(ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b")))))))
+      nodeTree.canTerminate(3) mustEqual false
+    }
+        
+    "toRawScala" in {
+      val nodeTree = new NodeTree(ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b")))))))
       nodeTree.toRawScala mustEqual "object Individual { def f1(a: Int, b: Int) = { a + b } }"
     }
     
