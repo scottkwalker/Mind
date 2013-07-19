@@ -5,13 +5,17 @@ import play.api.test._
 import play.api.test.Helpers._
 
 class AddOperatorSpec extends Specification {
-  "Value" should {
+  "AddOperator" should {
     "is not terminal" in {
       AddOperator(Value("a"), Value("b")).isTerminal mustEqual false
     }
     
-    "canTerminate" in {
-      AddOperator(Value("a"), Value("b")).canTerminate(1) mustEqual true
+    "canTerminate in 2 steps" in {
+      AddOperator(Value("a"), Value("b")).canTerminate(2) mustEqual true
+    }
+    
+    "can not terminate in 1 steps" in {
+      AddOperator(Value("a"), Value("b")).canTerminate(1) mustEqual false
     }
     
     "validate" in {
