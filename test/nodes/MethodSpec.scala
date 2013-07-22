@@ -6,10 +6,6 @@ import play.api.test.Helpers._
 
 class MethodSpec extends Specification {
   "Method" should {
-    "is not terminal" in {
-      Method(Seq(AddOperator(Value("a"), Value("b")))).isTerminal mustEqual false
-    }
-    
     "canTerminate in 3 steps" in {
       Method(Seq(AddOperator(Value("a"), Value("b")))).canTerminate(3) mustEqual true
     }

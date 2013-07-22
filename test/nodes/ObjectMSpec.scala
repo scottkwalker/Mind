@@ -6,12 +6,6 @@ import play.api.test.Helpers._
 
 class ObjectMSpec extends Specification {
   "ObjectM" should {
-    "is not terminal" in {
-      val objectM = ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b"))))))
-      
-      objectM.isTerminal mustEqual false
-    }
-    
     "canTerminate in 4 steps" in {
       val objectM = ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b"))))))
       
@@ -38,7 +32,7 @@ class ObjectMSpec extends Specification {
       
       "empty method node in a sequence" in {
         val objectM = ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b")))), Empty()))
-        objectMp.validate mustEqual false
+        objectM.validate mustEqual false
       }
     }
     

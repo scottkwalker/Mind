@@ -6,10 +6,6 @@ import play.api.test.Helpers._
 
 class AddOperatorSpec extends Specification {
   "AddOperator" should {
-    "is not terminal" in {
-      AddOperator(Value("a"), Value("b")).isTerminal mustEqual false
-    }
-    
     "canTerminate in 2 steps" in {
       AddOperator(Value("a"), Value("b")).canTerminate(2) mustEqual true
     }
