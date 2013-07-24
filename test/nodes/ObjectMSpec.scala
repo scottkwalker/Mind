@@ -21,18 +21,18 @@ class ObjectMSpec extends Specification {
     "validate true when does not contain any empty nodes" in {
       val objectM = ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b"))))))
       
-      objectM.validate mustEqual true
+      objectM.hasNoEmptyNodes mustEqual true
     }
     
     "validate false given" in {
       "single empty method node" in {
         val objectM = ObjectM(Seq(Empty()))
-        objectM.validate mustEqual false
+        objectM.hasNoEmptyNodes mustEqual false
       }
       
       "empty method node in a sequence" in {
         val objectM = ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b")))), Empty()))
-        objectM.validate mustEqual false
+        objectM.hasNoEmptyNodes mustEqual false
       }
     }
     

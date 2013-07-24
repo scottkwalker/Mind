@@ -3,6 +3,8 @@ package nodes
 import org.specs2.mutable._
 import play.api.test._
 import play.api.test.Helpers._
+import org.specs2.execute.PendingUntilFixed
+import org.specs2.execute.PendingUntilFixed
 
 class MethodSpec extends Specification {
   "Method" should {
@@ -15,7 +17,11 @@ class MethodSpec extends Specification {
     }
     
     "validate" in {
-      Method(Seq(AddOperator(Value("a"), Value("b")))).validate mustEqual true
+      Method(Seq(AddOperator(Value("a"), Value("b")))).hasNoEmptyNodes mustEqual true
+    }
+    
+    "validate false when has an empty node" in {
+      Method(Seq(AddOperator(Value("a"), Empty()))).hasNoEmptyNodes mustEqual false
     }
     
     "toRawScala" in {

@@ -11,7 +11,7 @@ class ValueSpec extends Specification {
     }
     
     "validate" in {
-      Value("a").validate mustEqual true
+      Value("a").hasNoEmptyNodes mustEqual true
     }
     
     "toRawScala" in {

@@ -15,7 +15,7 @@ class AddOperatorSpec extends Specification {
     }
     
     "validate" in {
-      AddOperator(Value("a"), Value("b")).validate mustEqual true
+      AddOperator(Value("a"), Value("b")).hasNoEmptyNodes mustEqual true
     }
     
     "toRawScala" in {

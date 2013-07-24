@@ -3,5 +3,7 @@ package nodes
 case class Value(val name: String) extends Node {
   def canTerminate(stepsRemaining: Integer): Boolean = if (stepsRemaining == 0) false else true
   def toRawScala: String = name
-  def validate = true
+  def hasNoEmptyNodes = true
 }
+
+case object Value
