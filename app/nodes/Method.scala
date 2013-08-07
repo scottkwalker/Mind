@@ -6,6 +6,11 @@ case class Method(val nodes: Seq[Node]) extends Node {
   val name = "f1"
   val params: Seq[String] = Seq("a: Int", "b: Int")
   def hasNoEmptyNodes = nodes.forall(f => f.hasNoEmptyNodes)
+  
+  def validate: Boolean = nodes.forall(n => n match {
+    case AddOperator(_, _) => n.validate
+    case _ => false
+  })
 }
 
 case object Method

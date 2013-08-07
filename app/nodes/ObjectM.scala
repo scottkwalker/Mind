@@ -5,4 +5,9 @@ case class ObjectM(val nodes: Seq[Node]) extends Node {
   def toRawScala: String = s"object ${name} ${nodes.map(f=>f.toRawScala).mkString("{ ", " ", " }")}"
   val name = "Individual"
   def hasNoEmptyNodes = nodes.forall(f => f.hasNoEmptyNodes)
+  
+  def validate: Boolean = nodes.forall(n => n match {
+    case Method(_) => n.validate
+    case _ => false
+  })
 }

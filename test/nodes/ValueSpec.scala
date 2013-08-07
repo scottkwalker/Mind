@@ -10,12 +10,20 @@ class ValueSpec extends Specification {
       Value("a").canTerminate(1) mustEqual true
     }
     
-    "validate" in {
+    "hasNoEmptyNodes true" in {
       Value("a").hasNoEmptyNodes mustEqual true
     }
     
     "toRawScala" in {
       Value("a").toRawScala mustEqual "a"
+    }
+    
+    "validate true when given a non-empty name" in {
+      Value("a").validate mustEqual true
+    }    
+    
+    "validate false when given an empty name" in {
+      Value("").validate mustEqual false
     }
   }
 }

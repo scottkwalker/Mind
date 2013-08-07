@@ -14,5 +14,9 @@ class EmptySpec extends Specification {
     "throw if you ask toRawScala" in {
       Empty().toRawScala must throwA[scala.RuntimeException]
     }
+    
+    "validate false" in {
+      Empty().validate mustEqual false
+    }
   }
 }
