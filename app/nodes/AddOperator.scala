@@ -10,8 +10,8 @@ case class AddOperator(val left: Node, val right: Node) extends Node {
   
   private def validate(n: Node) = {
     n match {
-      case Value(_) => left.validate
-      case Empty() => false
+      case _: Value => left.validate
+      case _: Empty => false
       case _ => false
     }
   }

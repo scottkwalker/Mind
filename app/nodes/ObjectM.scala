@@ -6,8 +6,8 @@ case class ObjectM(val nodes: Seq[Node]) extends Node {
   val name = "Individual"
   
   def validate: Boolean = nodes.forall(n => n match {
-    case Method(_) => n.validate
-    case Empty() => false
+    case _: Method => n.validate
+    case _: Empty => false
     case _ => false
   })
 }

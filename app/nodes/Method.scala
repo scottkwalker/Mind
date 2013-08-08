@@ -7,8 +7,8 @@ case class Method(val nodes: Seq[Node]) extends Node {
   val params: Seq[String] = Seq("a: Int", "b: Int")
   
   def validate: Boolean = nodes.forall(n => n match {
-    case AddOperator(_, _) => n.validate
-    case Empty() => false
+    case _: AddOperator => n.validate
+    case _: Empty => false
     case _ => false
   })
 }

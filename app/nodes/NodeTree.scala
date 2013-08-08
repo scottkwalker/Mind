@@ -5,8 +5,8 @@ class NodeTree(val rootNode: Node) extends Node {
   def toRawScala: String = rootNode.toRawScala
   
   def validate: Boolean = rootNode match {
-    case ObjectM(n) => rootNode.validate
-    case Empty() => false
+    case _: ObjectM => rootNode.validate
+    case _: Empty => false
     case _ => false
   }
 }
