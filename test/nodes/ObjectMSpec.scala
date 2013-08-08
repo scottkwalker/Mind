@@ -8,37 +8,37 @@ class ObjectMSpec extends Specification {
   "ObjectM" should {
     "canTerminate in 4 steps" in {
       val objectM = ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b"))))))
-      
+
       objectM.canTerminate(4) mustEqual true
     }
-    
+
     "can not terminate in 3 steps" in {
       val objectM = ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b"))))))
-      
+
       objectM.canTerminate(3) mustEqual false
     }
-    
-    "validate true when does not contain any empty nodes" in {
-      val objectM = ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b"))))))
-      
-      objectM.hasNoEmptyNodes mustEqual true
-    }
-    
-    "validate false given" in {
-      "single empty method node" in {
+
+    "validate" in {
+      "true given no empty nodes" in {
+        val objectM = ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b"))))))
+
+        objectM.validate mustEqual true
+      }
+
+      "false given single empty method node" in {
         val objectM = ObjectM(Seq(Empty()))
-        objectM.hasNoEmptyNodes mustEqual false
+        objectM.validate mustEqual false
       }
-      
-      "empty method node in a sequence" in {
+
+      "false given empty method node in a sequence" in {
         val objectM = ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b")))), Empty()))
-        objectM.hasNoEmptyNodes mustEqual false
+        objectM.validate mustEqual false
       }
     }
-    
+
     "toRawScala" in {
       val objectM = ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b"))))))
-      
+
       objectM.toRawScala mustEqual "object Individual { def f1(a: Int, b: Int) = { a + b } }"
     }
   }

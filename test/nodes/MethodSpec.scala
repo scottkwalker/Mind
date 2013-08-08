@@ -11,19 +11,21 @@ class MethodSpec extends Specification {
     "canTerminate in 3 steps" in {
       Method(Seq(AddOperator(Value("a"), Value("b")))).canTerminate(3) mustEqual true
     }
-    
+
     "can not terminate in 2 steps" in {
       Method(Seq(AddOperator(Value("a"), Value("b")))).canTerminate(2) mustEqual false
     }
-    
+
     "validate" in {
-      Method(Seq(AddOperator(Value("a"), Value("b")))).hasNoEmptyNodes mustEqual true
+      "true given none empty" in {
+        Method(Seq(AddOperator(Value("a"), Value("b")))).validate mustEqual true
+      }
+
+      "false given has an empty node" in {
+        Method(Seq(AddOperator(Value("a"), Empty()))).validate mustEqual false
+      }
     }
-    
-    "validate false when has an empty node" in {
-      Method(Seq(AddOperator(Value("a"), Empty()))).hasNoEmptyNodes mustEqual false
-    }
-    
+
     "toRawScala" in {
       Method(Seq(AddOperator(Value("a"), Value("b")))).toRawScala mustEqual "def f1(a: Int, b: Int) = { a + b }"
     }

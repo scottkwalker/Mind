@@ -5,10 +5,10 @@ case class Method(val nodes: Seq[Node]) extends Node {
   def toRawScala: String = s"def ${name}${params.mkString("(", ", ", ")")} = ${nodes.map(f=>f.toRawScala).mkString("{ ", " ", " }")}"
   val name = "f1"
   val params: Seq[String] = Seq("a: Int", "b: Int")
-  def hasNoEmptyNodes = nodes.forall(f => f.hasNoEmptyNodes)
   
   def validate: Boolean = nodes.forall(n => n match {
     case AddOperator(_, _) => n.validate
+    case Empty() => false
     case _ => false
   })
 }
