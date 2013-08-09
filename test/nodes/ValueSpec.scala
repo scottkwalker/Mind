@@ -16,11 +16,11 @@ class ValueSpec extends Specification {
 
     "validate" in {
       "true given a non-empty name" in {
-        Value("a").validate mustEqual true
+        Value("a").validate(10) mustEqual true
       }
 
       "false given an empty name" in {
-        Value("").validate mustEqual false
+        Value("").validate(10) mustEqual false
       }
     }
   }

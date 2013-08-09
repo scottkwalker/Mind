@@ -20,15 +20,15 @@ class AddOperatorSpec extends Specification {
 
     "validate" in {
       "true given none empty" in {
-        AddOperator(Value("a"), Value("b")).validate mustEqual true
+        AddOperator(Value("a"), Value("b")).validate(10) mustEqual true
       }
 
       "false given contains an empty node" in {
-        AddOperator(Value("a"), Empty()).validate mustEqual false
+        AddOperator(Value("a"), Empty()).validate(10) mustEqual false
       }
 
       "false given contains a node that is not valid for this level" in {
-        AddOperator(Value("a"), ObjectM(Nil)).validate mustEqual false
+        AddOperator(Value("a"), ObjectM(Nil)).validate(10) mustEqual false
       }
     }
   }

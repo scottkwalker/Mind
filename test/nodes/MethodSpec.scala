@@ -18,11 +18,11 @@ class MethodSpec extends Specification {
 
     "validate" in {
       "true given none empty" in {
-        Method(Seq(AddOperator(Value("a"), Value("b")))).validate mustEqual true
+        Method(Seq(AddOperator(Value("a"), Value("b")))).validate(10) mustEqual true
       }
 
       "false given has an empty node" in {
-        Method(Seq(AddOperator(Value("a"), Empty()))).validate mustEqual false
+        Method(Seq(AddOperator(Value("a"), Empty()))).validate(10) mustEqual false
       }
     }
 

@@ -16,7 +16,7 @@ class EmptySpec extends Specification {
     }
     
     "validate false" in {
-      Empty().validate mustEqual false
+      Empty().validate(10) mustEqual false
     }
   }
 }

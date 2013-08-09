@@ -25,22 +25,22 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
     "validate" in {
       "true given none empty" in {
         val nodeTree = new NodeTree(ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b")))))))
-        nodeTree.validate mustEqual true
+        nodeTree.validate(10) mustEqual true
       }
 
       "false given empty root node" in {
         val nodeTree = new NodeTree(Empty())
-        nodeTree.validate mustEqual false
+        nodeTree.validate(10) mustEqual false
       }
 
       "false given single empty method node" in {
         val nodeTree = new NodeTree(ObjectM(Seq(Empty())))
-        nodeTree.validate mustEqual false
+        nodeTree.validate(10) mustEqual false
       }
 
       "false given empty method node in a sequence" in {
         val nodeTree = new NodeTree(ObjectM(Seq(Method(Seq(AddOperator(Value("a"), Value("b")))), Empty())))
-        nodeTree.validate mustEqual false
+        nodeTree.validate(10) mustEqual false
       }
     }
   }
