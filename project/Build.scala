@@ -15,7 +15,9 @@ object ApplicationBuild extends Build {
     anorm,
 	"com.twitter" % "util-eval_2.10" % "6.3.7" withSources(),
 	"org.scalacheck" %% "scalacheck" % "1.10.1" % "test",
-	"org.mockito" % "mockito-all" % "1.9.5" % "test" withSources() withJavadoc()
+	"org.mockito" % "mockito-all" % "1.9.5" % "test" withSources() withJavadoc(),
+	"com.google.inject" % "guice" % "3.0",
+	"com.tzavellas" % "sse-guice" % "0.7.1"
   )
 
 
