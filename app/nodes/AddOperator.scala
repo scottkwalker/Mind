@@ -5,15 +5,19 @@ case class AddOperator(val left: Node, val right: Node) extends Node {
   def toRawScala: String = s"${left.toRawScala} + ${right.toRawScala}"
 
   def validate(stepsRemaining: Integer): Boolean = {
-    if (stepsRemaining == 0) false
-    else validate(left, stepsRemaining) && validate(right, stepsRemaining)
+    validate(left, stepsRemaining) && validate(right, stepsRemaining)
   }
 
   private def validate(n: Node, stepsRemaining: Integer) = {
-    n match {
-      case _: Value => left.validate(stepsRemaining)
+    if (stepsRemaining == 0) false
+    else n match {
+      case _: ValueM => left.validate(stepsRemaining - 1)
       case _: Empty => false
       case _ => false
     }
   }
+}
+
+case object AddOperator extends FindValidChildren {
+  val allPossibleChildren = Seq(ValueM)
 }

@@ -13,4 +13,7 @@ case class Method(val nodes: Seq[Node]) extends Node {
   })
 }
 
-case object Method
+case object Method extends FindValidChildren {
+  val allPossibleChildren = Seq(AddOperator, ValueM)
+}
+

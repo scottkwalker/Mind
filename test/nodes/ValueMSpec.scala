@@ -4,23 +4,23 @@ import org.specs2.mutable._
 import play.api.test._
 import play.api.test.Helpers._
 
-class ValueSpec extends Specification {
-  "Value" should {
+class ValueMSpec extends Specification {
+  "ValueM" should {
     "canTerminate" in {
-      Value("a").canTerminate(1) mustEqual true
+      ValueM("a").canTerminate(1) mustEqual true
     }
 
     "toRawScala" in {
-      Value("a").toRawScala mustEqual "a"
+      ValueM("a").toRawScala mustEqual "a"
     }
 
     "validate" in {
       "true given a non-empty name" in {
-        Value("a").validate(10) mustEqual true
+        ValueM("a").validate(10) mustEqual true
       }
 
       "false given an empty name" in {
-        Value("").validate(10) mustEqual false
+        ValueM("").validate(10) mustEqual false
       }
     }
   }
