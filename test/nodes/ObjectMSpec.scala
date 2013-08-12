@@ -6,19 +6,19 @@ import play.api.test.Helpers._
 
 class ObjectMSpec extends Specification {
   "ObjectM" should {
-    "canTerminate in 4 steps" in {
-      val objectM = ObjectM(Seq(Method(Seq(AddOperator(ValueM("a"), ValueM("b"))))))
-
-      objectM.canTerminate(4) mustEqual true
-    }
-
-    "can not terminate in 3 steps" in {
-      val objectM = ObjectM(Seq(Method(Seq(AddOperator(ValueM("a"), ValueM("b"))))))
-
-      objectM.canTerminate(3) mustEqual false
-    }
-
     "validate" in {
+      "true given it can terminates in under N steps" in {
+        val objectM = ObjectM(Seq(Method(Seq(AddOperator(ValueM("a"), ValueM("b"))))))
+
+        objectM.validate(4) mustEqual true
+      }
+
+      "false given it cannot terminate in under N steps" in {
+        val objectM = ObjectM(Seq(Method(Seq(AddOperator(ValueM("a"), ValueM("b"))))))
+
+        objectM.validate(3) mustEqual false
+      }
+
       "true given no empty nodes" in {
         val objectM = ObjectM(Seq(Method(Seq(AddOperator(ValueM("a"), ValueM("b"))))))
 

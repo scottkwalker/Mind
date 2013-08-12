@@ -6,19 +6,19 @@ import play.api.test.Helpers._
 
 class AddOperatorSpec extends Specification {
   "AddOperator" should {
-    "canTerminate in 2 steps" in {
-      AddOperator(ValueM("a"), ValueM("b")).canTerminate(2) mustEqual true
-    }
-
-    "can not terminate in 1 steps" in {
-      AddOperator(ValueM("a"), ValueM("b")).canTerminate(1) mustEqual false
-    }
-
     "toRawScala" in {
       AddOperator(ValueM("a"), ValueM("b")).toRawScala mustEqual "a + b"
     }
 
     "validate" in {
+      "true given it can terminates in under N steps" in {
+        AddOperator(ValueM("a"), ValueM("b")).validate(2) mustEqual true
+      }
+
+      "false given it cannot terminate in under N steps" in {
+        AddOperator(ValueM("a"), ValueM("b")).validate(1) mustEqual false
+      }
+
       "true given none empty" in {
         AddOperator(ValueM("a"), ValueM("b")).validate(10) mustEqual true
       }

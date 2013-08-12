@@ -7,22 +7,17 @@ import org.specs2.execute.PendingUntilFixed
 
 class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTree" should {
-    "canTerminate in 4 steps" in {
-      val nodeTree = new NodeTree(ObjectM(Seq(Method(Seq(AddOperator(ValueM("a"), ValueM("b")))))))
-      nodeTree.canTerminate(4) mustEqual true
-    }
-
-    "can not terminate in 3 steps" in {
-      val nodeTree = new NodeTree(ObjectM(Seq(Method(Seq(AddOperator(ValueM("a"), ValueM("b")))))))
-      nodeTree.canTerminate(3) mustEqual false
-    }
-
-    "toRawScala" in {
-      val nodeTree = new NodeTree(ObjectM(Seq(Method(Seq(AddOperator(ValueM("a"), ValueM("b")))))))
-      nodeTree.toRawScala mustEqual "object Individual { def f1(a: Int, b: Int) = { a + b } }"
-    }
-
     "validate" in {
+      "true given it can terminates in under N steps" in {
+        val nodeTree = new NodeTree(ObjectM(Seq(Method(Seq(AddOperator(ValueM("a"), ValueM("b")))))))
+        nodeTree.validate(5) mustEqual true
+      }
+
+      "false given it cannot terminate in under N steps" in {
+        val nodeTree = new NodeTree(ObjectM(Seq(Method(Seq(AddOperator(ValueM("a"), ValueM("b")))))))
+        nodeTree.validate(4) mustEqual false
+      }
+
       "true given none empty" in {
         val nodeTree = new NodeTree(ObjectM(Seq(Method(Seq(AddOperator(ValueM("a"), ValueM("b")))))))
         nodeTree.validate(10) mustEqual true

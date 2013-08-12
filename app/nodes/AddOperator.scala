@@ -1,7 +1,6 @@
 package nodes
 
 case class AddOperator(val left: Node, val right: Node) extends Node {
-  def canTerminate(stepsRemaining: Integer): Boolean = if (stepsRemaining == 0) false else left.canTerminate(stepsRemaining - 1) && right.canTerminate(stepsRemaining - 1)
   def toRawScala: String = s"${left.toRawScala} + ${right.toRawScala}"
 
   def validate(stepsRemaining: Integer): Boolean = {
@@ -18,6 +17,8 @@ case class AddOperator(val left: Node, val right: Node) extends Node {
   }
 }
 
-case object AddOperator extends FindValidChildren {
-  val allPossibleChildren = Seq(ValueM)
+case object AddOperator extends CreateChildNodes {
+  val allPossibleChildren: Seq[CreateChildNodes] = Seq(ValueM)
+
+  def create: Node = AddOperator(left = allPossibleChildren(0).create, right = allPossibleChildren(0).create)
 }

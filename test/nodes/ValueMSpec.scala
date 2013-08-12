@@ -6,10 +6,6 @@ import play.api.test.Helpers._
 
 class ValueMSpec extends Specification {
   "ValueM" should {
-    "canTerminate" in {
-      ValueM("a").canTerminate(1) mustEqual true
-    }
-
     "toRawScala" in {
       ValueM("a").toRawScala mustEqual "a"
     }

@@ -8,15 +8,15 @@ import org.specs2.execute.PendingUntilFixed
 
 class MethodSpec extends Specification {
   "Method" should {
-    "canTerminate in 3 steps" in {
-      Method(Seq(AddOperator(ValueM("a"), ValueM("b")))).canTerminate(3) mustEqual true
-    }
-
-    "can not terminate in 2 steps" in {
-      Method(Seq(AddOperator(ValueM("a"), ValueM("b")))).canTerminate(2) mustEqual false
-    }
-
     "validate" in {
+      "true given it can terminates in under N steps" in {
+        Method(Seq(AddOperator(ValueM("a"), ValueM("b")))).validate(3) mustEqual true
+      }
+
+      "false given it cannot terminate in under N steps" in {
+        Method(Seq(AddOperator(ValueM("a"), ValueM("b")))).validate(2) mustEqual false
+      }
+
       "true given none empty" in {
         Method(Seq(AddOperator(ValueM("a"), ValueM("b")))).validate(10) mustEqual true
       }

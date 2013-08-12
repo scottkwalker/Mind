@@ -16,11 +16,6 @@ class EmptySpec extends Specification {
       }
     })*/
 
-    "throw if you ask canTerminate" in {
-      //val sud = injector.getInstance(classOf[Empty])
-      Empty().canTerminate(1) must throwA[scala.RuntimeException]
-    }
-
     "throw if you ask toRawScala" in {
       Empty().toRawScala must throwA[scala.RuntimeException]
     }

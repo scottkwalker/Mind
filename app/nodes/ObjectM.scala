@@ -1,7 +1,6 @@
 package nodes
 
 case class ObjectM(val nodes: Seq[Node]) extends Node {
-  def canTerminate(stepsRemaining: Integer): Boolean = nodes.forall(f => f.canTerminate(stepsRemaining - 1))
   def toRawScala: String = s"object ${name} ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
   val name = "Individual"
 
@@ -10,4 +9,10 @@ case class ObjectM(val nodes: Seq[Node]) extends Node {
     case _: Empty => false
     case _ => false
   })
+}
+
+case object ObjectM extends CreateChildNodes {
+  val allPossibleChildren: Seq[CreateChildNodes] = Seq(Method)
+
+  def create: Node = ObjectM(Seq(allPossibleChildren(0).create))
 }
