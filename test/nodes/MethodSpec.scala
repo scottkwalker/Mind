@@ -29,5 +29,9 @@ class MethodSpec extends Specification {
     "toRawScala" in {
       Method(Seq(AddOperator(ValueM("a"), ValueM("b")))).toRawScala mustEqual "def f1(a: Int, b: Int) = { a + b }"
     }
+    
+    "create returns instance of this type" in {
+      Method.create must beAnInstanceOf[Method]
+    }
   }
 }

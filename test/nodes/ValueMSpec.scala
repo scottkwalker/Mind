@@ -11,6 +11,14 @@ class ValueMSpec extends Specification {
     }
 
     "validate" in {
+      "true given it can terminates in under N steps" in {
+        ValueM("a").validate(1) mustEqual true
+      }
+
+      "false given it cannot terminate in under N steps" in {
+        ValueM("a").validate(0) mustEqual false
+      }
+
       "true given a non-empty name" in {
         ValueM("a").validate(10) mustEqual true
       }
@@ -18,6 +26,10 @@ class ValueMSpec extends Specification {
       "false given an empty name" in {
         ValueM("").validate(10) mustEqual false
       }
+    }
+    
+    "create returns instance of this type" in {
+      ValueM.create must beAnInstanceOf[ValueM]
     }
   }
 }

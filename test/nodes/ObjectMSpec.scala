@@ -41,5 +41,9 @@ class ObjectMSpec extends Specification {
 
       objectM.toRawScala mustEqual "object Individual { def f1(a: Int, b: Int) = { a + b } }"
     }
+    
+    "create returns instance of this type" in {
+      ObjectM.create must beAnInstanceOf[ObjectM]
+    }
   }
 }

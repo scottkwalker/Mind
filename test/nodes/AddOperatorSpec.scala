@@ -31,5 +31,9 @@ class AddOperatorSpec extends Specification {
         AddOperator(ValueM("a"), ObjectM(Nil)).validate(10) mustEqual false
       }
     }
+    
+    "create returns instance of this type" in {
+      AddOperator.create must beAnInstanceOf[AddOperator]
+    }
   }
 }

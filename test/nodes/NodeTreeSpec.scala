@@ -38,5 +38,9 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
         nodeTree.validate(10) mustEqual false
       }
     }
+    
+    "create returns instance of this type" in {
+      NodeTree.create must beAnInstanceOf[NodeTree]
+    }
   }
 }
