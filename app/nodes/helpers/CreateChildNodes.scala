@@ -1,4 +1,7 @@
-package nodes
+package nodes.helpers
+
+import nodes.Node
+import nodes.NodeTree
 
 trait CreateChildNodes {
   val allPossibleChildren: Seq[CreateChildNodes]
@@ -8,5 +11,5 @@ trait CreateChildNodes {
       allPossibleChildren.exists(n => n.couldTerminate(stepsRemaining - 1))
     }
   }
-  def create: Node
+  def create(scope: Option[Scope] = None): Node
 }

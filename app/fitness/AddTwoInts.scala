@@ -3,7 +3,7 @@ package fitness
 import com.twitter.util.Eval
 import nodes.NodeTree
 
-class Addition(val nodeTree: NodeTree) extends Fitness {
+class AddTwoInts(val nodeTree: NodeTree) extends Fitness {
   def fitness: Double = {
     val a = 1
     val b = 1
@@ -11,7 +11,7 @@ class Addition(val nodeTree: NodeTree) extends Fitness {
 
     val eval = new Eval
     eval.compile(nodeTree.toRawScala)
-    val result = eval.inPlace[Int](s"Individual.f1(${a}, ${b})")
+    val result = eval.inPlace[Int](s"Individual.f0(${a}, ${b})")
 
     val delta = (result - expected).abs
 

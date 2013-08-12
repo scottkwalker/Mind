@@ -1,5 +1,8 @@
 package nodes
 
+import nodes.helpers.CreateChildNodes
+import nodes.helpers.Scope
+
 case class AddOperator(val left: Node, val right: Node) extends Node {
   def toRawScala: String = s"${left.toRawScala} + ${right.toRawScala}"
 
@@ -20,5 +23,5 @@ case class AddOperator(val left: Node, val right: Node) extends Node {
 case object AddOperator extends CreateChildNodes {
   val allPossibleChildren: Seq[CreateChildNodes] = Seq(ValueM)
 
-  def create: Node = AddOperator(left = allPossibleChildren(0).create, right = allPossibleChildren(0).create)
+  def create(scope: Option[Scope]): Node = AddOperator(left = allPossibleChildren(0).create(scope ), right = allPossibleChildren(0).create(scope))
 }

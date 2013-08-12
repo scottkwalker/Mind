@@ -33,7 +33,7 @@ class AddOperatorSpec extends Specification {
     }
     
     "create returns instance of this type" in {
-      AddOperator.create must beAnInstanceOf[AddOperator]
+      AddOperator.create(scope = None) must beAnInstanceOf[AddOperator]
     }
   }
 }

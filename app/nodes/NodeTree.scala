@@ -1,5 +1,8 @@
 package nodes
 
+import nodes.helpers.CreateChildNodes
+import nodes.helpers.Scope
+
 class NodeTree(val rootNode: Node) extends Node {
   def toRawScala: String = rootNode.toRawScala
 
@@ -13,5 +16,5 @@ class NodeTree(val rootNode: Node) extends Node {
 case object NodeTree extends CreateChildNodes {
   val allPossibleChildren: Seq[CreateChildNodes] = Seq(ObjectM)
 
-  def create: Node = new NodeTree(allPossibleChildren(0).create)
+  def create(scope: Option[Scope]): Node = new NodeTree(allPossibleChildren(0).create(scope))
 }
