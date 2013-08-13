@@ -17,5 +17,6 @@ case class ObjectM(val nodes: Seq[Node]) extends Node {
 case object ObjectM extends CreateChildNodes {
   val allPossibleChildren: Seq[CreateChildNodes] = Seq(FunctionM)
 
-  def create(scope: Option[Scope]): Node = ObjectM(Seq(allPossibleChildren(0).create(scope)))
+  def create(scope: Scope): Node = {
+    ObjectM(Seq(allPossibleChildren(0).create(scope.incrementFuncs)))}
 }

@@ -13,7 +13,7 @@ case class AddOperator(val left: Node, val right: Node) extends Node {
   private def validate(n: Node, stepsRemaining: Integer) = {
     if (stepsRemaining == 0) false
     else n match {
-      case _: ValueM => left.validate(stepsRemaining - 1)
+      case _: ValueRef => left.validate(stepsRemaining - 1)
       case _: Empty => false
       case _ => false
     }
@@ -21,7 +21,11 @@ case class AddOperator(val left: Node, val right: Node) extends Node {
 }
 
 case object AddOperator extends CreateChildNodes {
-  val allPossibleChildren: Seq[CreateChildNodes] = Seq(ValueM)
+  val allPossibleChildren: Seq[CreateChildNodes] = Seq(ValueRef)
 
-  def create(scope: Option[Scope]): Node = AddOperator(left = allPossibleChildren(0).create(scope ), right = allPossibleChildren(0).create(scope))
+  def create(scope: Scope): Node = {
+    val left = allPossibleChildren(0).create(scope)
+    val right = allPossibleChildren(0).create(scope)
+    AddOperator(left = left, right = right)
+  }
 }

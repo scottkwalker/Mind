@@ -11,51 +11,51 @@ class FunctionMSpec extends Specification {
   "Function" should {
     "validate" in {
       "true given a non-empty name" in {
-        FunctionM(nodes = Seq(ValueM("a"), ValueM("b")), name = "f0").validate(10) mustEqual true
+        FunctionM(nodes = Seq(ValueRef("a"), ValueRef("b")), name = "f0").validate(10) mustEqual true
       }
 
       "false given an empty name" in {
-        FunctionM(nodes = Seq(ValueM("a"), ValueM("b")), name = "").validate(10) mustEqual false
+        FunctionM(nodes = Seq(ValueRef("a"), ValueRef("b")), name = "").validate(10) mustEqual false
       }
 
       "true given it can terminate in under N steps" in {
-        FunctionM(Seq(AddOperator(ValueM("a"), ValueM("b")))).validate(3) mustEqual true
+        FunctionM(Seq(AddOperator(ValueRef("a"), ValueRef("b")))).validate(3) mustEqual true
       }
 
       "false given it cannot terminate in under N steps" in {
-        FunctionM(Seq(AddOperator(ValueM("a"), ValueM("b")))).validate(2) mustEqual false
+        FunctionM(Seq(AddOperator(ValueRef("a"), ValueRef("b")))).validate(2) mustEqual false
       }
 
       "true given none empty" in {
-        FunctionM(Seq(AddOperator(ValueM("a"), ValueM("b")))).validate(10) mustEqual true
+        FunctionM(Seq(AddOperator(ValueRef("a"), ValueRef("b")))).validate(10) mustEqual true
       }
 
       "false given has an empty node" in {
-        FunctionM(Seq(AddOperator(ValueM("a"), Empty()))).validate(10) mustEqual false
+        FunctionM(Seq(AddOperator(ValueRef("a"), Empty()))).validate(10) mustEqual false
       }
     }
 
     "toRawScala" in {
-      FunctionM(Seq(AddOperator(ValueM("a"), ValueM("b")))).toRawScala mustEqual "def f0(a: Int, b: Int) = { a + b }"
+      FunctionM(Seq(AddOperator(ValueRef("a"), ValueRef("b")))).toRawScala mustEqual "def f0(a: Int, b: Int) = { a + b }"
     }
 
     "create" in {
       "returns instance of this type" in {
-        FunctionM.create(scope = None) must beAnInstanceOf[FunctionM]
+        FunctionM.create(scope = Scope()) must beAnInstanceOf[FunctionM]
       }
 
       "returns expected given scope with 0 functions" in {
-        val scope = Scope(numFuncs = 0)
+        val scope = Scope()
 
-        FunctionM.create(scope = Some(scope)) must beLike {
+        FunctionM.create(scope = scope) must beLike {
           case FunctionM(_, name) => name mustEqual "f0"
         }
       }
 
       "returns expected given scope with 1 functions" in {
-        val scope = Scope(numFuncs = 1)
+        val scope = Scope().incrementFuncs
 
-        FunctionM.create(scope = Some(scope)) must beLike {
+        FunctionM.create(scope = scope) must beLike {
           case FunctionM(_, name) => name mustEqual "f1"
         }
       }

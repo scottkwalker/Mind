@@ -12,7 +12,7 @@ case class FunctionM(val nodes: Seq[Node], val name: String = "f0") extends Node
     !name.isEmpty && 
     nodes.forall(_ match {
       case n: AddOperator => n.validate(stepsRemaining - 1)
-      case n: ValueM => n.validate(stepsRemaining - 1)
+      case n: ValueRef => n.validate(stepsRemaining - 1)
       case _: Empty => false
       case _ => false
     })
@@ -20,10 +20,7 @@ case class FunctionM(val nodes: Seq[Node], val name: String = "f0") extends Node
 }
 
 case object FunctionM extends CreateChildNodes {
-  val allPossibleChildren: Seq[CreateChildNodes] = Seq(AddOperator, ValueM)
+  val allPossibleChildren: Seq[CreateChildNodes] = Seq(AddOperator, ValueRef)
 
-  def create(scope: Option[Scope]): Node = scope match {
-    case Some(s: Scope) => FunctionM(Seq(allPossibleChildren(0).create(scope)), name = "f" + s.numFuncs)
-    case _ => FunctionM(Nil, "test create Method")
-  }
+  def create(scope: Scope): Node = FunctionM(Seq(allPossibleChildren(0).create(scope)), name = "f" + scope.numFuncs)
 }

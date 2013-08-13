@@ -16,5 +16,6 @@ class NodeTree(val rootNode: Node) extends Node {
 case object NodeTree extends CreateChildNodes {
   val allPossibleChildren: Seq[CreateChildNodes] = Seq(ObjectM)
 
-  def create(scope: Option[Scope]): Node = new NodeTree(allPossibleChildren(0).create(scope))
+  def create(scope: Scope): Node = {
+    new NodeTree(allPossibleChildren(0).create(scope.incrementObjects))}
 }

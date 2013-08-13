@@ -11,5 +11,5 @@ trait CreateChildNodes {
       allPossibleChildren.exists(n => n.couldTerminate(stepsRemaining - 1))
     }
   }
-  def create(scope: Option[Scope] = None): Node
+  def create(scope: Scope): Node
 }
