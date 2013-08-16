@@ -2,8 +2,9 @@ package nodes
 
 import org.specs2.mutable._
 import nodes.helpers.Scope
+import org.specs2.mock.Mockito
 
-class ValueRefSpec extends Specification {
+class ValueRefSpec extends Specification with Mockito {
   "ValueRef" should {
     "toRawScala" in {
       ValueRef("a").toRawScala mustEqual "a"
@@ -29,23 +30,26 @@ class ValueRefSpec extends Specification {
 
     "create" in {
       "returns instance of this type" in {
-        val scope = Scope()
+        val s = mock[Scope]
+        s.numVals returns 0
         
-        ValueRef.create(scope = scope) must beAnInstanceOf[ValueRef]
+        ValueRef.create(scope = s) must beAnInstanceOf[ValueRef]
       }
 
       "returns expected given scope with 0 vals" in {
-        val scope = Scope()
+        val s = mock[Scope]
+        s.numVals returns 0
 
-        ValueRef.create(scope = scope) must beLike {
+        ValueRef.create(scope = s) must beLike {
           case ValueRef(name) => name mustEqual "v0"
         }
       }
 
       "returns expected given scope with 1 val" in {
-        val scope = Scope().incrementVals
+        val s = mock[Scope]
+        s.numVals returns 1
 
-        ValueRef.create(scope = scope) must beLike {
+        ValueRef.create(scope = s) must beLike {
           case ValueRef(name) => name mustEqual "v1"
         }
       }
