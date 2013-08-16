@@ -8,11 +8,11 @@ class AddOperatorSpec extends Specification with Mockito {
   "AddOperator" should {
     "toRawScala" in {
       val a = mock[ValueRef]
-      a.toRawScala returns "a"
+      a.toRawScala returns "STUB_A"
       val b = mock[ValueRef]
-      b.toRawScala returns "b"
+      b.toRawScala returns "STUB_B"
 
-      AddOperator(a, b).toRawScala mustEqual "a + b"
+      AddOperator(a, b).toRawScala mustEqual "STUB_A + STUB_B"
     }
 
     "validate" in {
@@ -25,7 +25,7 @@ class AddOperatorSpec extends Specification with Mockito {
       
       "false given it cannot terminate in 0 steps" in {
         val v = mock[ValueRef]
-        v.validate(anyInt) returns false
+        v.validate(anyInt) throws new RuntimeException
         
         AddOperator(v, v).validate(0) mustEqual false
       }

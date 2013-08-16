@@ -8,18 +8,10 @@ import org.specs2.mock.Mockito
 class FunctionMSpec extends Specification with Mockito {
   "Function" should {
     "validate" in {
-      "true given a non-empty name" in {
-        val v = mock[ValueRef]
-        v.validate(anyInt) returns true
-
-        // TODO name should be generated from Scope
-        FunctionM(nodes = Seq(v, v), name = "f0").validate(10) mustEqual true
-      }
-
       "false given an empty name" in {
         val v = mock[ValueRef]
         v.validate(anyInt) returns true
-
+// TODO use scope to create function name.
         FunctionM(nodes = Seq(v, v), name = "").validate(10) mustEqual false
       }
 
@@ -32,7 +24,7 @@ class FunctionMSpec extends Specification with Mockito {
 
       "false given it cannot terminate in 0 steps" in {
         val v = mock[ValueRef]
-        v.validate(anyInt) returns false
+        v.validate(anyInt) throws new RuntimeException
 
         FunctionM(Seq(v, v)).validate(0) mustEqual false
       }
@@ -61,9 +53,9 @@ class FunctionMSpec extends Specification with Mockito {
 
     "toRawScala" in {
       val a = mock[ValueRef]
-      a.toRawScala returns "a + b"
+      a.toRawScala returns "STUB"
 
-      FunctionM(Seq(a)).toRawScala mustEqual "def f0(a: Int, b: Int) = { a + b }"
+      FunctionM(Seq(a)).toRawScala mustEqual "def f0(a: Int, b: Int) = { STUB }"
     }
 
     "create" in {
@@ -71,7 +63,7 @@ class FunctionMSpec extends Specification with Mockito {
         val s = mock[Scope]
         s.numFuncs returns 0
 
-        FunctionM.create(scope = Scope()) must beAnInstanceOf[FunctionM]
+        FunctionM.create(scope = s) must beAnInstanceOf[FunctionM]
       }
 
       "returns expected given scope with 0 functions" in {
