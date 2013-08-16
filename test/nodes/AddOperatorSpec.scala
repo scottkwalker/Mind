@@ -4,8 +4,9 @@ import org.specs2.mutable._
 import play.api.test._
 import play.api.test.Helpers._
 import nodes.helpers.Scope
+import org.specs2.mock.Mockito
 
-class AddOperatorSpec extends Specification {
+class AddOperatorSpec extends Specification with Mockito {
   "AddOperator" should {
     "toRawScala" in {
       AddOperator(ValueRef("a"), ValueRef("b")).toRawScala mustEqual "a + b"
@@ -21,20 +22,32 @@ class AddOperatorSpec extends Specification {
       }
 
       "true given none empty" in {
-        AddOperator(ValueRef("a"), ValueRef("b")).validate(10) mustEqual true
+        val v = mock[ValueRef]
+        v.validate(anyInt) returns true
+        
+        AddOperator(v, v).validate(10) mustEqual true
       }
 
       "false given contains an empty node" in {
-        AddOperator(ValueRef("a"), Empty()).validate(10) mustEqual false
+        val v = mock[ValueRef]
+        v.validate(anyInt) returns true
+        
+        AddOperator(v, Empty()).validate(10) mustEqual false
       }
 
       "false given contains a node that is not valid for this level" in {
-        AddOperator(ValueRef("a"), ObjectM(Nil)).validate(10) mustEqual false
+        val v = mock[ValueRef]
+        v.validate(anyInt) returns true
+        
+        AddOperator(v, ObjectM(Nil)).validate(10) mustEqual false
       }
     }
     
     "create returns instance of this type" in {
-      AddOperator.create(scope = Scope()) must beAnInstanceOf[AddOperator]
+      val s = mock[Scope]
+      s.numVals returns 0
+      
+      AddOperator.create(scope = s) must beAnInstanceOf[AddOperator]
     }
   }
 }
