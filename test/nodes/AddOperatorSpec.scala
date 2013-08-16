@@ -1,8 +1,6 @@
 package nodes
 
 import org.specs2.mutable._
-import play.api.test._
-import play.api.test.Helpers._
 import nodes.helpers.Scope
 import org.specs2.mock.Mockito
 
