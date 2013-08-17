@@ -8,7 +8,7 @@ case class ValueRef(val name: String) extends Node {
   def validate(stepsRemaining: Integer): Boolean = if (stepsRemaining == 0) false else !name.isEmpty
 }
 
-case object ValueRef extends CreateChildNodes {
+case class ValueRefFactory() extends CreateChildNodes {
   val allPossibleChildren: Seq[CreateChildNodes] = Seq()
 
   override def couldTerminate(stepsRemaining: Integer) = {

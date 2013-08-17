@@ -33,14 +33,14 @@ class ValueRefSpec extends Specification with Mockito {
         val s = mock[Scope]
         s.numVals returns 0
         
-        ValueRef.create(scope = s) must beAnInstanceOf[ValueRef]
+        ValueRefFactory().create(scope = s) must beAnInstanceOf[ValueRef]
       }
 
       "returns expected given scope with 0 vals" in {
         val s = mock[Scope]
         s.numVals returns 0
 
-        ValueRef.create(scope = s) must beLike {
+        ValueRefFactory().create(scope = s) must beLike {
           case ValueRef(name) => name mustEqual "v0"
         }
       }
@@ -49,7 +49,7 @@ class ValueRefSpec extends Specification with Mockito {
         val s = mock[Scope]
         s.numVals returns 1
 
-        ValueRef.create(scope = s) must beLike {
+        ValueRefFactory().create(scope = s) must beLike {
           case ValueRef(name) => name mustEqual "v1"
         }
       }

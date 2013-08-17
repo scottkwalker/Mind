@@ -20,7 +20,7 @@ case class FunctionM(val nodes: Seq[Node], val name: String = "f0") extends Node
 }
 
 case object FunctionM extends CreateChildNodes {
-  val allPossibleChildren: Seq[CreateChildNodes] = Seq(AddOperator, ValueRef)
+  val allPossibleChildren: Seq[CreateChildNodes] = Seq(AddOperator, ValueRefFactory())
 
   def create(scope: Scope): Node = FunctionM(Seq(allPossibleChildren(0).create(scope)), name = "f" + scope.numFuncs)
 }
