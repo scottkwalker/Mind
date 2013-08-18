@@ -4,6 +4,7 @@ import nodes.helpers._
 import com.google.inject.Guice
 import com.tzavellas.sse.guice.ScalaModule
 import com.google.inject.Injector
+import com.google.inject.Inject
 
 case class AddOperator(val left: Node, val right: Node) extends Node {
   def toRawScala: String = s"${left.toRawScala} + ${right.toRawScala}"
@@ -22,8 +23,8 @@ case class AddOperator(val left: Node, val right: Node) extends Node {
   }
 }
 
-case class AddOperatorFactory() extends CreateChildNodes {
-  val allPossibleChildren: Seq[CreateChildNodes] = Seq(ValueRefFactory())
+case class AddOperatorFactory @Inject() (injector: Injector) extends CreateChildNodes {
+  val allPossibleChildren: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ValueRefFactory]))
 
   def create(scope: Scope): Node = {
     val left = allPossibleChildren(0).create(scope)

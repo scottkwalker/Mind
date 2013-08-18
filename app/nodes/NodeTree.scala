@@ -2,6 +2,8 @@ package nodes
 
 import nodes.helpers.CreateChildNodes
 import nodes.helpers.Scope
+import com.google.inject.Injector
+import com.google.inject.Inject
 
 class NodeTree(val rootNode: Node) extends Node {
   def toRawScala: String = rootNode.toRawScala
@@ -13,9 +15,9 @@ class NodeTree(val rootNode: Node) extends Node {
   }
 }
 
-case class NodeTreeFactory() extends CreateChildNodes {
-  val allPossibleChildren: Seq[CreateChildNodes] = Seq(ObjectMFactory())
+case class NodeTreeFactory @Inject() (injector: Injector) extends CreateChildNodes {
+  val allPossibleChildren: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ObjectMFactory]))
 
   def create(scope: Scope): Node = {
-    new NodeTree(allPossibleChildren(0).create(scope.incrementObjects))}
+    new NodeTree(allPossibleChildren(0).create(scope))}
 }
