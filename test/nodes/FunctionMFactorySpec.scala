@@ -14,9 +14,12 @@ class FunctionMFactorySpec extends Specification with Mockito {
       "returns instance of this type" in {
         val s = mock[Scope]
         s.numFuncs returns 0
-        val injector: Injector =  Guice.createInjector(new DevModule)
+        val injector: Injector = Guice.createInjector(new DevModule)
+        val factory = injector.getInstance(classOf[FunctionMFactory])
 
-        FunctionMFactory(injector).create(scope = s) must beAnInstanceOf[FunctionM]
+        val instance = factory.create(scope = s)
+
+        instance must beAnInstanceOf[FunctionM]
       }
 
       "returns expected given scope with 0 functions" in {

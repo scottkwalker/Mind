@@ -13,11 +13,11 @@ class AddOperatorFactorySpec extends Specification with Mockito {
       val s = mock[Scope]
       s.numVals returns 0
       val injector: Injector = Guice.createInjector(new DevModule)
-      val addOperatorFactory = injector.getInstance(classOf[AddOperatorFactory])
+      val factory = injector.getInstance(classOf[AddOperatorFactory])
 
-      val addOperator = addOperatorFactory.create(scope = s) 
+      val instance = factory.create(scope = s)
       
-      addOperator must beAnInstanceOf[AddOperator]
+      instance must beAnInstanceOf[AddOperator]
     }
   }
 }

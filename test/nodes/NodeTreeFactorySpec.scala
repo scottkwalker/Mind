@@ -15,8 +15,11 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
       val s = mock[Scope]
       s.numVals returns 0
       val injector: Injector = Guice.createInjector(new DevModule)
+      val factory = injector.getInstance(classOf[NodeTreeFactory])
 
-      NodeTreeFactory(injector).create(scope = s) must beAnInstanceOf[NodeTree]
+      val instance = factory.create(scope = s) 
+
+      instance must beAnInstanceOf[NodeTree]
     }
   }
 }
