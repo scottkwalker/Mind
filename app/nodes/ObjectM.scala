@@ -13,8 +13,8 @@ case class ObjectM(val nodes: Seq[Node], val name: String = "Individual") extend
   })
 }
 
-case object ObjectM extends CreateChildNodes {
-  val allPossibleChildren: Seq[CreateChildNodes] = Seq(FunctionM)
+case class ObjectMFactory() extends CreateChildNodes {
+  val allPossibleChildren: Seq[CreateChildNodes] = Seq(FunctionMFactory())
 
   def create(scope: Scope): Node = {
     ObjectM(Seq(allPossibleChildren(0).create(scope)), name = "o" + scope.numObjects)} // Need to increment the scope in a recursive way each time we create a new child.

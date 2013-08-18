@@ -58,12 +58,5 @@ class AddOperatorSpec extends Specification with Mockito {
         AddOperator(v, ObjectM(Nil)).validate(10) mustEqual false
       }
     }
-
-    "create returns instance of this type" in {
-      val s = mock[Scope]
-      s.numVals returns 0
-
-      AddOperator.create(scope = s) must beAnInstanceOf[AddOperator]
-    }
   }
 }

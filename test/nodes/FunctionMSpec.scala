@@ -57,32 +57,5 @@ class FunctionMSpec extends Specification with Mockito {
 
       FunctionM(Seq(a)).toRawScala mustEqual "def f0(a: Int, b: Int) = { STUB }"
     }
-
-    "create" in {
-      "returns instance of this type" in {
-        val s = mock[Scope]
-        s.numFuncs returns 0
-
-        FunctionM.create(scope = s) must beAnInstanceOf[FunctionM]
-      }
-
-      "returns expected given scope with 0 functions" in {
-        val s = mock[Scope]
-        s.numFuncs returns 0
-
-        FunctionM.create(scope = s) must beLike {
-          case FunctionM(_, name) => name mustEqual "f0"
-        }
-      }
-
-      "returns expected given scope with 1 functions" in {
-        val s = mock[Scope]
-        s.numFuncs returns 1
-
-        FunctionM.create(scope = s) must beLike {
-          case FunctionM(_, name) => name mustEqual "f1"
-        }
-      }
-    }
   }
 }

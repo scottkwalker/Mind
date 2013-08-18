@@ -22,17 +22,7 @@ case class AddOperator(val left: Node, val right: Node) extends Node {
   }
 }
 
-class AddOperatorFactory(val injector: Injector = Guice.createInjector(new DevModule)) extends CreateChildNodes {
-  val allPossibleChildren: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ValueRefFactory]))
-
-  def create(scope: Scope): Node = {
-    val left = allPossibleChildren(0).create(scope)
-    val right = allPossibleChildren(0).create(scope)
-    AddOperator(left = left, right = right)
-  }
-}
-
-case object AddOperator extends CreateChildNodes {
+case class AddOperatorFactory() extends CreateChildNodes {
   val allPossibleChildren: Seq[CreateChildNodes] = Seq(ValueRefFactory())
 
   def create(scope: Scope): Node = {

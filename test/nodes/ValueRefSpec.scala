@@ -27,32 +27,5 @@ class ValueRefSpec extends Specification with Mockito {
         ValueRef("").validate(10) mustEqual false
       }
     }
-
-    "create" in {
-      "returns instance of this type" in {
-        val s = mock[Scope]
-        s.numVals returns 0
-        
-        ValueRefFactory().create(scope = s) must beAnInstanceOf[ValueRef]
-      }
-
-      "returns expected given scope with 0 vals" in {
-        val s = mock[Scope]
-        s.numVals returns 0
-
-        ValueRefFactory().create(scope = s) must beLike {
-          case ValueRef(name) => name mustEqual "v0"
-        }
-      }
-
-      "returns expected given scope with 1 val" in {
-        val s = mock[Scope]
-        s.numVals returns 1
-
-        ValueRefFactory().create(scope = s) must beLike {
-          case ValueRef(name) => name mustEqual "v1"
-        }
-      }
-    }
   }
 }
