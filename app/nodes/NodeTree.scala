@@ -13,7 +13,7 @@ class NodeTree(val rootNode: Node) extends Node {
   }
 }
 
-case object NodeTree extends CreateChildNodes {
+case class NodeTreeFactory() extends CreateChildNodes {
   val allPossibleChildren: Seq[CreateChildNodes] = Seq(ObjectMFactory())
 
   def create(scope: Scope): Node = {

@@ -5,7 +5,7 @@ import nodes.helpers.Scope
 
 case class FunctionM(val nodes: Seq[Node], val name: String = "f0") extends Node {
   def toRawScala: String = s"def ${name}${params.mkString("(", ", ", ")")} = ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
-  val params: Seq[String] = Seq("a: Int", "b: Int")
+  val params: Seq[String] = Seq("a: Int", "b: Int") // TODO these need to be created by the factory.
 
   def validate(stepsRemaining: Integer): Boolean = if (stepsRemaining == 0) { false }
   else {
