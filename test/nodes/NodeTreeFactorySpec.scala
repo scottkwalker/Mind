@@ -12,8 +12,7 @@ import nodes.helpers.DevModule
 class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTreeFactory" should {
     "create returns instance of this type" in {
-      val s = mock[Scope]
-      s.numVals returns 0
+      val s = Scope(stepsRemaining = 10)
       val injector: Injector = Guice.createInjector(new DevModule)
       val factory = injector.getInstance(classOf[NodeTreeFactory])
 

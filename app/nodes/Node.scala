@@ -1,6 +1,8 @@
 package nodes
 
+import nodes.helpers.Scope
+
 trait Node {
   def toRawScala: String
-  def validate(stepsRemaining: Integer): Boolean
+  def validate(scope: Scope): Boolean
 }

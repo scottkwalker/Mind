@@ -5,10 +5,10 @@ import nodes.NodeTree
 
 trait CreateChildNodes {
   val allPossibleChildren: Seq[CreateChildNodes]
-  def validChildren(stepsRemaining: Integer) = allPossibleChildren.filter(n => n.couldTerminate(stepsRemaining - 1))
-  def couldTerminate(stepsRemaining: Integer): Boolean = {
-    if (stepsRemaining == 0) false else {
-      allPossibleChildren.exists(n => n.couldTerminate(stepsRemaining - 1))
+  def validChildren(scope: Scope) = allPossibleChildren.filter(n => n.couldTerminate(scope.decrementStepsRemaining))
+  def couldTerminate(scope: Scope): Boolean = {
+    if (scope.noStepsRemaining) false else {
+      allPossibleChildren.exists(n => n.couldTerminate(scope.decrementStepsRemaining))
     }
   }
   def create(scope: Scope): Node

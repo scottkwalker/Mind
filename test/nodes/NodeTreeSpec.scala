@@ -10,32 +10,36 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTree" should {
     "validate" in {
       "true given it can terminates in under N steps" in {
+        val s = Scope(stepsRemaining = 5)
         val f = mock[ObjectM]
-        f.validate(anyInt) returns true 
+        f.validate(any[Scope]) returns true 
         val nodeTree = new NodeTree(f)
         
-        nodeTree.validate(5) mustEqual true
+        nodeTree.validate(s) mustEqual true
       }
 
       "false given it cannot terminate in under N steps" in {
+        val s = Scope(stepsRemaining = 5)
         val f = mock[ObjectM]
-        f.validate(anyInt) returns false 
+        f.validate(any[Scope]) returns false 
         val nodeTree = new NodeTree(f)
         
-        nodeTree.validate(4) mustEqual false
+        nodeTree.validate(s) mustEqual false
       }
 
       "true given none empty" in {
+        val s = Scope(stepsRemaining = 10)
         val f = mock[ObjectM]
-        f.validate(anyInt) returns true 
+        f.validate(any[Scope]) returns true 
         val nodeTree = new NodeTree(f)
         
-        nodeTree.validate(10) mustEqual true
+        nodeTree.validate(s) mustEqual true
       }
 
       "false given empty root node" in {
+        val s = Scope(stepsRemaining = 10)
         val nodeTree = new NodeTree(Empty())
-        nodeTree.validate(10) mustEqual false
+        nodeTree.validate(s) mustEqual false
       }
     }
   }

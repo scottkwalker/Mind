@@ -12,19 +12,23 @@ class ValueRefSpec extends Specification with Mockito {
 
     "validate" in {
       "true given it can terminates in under N steps" in {
-        ValueRef("a").validate(1) mustEqual true
+        val s = Scope(stepsRemaining = 1)
+        ValueRef("a").validate(s) mustEqual true
       }
 
       "false given it cannot terminate in under N steps" in {
-        ValueRef("a").validate(0) mustEqual false
+        val s = Scope(stepsRemaining = 0)
+        ValueRef("a").validate(s) mustEqual false
       }
 
       "true given a non-empty name" in {
-        ValueRef("a").validate(10) mustEqual true
+        val s = Scope(stepsRemaining = 10)
+        ValueRef("a").validate(s) mustEqual true
       }
 
       "false given an empty name" in {
-        ValueRef("").validate(10) mustEqual false
+        val s = Scope(stepsRemaining = 10)
+        ValueRef("").validate(s) mustEqual false
       }
     }
   }

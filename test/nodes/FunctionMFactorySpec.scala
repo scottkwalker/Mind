@@ -12,8 +12,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
   "FunctionMFactory" should {
     "create" in {
       "returns instance of this type" in {
-        val s = mock[Scope]
-        s.numFuncs returns 0
+        val s = Scope(stepsRemaining = 10)
         val injector: Injector = Guice.createInjector(new DevModule)
         val factory = injector.getInstance(classOf[FunctionMFactory])
 
@@ -23,8 +22,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
       }
 
       "returns expected given scope with 0 functions" in {
-        val s = mock[Scope]
-        s.numFuncs returns 0
+        val s = Scope(numFuncs = 0, stepsRemaining = 10)
         val injector: Injector =  Guice.createInjector(new DevModule)
 
         FunctionMFactory(injector).create(scope = s) must beLike {
@@ -33,8 +31,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
       }
 
       "returns expected given scope with 1 functions" in {
-        val s = mock[Scope]
-        s.numFuncs returns 1
+        val s = Scope(numFuncs = 1, stepsRemaining = 10)
         val injector: Injector =  Guice.createInjector(new DevModule)
 
         FunctionMFactory(injector).create(scope = s) must beLike {

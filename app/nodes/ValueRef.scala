@@ -6,14 +6,14 @@ import com.google.inject.Inject
 
 case class ValueRef(val name: String) extends Node {
   def toRawScala: String = name
-  def validate(stepsRemaining: Integer): Boolean = if (stepsRemaining == 0) false else !name.isEmpty
+  def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) false else !name.isEmpty
 }
 
 case class ValueRefFactory @Inject() () extends CreateChildNodes {
-  val allPossibleChildren: Seq[CreateChildNodes] = Seq()
+  val allPossibleChildren: Seq[CreateChildNodes] = Seq() // No possible children
 
-  override def couldTerminate(stepsRemaining: Integer) = {
-    if (stepsRemaining == 0) false else true
+  override def couldTerminate(scope: Scope) = {
+    if (scope.noStepsRemaining) false else true
   }
 
   def create(scope: Scope): Node = {

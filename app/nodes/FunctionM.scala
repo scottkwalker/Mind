@@ -11,12 +11,12 @@ case class FunctionM(val nodes: Seq[Node], val name: String = "f0") extends Node
   def toRawScala: String = s"def ${name}${params.mkString("(", ", ", ")")} = ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
   val params: Seq[String] = Seq("a: Int", "b: Int") // TODO these need to be created by the factory.
 
-  def validate(stepsRemaining: Integer): Boolean = if (stepsRemaining == 0) { false }
+  def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) { false }
   else {
     !name.isEmpty &&
       nodes.forall(_ match {
-        case n: AddOperator => n.validate(stepsRemaining - 1)
-        case n: ValueRef => n.validate(stepsRemaining - 1)
+        case n: AddOperator => n.validate(scope.decrementStepsRemaining)
+        case n: ValueRef => n.validate(scope.decrementStepsRemaining)
         case _: Empty => false
         case _ => false
       })
@@ -28,5 +28,9 @@ case class FunctionMFactory @Inject() (injector: Injector) extends CreateChildNo
     injector.getInstance(classOf[AddOperatorFactory]),
     injector.getInstance(classOf[ValueRefFactory]))
 
-  def create(scope: Scope): Node = FunctionM(Seq(allPossibleChildren(0).create(scope)), name = "f" + scope.numFuncs)
+  def create(scope: Scope): Node = {
+    val possibleChildren = validChildren(scope)
+    val nodes = Seq(possibleChildren(0).create(scope))
+    FunctionM(nodes, name = "f" + scope.numFuncs)
+  }
 }

@@ -17,45 +17,51 @@ class AddOperatorSpec extends Specification with Mockito {
 
     "validate" in {
       "true given child nodes can terminate in under N steps" in {
+        val s = Scope(stepsRemaining = 2)
         val v = mock[ValueRef]
-        v.validate(anyInt) returns true
+        v.validate(any[Scope]) returns true
         
-        AddOperator(v, v).validate(2) mustEqual true
+        AddOperator(v, v).validate(s) mustEqual true
       }
       
       "false given it cannot terminate in 0 steps" in {
+        val s = Scope(stepsRemaining = 0)
         val v = mock[ValueRef]
-        v.validate(anyInt) throws new RuntimeException
+        v.validate(any[Scope]) throws new RuntimeException
         
-        AddOperator(v, v).validate(0) mustEqual false
+        AddOperator(v, v).validate(s) mustEqual false
       }
 
       "false given child nodes cannot terminate in under N steps" in {
+        val s = Scope(stepsRemaining = 10)
         val v = mock[ValueRef]
-        v.validate(anyInt) returns false
+        v.validate(any[Scope]) returns false
         
-        AddOperator(v, v).validate(10) mustEqual false
+        AddOperator(v, v).validate(s) mustEqual false
       }
 
       "true given none empty" in {
+        val s = Scope(stepsRemaining = 10)
         val v = mock[ValueRef]
-        v.validate(anyInt) returns true
+        v.validate(any[Scope]) returns true
 
-        AddOperator(v, v).validate(10) mustEqual true
+        AddOperator(v, v).validate(s) mustEqual true
       }
 
       "false given contains an empty node" in {
+        val s = Scope(stepsRemaining = 10)
         val v = mock[ValueRef]
-        v.validate(anyInt) returns true
+        v.validate(any[Scope]) returns true
 
-        AddOperator(v, Empty()).validate(10) mustEqual false
+        AddOperator(v, Empty()).validate(s) mustEqual false
       }
 
       "false given contains a node that is not valid for this level" in {
+        val s = Scope(stepsRemaining = 10)
         val v = mock[ValueRef]
-        v.validate(anyInt) returns true
+        v.validate(any[Scope]) returns true
 
-        AddOperator(v, ObjectM(Nil)).validate(10) mustEqual false
+        AddOperator(v, ObjectM(Nil)).validate(s) mustEqual false
       }
     }
   }

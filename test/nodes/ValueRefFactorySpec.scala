@@ -9,12 +9,13 @@ import nodes.helpers.DevModule
 
 class ValueRefFactorySpec extends Specification with Mockito {
   "ValueRefFactorySpec" should {
+    val injector: Injector = Guice.createInjector(new DevModule)
+    val factory = injector.getInstance(classOf[ValueRefFactory])
+    
     "create" in {
       "returns instance of this type" in {
         val s = mock[Scope]
         s.numVals returns 0
-        val injector: Injector = Guice.createInjector(new DevModule)
-        val factory = injector.getInstance(classOf[ValueRefFactory])
 
         val instance = factory.create(scope = s)
 
@@ -25,7 +26,7 @@ class ValueRefFactorySpec extends Specification with Mockito {
         val s = mock[Scope]
         s.numVals returns 0
 
-        ValueRefFactory().create(scope = s) must beLike {
+        factory.create(scope = s) must beLike {
           case ValueRef(name) => name mustEqual "v0"
         }
       }
@@ -34,10 +35,14 @@ class ValueRefFactorySpec extends Specification with Mockito {
         val s = mock[Scope]
         s.numVals returns 1
 
-        ValueRefFactory().create(scope = s) must beLike {
+        factory.create(scope = s) must beLike {
           case ValueRef(name) => name mustEqual "v1"
         }
       }
+    }
+    
+    "has no possible children" in {
+      factory.allPossibleChildren.length mustEqual 0
     }
   }
 }
