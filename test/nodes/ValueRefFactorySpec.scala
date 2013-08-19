@@ -26,7 +26,9 @@ class ValueRefFactorySpec extends Specification with Mockito {
         val s = mock[Scope]
         s.numVals returns 0
 
-        factory.create(scope = s) must beLike {
+        val instance = factory.create(scope = s)
+
+        instance must beLike {
           case ValueRef(name) => name mustEqual "v0"
         }
       }
@@ -35,7 +37,9 @@ class ValueRefFactorySpec extends Specification with Mockito {
         val s = mock[Scope]
         s.numVals returns 1
 
-        factory.create(scope = s) must beLike {
+        val instance = factory.create(scope = s)
+
+        instance must beLike {
           case ValueRef(name) => name mustEqual "v1"
         }
       }

@@ -2,6 +2,7 @@ package nodes.helpers
 
 import nodes.Node
 import nodes.NodeTree
+import ai.AI
 
 trait CreateChildNodes {
   val allPossibleChildren: Seq[CreateChildNodes]
@@ -10,6 +11,10 @@ trait CreateChildNodes {
     if (scope.noStepsRemaining) false else {
       allPossibleChildren.exists(n => n.couldTerminate(scope.decrementStepsRemaining))
     }
+  }
+  def chooseChild(scope: Scope, ai: AI): CreateChildNodes = {
+    val possibleChildren = validChildren(scope)
+    ai.chooseChild(possibleChildren)
   }
   def create(scope: Scope): Node
 }

@@ -4,15 +4,18 @@ import com.tzavellas.sse.guice.ScalaModule
 import nodes._
 import com.google.inject.Guice
 import com.google.inject.Injector
+import ai.AI
+import ai.aco.ACO
 
 class DevModule extends ScalaModule {
   def configure() {
-    bind(classOf[AddOperatorFactory])
-    bind(classOf[Empty])//.to(classOf[Empty])
-    bind(classOf[FunctionMFactory])
-    bind(classOf[NodeTreeFactory])
-    bind(classOf[ObjectMFactory])
-    bind(classOf[ValueRefFactory])
+    bind(classOf[AddOperatorFactory]).asEagerSingleton
+    bind(classOf[Empty]).asEagerSingleton
+    bind(classOf[FunctionMFactory]).asEagerSingleton
+    bind(classOf[NodeTreeFactory]).asEagerSingleton
+    bind(classOf[ObjectMFactory]).asEagerSingleton
+    bind(classOf[ValueRefFactory]).asEagerSingleton
+    //.to(classOf[Empty])
     
     //val injector: Injector =  Guice.createInjector(new DevModule)
     //val component = injector.getInstance(classOf[AddOperatorFactory])

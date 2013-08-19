@@ -16,7 +16,7 @@ case class ValueRefFactory @Inject() () extends CreateChildNodes {
     if (scope.noStepsRemaining) false else true
   }
 
-  def create(scope: Scope): Node = {
+  override def create(scope: Scope): Node = {
     val name = "v" + scope.numVals
     ValueRef(name = name)
   }

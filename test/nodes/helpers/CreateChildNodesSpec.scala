@@ -13,6 +13,7 @@ class CreateChildNodesSpec extends Specification with Mockito {
 
     case class TestCreateChildNodes() extends CreateChildNodes {
       val allPossibleChildren: Seq[CreateChildNodes] = Seq(mockFactoryNotTerminate, mockFactoryTerminates, mockFactoryNotTerminate)
+      def chooseChild(scope: Scope): CreateChildNodes = ???
       def create(scope: Scope): Node = Empty()
     }
 
