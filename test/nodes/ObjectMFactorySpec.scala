@@ -7,10 +7,11 @@ import com.google.inject.Injector
 import com.google.inject.Guice
 import nodes.helpers.DevModule
 import ai.aco.AcoModule
+import ai.helpers.TestAiModule
 
 class ObjectMFactorySpec extends Specification with Mockito {
   "ObjectMFactory" should {
-    val injector: Injector = Guice.createInjector(new DevModule, new AcoModule)
+    val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
         val factory = injector.getInstance(classOf[ObjectMFactory])
         
     "create" in {

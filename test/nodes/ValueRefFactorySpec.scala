@@ -6,10 +6,11 @@ import org.specs2.mock.Mockito
 import com.google.inject.Injector
 import com.google.inject.Guice
 import nodes.helpers.DevModule
+import ai.helpers.TestAiModule
 
 class ValueRefFactorySpec extends Specification with Mockito {
   "ValueRefFactorySpec" should {
-    val injector: Injector = Guice.createInjector(new DevModule)
+    val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
     val factory = injector.getInstance(classOf[ValueRefFactory])
     
     "create" in {
