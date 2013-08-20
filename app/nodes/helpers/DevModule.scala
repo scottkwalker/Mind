@@ -4,8 +4,8 @@ import com.tzavellas.sse.guice.ScalaModule
 import nodes._
 import com.google.inject.Guice
 import com.google.inject.Injector
-import ai.AI
-import ai.aco.ACO
+import ai.Ai
+import ai.aco.Aco
 
 class DevModule extends ScalaModule {
   def configure() {

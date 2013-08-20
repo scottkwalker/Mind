@@ -6,7 +6,7 @@ import com.google.inject.Injector
 import com.google.inject.Guice
 import nodes.helpers.DevModule
 import com.google.inject.Inject
-import ai.AI
+import ai.Ai
 
 case class FunctionM(val nodes: Seq[Node], val name: String = "f0") extends Node {
   def toRawScala: String = s"def ${name}${params.mkString("(", ", ", ")")} = ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
@@ -30,7 +30,7 @@ case class FunctionMFactory @Inject() (injector: Injector) extends CreateChildNo
     injector.getInstance(classOf[ValueRefFactory]))
 
   override def create(scope: Scope): Node = {
-    val ai = injector.getInstance(classOf[AI])
+    val ai = injector.getInstance(classOf[Ai])
     val nodes = Seq(chooseChild(scope, ai).create(scope))
     FunctionM(nodes, name = "f" + scope.numFuncs)
   }

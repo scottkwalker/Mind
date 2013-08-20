@@ -1,8 +1,8 @@
-package ai.aco
+package ai.helpers
 
 import ai.Ai
 import nodes.helpers.CreateChildNodes
 
-case class Aco() extends Ai {
+case class TestAi() extends Ai {
   override def chooseChild(possibleChildren: Seq[CreateChildNodes]): CreateChildNodes = possibleChildren(0)
 }

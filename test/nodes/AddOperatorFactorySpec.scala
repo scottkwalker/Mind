@@ -22,9 +22,5 @@ class AddOperatorFactorySpec extends Specification with Mockito {
       
       instance must beAnInstanceOf[AddOperator]
     }
-    
-    "filter children to only those that will be valid" in {
-      // TODO
-    }
   }
 }

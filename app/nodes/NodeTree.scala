@@ -4,7 +4,7 @@ import nodes.helpers.CreateChildNodes
 import nodes.helpers.Scope
 import com.google.inject.Injector
 import com.google.inject.Inject
-import ai.AI
+import ai.Ai
 
 class NodeTree(val rootNode: Node) extends Node {
   def toRawScala: String = rootNode.toRawScala
@@ -20,7 +20,7 @@ case class NodeTreeFactory @Inject() (injector: Injector) extends CreateChildNod
   val allPossibleChildren: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ObjectMFactory]))
 
   override def create(scope: Scope): Node = {
-    val ai = injector.getInstance(classOf[AI])
+    val ai = injector.getInstance(classOf[Ai])
     val rootNode = chooseChild(scope, ai).create(scope)
     new NodeTree(rootNode)
   }

@@ -1,4 +1,4 @@
-package ai.aco
+package ai.helpers
 
 import com.tzavellas.sse.guice.ScalaModule
 import nodes._
@@ -6,8 +6,8 @@ import com.google.inject.Guice
 import com.google.inject.Injector
 import ai.Ai
 
-class AcoModule extends ScalaModule {
+class TestAiModule extends ScalaModule {
   def configure() {
-    bind(classOf[Ai]).to(classOf[Aco]).asEagerSingleton
+    bind(classOf[Ai]).to(classOf[TestAi]).asEagerSingleton
   }
 }
