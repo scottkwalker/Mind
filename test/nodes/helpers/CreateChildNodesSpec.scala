@@ -37,7 +37,7 @@ class CreateChildNodesSpec extends Specification with Mockito {
 
     "chooseChild returns expected" in {
       val scope = Scope(stepsRemaining = 10)
-      val ai = TestAI()
+      val ai = TestAi()
       val sut = TestCreateChildNodes()
 
       sut.chooseChild(scope, ai) mustEqual mockFactoryTerminates1

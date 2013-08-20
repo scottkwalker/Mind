@@ -17,9 +17,7 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
       val factory = injector.getInstance(classOf[NodeTreeFactory])
       
     "create returns instance of this type" in {
-      val s = Scope(stepsRemaining = 10)
-
-      val instance = factory.create(scope = s) 
+      val instance = factory.create() 
 
       instance must beAnInstanceOf[NodeTree]
     }

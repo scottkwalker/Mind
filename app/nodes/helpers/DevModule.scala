@@ -6,6 +6,7 @@ import com.google.inject.Guice
 import com.google.inject.Injector
 import ai.Ai
 import ai.aco.Aco
+import com.google.inject.name.Names
 
 class DevModule extends ScalaModule {
   def configure() {
@@ -15,7 +16,7 @@ class DevModule extends ScalaModule {
     bind(classOf[NodeTreeFactory]).asEagerSingleton
     bind(classOf[ObjectMFactory]).asEagerSingleton
     bind(classOf[ValueRefFactory]).asEagerSingleton
-    //.to(classOf[Empty])
+    bind(classOf[Scope]).toInstance(Scope(maxObjects = 10))
     
     //val injector: Injector =  Guice.createInjector(new DevModule)
     //val component = injector.getInstance(classOf[AddOperatorFactory])
