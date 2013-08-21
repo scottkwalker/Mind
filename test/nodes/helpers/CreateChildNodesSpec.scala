@@ -18,6 +18,11 @@ class CreateChildNodesSpec extends Specification with Mockito {
       val allPossibleChildren: Seq[CreateChildNodes] = Seq(mockFactoryNotTerminates1, mockFactoryTerminates1, mockFactoryNotTerminates1, mockFactoryTerminates2)
       def create(scope: Scope): Node = Empty()
     }
+    
+    case class TestCreateChildNodesNoValidChildren() extends CreateChildNodes {
+      val allPossibleChildren: Seq[CreateChildNodes] = Seq(mockFactoryNotTerminates1)
+      def create(scope: Scope): Node = Empty()
+    }
 
     "validChildren returns filtered seq" in {
       val scope = Scope(stepsRemaining = 10)
@@ -41,6 +46,14 @@ class CreateChildNodesSpec extends Specification with Mockito {
       val sut = TestCreateChildNodes()
 
       sut.chooseChild(scope, ai) mustEqual mockFactoryTerminates1
+    }
+    
+    "chooseChild throws given no valid children" in {
+      val scope = Scope(stepsRemaining = 10)
+      val ai = TestAi()
+      val sut = TestCreateChildNodesNoValidChildren()
+
+      sut.chooseChild(scope, ai) must throwA[scala.RuntimeException]
     }
   }
 }

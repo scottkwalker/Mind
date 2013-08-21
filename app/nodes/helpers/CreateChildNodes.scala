@@ -14,6 +14,9 @@ trait CreateChildNodes {
   }
   def chooseChild(scope: Scope, ai: Ai): CreateChildNodes = {
     val possibleChildren = validChildren(scope)
+    
+    if (possibleChildren.isEmpty) throw new scala.RuntimeException
+    
     ai.chooseChild(possibleChildren)
   }
   def create(scope: Scope): Node
