@@ -39,21 +39,5 @@ class CreateChildNodesSpec extends Specification with Mockito {
 
       sut.couldTerminate(scope) mustEqual true
     }
-
-    "chooseChild returns expected" in {
-      val scope = Scope(stepsRemaining = 10)
-      val ai = TestAi()
-      val sut = TestCreateChildNodes()
-
-      sut.chooseChild(scope, ai) mustEqual mockFactoryTerminates1
-    }
-    
-    "chooseChild throws given no valid children" in {
-      val scope = Scope(stepsRemaining = 10)
-      val ai = TestAi()
-      val sut = TestCreateChildNodesNoValidChildren()
-
-      sut.chooseChild(scope, ai) must throwA[scala.RuntimeException]
-    }
   }
 }

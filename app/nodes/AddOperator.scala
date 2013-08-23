@@ -29,8 +29,13 @@ case class AddOperatorFactory @Inject() (injector: Injector) extends CreateChild
 
   override def create(scope: Scope): Node = {
     val ai = injector.getInstance(classOf[Ai])
-    val left = chooseChild(scope, ai).create(scope)
-    val right = chooseChild(scope, ai).create(scope)
-    AddOperator(left = left, right = right)
+    
+    val leftChildFactory = ai.chooseChild(this, scope)
+    val leftChild = leftChildFactory.create(scope)
+    
+    val rightChildFactory = ai.chooseChild(this, scope)
+    val rightChild = rightChildFactory.create(scope)
+    
+    AddOperator(left = leftChild, right = rightChild)
   }
 }

@@ -21,10 +21,16 @@ case class ObjectMFactory @Inject() (injector: Injector) extends CreateChildNode
 
   override def create(scope: Scope): Node = {
     val ai = injector.getInstance(classOf[Ai])
-
-    val nodes = Seq(chooseChild(scope, ai).create(scope)) // TODO Need to increment the scope in a recursive way each time we create a new child.
+    val childFactory = ai.chooseChild(this, scope)
+    val updatedScope = childFactory.updateScope(scope: Scope)
+    val child = childFactory.create(updatedScope)
+    val nodes = Seq(child) // TODO Need to increment the scope in a recursive way each time we create a new child.
     ObjectM(nodes, name = "o" + scope.numObjects)
-  } 
+  }
+  
+  override def updateScope(scope: Scope) = {
+    scope.incrementObjects
+  }
   
   // TODO Move to the CreateChildNodes. For creating a seq of nodes from the same level of scope:
   // @TailRecursion

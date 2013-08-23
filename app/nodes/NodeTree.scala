@@ -21,7 +21,10 @@ case class NodeTreeFactory @Inject() (injector: Injector) extends CreateChildNod
 
   override def create(scope: Scope = injector.getInstance(classOf[Scope])): Node = {
     val ai = injector.getInstance(classOf[Ai])
-    val rootNode = chooseChild(scope, ai).create(scope)
-    new NodeTree(rootNode)
+    val childFactory = ai.chooseChild(this, scope)
+    val child = childFactory.create(scope)
+    new NodeTree(child)
   }
+  
+  override def updateScope(scope: Scope) = throw new scala.RuntimeException("Should not happen as you cannot have more than one NodeTree")
 }
