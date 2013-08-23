@@ -32,7 +32,8 @@ case class FunctionMFactory @Inject() (injector: Injector) extends CreateChildNo
   override def create(scope: Scope): Node = {
     val ai = injector.getInstance(classOf[Ai])
     val childFactory = ai.chooseChild(this, scope)
-    val child = childFactory.create(scope)
+    val updatedScope = childFactory.updateScope(scope)
+    val child = childFactory.create(updatedScope)
     FunctionM(Seq(child), name = "f" + scope.numFuncs)
   }
   

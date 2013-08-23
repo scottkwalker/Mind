@@ -31,10 +31,12 @@ case class AddOperatorFactory @Inject() (injector: Injector) extends CreateChild
     val ai = injector.getInstance(classOf[Ai])
     
     val leftChildFactory = ai.chooseChild(this, scope)
-    val leftChild = leftChildFactory.create(scope)
+    val updatedScope1 = leftChildFactory.updateScope(scope)
+    val leftChild = leftChildFactory.create(updatedScope1)
     
     val rightChildFactory = ai.chooseChild(this, scope)
-    val rightChild = rightChildFactory.create(scope)
+    val updatedScope2 = leftChildFactory.updateScope(updatedScope1)
+    val rightChild = rightChildFactory.create(updatedScope2)
     
     AddOperator(left = leftChild, right = rightChild)
   }

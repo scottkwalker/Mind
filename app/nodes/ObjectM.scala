@@ -22,7 +22,7 @@ case class ObjectMFactory @Inject() (injector: Injector) extends CreateChildNode
   override def create(scope: Scope): Node = {
     val ai = injector.getInstance(classOf[Ai])
     val childFactory = ai.chooseChild(this, scope)
-    val updatedScope = childFactory.updateScope(scope: Scope)
+    val updatedScope = childFactory.updateScope(scope)
     val child = childFactory.create(updatedScope)
     val nodes = Seq(child) // TODO Need to increment the scope in a recursive way each time we create a new child.
     ObjectM(nodes, name = "o" + scope.numObjects)

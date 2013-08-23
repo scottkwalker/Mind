@@ -22,7 +22,8 @@ case class NodeTreeFactory @Inject() (injector: Injector) extends CreateChildNod
   override def create(scope: Scope = injector.getInstance(classOf[Scope])): Node = {
     val ai = injector.getInstance(classOf[Ai])
     val childFactory = ai.chooseChild(this, scope)
-    val child = childFactory.create(scope)
+    val updatedScope = childFactory.updateScope(scope: Scope)
+    val child = childFactory.create(updatedScope)
     new NodeTree(child)
   }
   
