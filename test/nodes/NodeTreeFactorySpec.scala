@@ -13,11 +13,12 @@ import ai.helpers.TestAiModule
 
 class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTreeFactory" should {
-      val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
-      val factory = injector.getInstance(classOf[NodeTreeFactory])
-      
+    val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
+    val factory = injector.getInstance(classOf[NodeTreeFactory])
+
     "create returns instance of this type" in {
-      val instance = factory.create() 
+      val s = Scope(stepsRemaining = 10)
+      val instance = factory.create(s)
 
       instance must beAnInstanceOf[NodeTree]
     }

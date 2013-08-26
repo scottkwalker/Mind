@@ -7,12 +7,13 @@ import com.google.inject.Guice
 import nodes.helpers.DevModule
 import com.google.inject.Inject
 import ai.Ai
+import scala.annotation.tailrec
 
 case class FunctionM(val nodes: Seq[Node], val name: String = "f0") extends Node {
-  def toRawScala: String = s"def ${name}${params.mkString("(", ", ", ")")} = ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
+  final override def toRawScala: String = s"def ${name}${params.mkString("(", ", ", ")")} = ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
   val params: Seq[String] = Seq("a: Int", "b: Int") // TODO these need to be created by the factory.
 
-  def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) { false }
+  final override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) { false }
   else {
     !name.isEmpty &&
       nodes.forall(_ match {
@@ -31,12 +32,10 @@ case class FunctionMFactory @Inject() (injector: Injector) extends CreateChildNo
 
   override def create(scope: Scope): Node = {
     val ai = injector.getInstance(classOf[Ai])
-    val childFactory = ai.chooseChild(this, scope)
-    val updatedScope = childFactory.updateScope(scope)
-    val child = childFactory.create(updatedScope)
+    val child = create(scope, ai)
     FunctionM(Seq(child), name = "f" + scope.numFuncs)
   }
-  
+
   override def updateScope(scope: Scope) = {
     scope.incrementFuncs
   }

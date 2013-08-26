@@ -6,11 +6,12 @@ import com.tzavellas.sse.guice.ScalaModule
 import com.google.inject.Injector
 import com.google.inject.Inject
 import ai.Ai
+import scala.annotation.tailrec
 
 case class AddOperator(val left: Node, val right: Node) extends Node {
-  def toRawScala: String = s"${left.toRawScala} + ${right.toRawScala}"
+  final override def toRawScala: String = s"${left.toRawScala} + ${right.toRawScala}"
 
-  def validate(scope: Scope): Boolean = {
+  final override def validate(scope: Scope): Boolean = {
     if (scope.noStepsRemaining) false
     else validate(left, scope) && validate(right, scope)
   }
@@ -29,15 +30,7 @@ case class AddOperatorFactory @Inject() (injector: Injector) extends CreateChild
 
   override def create(scope: Scope): Node = {
     val ai = injector.getInstance(classOf[Ai])
-    
-    val leftChildFactory = ai.chooseChild(this, scope)
-    val updatedScope1 = leftChildFactory.updateScope(scope)
-    val leftChild = leftChildFactory.create(updatedScope1)
-    
-    val rightChildFactory = ai.chooseChild(this, scope)
-    val updatedScope2 = leftChildFactory.updateScope(updatedScope1)
-    val rightChild = rightChildFactory.create(updatedScope2)
-    
-    AddOperator(left = leftChild, right = rightChild)
+    AddOperator(left = create(scope, ai),
+      right = create(scope, ai))
   }
 }

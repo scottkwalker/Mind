@@ -4,6 +4,6 @@ import com.google.inject.Inject
 import nodes.helpers.Scope
 
 case class Empty @Inject() () extends Node {
-  def toRawScala: String = throw new scala.RuntimeException
-  def validate(scope: Scope): Boolean = false
+  final override def toRawScala: String = throw new scala.RuntimeException
+  final override def validate(scope: Scope): Boolean = false
 }
