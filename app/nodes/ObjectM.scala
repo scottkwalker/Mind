@@ -7,7 +7,7 @@ import com.google.inject.Inject
 import ai.Ai
 import scala.annotation.tailrec
 
-case class ObjectM(val nodes: Seq[Node], val name: String = "Individual") extends Node {
+case class ObjectM(val nodes: Seq[Node], val name: String) extends Node {
   override def toRawScala: String = s"object ${name} ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
 
   override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) false else nodes.forall(n => n match {

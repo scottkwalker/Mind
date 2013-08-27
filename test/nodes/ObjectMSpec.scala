@@ -6,12 +6,13 @@ import org.specs2.mock.Mockito
 
 class ObjectMSpec extends Specification with Mockito {
   "ObjectM" should {
+    val name = "ObjectM0"
     "validate" in {
       "true given it can terminates in under N steps" in {
         val s = Scope(stepsRemaining = 4)
         val f = mock[FunctionM]
         f.validate(any[Scope]) returns true 
-        val objectM = ObjectM(Seq(f))
+        val objectM = ObjectM(Seq(f), name)
 
         objectM.validate(s) mustEqual true
       }
@@ -20,7 +21,7 @@ class ObjectMSpec extends Specification with Mockito {
         val s = Scope(stepsRemaining = 0)
         val f = mock[FunctionM]
         f.validate(any[Scope]) throws new RuntimeException
-        val objectM = ObjectM(Seq(f))
+        val objectM = ObjectM(Seq(f), name)
 
         objectM.validate(s) mustEqual false
       }
@@ -29,7 +30,7 @@ class ObjectMSpec extends Specification with Mockito {
         val s = Scope(stepsRemaining = 3)
         val f = mock[FunctionM]
         f.validate(any[Scope]) returns false
-        val objectM = ObjectM(Seq(f))
+        val objectM = ObjectM(Seq(f), name)
 
         objectM.validate(s) mustEqual false
       }
@@ -38,14 +39,14 @@ class ObjectMSpec extends Specification with Mockito {
         val s = Scope(stepsRemaining = 10)
         val f = mock[FunctionM]
         f.validate(any[Scope]) returns true 
-        val objectM = ObjectM(Seq(f))
+        val objectM = ObjectM(Seq(f), name)
 
         objectM.validate(s) mustEqual true
       }
 
       "false given single empty method node" in {
         val s = Scope(stepsRemaining = 10)
-        val objectM = ObjectM(Seq(Empty()))
+        val objectM = ObjectM(Seq(Empty()), name)
         objectM.validate(s) mustEqual false
       }
 
@@ -53,7 +54,7 @@ class ObjectMSpec extends Specification with Mockito {
         val s = Scope(stepsRemaining = 10)
         val f = mock[FunctionM]
         f.validate(any[Scope]) returns true
-        val objectM = ObjectM(Seq(f, Empty()))
+        val objectM = ObjectM(Seq(f, Empty()), name)
         
         objectM.validate(s) mustEqual false
       }
@@ -62,7 +63,7 @@ class ObjectMSpec extends Specification with Mockito {
     "toRawScala" in {
       val f = mock[FunctionM]
       f.toRawScala returns "STUB"
-      val objectM = ObjectM(Seq(f))
+      val objectM = ObjectM(Seq(f), name)
 
       objectM.toRawScala mustEqual "object Individual { STUB }"
     }    
