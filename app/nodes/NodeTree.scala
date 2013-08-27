@@ -8,9 +8,9 @@ import ai.Ai
 import scala.annotation.tailrec
 
 class NodeTree(val rootNode: Node) extends Node {
-  final override def toRawScala: String = rootNode.toRawScala
+  override def toRawScala: String = rootNode.toRawScala
 
-  final override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) false else rootNode match {
+  override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) false else rootNode match {
     case _: ObjectM => rootNode.validate(scope.decrementStepsRemaining)
     case _: Empty => false
     case _ => false

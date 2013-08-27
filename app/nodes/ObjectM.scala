@@ -8,9 +8,9 @@ import ai.Ai
 import scala.annotation.tailrec
 
 case class ObjectM(val nodes: Seq[Node], val name: String = "Individual") extends Node {
-  final override def toRawScala: String = s"object ${name} ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
+  override def toRawScala: String = s"object ${name} ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
 
-  final override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) false else nodes.forall(n => n match {
+  override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) false else nodes.forall(n => n match {
     case _: FunctionM => n.validate(scope.decrementStepsRemaining)
     case _: Empty => false
     case _ => false

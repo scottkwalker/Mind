@@ -10,10 +10,10 @@ import ai.Ai
 import scala.annotation.tailrec
 
 case class FunctionM(val nodes: Seq[Node], val name: String = "f0") extends Node {
-  final override def toRawScala: String = s"def ${name}${params.mkString("(", ", ", ")")} = ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
+  override def toRawScala: String = s"def ${name}${params.mkString("(", ", ", ")")} = ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
   val params: Seq[String] = Seq("a: Int", "b: Int") // TODO these need to be created by the factory.
 
-  final override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) { false }
+  override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) { false }
   else {
     !name.isEmpty &&
       nodes.forall(_ match {

@@ -9,9 +9,9 @@ import ai.Ai
 import scala.annotation.tailrec
 
 case class AddOperator(val left: Node, val right: Node) extends Node {
-  final override def toRawScala: String = s"${left.toRawScala} + ${right.toRawScala}"
+  override def toRawScala: String = s"${left.toRawScala} + ${right.toRawScala}"
 
-  final override def validate(scope: Scope): Boolean = {
+  override def validate(scope: Scope): Boolean = {
     if (scope.noStepsRemaining) false
     else validate(left, scope) && validate(right, scope)
   }

@@ -5,8 +5,8 @@ import nodes.helpers.Scope
 import com.google.inject.Inject
 
 case class ValueRef(val name: String) extends Node {
-  final override def toRawScala: String = name
-  final override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) false else !name.isEmpty
+  override def toRawScala: String = name
+  override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) false else !name.isEmpty
 }
 
 case class ValueRefFactory @Inject() () extends CreateChildNodes {
