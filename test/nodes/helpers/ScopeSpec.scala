@@ -81,7 +81,7 @@ class ScopeSpec extends Specification {
       val injector: Injector = Guice.createInjector(new DevModule)
       val sut = injector.getInstance(classOf[Scope])
 
-      sut.maxObjects mustEqual 10
+      sut.maxFuncs mustEqual 10
     } 
   }
 }

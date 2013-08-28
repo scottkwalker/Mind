@@ -6,7 +6,7 @@ import org.specs2.mock.Mockito
 
 class ObjectMSpec extends Specification with Mockito {
   "ObjectM" should {
-    val name = "ObjectM0"
+    val name = "o0"
     "validate" in {
       "true given it can terminates in under N steps" in {
         val s = Scope(stepsRemaining = 4)
@@ -65,7 +65,7 @@ class ObjectMSpec extends Specification with Mockito {
       f.toRawScala returns "STUB"
       val objectM = ObjectM(Seq(f), name)
 
-      objectM.toRawScala mustEqual "object Individual { STUB }"
+      objectM.toRawScala mustEqual "object o0 { STUB }"
     }    
   }
 }

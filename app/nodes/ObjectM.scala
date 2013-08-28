@@ -22,7 +22,9 @@ case class ObjectMFactory @Inject() (injector: Injector) extends CreateChildNode
 
   override def create(scope: Scope): Node = {
     val ai = injector.getInstance(classOf[Ai])
-    val child = create(scope, ai)
+    val factory = ai.chooseChild(this, scope)
+    val updatedScope = factory.updateScope(scope)
+    val child = factory.create(updatedScope)
     val nodes = Seq(child)
     ObjectM(nodes, name = "o" + scope.numObjects)
   }
@@ -31,16 +33,17 @@ case class ObjectMFactory @Inject() (injector: Injector) extends CreateChildNode
     scope.incrementObjects
   }
 
-  // TODO Move to the CreateChildNodes. For creating a seq of nodes from the same level of scope:
-  // @TailRecursion
-  // def createSeq(scope: Scope, ai: Ai): Seq[Node] = {
-  //  val possibleChildren = validChildren(scope)
-  //  if (possibleChildren.isEmpty) { Nil }
-  //  else {
-  //    val nodeFactory = ai.chooseChild(possibleChildren)
-  //    val scopeUpdated // Do increment based on which nodeFactory was choosen
-  //    val node = nodeFactory.create(scope) 
-  //     
-  //    return node.create(scope: Scope, ai: Ai) :: create(scopeUpdated, ai) // Check Odersky's adding to Seq recursively
-  //  }
+  @tailrec
+  private def createSeq(scope: Scope, ai: Ai, acc: Seq[Node]): Seq[Node] = {
+    scope.objHasSpaceForChildren match {
+      case false => Nil
+      case true => {
+        val factory = ai.chooseChild(this, scope)
+        val updatedScope = factory.updateScope(scope)
+        val child: Node = factory.create(updatedScope)
+
+        createSeq(updatedScope, ai, acc ++ Seq(child))
+      }
+    }
+  }
 }
