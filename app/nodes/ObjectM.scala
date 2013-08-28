@@ -25,24 +25,25 @@ case class ObjectMFactory @Inject() (injector: Injector) extends CreateChildNode
     val factory = ai.chooseChild(this, scope)
     val updatedScope = factory.updateScope(scope)
     val child = factory.create(updatedScope)
-    val nodes = Seq(child)
+    val nodes = createSeq(scope, ai, constraint, Seq[Node]())
+
     ObjectM(nodes, name = "o" + scope.numObjects)
   }
 
-  override def updateScope(scope: Scope) = {
-    scope.incrementObjects
-  }
+  override def updateScope(scope: Scope) = scope.incrementObjects
+
+  private def constraint(scope: Scope): Boolean = scope.objHasSpaceForChildren
 
   @tailrec
-  private def createSeq(scope: Scope, ai: Ai, acc: Seq[Node]): Seq[Node] = {
-    scope.objHasSpaceForChildren match {
-      case false => Nil
+  private def createSeq(scope: Scope, ai: Ai, constraint: (Scope) => Boolean, acc: Seq[Node]): Seq[Node] = {
+    constraint(scope) match {
+      case false => acc
       case true => {
         val factory = ai.chooseChild(this, scope)
         val updatedScope = factory.updateScope(scope)
         val child: Node = factory.create(updatedScope)
 
-        createSeq(updatedScope, ai, acc ++ Seq(child))
+        createSeq(updatedScope, ai, constraint, acc ++ Seq(child))
       }
     }
   }

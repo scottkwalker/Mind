@@ -42,15 +42,34 @@ class ObjectMFactorySpec extends Specification with Mockito {
           case ObjectM(_, name) => name mustEqual "o1"
         }
       }
-      
-      "updates scope calls increament obejcts" in {
+
+      "update scope calls increment obejcts" in {
         val s = mock[Scope]
 
         val instance = factory.updateScope(s)
-        
+
         there was one(s).incrementObjects
       }
-    }
 
+      "returns 1 child given scope with 1 maxFuncs" in {
+        val s = Scope(numFuncs = 0, stepsRemaining = 10, maxFuncs = 1)
+
+        val instance = factory.create(scope = s)
+
+        instance must beLike {
+          case ObjectM(child, _) => child.length mustEqual 1
+        }
+      }
+
+      "returns 3 children given scope with 3 maxFuncs" in {
+        val s = Scope(numFuncs = 0, stepsRemaining = 10, maxFuncs = 3)
+
+        val instance = factory.create(scope = s)
+
+        instance must beLike {
+          case ObjectM(child, _) => child.length mustEqual 3
+        }
+      }
+    }
   }
 }
