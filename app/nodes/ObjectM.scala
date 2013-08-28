@@ -25,33 +25,30 @@ case class ObjectMFactory @Inject() (injector: Injector) extends FeasibleNodes {
     val factory = ai.chooseChild(this, scope)
     val updatedScope = factory.updateScope(scope)
     val child = factory.create(updatedScope)
-    val nodes = createSeq(scope, ai, constraint, Seq[Node]())
+    val nodes = createSeq(scope, ai, Seq[Node]())
 
     ObjectM(nodes, name = "o" + scope.numObjects)
   }
 
   override def updateScope(scope: Scope) = scope.incrementObjects
 
-  private def constraint(scope: Scope): Boolean = scope.objHasSpaceForChildren
-
   @tailrec
-  private def createSeq(scope: Scope, ai: Ai, constraint: (Scope) => Boolean, acc: Seq[Node]): Seq[Node] = {
+  private def createSeq(scope: Scope, ai: Ai, acc: Seq[Node]): Seq[Node] = {
+    def constraint(scope: Scope): Boolean = scope.objHasSpaceForChildren
+    
     constraint(scope) match {
       case false => acc
       case true => {
-        val factory = ai.chooseChild(this, scope)
-        val updatedScope = factory.updateScope(scope)
-        val child: Node = factory.create(updatedScope)
+        val (updatedScope, child) = create(scope, ai)
 
-        createSeq(updatedScope, ai, constraint, acc ++ Seq(child))
+        createSeq(updatedScope, ai, acc ++ Seq(child))
       }
     }
   }
-  /*
-    
-  private def create(scope: Scope, ai: Ai): Node = {
+
+  private def create(scope: Scope, ai: Ai): (Scope, Node) = {
     val factory = ai.chooseChild(this, scope)
     val updatedScope = factory.updateScope(scope)
-    factory.create(updatedScope)
-  }*/
+    (updatedScope: Scope, factory.create(updatedScope): Node)
+  }
 }
