@@ -25,12 +25,18 @@ case class AddOperator(val left: Node, val right: Node) extends Node {
   }
 }
 
-case class AddOperatorFactory @Inject() (injector: Injector) extends CreateChildNodes {
-  val allPossibleChildren: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ValueRefFactory]))
+case class AddOperatorFactory @Inject() (injector: Injector) extends FeasibleNodes {
+  val allPossibleChildren: Seq[FeasibleNodes] = Seq(injector.getInstance(classOf[ValueRefFactory]))
 
   override def create(scope: Scope): Node = {
     val ai = injector.getInstance(classOf[Ai])
     AddOperator(left = create(scope, ai),
       right = create(scope, ai))
+  }
+    
+  private def create(scope: Scope, ai: Ai): Node = {
+    val factory = ai.chooseChild(this, scope)
+    val updatedScope = factory.updateScope(scope)
+    factory.create(updatedScope)
   }
 }

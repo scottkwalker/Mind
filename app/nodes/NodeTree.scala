@@ -1,7 +1,6 @@
 package nodes
 
-import nodes.helpers.CreateChildNodes
-import nodes.helpers.Scope
+import nodes.helpers._
 import com.google.inject.Injector
 import com.google.inject.Inject
 import ai.Ai
@@ -17,13 +16,19 @@ class NodeTree(val rootNode: Node) extends Node {
   }
 }
 
-case class NodeTreeFactory @Inject() (injector: Injector) extends CreateChildNodes {
-  val allPossibleChildren: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ObjectMFactory]))
+case class NodeTreeFactory @Inject() (injector: Injector) extends FeasibleNodes {
+  val allPossibleChildren: Seq[FeasibleNodes] = Seq(injector.getInstance(classOf[ObjectMFactory]))
 
   override def create(scope: Scope): Node = {
     val ai = injector.getInstance(classOf[Ai])
     val child = create(scope, ai)
     new NodeTree(child)
+  }
+    
+  private def create(scope: Scope, ai: Ai): Node = {
+    val factory = ai.chooseChild(this, scope)
+    val updatedScope = factory.updateScope(scope)
+    factory.create(updatedScope)
   }
 
   override def updateScope(scope: Scope) = throw new scala.RuntimeException("Should not happen as you cannot have more than one NodeTree")

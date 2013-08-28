@@ -1,7 +1,6 @@
 package nodes
 
-import nodes.helpers.CreateChildNodes
-import nodes.helpers.Scope
+import nodes.helpers._
 import com.google.inject.Inject
 
 case class ValueRef(val name: String) extends Node {
@@ -9,8 +8,8 @@ case class ValueRef(val name: String) extends Node {
   override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) false else !name.isEmpty
 }
 
-case class ValueRefFactory @Inject() () extends CreateChildNodes {
-  val allPossibleChildren: Seq[CreateChildNodes] = Seq() // No possible children
+case class ValueRefFactory @Inject() () extends FeasibleNodes {
+  val allPossibleChildren: Seq[FeasibleNodes] = Seq() // No possible children TODO should this be Nil
 
   override def couldTerminate(scope: Scope) = {
     if (scope.noStepsRemaining) false else true

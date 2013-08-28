@@ -1,7 +1,6 @@
 package nodes
 
-import nodes.helpers.CreateChildNodes
-import nodes.helpers.Scope
+import nodes.helpers._
 import com.google.inject.Injector
 import com.google.inject.Guice
 import nodes.helpers.DevModule
@@ -25,8 +24,8 @@ case class FunctionM(val nodes: Seq[Node], val name: String) extends Node {
   }
 }
 
-case class FunctionMFactory @Inject() (injector: Injector) extends CreateChildNodes {
-  val allPossibleChildren: Seq[CreateChildNodes] = Seq(
+case class FunctionMFactory @Inject() (injector: Injector) extends FeasibleNodes {
+  val allPossibleChildren: Seq[FeasibleNodes] = Seq(
     injector.getInstance(classOf[AddOperatorFactory]),
     injector.getInstance(classOf[ValueRefFactory]))
 
@@ -34,6 +33,12 @@ case class FunctionMFactory @Inject() (injector: Injector) extends CreateChildNo
     val ai = injector.getInstance(classOf[Ai])
     val child = create(scope, ai)
     FunctionM(Seq(child), name = "f" + scope.numFuncs)
+  }
+    
+  private def create(scope: Scope, ai: Ai): Node = {
+    val factory = ai.chooseChild(this, scope)
+    val updatedScope = factory.updateScope(scope)
+    factory.create(updatedScope)
   }
 
   override def updateScope(scope: Scope) = {

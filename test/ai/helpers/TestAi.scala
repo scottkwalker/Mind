@@ -1,8 +1,8 @@
 package ai.helpers
 
 import ai.Ai
-import nodes.helpers.CreateChildNodes
+import nodes.helpers._
 
 case class TestAi() extends Ai {
-  override def chooseChild(possibleChildren: Seq[CreateChildNodes]): CreateChildNodes = possibleChildren(0)
+  override def chooseChild(possibleChildren: Seq[FeasibleNodes]): CreateChildNodes = possibleChildren(0)
 }
