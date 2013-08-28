@@ -21,4 +21,10 @@ trait FeasibleNodes extends CreateChildNodes {
       allPossibleChildren.exists(n => n.couldTerminate(scope.decrementStepsRemaining))
     }
   }
+  
+  protected def create(scope: Scope, ai: Ai): (Scope, Node) = {
+    val factory = ai.chooseChild(this, scope)
+    val updatedScope = factory.updateScope(scope)
+    (updatedScope: Scope, factory.create(updatedScope): Node)
+  }
 }

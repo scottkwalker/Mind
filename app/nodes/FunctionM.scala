@@ -31,14 +31,8 @@ case class FunctionMFactory @Inject() (injector: Injector) extends FeasibleNodes
 
   override def create(scope: Scope): Node = {
     val ai = injector.getInstance(classOf[Ai])
-    val child = create(scope, ai)
+    val (updatedScope, child) = create(scope, ai)
     FunctionM(Seq(child), name = "f" + scope.numFuncs)
-  }
-    
-  private def create(scope: Scope, ai: Ai): Node = {
-    val factory = ai.chooseChild(this, scope)
-    val updatedScope = factory.updateScope(scope)
-    factory.create(updatedScope)
   }
 
   override def updateScope(scope: Scope) = {

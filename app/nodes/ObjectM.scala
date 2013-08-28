@@ -32,11 +32,11 @@ case class ObjectMFactory @Inject() (injector: Injector) extends FeasibleNodes {
 
   override def updateScope(scope: Scope) = scope.incrementObjects
 
+  private def constraints(scope: Scope): Boolean = scope.objHasSpaceForChildren
+  
   @tailrec
   private def createSeq(scope: Scope, ai: Ai, acc: Seq[Node]): Seq[Node] = {
-    def constraint(scope: Scope): Boolean = scope.objHasSpaceForChildren
-    
-    constraint(scope) match {
+    constraints(scope) match {
       case false => acc
       case true => {
         val (updatedScope, child) = create(scope, ai)
@@ -44,11 +44,5 @@ case class ObjectMFactory @Inject() (injector: Injector) extends FeasibleNodes {
         createSeq(updatedScope, ai, acc ++ Seq(child))
       }
     }
-  }
-
-  private def create(scope: Scope, ai: Ai): (Scope, Node) = {
-    val factory = ai.chooseChild(this, scope)
-    val updatedScope = factory.updateScope(scope)
-    (updatedScope: Scope, factory.create(updatedScope): Node)
   }
 }

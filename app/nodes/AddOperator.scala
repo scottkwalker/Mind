@@ -30,13 +30,9 @@ case class AddOperatorFactory @Inject() (injector: Injector) extends FeasibleNod
 
   override def create(scope: Scope): Node = {
     val ai = injector.getInstance(classOf[Ai])
-    AddOperator(left = create(scope, ai),
-      right = create(scope, ai))
-  }
-    
-  private def create(scope: Scope, ai: Ai): Node = {
-    val factory = ai.chooseChild(this, scope)
-    val updatedScope = factory.updateScope(scope)
-    factory.create(updatedScope)
+    val (updatedScope, leftChild) = create(scope, ai)
+    val (updatedScope2, rightChild) = create(updatedScope, ai)
+    AddOperator(left = leftChild,
+      right = rightChild)
   }
 }
