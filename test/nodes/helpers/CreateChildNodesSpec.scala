@@ -4,6 +4,7 @@ import org.specs2.mutable._
 import nodes._
 import org.specs2.mock.Mockito
 import ai.helpers.TestAi
+import ai.Ai
 
 class CreateChildNodesSpec extends Specification with Mockito {
   "CreateChildNodes" should {
@@ -38,6 +39,36 @@ class CreateChildNodesSpec extends Specification with Mockito {
       val sut = TestCreateChildNodes()
 
       sut.couldTerminate(scope) mustEqual true
+    }
+    
+    "create" in {
+      "calls update on scope" in {
+        val scope = Scope(stepsRemaining = 10)
+        val v = mock[CreateChildNodes]
+        v.updateScope(scope) returns scope
+        val ai = mock[Ai]
+        ai.chooseChild(any[CreateChildNodes], any[Scope]) returns v
+        val sut = TestCreateChildNodes()
+        
+        val (updatedScope, child) = sut.create(scope, ai)
+        
+        there was one(v).updateScope(scope)
+      }
+    
+      "calls create on factory" in {
+        val scope = Scope(stepsRemaining = 10)
+        val n = mock[Node]
+        val v = mock[CreateChildNodes]
+        v.updateScope(scope) returns scope
+        v.create(any[Scope]) returns n 
+        val ai = mock[Ai]
+        ai.chooseChild(any[CreateChildNodes], any[Scope]) returns v
+        val sut = TestCreateChildNodes()
+        
+        val (updatedScope, child) = sut.create(scope, ai)
+        
+        there was one(v).create(scope)
+      }
     }
   }
 }

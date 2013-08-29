@@ -20,9 +20,22 @@ trait CreateChildNodes {
     }
   }
   
-  protected def create(scope: Scope, ai: Ai): (Scope, Node) = {
+  final def create(scope: Scope, ai: Ai): (Scope, Node) = {
     val factory = ai.chooseChild(this, scope)
     val updatedScope = factory.updateScope(scope)
-    (updatedScope: Scope, factory.create(updatedScope): Node)
+    val child = factory.create(updatedScope)
+    (updatedScope, child)
+  }
+  
+  @tailrec
+  final def createSeq(scope: Scope, ai: Ai, constraints: (Scope => Boolean), acc: Seq[Node]): Seq[Node] = {
+    constraints(scope) match {
+      case false => acc
+      case true => {
+        val (updatedScope, child) = create(scope, ai)
+
+        createSeq(updatedScope, ai, constraints, acc ++ Seq(child))
+      }
+    }
   }
 }
