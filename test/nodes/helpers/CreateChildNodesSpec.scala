@@ -41,6 +41,13 @@ class CreateChildNodesSpec extends Specification with Mockito {
       sut.couldTerminate(scope) mustEqual true
     }
     
+    "updateScope returns unchanged by default" in {
+      val scope = Scope(stepsRemaining = 10)
+      val sut = TestCreateChildNodes()
+
+      sut.updateScope(scope) mustEqual scope
+    }
+    
     "create" in {
       "calls update on scope" in {
         val scope = Scope(stepsRemaining = 10)

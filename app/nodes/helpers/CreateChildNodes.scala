@@ -20,7 +20,7 @@ trait CreateChildNodes {
     }
   }
   
-  final def create(scope: Scope, ai: Ai): (Scope, Node) = {
+  def create(scope: Scope, ai: Ai): (Scope, Node) = {
     val factory = ai.chooseChild(this, scope)
     val updatedScope = factory.updateScope(scope)
     val child = factory.create(updatedScope)
