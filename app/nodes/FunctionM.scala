@@ -24,8 +24,8 @@ case class FunctionM(val nodes: Seq[Node], val name: String) extends Node {
   }
 }
 
-case class FunctionMFactory @Inject() (injector: Injector) extends FeasibleNodes {
-  val allPossibleChildren: Seq[FeasibleNodes] = Seq(
+case class FunctionMFactory @Inject() (injector: Injector) extends CreateChildNodes {
+  val allPossibleChildren: Seq[CreateChildNodes] = Seq(
     injector.getInstance(classOf[AddOperatorFactory]),
     injector.getInstance(classOf[ValueRefFactory]))
 

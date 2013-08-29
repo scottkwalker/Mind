@@ -17,8 +17,8 @@ case class ObjectM(val nodes: Seq[Node], val name: String) extends Node {
   })
 }
 
-case class ObjectMFactory @Inject() (injector: Injector) extends FeasibleNodes {
-  val allPossibleChildren: Seq[FeasibleNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
+case class ObjectMFactory @Inject() (injector: Injector) extends CreateChildNodes {
+  val allPossibleChildren: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
 
   override def create(scope: Scope): Node = {
     val ai = injector.getInstance(classOf[Ai])

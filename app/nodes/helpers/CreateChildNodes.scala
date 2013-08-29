@@ -9,12 +9,10 @@ trait CreateChildNodes {
   def create(scope: Scope): Node
   
   def updateScope(scope: Scope): Scope = scope
-}
 
-trait FeasibleNodes extends CreateChildNodes {
-  val allPossibleChildren: Seq[FeasibleNodes]
+  val allPossibleChildren: Seq[CreateChildNodes]
   
-  def validChildren(scope: Scope): Seq[FeasibleNodes] = allPossibleChildren.filter(n => n.couldTerminate(scope.decrementStepsRemaining))
+  def validChildren(scope: Scope): Seq[CreateChildNodes] = allPossibleChildren.filter(n => n.couldTerminate(scope.decrementStepsRemaining))
   
   def couldTerminate(scope: Scope): Boolean = {
     if (scope.noStepsRemaining) false else {

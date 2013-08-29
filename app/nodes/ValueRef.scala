@@ -8,8 +8,8 @@ case class ValueRef(val name: String) extends Node {
   override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) false else !name.isEmpty
 }
 
-case class ValueRefFactory @Inject() () extends FeasibleNodes {
-  val allPossibleChildren: Seq[FeasibleNodes] = Seq() // No possible children TODO should this be Nil
+case class ValueRefFactory @Inject() () extends CreateChildNodes {
+  val allPossibleChildren: Seq[CreateChildNodes] = Seq() // No possible children TODO should this be Nil
 
   override def couldTerminate(scope: Scope) = {
     if (scope.noStepsRemaining) false else true
