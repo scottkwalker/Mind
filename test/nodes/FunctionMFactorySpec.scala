@@ -44,12 +44,32 @@ class FunctionMFactorySpec extends Specification with Mockito {
         }
       }
       
-      "updates scope calls increment functions" in {
+      "update scope calls increment functions" in {
         val s = mock[Scope]
 
         val instance = factory.updateScope(s)
         
         there was one(s).incrementFuncs
+      }
+
+      "returns 1 child given scope with 1 maxFuncs" in {
+        val s = Scope(numFuncs = 0, stepsRemaining = 10, maxExpressionsInFunc = 1)
+
+        val instance = factory.create(scope = s)
+
+        instance must beLike {
+          case FunctionM(child, _) => child.length mustEqual 1
+        }
+      }
+
+      "returns 3 children given scope with 3 maxFuncs" in {
+        val s = Scope(numFuncs = 0, stepsRemaining = 10, maxExpressionsInFunc = 3)
+
+        val instance = factory.create(scope = s)
+
+        instance must beLike {
+          case FunctionM(child, _) => child.length mustEqual 3
+        }
       }
     }
   }
