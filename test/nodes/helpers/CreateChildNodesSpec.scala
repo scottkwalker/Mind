@@ -47,8 +47,8 @@ class CreateChildNodesSpec extends Specification with Mockito {
 
       sut.updateScope(scope) mustEqual scope
     }
-    
-    "create" in {
+    // TODO move these into new specs. 
+    /*"create" in {
       "calls updateScope" in {
         val scope = Scope(stepsRemaining = 10)
         val v = mock[CreateChildNodes]
@@ -91,6 +91,6 @@ class CreateChildNodesSpec extends Specification with Mockito {
         
         child  must beAnInstanceOf[Node]
       }
-    }
+    }*/
   }
 }

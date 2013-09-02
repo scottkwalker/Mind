@@ -17,13 +17,13 @@ case class ObjectM(val nodes: Seq[Node], val name: String) extends Node {
   })
 }
 
-case class ObjectMFactory @Inject() (injector: Injector) extends CreateChildNodes {
+case class ObjectMFactory @Inject() (injector: Injector, val creator: CreateSeqNodes) extends CreateChildNodes {
+  //val creator = new CreateSeqNodes(new CreateNode())
   val allPossibleChildren: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
 
   override def create(scope: Scope): Node = {
     val ai = injector.getInstance(classOf[Ai])
-    val nodes = createSeq(scope, ai, constraints, Seq[Node]())
-
+    val nodes = creator.create(this, scope, ai, constraints, Seq[Node]())
     ObjectM(nodes, name = "o" + scope.numObjects)
   }
 

@@ -16,12 +16,12 @@ class NodeTree(val rootNode: Node) extends Node {
   }
 }
 
-case class NodeTreeFactory @Inject() (injector: Injector) extends CreateChildNodes {
+case class NodeTreeFactory @Inject() (injector: Injector, creator: CreateNode) extends CreateChildNodes {
   val allPossibleChildren: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ObjectMFactory]))
 
   override def create(scope: Scope): Node = {
     val ai = injector.getInstance(classOf[Ai])
-    val (updatedScope, child) = create(scope, ai)
+    val (updatedScope, child) = creator.create(this, scope, ai)
     new NodeTree(child)
   }
 
