@@ -16,7 +16,7 @@ class DevModule extends ScalaModule {
     bind(classOf[NodeTreeFactory]).asEagerSingleton
     bind(classOf[ObjectMFactory]).asEagerSingleton
     bind(classOf[ValueRefFactory]).asEagerSingleton
-    bind(classOf[Scope]).toInstance(Scope(maxFuncs = 10))
+    bind(classOf[Scope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10))
     
     //val injector: Injector =  Guice.createInjector(new DevModule)
     //val component = injector.getInstance(classOf[AddOperatorFactory])

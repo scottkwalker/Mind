@@ -52,7 +52,7 @@ class ObjectMFactorySpec extends Specification with Mockito {
       }
 
       "returns 1 child given scope with 1 maxFuncs" in {
-        val s = Scope(numFuncs = 0, stepsRemaining = 10, maxFuncs = 1)
+        val s = Scope(numFuncs = 0, stepsRemaining = 10, maxFuncsInObject = 1)
 
         val instance = factory.create(scope = s)
 
@@ -62,7 +62,7 @@ class ObjectMFactorySpec extends Specification with Mockito {
       }
 
       "returns 3 children given scope with 3 maxFuncs" in {
-        val s = Scope(numFuncs = 0, stepsRemaining = 10, maxFuncs = 3)
+        val s = Scope(numFuncs = 0, stepsRemaining = 10, maxFuncsInObject = 3)
 
         val instance = factory.create(scope = s)
 
