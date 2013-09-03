@@ -12,13 +12,13 @@ trait CreateChildNodes {
 
   def updateScope(scope: Scope): Scope = scope
 
-  val allPossibleChildren: Seq[CreateChildNodes]
+  val neighbours: Seq[CreateChildNodes]
 
-  def validChildren(scope: Scope): Seq[CreateChildNodes] = allPossibleChildren.filter(n => n.couldTerminate(scope.decrementStepsRemaining))
+  def legalNeighbours(scope: Scope): Seq[CreateChildNodes] = neighbours.filter(n => n.canTerminateInStepsRemaining(scope.decrementStepsRemaining))
 
-  def couldTerminate(scope: Scope): Boolean = {
+  def canTerminateInStepsRemaining(scope: Scope): Boolean = {
     if (scope.noStepsRemaining) false else {
-      allPossibleChildren.exists(n => n.couldTerminate(scope.decrementStepsRemaining))
+      neighbours.exists(n => n.canTerminateInStepsRemaining(scope.decrementStepsRemaining))
     }
   }
 }

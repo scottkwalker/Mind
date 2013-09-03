@@ -12,7 +12,7 @@ class ValueRefFactorySpec extends Specification with Mockito {
   "ValueRefFactorySpec" should {
     val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
     val factory = injector.getInstance(classOf[ValueRefFactory])
-    
+
     "create" in {
       "returns instance of this type" in {
         val s = mock[Scope]
@@ -45,9 +45,9 @@ class ValueRefFactorySpec extends Specification with Mockito {
         }
       }
     }
-    
+
     "has no possible children" in {
-      factory.allPossibleChildren.length mustEqual 0
+      factory.neighbours.length mustEqual 0
     }
   }
 }

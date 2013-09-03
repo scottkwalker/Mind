@@ -9,11 +9,9 @@ case class ValueRef(val name: String) extends Node {
 }
 
 case class ValueRefFactory @Inject() () extends CreateChildNodes {
-  val allPossibleChildren: Seq[CreateChildNodes] = Seq() // No possible children TODO should this be Nil
+  val neighbours: Seq[CreateChildNodes] = Seq() // No possible children TODO should this be Nil
 
-  override def couldTerminate(scope: Scope) = {
-    if (scope.noStepsRemaining) false else true
-  }
+  override def canTerminateInStepsRemaining(scope: Scope) = if (scope.noStepsRemaining) false else true
 
   override def create(scope: Scope): Node = {
     val name = "v" + scope.numVals
