@@ -47,50 +47,5 @@ class CreateChildNodesSpec extends Specification with Mockito {
 
       sut.updateScope(scope) mustEqual scope
     }
-    // TODO move these into new specs. 
-    /*"create" in {
-      "calls updateScope" in {
-        val scope = Scope(stepsRemaining = 10)
-        val v = mock[CreateChildNodes]
-        v.updateScope(scope) returns scope
-        val ai = mock[Ai]
-        ai.chooseChild(any[CreateChildNodes], any[Scope]) returns v
-        val sut = TestCreateChildNodes()
-        
-        val (updatedScope, child) = sut.create(scope, ai)
-        
-        there was one(v).updateScope(scope)
-      }
-    
-      "calls create on factory" in {
-        val scope = Scope(stepsRemaining = 10)
-        val n = mock[Node]
-        val v = mock[CreateChildNodes]
-        v.updateScope(scope) returns scope
-        v.create(any[Scope]) returns n 
-        val ai = mock[Ai]
-        ai.chooseChild(any[CreateChildNodes], any[Scope]) returns v
-        val sut = TestCreateChildNodes()
-        
-        val (_, child) = sut.create(scope, ai)
-        
-        there was one(v).create(scope)
-      }
-    
-      "returns instance of Node" in {
-        val scope = Scope(stepsRemaining = 10)
-        val n = mock[Node]
-        val v = mock[CreateChildNodes]
-        v.updateScope(scope) returns scope
-        v.create(any[Scope]) returns n 
-        val ai = mock[Ai]
-        ai.chooseChild(any[CreateChildNodes], any[Scope]) returns v
-        val sut = TestCreateChildNodes()
-        
-        val (_, child) = sut.create(scope, ai)
-        
-        child  must beAnInstanceOf[Node]
-      }
-    }*/
   }
 }
