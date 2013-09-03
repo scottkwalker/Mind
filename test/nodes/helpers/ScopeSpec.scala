@@ -3,6 +3,7 @@ package nodes.helpers
 import org.specs2.mutable._
 import com.google.inject.Injector
 import com.google.inject.Guice
+import ai.aco.AcoModule
 
 class ScopeSpec extends Specification {
   "Scope" should {
@@ -110,7 +111,7 @@ class ScopeSpec extends Specification {
     }
     
     "IoC creates a new instance with injected values" in {
-      val injector: Injector = Guice.createInjector(new DevModule)
+      val injector: Injector = Guice.createInjector(new DevModule, new AcoModule)
       val sut = injector.getInstance(classOf[Scope])
 
       sut.maxFuncsInObject mustEqual 10

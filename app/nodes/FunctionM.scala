@@ -24,19 +24,20 @@ case class FunctionM(val nodes: Seq[Node], val name: String) extends Node {
   }
 }
 
-case class FunctionMFactory @Inject() (injector: Injector, val creator: CreateSeqNodes) extends CreateChildNodes {
+case class FunctionMFactory @Inject() (injector: Injector,
+                                       val creator: CreateSeqNodes,
+                                       val ai: Ai) extends CreateChildNodes {
   val neighbours: Seq[CreateChildNodes] = Seq(
     injector.getInstance(classOf[AddOperatorFactory]),
     injector.getInstance(classOf[ValueRefFactory]))
 
   override def create(scope: Scope): Node = {
-    val ai = injector.getInstance(classOf[Ai])
     val nodes = creator.create(this, scope, ai, seqConstraints)
 
     FunctionM(nodes, name = "f" + scope.numFuncs)
   }
 
   override def updateScope(scope: Scope) = scope.incrementFuncs
-  
+
   private def seqConstraints(scope: Scope): Boolean = scope.funcHasSpaceForChildren
 }
