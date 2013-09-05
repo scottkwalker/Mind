@@ -6,9 +6,6 @@ import org.specs2.mock.Mockito
 import com.google.inject.Injector
 import com.google.inject.Guice
 import nodes.helpers.DevModule
-import org.specs2.execute.PendingUntilFixed
-import org.specs2.execute.PendingUntilFixed
-import ai.aco.AcoModule
 import ai.helpers.TestAiModule
 
 class AddOperatorFactorySpec extends Specification with Mockito {

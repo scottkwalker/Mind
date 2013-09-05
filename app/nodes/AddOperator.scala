@@ -1,12 +1,9 @@
 package nodes
 
 import nodes.helpers._
-import com.google.inject.Guice
-import com.tzavellas.sse.guice.ScalaModule
 import com.google.inject.Injector
 import com.google.inject.Inject
 import ai.Ai
-import scala.annotation.tailrec
 
 case class AddOperator(left: Node, right: Node) extends Node {
   override def toRawScala: String = s"${left.toRawScala} + ${right.toRawScala}"

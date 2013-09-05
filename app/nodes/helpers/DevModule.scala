@@ -2,11 +2,6 @@ package nodes.helpers
 
 import com.tzavellas.sse.guice.ScalaModule
 import nodes._
-import com.google.inject.Guice
-import com.google.inject.Injector
-import ai.Ai
-import ai.aco.Aco
-import com.google.inject.name.Names
 
 class DevModule extends ScalaModule {
   def configure() {

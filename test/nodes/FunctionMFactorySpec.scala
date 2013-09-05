@@ -1,13 +1,11 @@
 package nodes
 
 import org.specs2.mutable._
-import org.specs2.execute.PendingUntilFixed
 import nodes.helpers.Scope
 import org.specs2.mock.Mockito
 import com.google.inject.Injector
 import com.google.inject.Guice
 import nodes.helpers.DevModule
-import ai.aco.AcoModule
 import ai.helpers.TestAiModule
 
 class FunctionMFactorySpec extends Specification with Mockito {

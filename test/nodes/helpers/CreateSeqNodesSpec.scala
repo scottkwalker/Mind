@@ -3,7 +3,6 @@ package nodes.helpers
 import org.specs2.mutable._
 import nodes._
 import org.specs2.mock.Mockito
-import ai.helpers.TestAi
 import ai.Ai
 
 class CreateSeqNodesSpec extends Specification with Mockito {

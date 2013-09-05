@@ -1,7 +1,6 @@
 package fitness
 
 import org.specs2.mutable.Specification
-import com.twitter.util.Eval
 import fitness.Fitness.maxFitness
 import org.specs2.mock.Mockito
 import nodes._

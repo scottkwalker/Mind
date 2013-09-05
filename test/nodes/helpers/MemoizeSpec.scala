@@ -1,8 +1,6 @@
 package nodes.helpers
 
 import org.specs2.mutable._
-import nodes.helpers._
-import nodes.AddOperatorFactory
 
 class MemoizeSpec extends Specification {
   "Memoize" should {

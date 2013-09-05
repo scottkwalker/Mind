@@ -4,7 +4,6 @@ import nodes.helpers._
 import com.google.inject.Injector
 import com.google.inject.Inject
 import ai.Ai
-import scala.annotation.tailrec
 
 class NodeTree(val rootNode: Node) extends Node {
   override def toRawScala: String = rootNode.toRawScala

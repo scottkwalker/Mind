@@ -5,7 +5,6 @@ import nodes.helpers.Scope
 import com.google.inject.Injector
 import com.google.inject.Inject
 import ai.Ai
-import scala.annotation.tailrec
 
 case class ObjectM(nodes: Seq[Node], name: String) extends Node {
   override def toRawScala: String = s"object $name ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"

@@ -1,7 +1,5 @@
 package nodes.helpers
 
-import com.google.inject.name.Named
-import com.google.inject.Inject
 
 case class Scope(numVals: Integer = 0,
                  accumulatorLength: Integer = 0,
