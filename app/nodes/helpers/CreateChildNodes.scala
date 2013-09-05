@@ -14,7 +14,12 @@ trait CreateChildNodes {
 
   val neighbours: Seq[CreateChildNodes]
 
-  def legalNeighbours(scope: Scope): Seq[CreateChildNodes] = neighbours.filter(n => n.canTerminateInStepsRemaining(scope.decrementStepsRemaining))
+  val legalNeighbours: Scope => Seq[CreateChildNodes] = {
+    def inner(f: Scope => Seq[CreateChildNodes])(scope: Scope): Seq[CreateChildNodes] = {
+      neighbours.filter(n => n.canTerminateInStepsRemaining(scope.decrementStepsRemaining))
+    }
+    Memoize.Y(inner)
+  }
 
   def canTerminateInStepsRemaining(scope: Scope): Boolean = {
     if (scope.noStepsRemaining) false else {
