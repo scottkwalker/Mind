@@ -11,7 +11,7 @@ class MemoizeSpec extends Specification {
         def fibRec(f: BigInt => BigInt)(n: BigInt): BigInt = {
           if (n == 0) 1
           else if (n == 1) 1
-          else (f(n-1) + f(n-2))
+          else f(n - 1) + f(n - 2)
         }
         Memoize.Y(fibRec)
       }

@@ -8,6 +8,6 @@ import ai.Ai
 
 class AcoModule extends ScalaModule {
   def configure() {
-    bind(classOf[Ai]).to(classOf[Aco]).asEagerSingleton
+    bind(classOf[Ai]).to(classOf[Aco]).asEagerSingleton()
   }
 }

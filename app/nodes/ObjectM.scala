@@ -7,8 +7,8 @@ import com.google.inject.Inject
 import ai.Ai
 import scala.annotation.tailrec
 
-case class ObjectM(val nodes: Seq[Node], val name: String) extends Node {
-  override def toRawScala: String = s"object ${name} ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
+case class ObjectM(nodes: Seq[Node], name: String) extends Node {
+  override def toRawScala: String = s"object $name ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
 
   override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) false else nodes.forall(n => n match {
     case _: FunctionM => n.validate(scope.decrementStepsRemaining)
@@ -18,8 +18,8 @@ case class ObjectM(val nodes: Seq[Node], val name: String) extends Node {
 }
 
 case class ObjectMFactory @Inject() (injector: Injector,
-                                     val creator: CreateSeqNodes,
-                                     val ai: Ai) extends CreateChildNodes {
+                                     creator: CreateSeqNodes,
+                                     ai: Ai) extends CreateChildNodes {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
 
   override def create(scope: Scope): Node = {

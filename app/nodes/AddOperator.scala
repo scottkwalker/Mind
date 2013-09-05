@@ -8,7 +8,7 @@ import com.google.inject.Inject
 import ai.Ai
 import scala.annotation.tailrec
 
-case class AddOperator(val left: Node, val right: Node) extends Node {
+case class AddOperator(left: Node, right: Node) extends Node {
   override def toRawScala: String = s"${left.toRawScala} + ${right.toRawScala}"
 
   override def validate(scope: Scope): Boolean = {
@@ -26,8 +26,8 @@ case class AddOperator(val left: Node, val right: Node) extends Node {
 }
 
 case class AddOperatorFactory @Inject() (injector: Injector,
-                                         val creator: CreateNode,
-                                         val ai: Ai) extends CreateChildNodes {
+                                         creator: CreateNode,
+                                         ai: Ai) extends CreateChildNodes {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ValueRefFactory]))
 
   override def create(scope: Scope): Node = {

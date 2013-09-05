@@ -8,7 +8,7 @@ import com.google.inject.Inject
 import ai.Ai
 import scala.annotation.tailrec
 
-case class FunctionM(val nodes: Seq[Node], val name: String) extends Node {
+case class FunctionM(nodes: Seq[Node], name: String) extends Node {
   override def toRawScala: String = s"def ${name}${params.mkString("(", ", ", ")")} = ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
   val params: Seq[String] = Seq("a: Int", "b: Int") // TODO these need to be created by the factory.
 
@@ -25,8 +25,8 @@ case class FunctionM(val nodes: Seq[Node], val name: String) extends Node {
 }
 
 case class FunctionMFactory @Inject() (injector: Injector,
-                                       val creator: CreateSeqNodes,
-                                       val ai: Ai) extends CreateChildNodes {
+                                       creator: CreateSeqNodes,
+                                       ai: Ai) extends CreateChildNodes {
   val neighbours: Seq[CreateChildNodes] = Seq(
     injector.getInstance(classOf[AddOperatorFactory]),
     injector.getInstance(classOf[ValueRefFactory]))

@@ -11,7 +11,7 @@ class AddTwoInts(val nodeTree: NodeTree) extends Fitness {
 
     val eval = new Eval
     eval.compile(nodeTree.toRawScala)
-    val result = eval.inPlace[Int](s"o0.f0(${a}, ${b})")
+    val result = eval.inPlace[Int](s"o0.f0($a, $b)")
 
     val delta = (result - expected).abs
 

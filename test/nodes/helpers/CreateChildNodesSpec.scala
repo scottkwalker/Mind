@@ -29,7 +29,7 @@ class CreateChildNodesSpec extends Specification with Mockito {
       val scope = Scope(stepsRemaining = 10)
       val sut = TestCreateChildNodes()
 
-      val v = sut.legalNeighbours(scope) mustEqual Seq(mockFactoryTerminates1, mockFactoryTerminates2)
+      sut.legalNeighbours(scope) mustEqual Seq(mockFactoryTerminates1, mockFactoryTerminates2)
     }
     
     "couldTerminate returns true if any child node terminates" in {
@@ -38,7 +38,7 @@ class CreateChildNodesSpec extends Specification with Mockito {
 
       sut.canTerminateInStepsRemaining(scope) mustEqual true
     }
-    
+
     "updateScope returns unchanged by default" in {
       val scope = Scope(stepsRemaining = 10)
       val sut = TestCreateChildNodes()

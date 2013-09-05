@@ -5,7 +5,7 @@ import scala.annotation.tailrec
 import nodes.Node
 import ai.Ai
 
-case class CreateSeqNodes @Inject() (val createNode: CreateNode) {
+case class CreateSeqNodes @Inject() (createNode: CreateNode) {
   @tailrec
   final def create(parent: CreateChildNodes, scope: Scope, ai: Ai, constraints: (Scope => Boolean), acc: Seq[Node] = Seq[Node]()): Seq[Node] = {
     constraints(scope) match {

@@ -4,8 +4,8 @@ package nodes.helpers
  * A memoized unary function.
  *
  * @param f A unary function to memoize
- * @param [T] the argument type
- * @param [R] the return type
+ * T the argument type
+ * R the return type
  */
 class Memoize1[-T, +R](f: T => R) extends (T => R) {
 

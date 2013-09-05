@@ -1,11 +1,6 @@
 package nodes.helpers
 
 import nodes.Node
-import nodes.NodeTree
-import ai.Ai
-import scala.annotation.tailrec
-import com.google.inject.Inject
-import com.google.inject.Injector
 
 trait CreateChildNodes {
   def create(scope: Scope): Node
@@ -26,4 +21,11 @@ trait CreateChildNodes {
       neighbours.exists(n => n.canTerminateInStepsRemaining(scope.decrementStepsRemaining))
     }
   }
+  /*val canTerminateInStepsRemaining: Scope => Boolean = {
+    def inner(f: Scope => Boolean)(scope: Scope): Boolean = {
+      if (scope.noStepsRemaining) false
+      else neighbours.exists(n => n.canTerminateInStepsRemaining(scope.decrementStepsRemaining))
+    }
+    Memoize.Y(inner)
+  }*/
 }
