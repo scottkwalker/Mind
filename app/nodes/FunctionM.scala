@@ -5,7 +5,7 @@ import com.google.inject.Injector
 import com.google.inject.Inject
 import ai.Ai
 
-case class FunctionM(params: Seq[ValueInFunctionParam] = Seq(ValueInFunctionParam("a", IntegerM()), ValueInFunctionParam("b", IntegerM())), // TODO these need to be created by the factory.
+case class FunctionM(params: Seq[Node],
                      nodes: Seq[Node],
                      name: String) extends Node {
   override def toRawScala: String = {
@@ -30,17 +30,29 @@ case class FunctionM(params: Seq[ValueInFunctionParam] = Seq(ValueInFunctionPara
 case class FunctionMFactory @Inject()(injector: Injector,
                                       creator: CreateSeqNodes,
                                       ai: Ai) extends CreateChildNodes {
+  val paramsLegalNeighbours: Seq[CreateChildNodes] = Seq(
+    injector.getInstance(classOf[ValueInFunctionParamFactory])
+  )
+
   val neighbours: Seq[CreateChildNodes] = Seq(
     injector.getInstance(classOf[AddOperatorFactory]),
-    injector.getInstance(classOf[ValueRefFactory]))
+    injector.getInstance(classOf[ValueRefFactory])
+  )
 
   override def create(scope: Scope): Node = {
-    val nodes = creator.create(this, scope.resetAccumulator, ai, seqConstraints)
+    val params = creator.create(paramsLegalNeighbours, scope.resetAccumulator, ai, seqConstraintsParams)
+    //val updateScope = scope.resetAccumulator
 
-    FunctionM(nodes = nodes, name = "f" + scope.numFuncs)
+    val nodes = creator.create(legalNeighbours(scope), scope.resetAccumulator, ai, seqConstraintsNodes)
+
+    FunctionM(params = params,//Seq(ValueInFunctionParam("v0", IntegerM()), ValueInFunctionParam("v1", IntegerM())),
+      nodes = nodes,
+      name = "f" + scope.numFuncs)
   }
 
   override def updateScope(scope: Scope) = scope.incrementFuncs
 
-  private def seqConstraints(scope: Scope): Boolean = scope.funcHasSpaceForChildren
+  private def seqConstraintsParams(scope: Scope): Boolean = scope.paramsHasSpaceForChildren
+
+  private def seqConstraintsNodes(scope: Scope): Boolean = scope.funcHasSpaceForChildren
 }

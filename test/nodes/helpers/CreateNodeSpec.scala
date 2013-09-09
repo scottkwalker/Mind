@@ -12,12 +12,12 @@ class CreateNodeSpec extends Specification with Mockito {
         val v = mock[CreateChildNodes]
         v.updateScope(scope) returns scope
         val ai = mock[Ai]
-        ai.chooseChild(any[CreateChildNodes], any[Scope]) returns v
+        ai.chooseChild(any[Seq[CreateChildNodes]], any[Scope]) returns v
         val sut = CreateNode()
         
-        val (updatedScope, child) = sut.create(v, scope, ai)
+        val (_, _) = sut.create(Seq(v), scope, ai)
         
-        there was one(ai).chooseChild(v, scope)
+        there was one(ai).chooseChild(Seq(v), scope)
       }
 
       "calls updateScope" in {
@@ -25,10 +25,10 @@ class CreateNodeSpec extends Specification with Mockito {
         val v = mock[CreateChildNodes]
         v.updateScope(scope) returns scope
         val ai = mock[Ai]
-        ai.chooseChild(any[CreateChildNodes], any[Scope]) returns v
+        ai.chooseChild(any[Seq[CreateChildNodes]], any[Scope]) returns v
         val sut = CreateNode()
         
-        val (updatedScope, child) = sut.create(v, scope, ai)
+        val (_, _) = sut.create(Seq(v), scope, ai)
         
         there was one(v).updateScope(scope)
       }
@@ -38,10 +38,10 @@ class CreateNodeSpec extends Specification with Mockito {
         val v = mock[CreateChildNodes]
         v.updateScope(scope) returns scope
         val ai = mock[Ai]
-        ai.chooseChild(any[CreateChildNodes], any[Scope]) returns v
+        ai.chooseChild(any[Seq[CreateChildNodes]], any[Scope]) returns v
         val sut = CreateNode()
         
-        val (updatedScope, child) = sut.create(v, scope, ai)
+        val (_, _) = sut.create(Seq(v), scope, ai)
         
         there was one(v).create(scope)
       }

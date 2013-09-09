@@ -22,7 +22,7 @@ case class ObjectMFactory @Inject() (injector: Injector,
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
 
   override def create(scope: Scope): Node = {
-    val nodes = creator.create(this, scope.resetAccumulator, ai, seqConstraints)
+    val nodes = creator.create(legalNeighbours(scope), scope.resetAccumulator, ai, seqConstraints)
     ObjectM(nodes, name = "o" + scope.numObjects)
   }
 

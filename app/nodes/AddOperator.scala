@@ -28,8 +28,8 @@ case class AddOperatorFactory @Inject() (injector: Injector,
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ValueRefFactory]))
 
   override def create(scope: Scope): Node = {
-    val (updatedScope, leftChild) = creator.create(this, scope, ai)
-    val (_, rightChild) = creator.create(this, updatedScope, ai)
+    val (updatedScope, leftChild) = creator.create(legalNeighbours(scope), scope, ai)
+    val (_, rightChild) = creator.create(legalNeighbours(scope), updatedScope, ai)
     AddOperator(left = leftChild,
       right = rightChild)
   }
