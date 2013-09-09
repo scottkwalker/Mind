@@ -40,10 +40,19 @@ case class FunctionMFactory @Inject()(injector: Injector,
   )
 
   override def create(scope: Scope): Node = {
-    val params = creator.create(paramsLegalNeighbours, scope.resetAccumulator, ai, seqConstraintsParams)
-    //val updateScope = scope.resetAccumulator
+    val (updatedScope, params) = creator.create(paramsLegalNeighbours,
+      scope = scope.resetAccumulator,
+      ai = ai,
+      constraints = seqConstraintsParams)
 
-    val nodes = creator.create(legalNeighbours(scope), scope.resetAccumulator, ai, seqConstraintsNodes)
+    val (_, nodes) = creator.create(
+      possibleChildren = legalNeighbours(scope),
+      scope = updatedScope.
+        copyAccumulatorToNumVals.
+        resetAccumulator,
+      ai = ai,
+      constraints = seqConstraintsNodes
+    )
 
     FunctionM(params = params,//Seq(ValueInFunctionParam("v0", IntegerM()), ValueInFunctionParam("v1", IntegerM())),
       nodes = nodes,
