@@ -16,16 +16,11 @@ trait CreateChildNodes {
     Memoize.Y(inner)
   }
 
-  def canTerminateInStepsRemaining(scope: Scope): Boolean = {
-    if (scope.noStepsRemaining) false else {
-      neighbours.exists(n => n.canTerminateInStepsRemaining(scope.decrementStepsRemaining))
-    }
-  }
-  /*val canTerminateInStepsRemaining: Scope => Boolean = {
+  val canTerminateInStepsRemaining: Scope => Boolean = {
     def inner(f: Scope => Boolean)(scope: Scope): Boolean = {
       if (scope.noStepsRemaining) false
       else neighbours.exists(n => n.canTerminateInStepsRemaining(scope.decrementStepsRemaining))
     }
     Memoize.Y(inner)
-  }*/
+  }
 }

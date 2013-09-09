@@ -8,20 +8,21 @@ import ai.Ai
 class NodeTree(val rootNode: Node) extends Node {
   override def toRawScala: String = rootNode.toRawScala
 
-  override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) false else rootNode match {
+  override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) false
+  else rootNode match {
     case _: ObjectM => rootNode.validate(scope.decrementStepsRemaining)
     case _: Empty => false
     case _ => false
   }
 }
 
-case class NodeTreeFactory @Inject() (injector: Injector,
-                                      creator: CreateNode,
-                                      ai: Ai) extends CreateChildNodes {
+case class NodeTreeFactory @Inject()(injector: Injector,
+                                     creator: CreateNode,
+                                     ai: Ai) extends CreateChildNodes {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ObjectMFactory]))
 
   override def create(scope: Scope): Node = {
-    val (updatedScope, child) = creator.create(this, scope, ai)
+    val (_, child) = creator.create(this, scope, ai)
     new NodeTree(child)
   }
 

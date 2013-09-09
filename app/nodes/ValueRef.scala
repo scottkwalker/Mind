@@ -9,15 +9,14 @@ case class ValueRef(name: String) extends Node {
 }
 
 case class ValueRefFactory @Inject() () extends CreateChildNodes {
-  val neighbours: Seq[CreateChildNodes] = Seq() // No possible children TODO should this be Nil or throw an error if called
+  val neighbours: Seq[CreateChildNodes] = Nil // No possible children,
 
-  override def canTerminateInStepsRemaining(scope: Scope) = if (scope.noStepsRemaining) false else true
-  /*override val canTerminateInStepsRemaining: Scope => Boolean = {
+  override val canTerminateInStepsRemaining: Scope => Boolean = {
     def inner(f: Scope => Boolean)(scope: Scope): Boolean = {
       if (scope.noStepsRemaining) false else true
     }
     Memoize.Y(inner)
-  }*/
+  }
 
   override def create(scope: Scope): Node = {
     val name = "v" + scope.numVals

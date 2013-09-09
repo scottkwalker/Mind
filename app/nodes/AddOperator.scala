@@ -29,7 +29,7 @@ case class AddOperatorFactory @Inject() (injector: Injector,
 
   override def create(scope: Scope): Node = {
     val (updatedScope, leftChild) = creator.create(this, scope, ai)
-    val (updatedScope2, rightChild) = creator.create(this, updatedScope, ai)
+    val (_, rightChild) = creator.create(this, updatedScope, ai)
     AddOperator(left = leftChild,
       right = rightChild)
   }
