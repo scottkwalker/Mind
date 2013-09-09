@@ -9,7 +9,7 @@ case class ValueRef(name: String) extends Node {
 }
 
 case class ValueRefFactory @Inject() () extends CreateChildNodes {
-  val neighbours: Seq[CreateChildNodes] = Nil // No possible children,
+  val neighbours: Seq[CreateChildNodes] = Nil // No possible children
 
   override val canTerminateInStepsRemaining: Scope => Boolean = {
     def inner(f: Scope => Boolean)(scope: Scope): Boolean = {

@@ -28,7 +28,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
         val instance = factory.create(scope = s)
 
         instance must beLike {
-          case FunctionM(_, name) => name mustEqual "f0"
+          case FunctionM(_, _, name) => name mustEqual "f0"
         }
       }
 
@@ -38,7 +38,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
         val instance = factory.create(scope = s)
 
         instance must beLike {
-          case FunctionM(_, name) => name mustEqual "f1"
+          case FunctionM(_, _, name) => name mustEqual "f1"
         }
       }
       
@@ -56,7 +56,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
         val instance = factory.create(scope = s)
 
         instance must beLike {
-          case FunctionM(child, _) => child.length mustEqual 1
+          case FunctionM(_, children, _) => children.length mustEqual 1
         }
       }
 
@@ -66,7 +66,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
         val instance = factory.create(scope = s)
 
         instance must beLike {
-          case FunctionM(child, _) => child.length mustEqual 3
+          case FunctionM(_, children, _) => children.length mustEqual 3
         }
       }
     }
