@@ -7,16 +7,22 @@ import ai.Ai
 
 case class CreateSeqNodes @Inject() (createNode: CreateNode) {
   @tailrec
-  final def create(possibleChildren: Seq[CreateChildNodes], scope: Scope, ai: Ai, constraints: (Scope => Boolean), acc: Seq[Node] = Seq[Node]()): (Scope, Seq[Node]) = {
-    constraints(scope) match {
-      case false => (scope, acc)
+  final def create(possibleChildren: Seq[CreateChildNodes],
+                   scope: Scope,
+                   ai: Ai,
+                   constraints: ((Scope, Int) => Boolean),
+                   updateScopeWithAcc: ((Scope, Int) => Scope) = (s, _) => s,
+                   acc: Seq[Node] = Seq[Node]()): (Scope, Seq[Node]) = {
+    constraints(scope, acc.length) match {
+      case false => (updateScopeWithAcc(scope, acc.length), acc)
       case true => {
         val (updatedScope, child) = createNode.create(possibleChildren, scope, ai)
 
         create(possibleChildren,
-          updatedScope.incrementAccumulatorLength,
+          updatedScope,
           ai,
           constraints,
+          updateScopeWithAcc,
           acc ++ Seq(child))
       }
     }

@@ -9,9 +9,8 @@ class ScopeSpec extends Specification {
   "Scope" should {
     "defauls values to zero" in {
       Scope() must beLike {
-        case Scope(numVals, accumulatorLength, numFuncs, numObjects, stepsRemaining, maxExpressionsInFunc, maxFuncs, maxParamsInFunc) => {
+        case Scope(numVals, numFuncs, numObjects, stepsRemaining, maxExpressionsInFunc, maxFuncs, maxParamsInFunc) => {
           numVals mustEqual 0
-          accumulatorLength mustEqual 0
           numFuncs mustEqual 0
           numObjects mustEqual 0
           stepsRemaining mustEqual 0
@@ -23,23 +22,8 @@ class ScopeSpec extends Specification {
 
     "incrementVals returns expected" in {
       Scope().incrementVals must beLike {
-        case Scope(numVals, accumulatorLength, numFuncs, numObjects, stepsRemaining, maxExpressionsInFunc, maxFuncs, maxParamsInFunc) => {
+        case Scope(numVals, numFuncs, numObjects, stepsRemaining, maxExpressionsInFunc, maxFuncs, maxParamsInFunc) => {
           numVals mustEqual 1
-          accumulatorLength mustEqual 0
-          numFuncs mustEqual 0
-          numObjects mustEqual 0
-          stepsRemaining mustEqual 0
-          maxExpressionsInFunc mustEqual 0
-          maxFuncs mustEqual 0
-        }
-      }
-    }
-    
-    "incrementAccumulatorLength returns expected" in {
-      Scope().incrementAccumulatorLength must beLike {
-        case Scope(numVals, accumulatorLength, numFuncs, numObjects, stepsRemaining, maxExpressionsInFunc, maxFuncs, maxParamsInFunc) => {
-          numVals mustEqual 0
-          accumulatorLength mustEqual 1
           numFuncs mustEqual 0
           numObjects mustEqual 0
           stepsRemaining mustEqual 0
@@ -51,9 +35,8 @@ class ScopeSpec extends Specification {
 
     "incrementFuncs returns expected" in {
       Scope().incrementFuncs must beLike {
-        case Scope(numVals, accumulatorLength, numFuncs, numObjects, stepsRemaining, maxExpressionsInFunc, maxFuncs, maxParamsInFunc) => {
+        case Scope(numVals, numFuncs, numObjects, stepsRemaining, maxExpressionsInFunc, maxFuncs, maxParamsInFunc) => {
           numVals mustEqual 0
-          accumulatorLength mustEqual 0
           numFuncs mustEqual 1
           numObjects mustEqual 0
           stepsRemaining mustEqual 0
@@ -65,9 +48,8 @@ class ScopeSpec extends Specification {
 
     "incrementObjects returns expected" in {
       Scope().incrementObjects must beLike {
-        case Scope(numVals, accumulatorLength, numFuncs, numObjects, stepsRemaining, maxExpressionsInFunc, maxFuncs, maxParamsInFunc) => {
+        case Scope(numVals, numFuncs, numObjects, stepsRemaining, maxExpressionsInFunc, maxFuncs, maxParamsInFunc) => {
           numVals mustEqual 0
-          accumulatorLength mustEqual 0
           numFuncs mustEqual 0
           numObjects mustEqual 1
           stepsRemaining mustEqual 0
@@ -79,9 +61,8 @@ class ScopeSpec extends Specification {
 
     "decrementStepsRemaining returns expected" in {
       Scope(stepsRemaining = 10).decrementStepsRemaining must beLike {
-        case Scope(numVals, accumulatorLength, numFuncs, numObjects, stepsRemaining, maxExpressionsInFunc, maxFuncs, maxParamsInFunc) => {
+        case Scope(numVals, numFuncs, numObjects, stepsRemaining, maxExpressionsInFunc, maxFuncs, maxParamsInFunc) => {
           numVals mustEqual 0
-          accumulatorLength mustEqual 0
           numFuncs mustEqual 0
           numObjects mustEqual 0
           stepsRemaining mustEqual 9
@@ -94,52 +75,26 @@ class ScopeSpec extends Specification {
     "fluent interface returns expected" in {
       Scope(stepsRemaining = 10).
         incrementVals.
-        incrementAccumulatorLength.
         incrementFuncs.
         incrementObjects.
         decrementStepsRemaining must beLike {
-          case Scope(numVals, accumulatorLength, numFuncs, numObjects, stepsRemaining, maxExpressionsInFunc, maxFuncs, maxParamsInFunc) => {
-            numVals mustEqual 1
-            accumulatorLength mustEqual 1
-            numFuncs mustEqual 1
-            numObjects mustEqual 1
-            stepsRemaining mustEqual 9
-            maxExpressionsInFunc mustEqual 0
-            maxFuncs mustEqual 0
-          }
+        case Scope(numVals, numFuncs, numObjects, stepsRemaining, maxExpressionsInFunc, maxFuncs, maxParamsInFunc) => {
+          numVals mustEqual 1
+          numFuncs mustEqual 1
+          numObjects mustEqual 1
+          stepsRemaining mustEqual 9
+          maxExpressionsInFunc mustEqual 0
+          maxFuncs mustEqual 0
         }
+      }
     }
-    
+
     "IoC creates a new instance with injected values" in {
       val injector: Injector = Guice.createInjector(new DevModule, new AcoModule)
       val sut = injector.getInstance(classOf[Scope])
 
       sut.maxFuncsInObject mustEqual 10
       sut.maxExpressionsInFunc mustEqual 2
-    }
-
-    "paramsHasSpaceForChildren true when there is space" in {
-      Scope(accumulatorLength = 0, maxParamsInFunc = 1).paramsHasSpaceForChildren mustEqual true
-    }
-
-    "paramsHasSpaceForChildren false when it reaches the max length" in {
-      Scope(accumulatorLength = 1, maxParamsInFunc = 1).paramsHasSpaceForChildren mustEqual false
-    }
-
-    "funcHasSpaceForChildren true when there is space" in {
-      Scope(accumulatorLength = 0, maxExpressionsInFunc = 1).funcHasSpaceForChildren mustEqual true
-    } 
-    
-    "funcHasSpaceForChildren false when it reaches the max length" in {
-      Scope(accumulatorLength = 1, maxExpressionsInFunc = 1).funcHasSpaceForChildren mustEqual false
-    }
-    
-    "objHasSpaceForChildren true when there is space" in {
-      Scope(accumulatorLength = 0, maxFuncsInObject = 1).objHasSpaceForChildren mustEqual true
-    } 
-    
-    "objHasSpaceForChildren false when it reaches the max length" in {
-      Scope(accumulatorLength = 1, maxFuncsInObject = 1).objHasSpaceForChildren mustEqual false
     }
   }
 }

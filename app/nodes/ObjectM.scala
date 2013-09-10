@@ -22,12 +22,17 @@ case class ObjectMFactory @Inject() (injector: Injector,
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
 
   override def create(scope: Scope): Node = {
-    val (_, nodes) = creator.create(legalNeighbours(scope), scope.resetAccumulator, ai, seqConstraints)
+    val (_, nodes) = creator.create(
+      possibleChildren = legalNeighbours(scope),
+      scope = scope,
+      ai = ai,
+      constraints = (s: Scope, accLength: Int) => accLength < s.maxFuncsInObject,
+      updateScopeWithAcc = (s: Scope, accLength: Int) => s.setNumFuncs(accLength)
+    )
+
     ObjectM(nodes = nodes,
       name = "o" + scope.numObjects)
   }
 
   override def updateScope(scope: Scope) = scope.incrementObjects
-
-  private def seqConstraints(scope: Scope): Boolean = scope.objHasSpaceForChildren
 }

@@ -11,8 +11,6 @@ class CreateSeqNodesSpec extends Specification with Mockito {
       "calls create on factory" in {
         val s = mock[Scope]
         s.maxFuncsInObject returns 1
-        s.objHasSpaceForChildren returns true thenReturns false
-        s.incrementAccumulatorLength returns s
         val n = mock[Node]
         val v = mock[CreateChildNodes]
         v.updateScope(s) returns s
@@ -21,33 +19,15 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         ai.chooseChild(any[Seq[CreateChildNodes]], any[Scope]) returns v
         val cn = mock[CreateNode]
         cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
-        def constraints(scope: Scope): Boolean = scope.objHasSpaceForChildren
         val sut = CreateSeqNodes(cn)
         
-        val (_) = sut.create(Seq(v), s, ai, constraints, Seq())
+        val (_, _) = sut.create(Seq(v),
+          s,
+          ai,
+          constraints = (s: Scope, accLength: Int) => accLength < s.maxFuncsInObject
+        )
         
         there was one(cn).create(Seq(v), s, ai)
-      }
-      
-      "calls incrementAccumulatorLength" in {
-        val s = mock[Scope]
-        s.maxFuncsInObject returns 1
-        s.objHasSpaceForChildren returns true thenReturns false
-        s.incrementAccumulatorLength returns s
-        val n = mock[Node]
-        val v = mock[CreateChildNodes]
-        v.updateScope(s) returns s
-        v.create(any[Scope]) returns n 
-        val ai = mock[Ai]
-        ai.chooseChild(any[Seq[CreateChildNodes]], any[Scope]) returns v
-        val cn = mock[CreateNode]
-        cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
-        def constraints(scope: Scope): Boolean = scope.objHasSpaceForChildren
-        val sut = CreateSeqNodes(cn)
-        
-        val (_) = sut.create(Seq(v), s, ai, constraints, Seq())
-        
-        there was one(s).incrementAccumulatorLength
       }
     }
   }

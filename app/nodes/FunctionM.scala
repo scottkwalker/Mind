@@ -40,28 +40,29 @@ case class FunctionMFactory @Inject()(injector: Injector,
   )
 
   override def create(scope: Scope): Node = {
-    val (updatedScope, params) = creator.create(paramsLegalNeighbours,
-      scope = scope.resetAccumulator,
-      ai = ai,
-      constraints = seqConstraintsParams)
+    val (updatedScope, params) = createParams(scope)
 
-    val (_, nodes) = creator.create(
-      possibleChildren = legalNeighbours(scope),
-      scope = updatedScope.
-        copyAccumulatorToNumVals.
-        resetAccumulator,
-      ai = ai,
-      constraints = seqConstraintsNodes
-    )
+    val (_, nodes) = createNodes(updatedScope)
 
-    FunctionM(params = params,//Seq(ValueInFunctionParam("v0", IntegerM()), ValueInFunctionParam("v1", IntegerM())),
+    FunctionM(params = params,
       nodes = nodes,
       name = "f" + scope.numFuncs)
   }
 
+  private def createParams(scope: Scope) = creator.create(
+    possibleChildren = paramsLegalNeighbours,
+    scope = scope,
+    ai = ai,
+    constraints = (s: Scope, accLength: Int) =>  accLength < s.maxParamsInFunc,
+    updateScopeWithAcc = (s: Scope, accLength: Int) => s.setNumVals(accLength)
+  )
+
+  private def createNodes(scope: Scope) = creator.create(
+    possibleChildren = legalNeighbours(scope),
+    scope = scope,
+    ai = ai,
+    constraints = (s: Scope, accLength: Int) => accLength < s.maxExpressionsInFunc
+  )
+
   override def updateScope(scope: Scope) = scope.incrementFuncs
-
-  private def seqConstraintsParams(scope: Scope): Boolean = scope.paramsHasSpaceForChildren
-
-  private def seqConstraintsNodes(scope: Scope): Boolean = scope.funcHasSpaceForChildren
 }
