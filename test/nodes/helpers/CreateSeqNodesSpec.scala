@@ -21,7 +21,7 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
         val sut = CreateSeqNodes(cn)
         
-        val (_, _) = sut.create(Seq(v),
+        val (_, _) = sut.createSeq(Seq(v),
           s,
           ai,
           constraints = (s: Scope, accLength: Int) => accLength < s.maxFuncsInObject

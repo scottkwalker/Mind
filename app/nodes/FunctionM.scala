@@ -49,7 +49,7 @@ case class FunctionMFactory @Inject()(injector: Injector,
       name = "f" + scope.numFuncs)
   }
 
-  private def createParams(scope: Scope) = creator.create(
+  private def createParams(scope: Scope) = creator.createSeq(
     possibleChildren = paramsLegalNeighbours,
     scope = scope,
     ai = ai,
@@ -57,7 +57,7 @@ case class FunctionMFactory @Inject()(injector: Injector,
     updateScopeWithAcc = (s: Scope, accLength: Int) => s.setNumVals(accLength)
   )
 
-  private def createNodes(scope: Scope) = creator.create(
+  private def createNodes(scope: Scope) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     ai = ai,
