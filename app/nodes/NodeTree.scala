@@ -5,28 +5,36 @@ import com.google.inject.Injector
 import com.google.inject.Inject
 import ai.Ai
 
-class NodeTree(val rootNode: Node) extends Node {
-  override def toRawScala: String = rootNode.toRawScala
+class NodeTree(val nodes: Seq[Node]) extends Node {
+  override def toRawScala: String = nodes.map(f => f.toRawScala).mkString(" ")
 
   override def validate(scope: Scope): Boolean = if (scope.hasDepthRemaining) {
-    rootNode match {
-      case _: ObjectM => rootNode.validate(scope.incrementDepth)
+    nodes.forall(n => n match {
+      case _: ObjectM => n.validate(scope.incrementDepth)
       case _: Empty => false
       case _ => false
-    }
+    })
   }
   else false
 }
 
 case class NodeTreeFactory @Inject()(injector: Injector,
-                                     creator: CreateNode,
+                                     creator: CreateSeqNodes,
                                      ai: Ai) extends CreateChildNodes {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ObjectMFactory]))
 
   override def create(scope: Scope): Node = {
-    val (_, child) = creator.create(legalNeighbours(scope), scope, ai) // TODO make this a createSeq
-    new NodeTree(child)
+    val (_, nodes) = createNodes(scope)
+    new NodeTree(nodes)
   }
 
   override def updateScope(scope: Scope) = throw new scala.RuntimeException("Should not happen as you cannot have more than one NodeTree")
+
+  private def createNodes(scope: Scope) = creator.createSeq(
+    possibleChildren = legalNeighbours(scope),
+    scope = scope,
+    ai = ai,
+    constraints = (s: Scope, accLength: Int) => accLength < s.maxObjectsInTree,
+    updateScopeWithAcc = (s: Scope, accLength: Int) => s.setNumFuncs(accLength)
+  )
 }

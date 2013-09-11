@@ -1,14 +1,15 @@
 package nodes.helpers
 
 
-case class Scope(numVals: Integer = 0,
-                 numFuncs: Integer = 0,
-                 numObjects: Integer = 0,
-                 depth: Integer = 0,
-                 maxExpressionsInFunc: Integer = 0,
-                 maxFuncsInObject: Integer = 0,
-                 maxParamsInFunc: Integer = 0,
-                 maxDepth: Integer = 0) {
+case class Scope(numVals: Int = 0,
+                 numFuncs: Int = 0,
+                 numObjects: Int = 0,
+                 depth: Int = 0,
+                 maxExpressionsInFunc: Int = 0,
+                 maxFuncsInObject: Int = 0,
+                 maxParamsInFunc: Int = 0,
+                 maxDepth: Int = 0,
+                 maxObjectsInTree: Int = 0) {
   def incrementVals: Scope = Scope(numVals = numVals + 1,
     numFuncs = numFuncs,
     numObjects = numObjects,
@@ -16,7 +17,8 @@ case class Scope(numVals: Integer = 0,
     maxExpressionsInFunc = maxExpressionsInFunc,
     maxFuncsInObject = maxFuncsInObject,
     maxParamsInFunc = maxParamsInFunc,
-    maxDepth = maxDepth)
+    maxDepth = maxDepth,
+    maxObjectsInTree = maxObjectsInTree)
 
   def incrementFuncs: Scope = Scope(numVals = numVals,
     numFuncs = numFuncs + 1,
@@ -25,7 +27,8 @@ case class Scope(numVals: Integer = 0,
     maxExpressionsInFunc = maxExpressionsInFunc,
     maxFuncsInObject = maxFuncsInObject,
     maxParamsInFunc = maxParamsInFunc,
-    maxDepth = maxDepth)
+    maxDepth = maxDepth,
+    maxObjectsInTree = maxObjectsInTree)
 
   def incrementObjects: Scope = Scope(numVals = numVals,
     numFuncs = numFuncs,
@@ -34,7 +37,8 @@ case class Scope(numVals: Integer = 0,
     maxExpressionsInFunc = maxExpressionsInFunc,
     maxFuncsInObject = maxFuncsInObject,
     maxParamsInFunc = maxParamsInFunc,
-    maxDepth = maxDepth)
+    maxDepth = maxDepth,
+    maxObjectsInTree = maxObjectsInTree)
 
   def incrementDepth: Scope = Scope(numVals = numVals,
     numFuncs = numFuncs,
@@ -43,7 +47,8 @@ case class Scope(numVals: Integer = 0,
     maxExpressionsInFunc = maxExpressionsInFunc,
     maxFuncsInObject = maxFuncsInObject,
     maxParamsInFunc = maxParamsInFunc,
-    maxDepth = maxDepth)
+    maxDepth = maxDepth,
+    maxObjectsInTree = maxObjectsInTree)
 
   def setNumFuncs(newValue: Int): Scope = Scope(numVals = numVals,
     numFuncs = newValue,
@@ -52,7 +57,8 @@ case class Scope(numVals: Integer = 0,
     maxExpressionsInFunc = maxExpressionsInFunc,
     maxFuncsInObject = maxFuncsInObject,
     maxParamsInFunc = maxParamsInFunc,
-    maxDepth = maxDepth)
+    maxDepth = maxDepth,
+    maxObjectsInTree = maxObjectsInTree)
 
   def setNumVals(newValue: Int): Scope = Scope(numVals = newValue,
     numFuncs = numFuncs,
@@ -61,7 +67,8 @@ case class Scope(numVals: Integer = 0,
     maxExpressionsInFunc = maxExpressionsInFunc,
     maxFuncsInObject = maxFuncsInObject,
     maxParamsInFunc = maxParamsInFunc,
-    maxDepth = maxDepth)
+    maxDepth = maxDepth,
+    maxObjectsInTree = maxObjectsInTree)
 
   def hasDepthRemaining = depth < maxDepth
 }

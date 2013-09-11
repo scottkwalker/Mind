@@ -9,7 +9,7 @@ class ScopeSpec extends Specification {
   "Scope" should {
     "defauls values to zero" in {
       Scope() must beLike {
-        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth) => {
+        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth, maxObjectsInTree) => {
           numVals mustEqual 0
           numFuncs mustEqual 0
           numObjects mustEqual 0
@@ -18,13 +18,14 @@ class ScopeSpec extends Specification {
           maxFuncs mustEqual 0
           maxParamsInFunc mustEqual 0
           maxDepth mustEqual 0
+          maxObjectsInTree mustEqual 0
         }
       }
     }
 
     "incrementVals returns expected" in {
       Scope().incrementVals must beLike {
-        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth) => {
+        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth, maxObjectsInTree) => {
           numVals mustEqual 1
           numFuncs mustEqual 0
           numObjects mustEqual 0
@@ -33,13 +34,14 @@ class ScopeSpec extends Specification {
           maxFuncs mustEqual 0
           maxParamsInFunc mustEqual 0
           maxDepth mustEqual 0
+          maxObjectsInTree mustEqual 0
         }
       }
     }
 
     "incrementFuncs returns expected" in {
       Scope().incrementFuncs must beLike {
-        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth) => {
+        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth, maxObjectsInTree) => {
           numVals mustEqual 0
           numFuncs mustEqual 1
           numObjects mustEqual 0
@@ -48,13 +50,14 @@ class ScopeSpec extends Specification {
           maxFuncs mustEqual 0
           maxParamsInFunc mustEqual 0
           maxDepth mustEqual 0
+          maxObjectsInTree mustEqual 0
         }
       }
     }
 
     "incrementObjects returns expected" in {
       Scope().incrementObjects must beLike {
-        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth) => {
+        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth, maxObjectsInTree) => {
           numVals mustEqual 0
           numFuncs mustEqual 0
           numObjects mustEqual 1
@@ -63,13 +66,14 @@ class ScopeSpec extends Specification {
           maxFuncs mustEqual 0
           maxParamsInFunc mustEqual 0
           maxDepth mustEqual 0
+          maxObjectsInTree mustEqual 0
         }
       }
     }
 
     "decrementStepsRemaining returns expected" in {
       Scope(depth = 0).incrementDepth must beLike {
-        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth) => {
+        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth, maxObjectsInTree) => {
           numVals mustEqual 0
           numFuncs mustEqual 0
           numObjects mustEqual 0
@@ -78,6 +82,7 @@ class ScopeSpec extends Specification {
           maxFuncs mustEqual 0
           maxParamsInFunc mustEqual 0
           maxDepth mustEqual 0
+          maxObjectsInTree mustEqual 0
         }
       }
     }
@@ -88,7 +93,7 @@ class ScopeSpec extends Specification {
         incrementFuncs.
         incrementObjects.
         incrementDepth must beLike {
-        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth) => {
+        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth, maxObjectsInTree) => {
           numVals mustEqual 1
           numFuncs mustEqual 1
           numObjects mustEqual 1
@@ -97,6 +102,7 @@ class ScopeSpec extends Specification {
           maxFuncs mustEqual 0
           maxParamsInFunc mustEqual 0
           maxDepth mustEqual 0
+          maxObjectsInTree mustEqual 0
         }
       }
     }

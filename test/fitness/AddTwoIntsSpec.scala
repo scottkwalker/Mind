@@ -16,13 +16,14 @@ class AddTwoIntsSpec extends Specification with Mockito {
 
     "1 add 1 equals 2 with NodeTree that converts nodes to raw Scala" in {
       val nodeTree = new NodeTree(
-        ObjectM(Seq(
-          FunctionM(
-            params = Seq(ValueInFunctionParam("a", IntegerM()), ValueInFunctionParam("b", IntegerM())),
-            nodes = Seq(
-            AddOperator(ValueRef("a"), ValueRef("b"))
-          ), name = "f0")),
-          name = "o0"))
+        Seq(
+          ObjectM(Seq(
+            FunctionM(
+              params = Seq(ValueInFunctionParam("a", IntegerM()), ValueInFunctionParam("b", IntegerM())),
+              nodes = Seq(
+                AddOperator(ValueRef("a"), ValueRef("b"))
+              ), name = "f0")),
+            name = "o0")))
       val f = new AddTwoInts(nodeTree)
       f.fitness mustEqual maxFitness
     }

@@ -12,7 +12,7 @@ class DevModule extends ScalaModule {
     bind(classOf[ObjectMFactory]).asEagerSingleton()
     bind(classOf[ValueRefFactory]).asEagerSingleton()
     bind(classOf[ValueInFunctionParamFactory]).asEagerSingleton()
-    bind(classOf[Scope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2))
+    bind(classOf[Scope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1))
     bind(classOf[CreateNode]).asEagerSingleton()
     bind(classOf[CreateSeqNodes]).asEagerSingleton()
     
