@@ -19,9 +19,7 @@ case class ValueInFunctionParamFactory @Inject()(creator: CreateSeqNodes,
   val neighbours: Seq[CreateChildNodes] = Nil // No possible children
 
   override val canTerminateInStepsRemaining: Scope => Boolean = {
-    def inner(f: Scope => Boolean)(scope: Scope): Boolean = {
-      if (scope.noStepsRemaining) false else true
-    }
+    def inner(f: Scope => Boolean)(scope: Scope): Boolean = scope.hasDepthRemaining
     Memoize.Y(inner)
   }
 

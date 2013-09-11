@@ -10,7 +10,7 @@ class EmptySpec extends Specification {
     }
 
     "validate false" in {
-      val s = Scope(stepsRemaining = 10)
+      val s = Scope(maxDepth = 10)
       Empty().validate(s) mustEqual false
     }
   }

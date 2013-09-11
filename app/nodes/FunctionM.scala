@@ -13,18 +13,16 @@ case class FunctionM(params: Seq[Node],
     s"def $name${params.map(f => f.toRawScala).mkString("(", ", ", ")")} = ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
   }
 
-  override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) {
-    false
-  }
-  else {
+  override def validate(scope: Scope): Boolean = if (scope.hasDepthRemaining) {
     !name.isEmpty &&
       nodes.forall(_ match {
-        case n: AddOperator => n.validate(scope.decrementStepsRemaining)
-        case n: ValueRef => n.validate(scope.decrementStepsRemaining)
+        case n: AddOperator => n.validate(scope.incrementDepth)
+        case n: ValueRef => n.validate(scope.incrementDepth)
         case _: Empty => false
         case _ => false
       })
   }
+  else false
 }
 
 case class FunctionMFactory @Inject()(injector: Injector,

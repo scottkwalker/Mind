@@ -8,7 +8,7 @@ class CreateNodeSpec extends Specification with Mockito {
   "CreateNode" should {
     "create" in {
       "calls chooseChild on ai" in {
-        val scope = Scope(stepsRemaining = 10)
+        val scope = Scope(maxDepth = 10)
         val v = mock[CreateChildNodes]
         v.updateScope(scope) returns scope
         val ai = mock[Ai]
@@ -21,7 +21,7 @@ class CreateNodeSpec extends Specification with Mockito {
       }
 
       "calls updateScope" in {
-        val scope = Scope(stepsRemaining = 10)
+        val scope = Scope(maxDepth = 10)
         val v = mock[CreateChildNodes]
         v.updateScope(scope) returns scope
         val ai = mock[Ai]
@@ -34,7 +34,7 @@ class CreateNodeSpec extends Specification with Mockito {
       }
 
       "calls create on factory" in {
-        val scope = Scope(stepsRemaining = 10)
+        val scope = Scope(maxDepth = 10)
         val v = mock[CreateChildNodes]
         v.updateScope(scope) returns scope
         val ai = mock[Ai]

@@ -59,21 +59,21 @@ class CreateChildNodesSpec extends Specification with Mockito {
     }
 
     "validChildren returns filtered seq" in {
-      val scope = Scope(stepsRemaining = 10)
+      val scope = Scope(maxDepth = 10)
       val sut = TestCreateChildNodes()
 
       sut.legalNeighbours(scope) mustEqual Seq(n1, n2)
     }
 
     "couldTerminate returns true if any child node terminates" in {
-      val scope = Scope(stepsRemaining = 10)
+      val scope = Scope(maxDepth = 10)
       val sut = TestCreateChildNodes()
 
       sut.canTerminateInStepsRemaining(scope) mustEqual true
     }
 
     "updateScope returns unchanged by default" in {
-      val scope = Scope(stepsRemaining = 10)
+      val scope = Scope(maxDepth = 10)
       val sut = TestCreateChildNodes()
 
       sut.updateScope(scope) mustEqual scope

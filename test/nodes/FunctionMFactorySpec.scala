@@ -15,7 +15,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
         
     "create" in {
       "returns instance of this type" in {
-        val s = Scope(stepsRemaining = 10)
+        val s = Scope(maxDepth = 10)
         
         val instance = factory.create(scope = s)
 
@@ -23,7 +23,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
       }
 
       "returns expected given scope with 0 functions" in {
-        val s = Scope(numFuncs = 0, stepsRemaining = 10)
+        val s = Scope(numFuncs = 0, maxDepth = 10)
         
         val instance = factory.create(scope = s)
 
@@ -33,7 +33,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
       }
 
       "returns expected given scope with 1 functions" in {
-        val s = Scope(numFuncs = 1, stepsRemaining = 10)
+        val s = Scope(numFuncs = 1, maxDepth = 10)
         
         val instance = factory.create(scope = s)
 
@@ -51,7 +51,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
       }
 
       "returns 1 child given scope with 1 maxFuncs" in {
-        val s = Scope(numFuncs = 0, stepsRemaining = 10, maxExpressionsInFunc = 1)
+        val s = Scope(numFuncs = 0, maxDepth = 10, maxExpressionsInFunc = 1)
 
         val instance = factory.create(scope = s)
 
@@ -61,7 +61,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
       }
 
       "returns 3 children given scope with 3 maxFuncs" in {
-        val s = Scope(numFuncs = 0, stepsRemaining = 10, maxExpressionsInFunc = 3)
+        val s = Scope(numFuncs = 0, maxDepth = 10, maxExpressionsInFunc = 3)
 
         val instance = factory.create(scope = s)
 

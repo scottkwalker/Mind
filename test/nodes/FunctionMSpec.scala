@@ -12,7 +12,7 @@ class FunctionMSpec extends Specification with Mockito {
 
     "validate" in {
       "false given an empty name" in {
-        val s = Scope(stepsRemaining = 10)
+        val s = Scope(maxDepth = 10)
         val v = mock[ValueRef]
         v.validate(any[Scope]) returns true
         FunctionM(params = params,
@@ -21,7 +21,7 @@ class FunctionMSpec extends Specification with Mockito {
       }
 
       "true given it can terminate in under N steps" in {
-        val s = Scope(stepsRemaining = 3)
+        val s = Scope(maxDepth = 3)
         val v = mock[ValueRef]
         v.validate(any[Scope]) returns true
 
@@ -31,7 +31,7 @@ class FunctionMSpec extends Specification with Mockito {
       }
 
       "false given it cannot terminate in 0 steps" in {
-        val s = Scope(stepsRemaining = 0)
+        val s = Scope(depth = 0)
         val v = mock[ValueRef]
         v.validate(any[Scope]) throws new RuntimeException
 
@@ -41,7 +41,7 @@ class FunctionMSpec extends Specification with Mockito {
       }
 
       "false given it cannot terminate in under N steps" in {
-        val s = Scope(stepsRemaining = 2)
+        val s = Scope(depth = 2)
         val v = mock[ValueRef]
         v.validate(any[Scope]) returns false
 
@@ -51,7 +51,7 @@ class FunctionMSpec extends Specification with Mockito {
       }
 
       "true given no empty nodes" in {
-        val s = Scope(stepsRemaining = 10)
+        val s = Scope(maxDepth = 10)
         val v = mock[ValueRef]
         v.validate(any[Scope]) returns true
 
@@ -61,7 +61,7 @@ class FunctionMSpec extends Specification with Mockito {
       }
 
       "false given an empty node" in {
-        val s = Scope(stepsRemaining = 10)
+        val s = Scope(maxDepth = 10)
         val v = mock[ValueRef]
         v.validate(any[Scope]) returns true
 

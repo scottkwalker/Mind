@@ -11,7 +11,7 @@ import ai.helpers.TestAiModule
 class AddOperatorFactorySpec extends Specification with Mockito {
   "AddOperatorFactory" should {
     "create returns instance of this type" in {
-      val s = Scope(stepsRemaining = 10)
+      val s = Scope(maxDepth = 10)
       val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
       val factory = injector.getInstance(classOf[AddOperatorFactory])
 

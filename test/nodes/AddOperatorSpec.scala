@@ -17,7 +17,7 @@ class AddOperatorSpec extends Specification with Mockito {
 
     "validate" in {
       "true given child nodes can terminate in under N steps" in {
-        val s = Scope(stepsRemaining = 2)
+        val s = Scope(maxDepth = 2)
         val v = mock[ValueRef]
         v.validate(any[Scope]) returns true
         
@@ -25,7 +25,7 @@ class AddOperatorSpec extends Specification with Mockito {
       }
       
       "false given it cannot terminate in 0 steps" in {
-        val s = Scope(stepsRemaining = 0)
+        val s = Scope(maxDepth = 0)
         val v = mock[ValueRef]
         v.validate(any[Scope]) throws new RuntimeException
         
@@ -33,7 +33,7 @@ class AddOperatorSpec extends Specification with Mockito {
       }
 
       "false given child nodes cannot terminate in under N steps" in {
-        val s = Scope(stepsRemaining = 10)
+        val s = Scope(maxDepth = 10)
         val v = mock[ValueRef]
         v.validate(any[Scope]) returns false
         
@@ -41,7 +41,7 @@ class AddOperatorSpec extends Specification with Mockito {
       }
 
       "true given none empty" in {
-        val s = Scope(stepsRemaining = 10)
+        val s = Scope(maxDepth = 10)
         val v = mock[ValueRef]
         v.validate(any[Scope]) returns true
 
@@ -49,7 +49,7 @@ class AddOperatorSpec extends Specification with Mockito {
       }
 
       "false given contains an empty node" in {
-        val s = Scope(stepsRemaining = 10)
+        val s = Scope(maxDepth = 10)
         val v = mock[ValueRef]
         v.validate(any[Scope]) returns true
 
@@ -57,7 +57,7 @@ class AddOperatorSpec extends Specification with Mockito {
       }
 
       "false given contains a node that is not valid for this level" in {
-        val s = Scope(stepsRemaining = 10)
+        val s = Scope(maxDepth = 10)
         val v = mock[ValueRef]
         v.validate(any[Scope]) returns true
 

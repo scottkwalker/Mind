@@ -8,12 +8,14 @@ import ai.Ai
 class NodeTree(val rootNode: Node) extends Node {
   override def toRawScala: String = rootNode.toRawScala
 
-  override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) false
-  else rootNode match {
-    case _: ObjectM => rootNode.validate(scope.decrementStepsRemaining)
-    case _: Empty => false
-    case _ => false
+  override def validate(scope: Scope): Boolean = if (scope.hasDepthRemaining) {
+    rootNode match {
+      case _: ObjectM => rootNode.validate(scope.incrementDepth)
+      case _: Empty => false
+      case _ => false
+    }
   }
+  else false
 }
 
 case class NodeTreeFactory @Inject()(injector: Injector,

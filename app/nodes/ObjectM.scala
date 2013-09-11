@@ -9,12 +9,14 @@ import ai.Ai
 case class ObjectM(nodes: Seq[Node], name: String) extends Node {
   override def toRawScala: String = s"object $name ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
 
-  override def validate(scope: Scope): Boolean = if (scope.noStepsRemaining) false
-  else nodes.forall(n => n match {
-    case _: FunctionM => n.validate(scope.decrementStepsRemaining)
-    case _: Empty => false
-    case _ => false
-  })
+  override def validate(scope: Scope): Boolean = if (scope.hasDepthRemaining) {
+    nodes.forall(n => n match {
+      case _: FunctionM => n.validate(scope.incrementDepth)
+      case _: Empty => false
+      case _ => false
+    })
+  }
+  else false
 }
 
 case class ObjectMFactory @Inject()(injector: Injector,

@@ -9,13 +9,13 @@ case class AddOperator(left: Node, right: Node) extends Node {
   override def toRawScala: String = s"${left.toRawScala} + ${right.toRawScala}"
 
   override def validate(scope: Scope): Boolean = {
-    if (scope.noStepsRemaining) false
-    else validate(left, scope) && validate(right, scope)
+    if (scope.hasDepthRemaining) validate(left, scope) && validate(right, scope)
+    else false
   }
 
   private def validate(n: Node, scope: Scope) = {
     n match {
-      case _: ValueRef => n.validate(scope.decrementStepsRemaining)
+      case _: ValueRef => n.validate(scope.incrementDepth)
       case _: Empty => false
       case _ => false
     }
