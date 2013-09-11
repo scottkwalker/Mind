@@ -22,7 +22,7 @@ case class NodeTreeFactory @Inject()(injector: Injector,
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ObjectMFactory]))
 
   override def create(scope: Scope): Node = {
-    val (_, child) = creator.create(legalNeighbours(scope), scope, ai)
+    val (_, child) = creator.create(legalNeighbours(scope), scope, ai) // TODO make this a createSeq
     new NodeTree(child)
   }
 

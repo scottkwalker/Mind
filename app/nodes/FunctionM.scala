@@ -30,7 +30,7 @@ case class FunctionM(params: Seq[Node],
 case class FunctionMFactory @Inject()(injector: Injector,
                                       creator: CreateSeqNodes,
                                       ai: Ai) extends CreateChildNodes {
-  val paramsLegalNeighbours: Seq[CreateChildNodes] = Seq(
+  val paramsNeighbours: Seq[CreateChildNodes] = Seq(
     injector.getInstance(classOf[ValueInFunctionParamFactory])
   )
 
@@ -50,10 +50,10 @@ case class FunctionMFactory @Inject()(injector: Injector,
   }
 
   private def createParams(scope: Scope) = creator.createSeq(
-    possibleChildren = paramsLegalNeighbours,
+    possibleChildren = paramsNeighbours,
     scope = scope,
     ai = ai,
-    constraints = (s: Scope, accLength: Int) =>  accLength < s.maxParamsInFunc,
+    constraints = (s: Scope, accLength: Int) => accLength < s.maxParamsInFunc,
     updateScopeWithAcc = (s: Scope, accLength: Int) => s.setNumVals(accLength)
   )
 

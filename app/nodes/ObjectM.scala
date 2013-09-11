@@ -23,6 +23,8 @@ case class ObjectMFactory @Inject()(injector: Injector,
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
 
   override def create(scope: Scope): Node = {
+    // TODO create object level val nodes?
+
     val (_, nodes) = createNodes(scope)
 
     ObjectM(nodes = nodes,
