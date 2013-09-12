@@ -36,7 +36,7 @@ case class NodeTreeFactory @Inject()(injector: Injector,
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     ai = ai,
-    constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxObjectsInTree),
+    constraints = (s: Scope, accLength: Int) => accLength < 1 + rng.nextInt(s.maxObjectsInTree),
     saveAccLengthInScope = (s: Scope, accLength: Int) => s.setNumFuncs(accLength)
   )
 }

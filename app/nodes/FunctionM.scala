@@ -61,7 +61,7 @@ case class FunctionMFactory @Inject()(injector: Injector,
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     ai = ai,
-    constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxExpressionsInFunc)
+    constraints = (s: Scope, accLength: Int) => accLength < 1 + rng.nextInt(s.maxExpressionsInFunc)
   )
 
   override def updateScope(scope: Scope) = scope.incrementFuncs

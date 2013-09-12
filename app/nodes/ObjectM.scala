@@ -39,7 +39,7 @@ case class ObjectMFactory @Inject()(injector: Injector,
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     ai = ai,
-    constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxFuncsInObject),
+    constraints = (s: Scope, accLength: Int) => accLength < 1 + rng.nextInt(s.maxFuncsInObject),
     saveAccLengthInScope = (s: Scope, accLength: Int) => s.setNumFuncs(accLength)
   )
 

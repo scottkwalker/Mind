@@ -25,7 +25,7 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
         bind(classOf[CreateSeqNodes]).asEagerSingleton()
 
         val rng = mock[Random]
-        rng.nextInt(any[Int]) returns 3
+        rng.nextInt(any[Int]) returns 2
 
         bind(classOf[Random]).toInstance(rng)
       }
@@ -55,7 +55,7 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
 
       "throw if you ask updateScope" in {
         val s = mock[Scope]
-        
+
         factory.updateScope(s) must throwA[scala.RuntimeException]
       }
     }

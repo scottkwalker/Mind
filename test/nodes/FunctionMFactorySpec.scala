@@ -24,7 +24,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
         bind(classOf[CreateSeqNodes]).asEagerSingleton()
 
         val rng = mock[Random]
-        rng.nextInt(any[Int]) returns 3
+        rng.nextInt(any[Int]) returns 2
 
         bind(classOf[Random]).toInstance(rng)
       }
