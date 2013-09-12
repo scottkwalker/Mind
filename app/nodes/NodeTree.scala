@@ -37,6 +37,7 @@ case class NodeTreeFactory @Inject()(injector: Injector,
     scope = scope,
     ai = ai,
     constraints = (s: Scope, accLength: Int) => accLength < 1 + rng.nextInt(s.maxObjectsInTree),
-    saveAccLengthInScope = (s: Scope, accLength: Int) => s.setNumFuncs(accLength)
+    saveAccLengthInScope = (s: Scope, accLength: Int) => s.setNumFuncs(accLength),
+    acc = Seq[Node]()
   )
 }

@@ -22,10 +22,11 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
         val sut = CreateSeqNodes(cn)
         
-        val (_, _) = sut.createSeq(Seq(v),
-          s,
-          ai,
-          constraints = (s: Scope, accLength: Int) => accLength < s.maxFuncsInObject
+        val (_, _) = sut.createSeq(possibleChildren = Seq(v),
+          scope = s,
+          ai = ai,
+          constraints = (s: Scope, accLength: Int) => accLength < s.maxFuncsInObject,
+          acc = Seq[Node]()
         )
         
         there was one(cn).create(Seq(v), s, ai)
@@ -44,10 +45,11 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
         val sut = CreateSeqNodes(cn)
 
-        val (_, _) = sut.createSeq(Seq(v),
-          s,
-          ai,
-          constraints = (s: Scope, accLength: Int) => accLength < s.maxFuncsInObject
+        val (_, _) = sut.createSeq(possibleChildren = Seq(v),
+          scope = s,
+          ai = ai,
+          constraints = (s: Scope, accLength: Int) => accLength < s.maxFuncsInObject,
+          acc = Seq[Node]()
         )
 
         there was two(cn).create(Seq(v), s, ai)
@@ -68,10 +70,11 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         rng.nextInt(any[Int]) returns 1
         val sut = CreateSeqNodes(cn)
 
-        val (_, _) = sut.createSeq(Seq(v),
-          s,
-          ai,
-          constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxFuncsInObject)
+        val (_, _) = sut.createSeq(possibleChildren = Seq(v),
+          scope = s,
+          ai = ai,
+          constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxFuncsInObject),
+          acc = Seq[Node]()
         )
 
         there was one(cn).create(Seq(v), s, ai)

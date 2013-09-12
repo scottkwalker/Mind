@@ -54,14 +54,16 @@ case class FunctionMFactory @Inject()(injector: Injector,
     scope = scope,
     ai = ai,
     constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxParamsInFunc),
-    saveAccLengthInScope = (s: Scope, accLength: Int) => s.setNumVals(accLength)
+    saveAccLengthInScope = (s: Scope, accLength: Int) => s.setNumVals(accLength),
+    acc = Seq[Node]()
   )
 
   private def createNodes(scope: Scope) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     ai = ai,
-    constraints = (s: Scope, accLength: Int) => accLength < 1 + rng.nextInt(s.maxExpressionsInFunc)
+    constraints = (s: Scope, accLength: Int) => accLength < 1 + rng.nextInt(s.maxExpressionsInFunc),
+    acc = Seq[Node]()
   )
 
   override def updateScope(scope: Scope) = scope.incrementFuncs
