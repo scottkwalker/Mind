@@ -16,7 +16,7 @@ case class ValueRefFactory @Inject() () extends CreateChildNodes {
     Memoize.Y(inner)
   }
 
-  override def create(scope: Scope): Node = {
+  override def create(scope: Scope, premade: Option[Node] = None): Node = {
     val name = "v" + scope.numVals
     ValueRef(name = name)
   }

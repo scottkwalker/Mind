@@ -15,7 +15,7 @@ class CreateNodeSpec extends Specification with Mockito {
         ai.chooseChild(any[Seq[CreateChildNodes]], any[Scope]) returns v
         val sut = CreateNode()
         
-        val (_, _) = sut.create(Seq(v), scope, ai)
+        val (_, _) = sut.create(Seq(v), scope, ai, premade = None)
         
         there was one(ai).chooseChild(Seq(v), scope)
       }
@@ -28,7 +28,7 @@ class CreateNodeSpec extends Specification with Mockito {
         ai.chooseChild(any[Seq[CreateChildNodes]], any[Scope]) returns v
         val sut = CreateNode()
         
-        val (_, _) = sut.create(Seq(v), scope, ai)
+        val (_, _) = sut.create(Seq(v), scope, ai, premade = None)
         
         there was one(v).updateScope(scope)
       }
@@ -41,9 +41,9 @@ class CreateNodeSpec extends Specification with Mockito {
         ai.chooseChild(any[Seq[CreateChildNodes]], any[Scope]) returns v
         val sut = CreateNode()
         
-        val (_, _) = sut.create(Seq(v), scope, ai)
+        val (_, _) = sut.create(Seq(v), scope, ai, premade = None)
         
-        there was one(v).create(scope)
+        there was one(v).create(scope, None)
       }
     }
   }

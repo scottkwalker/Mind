@@ -1,10 +1,9 @@
 package nodes.helpers
 
-import nodes.Node
-import scala.annotation.tailrec
+import nodes.{Empty, Node}
 
 trait CreateChildNodes {
-  def create(scope: Scope): Node
+  def create(scope: Scope, premade: Option[Node]): Node
 
   def updateScope(scope: Scope): Scope = scope
 

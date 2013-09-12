@@ -26,22 +26,23 @@ case class ObjectMFactory @Inject()(injector: Injector,
                                     rng: Random) extends CreateChildNodes {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
 
-  override def create(scope: Scope): Node = {
+  override def create(scope: Scope, premade: Option[Node] = None): Node = {
     // TODO create object level val nodes?
 
-    val (_, nodes) = createNodes(scope)
+    val (_, nodes) = createNodes(scope, premade)
 
     ObjectM(nodes = nodes,
       name = "o" + scope.numObjects)
   }
 
-  private def createNodes(scope: Scope) = creator.createSeq(
+  private def createNodes(scope: Scope, premade: Option[Node]) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     ai = ai,
     constraints = (s: Scope, accLength: Int) => accLength < 1 + rng.nextInt(s.maxFuncsInObject),
     saveAccLengthInScope = (s: Scope, accLength: Int) => s.setNumFuncs(accLength),
-    acc = Seq[Node]()
+    acc = Seq[Node](),
+    premade
   )
 
   override def updateScope(scope: Scope) = scope.incrementObjects

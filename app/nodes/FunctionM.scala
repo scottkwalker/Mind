@@ -39,31 +39,33 @@ case class FunctionMFactory @Inject()(injector: Injector,
     injector.getInstance(classOf[ValueRefFactory])
   )
 
-  override def create(scope: Scope): Node = {
-    val (updatedScope, params) = createParams(scope)
+  override def create(scope: Scope, premade: Option[Node] = None): Node = {
+    val (updatedScope, params) = createParams(scope, premade)
 
-    val (_, nodes) = createNodes(updatedScope)
+    val (_, nodes) = createNodes(updatedScope, premade)
 
     FunctionM(params = params,
       nodes = nodes,
       name = "f" + scope.numFuncs)
   }
 
-  private def createParams(scope: Scope) = creator.createSeq(
+  private def createParams(scope: Scope, premade: Option[Node]) = creator.createSeq(
     possibleChildren = paramsNeighbours,
     scope = scope,
     ai = ai,
     constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxParamsInFunc),
     saveAccLengthInScope = (s: Scope, accLength: Int) => s.setNumVals(accLength),
-    acc = Seq[Node]()
+    acc = Seq[Node](),
+    premade = premade
   )
 
-  private def createNodes(scope: Scope) = creator.createSeq(
+  private def createNodes(scope: Scope, premade: Option[Node]) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     ai = ai,
     constraints = (s: Scope, accLength: Int) => accLength < 1 + rng.nextInt(s.maxExpressionsInFunc),
-    acc = Seq[Node]()
+    acc = Seq[Node](),
+    premade = premade
   )
 
   override def updateScope(scope: Scope) = scope.incrementFuncs
