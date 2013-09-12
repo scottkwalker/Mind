@@ -5,6 +5,7 @@ import nodes.helpers.Scope
 import com.google.inject.Injector
 import com.google.inject.Inject
 import ai.Ai
+import scala.util.Random
 
 case class ObjectM(nodes: Seq[Node], name: String) extends Node {
   override def toRawScala: String = s"object $name ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
@@ -21,7 +22,8 @@ case class ObjectM(nodes: Seq[Node], name: String) extends Node {
 
 case class ObjectMFactory @Inject()(injector: Injector,
                                     creator: CreateSeqNodes,
-                                    ai: Ai) extends CreateChildNodes {
+                                    ai: Ai,
+                                    rng: Random) extends CreateChildNodes {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
 
   override def create(scope: Scope): Node = {
@@ -37,8 +39,8 @@ case class ObjectMFactory @Inject()(injector: Injector,
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     ai = ai,
-    constraints = (s: Scope, accLength: Int) => accLength < s.maxFuncsInObject,
-    updateScopeWithAcc = (s: Scope, accLength: Int) => s.setNumFuncs(accLength)
+    constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxFuncsInObject),
+    saveAccLengthInScope = (s: Scope, accLength: Int) => s.setNumFuncs(accLength)
   )
 
   override def updateScope(scope: Scope) = scope.incrementObjects

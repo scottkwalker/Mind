@@ -2,6 +2,7 @@ package nodes.helpers
 
 import com.tzavellas.sse.guice.ScalaModule
 import nodes._
+import scala.util.Random
 
 class DevModule extends ScalaModule {
   def configure() {
@@ -15,7 +16,8 @@ class DevModule extends ScalaModule {
     bind(classOf[Scope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1))
     bind(classOf[CreateNode]).asEagerSingleton()
     bind(classOf[CreateSeqNodes]).asEagerSingleton()
-    
+    bind(classOf[Random]).asEagerSingleton()
+
     //val injector: Injector =  Guice.createInjector(new DevModule)
     //val component = injector.getInstance(classOf[AddOperatorFactory])
   }

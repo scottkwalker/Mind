@@ -4,6 +4,7 @@ import nodes.helpers._
 import com.google.inject.Injector
 import com.google.inject.Inject
 import ai.Ai
+import scala.util.Random
 
 case class FunctionM(params: Seq[Node],
                      nodes: Seq[Node],
@@ -27,7 +28,8 @@ case class FunctionM(params: Seq[Node],
 
 case class FunctionMFactory @Inject()(injector: Injector,
                                       creator: CreateSeqNodes,
-                                      ai: Ai) extends CreateChildNodes {
+                                      ai: Ai,
+                                      rng: Random) extends CreateChildNodes {
   val paramsNeighbours: Seq[CreateChildNodes] = Seq(
     injector.getInstance(classOf[ValueInFunctionParamFactory])
   )
@@ -51,15 +53,15 @@ case class FunctionMFactory @Inject()(injector: Injector,
     possibleChildren = paramsNeighbours,
     scope = scope,
     ai = ai,
-    constraints = (s: Scope, accLength: Int) => accLength < s.maxParamsInFunc,
-    updateScopeWithAcc = (s: Scope, accLength: Int) => s.setNumVals(accLength)
+    constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxParamsInFunc),
+    saveAccLengthInScope = (s: Scope, accLength: Int) => s.setNumVals(accLength)
   )
 
   private def createNodes(scope: Scope) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     ai = ai,
-    constraints = (s: Scope, accLength: Int) => accLength < s.maxExpressionsInFunc
+    constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxExpressionsInFunc)
   )
 
   override def updateScope(scope: Scope) = scope.incrementFuncs
