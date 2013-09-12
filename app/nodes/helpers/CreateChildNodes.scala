@@ -1,6 +1,7 @@
 package nodes.helpers
 
 import nodes.Node
+import scala.annotation.tailrec
 
 trait CreateChildNodes {
   def create(scope: Scope): Node
@@ -16,10 +17,12 @@ trait CreateChildNodes {
     Memoize.Y(inner)
   }
 
-  val canTerminateInStepsRemaining: Scope => Boolean = {
+  protected val canTerminateInStepsRemaining: Scope => Boolean = {
     def inner(f: Scope => Boolean)(scope: Scope): Boolean = {
-      if (scope.hasDepthRemaining) neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
-      else false
+      scope.hasDepthRemaining match {
+        case true => neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
+        case false => false
+      }
     }
     Memoize.Y(inner)
   }
