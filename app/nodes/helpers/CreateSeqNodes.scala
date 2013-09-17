@@ -11,12 +11,16 @@ case class CreateSeqNodes @Inject()(createNode: CreateNode) {
                       scope: Scope,
                       ai: Ai,
                       constraints: ((Scope, Int) => Boolean),
-                      saveAccLengthInScope: ((Scope, Int) => Scope) = (scope, accLength) => scope,
-                      acc: Seq[Node],
+                      saveAccLengthInScope: Option[((Scope, Int) => Scope)] = None,
+                      acc: Seq[Node] = Seq[Node](),
                       premade: Option[Node]): (Scope, Seq[Node]) = {
     constraints(scope, acc.length) match {
       case false => {
-        val updatedScope = saveAccLengthInScope(scope, acc.length)
+        val updatedScope = saveAccLengthInScope match {
+          case Some(s) => s(scope, acc.length)
+          case None => scope
+        }
+
         (updatedScope, acc)
       }
       case true => {

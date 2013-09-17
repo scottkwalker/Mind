@@ -26,7 +26,6 @@ class CreateSeqNodesSpec extends Specification with Mockito {
           scope = s,
           ai = ai,
           constraints = (s: Scope, accLength: Int) => accLength < s.maxFuncsInObject,
-          acc = Seq[Node](),
           premade = None
         )
         
@@ -53,7 +52,6 @@ class CreateSeqNodesSpec extends Specification with Mockito {
           scope = s,
           ai = ai,
           constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxFuncsInObject),
-          acc = Seq[Node](),
           premade = None
         )
 
@@ -80,7 +78,6 @@ class CreateSeqNodesSpec extends Specification with Mockito {
           scope = s,
           ai = ai,
           constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxFuncsInObject),
-          acc = Seq[Node](),
           premade = None
         )
 
