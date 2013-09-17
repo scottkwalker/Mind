@@ -25,8 +25,8 @@ case class NodeTreeFactory @Inject()(injector: Injector,
                                      rng: Random) extends CreateChildNodes {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ObjectMFactory]))
 
-  override def create(scope: Scope, premade: Option[Node] = None): Node = {
-    val (_, nodes) = createNodes(scope, premade)
+  override def create(scope: Scope): Node = {
+    val (_, nodes) = createNodes(scope, None)
     NodeTree(nodes)
   }
 
@@ -38,6 +38,6 @@ case class NodeTreeFactory @Inject()(injector: Injector,
     ai = ai,
     constraints = (s: Scope, accLength: Int) => accLength < 1 + rng.nextInt(s.maxObjectsInTree),
     saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumFuncs(accLength)),
-    premade = premade
+    acc = {premade match {case Some(p) => Seq(p); case _ => Seq[Node]()}}
   )
 }

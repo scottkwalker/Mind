@@ -3,7 +3,9 @@ package nodes.helpers
 import nodes.{Empty, Node}
 
 trait CreateChildNodes {
-  def create(scope: Scope, premade: Option[Node]): Node
+  def create(scope: Scope): Node = Empty()
+
+  def create(scope: Scope, premade: Node): Node = Empty()
 
   def updateScope(scope: Scope): Scope = scope
 

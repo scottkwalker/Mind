@@ -20,7 +20,7 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
         bind(classOf[ObjectMFactory]).asEagerSingleton()
         bind(classOf[ValueRefFactory]).asEagerSingleton()
         bind(classOf[ValueInFunctionParamFactory]).asEagerSingleton()
-        bind(classOf[Scope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1))
+        bind(classOf[Scope]).toInstance(Scope(maxDepth = 10, maxExpressionsInFunc = 2, maxFuncsInObject = 3, maxParamsInFunc = 2, maxObjectsInTree = 3))
         bind(classOf[CreateNode]).asEagerSingleton()
         bind(classOf[CreateSeqNodes]).asEagerSingleton()
 
@@ -33,26 +33,35 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
 
     val injector: Injector = Guice.createInjector(new TestDevModule, new TestAiModule)
     val factory = injector.getInstance(classOf[NodeTreeFactory])
+    val s = injector.getInstance(classOf[Scope])
 
     "create" in {
       "returns instance of this type" in {
-        val s = Scope(maxDepth = 10, maxObjectsInTree = 3)
-
         val instance = factory.create(s)
 
         instance must beAnInstanceOf[NodeTree]
       }
 
       "returns 3 children given scope with 3 maxFuncsInObject (and rng mocked)" in {
-        val s = Scope(numFuncs = 0, maxDepth = 10, maxFuncsInObject = 3)
-
         val instance = factory.create(scope = s)
 
         instance must beLike {
           case NodeTree(child) => child.length mustEqual 3
         }
       }
+/*
+      "returns 3 children given 1 premade and scope with 3 maxFuncsInObject (and rng mocked)" in {
+        val n = mock[Node]
+        val instance = factory.create(scope = s, Some(n))
 
+        instance must beLike {
+          case NodeTree(child) => {
+            child.length mustEqual 3
+            child(0) mustEqual n
+          }
+        }
+      }
+*/
       "throw if you ask updateScope" in {
         val s = mock[Scope]
 

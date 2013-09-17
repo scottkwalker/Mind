@@ -39,10 +39,10 @@ case class FunctionMFactory @Inject()(injector: Injector,
     injector.getInstance(classOf[ValueRefFactory])
   )
 
-  override def create(scope: Scope, premade: Option[Node] = None): Node = {
-    val (updatedScope, params) = createParams(scope, premade)
+  override def create(scope: Scope): Node = {
+    val (updatedScope, params) = createParams(scope, None)
 
-    val (_, nodes) = createNodes(updatedScope, premade)
+    val (_, nodes) = createNodes(updatedScope, None)
 
     FunctionM(params = params,
       nodes = nodes,
@@ -54,16 +54,14 @@ case class FunctionMFactory @Inject()(injector: Injector,
     scope = scope,
     ai = ai,
     constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxParamsInFunc),
-    saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumVals(accLength)),
-    premade = premade
+    saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumVals(accLength))
   )
 
   private def createNodes(scope: Scope, premade: Option[Node]) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     ai = ai,
-    constraints = (s: Scope, accLength: Int) => accLength < 1 + rng.nextInt(s.maxExpressionsInFunc),
-    premade = premade
+    constraints = (s: Scope, accLength: Int) => accLength < 1 + rng.nextInt(s.maxExpressionsInFunc)
   )
 
   override def updateScope(scope: Scope) = scope.incrementFuncs

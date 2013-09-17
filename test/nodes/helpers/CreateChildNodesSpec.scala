@@ -12,7 +12,7 @@ class CreateChildNodesSpec extends Specification with Mockito {
         Memoize.Y(inner)
       }
 
-      override def create(scope: Scope, premade: Option[Node]) = null
+      override def create(scope: Scope) = null
 
       val neighbours: Seq[CreateChildNodes] = null
     }
@@ -23,7 +23,7 @@ class CreateChildNodesSpec extends Specification with Mockito {
         Memoize.Y(inner)
       }
 
-      override def create(scope: Scope, premade: Option[Node]) = null
+      override def create(scope: Scope) = null
 
       val neighbours: Seq[CreateChildNodes] = null
     }
@@ -34,7 +34,7 @@ class CreateChildNodesSpec extends Specification with Mockito {
         Memoize.Y(inner)
       }
 
-      override def create(scope: Scope, premade: Option[Node]) = null
+      override def create(scope: Scope) = null
 
       val neighbours: Seq[CreateChildNodes] = null
     }
@@ -49,13 +49,13 @@ class CreateChildNodesSpec extends Specification with Mockito {
         nNot,
         n2)
 
-      def create(scope: Scope, premade: Option[Node]): Node = Empty()
+      override def create(scope: Scope): Node = Empty()
     }
 
     case class TestCreateChildNodesNoValidChildren() extends CreateChildNodes {
       val neighbours: Seq[CreateChildNodes] = Seq(mockFactoryNotTerminates1())
 
-      def create(scope: Scope, premade: Option[Node]): Node = Empty()
+      override def create(scope: Scope): Node = Empty()
     }
 
     "validChildren returns filtered seq" in {

@@ -23,7 +23,7 @@ case class ValueInFunctionParamFactory @Inject()(creator: CreateSeqNodes,
     Memoize.Y(inner)
   }
 
-  override def create(scope: Scope, premade: Option[Node] = None): Node = {
+  override def create(scope: Scope): Node = {
     val name = "v" + scope.numVals
 
     ValueInFunctionParam(name = name,

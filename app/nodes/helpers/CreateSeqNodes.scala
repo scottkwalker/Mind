@@ -12,8 +12,7 @@ case class CreateSeqNodes @Inject()(createNode: CreateNode) {
                       ai: Ai,
                       constraints: ((Scope, Int) => Boolean),
                       saveAccLengthInScope: Option[((Scope, Int) => Scope)] = None,
-                      acc: Seq[Node] = Seq[Node](),
-                      premade: Option[Node]): (Scope, Seq[Node]) = {
+                      acc: Seq[Node] = Seq[Node]()): (Scope, Seq[Node]) = {
     constraints(scope, acc.length) match {
       case false => {
         val updatedScope = saveAccLengthInScope match {
@@ -24,15 +23,14 @@ case class CreateSeqNodes @Inject()(createNode: CreateNode) {
         (updatedScope, acc)
       }
       case true => {
-        val (updatedScope, child) = createNode.create(possibleChildren, scope, ai, premade)
+        val (updatedScope, child) = createNode.create(possibleChildren, scope, ai)
 
         createSeq(possibleChildren,
           updatedScope,
           ai,
           constraints,
           saveAccLengthInScope,
-          acc ++ Seq(child),
-          premade)
+          acc ++ Seq(child))
       }
     }
   }
