@@ -22,6 +22,7 @@ case class AddOperator (left: Node, right: Node) extends Node {
   }
 }
 
+
 case class AddOperatorFactory @Inject() (injector: Injector,
                                          creator: CreateNode,
                                          ai: Ai) extends CreateChildNodes {

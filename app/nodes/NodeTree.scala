@@ -25,10 +25,10 @@ case class NodeTreeFactory @Inject()(injector: Injector,
                                      rng: Random) extends CreateChildNodes {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ObjectMFactory]))
 
-  override def create(scope: Scope, premade: Option[Seq[Node]]): Node = {
+  override def create(scope: Scope, premade: Option[Seq[CreateChildNodes]]): Node = {
     val (_, generated) = createNodes(scope)
     val nodes: Seq[Node] = premade match {
-      case Some(pm) => generated ++ pm
+      case Some(pm) => generated ++ pm.map(p => p.create(scope))
       case _ => generated
     }
 

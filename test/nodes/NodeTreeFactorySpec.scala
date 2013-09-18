@@ -56,7 +56,10 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
 
       "returns 4 children given 1 premade and scope with 3 maxFuncsInObject (and rng mocked)" in {
         val n = mock[Node]
-        val instance = factory.create(scope = s, premade = Some(Seq(n)))
+        val c = mock[CreateChildNodes]
+        c.create(any[Scope]) returns n
+
+        val instance = factory.create(scope = s, premade = Some(Seq(c)))
 
         instance must beLike {
           case NodeTree(child) => {
