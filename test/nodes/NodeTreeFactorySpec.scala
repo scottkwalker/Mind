@@ -3,11 +3,15 @@ package nodes
 import org.specs2.mutable.Specification
 import org.specs2.mock.Mockito
 import org.specs2.execute.PendingUntilFixed
-import nodes.helpers.{CreateSeqNodes, CreateNode, Scope, DevModule}
+import nodes.helpers._
 import com.google.inject.Injector
 import com.google.inject.Guice
 import ai.helpers.TestAiModule
 import scala.util.Random
+import nodes.helpers.CreateNode
+import nodes.helpers.Scope
+import nodes.helpers.CreateSeqNodes
+import scala.Some
 
 class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTreeFactory" should {
@@ -49,19 +53,19 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
           case NodeTree(child) => child.length mustEqual 3
         }
       }
-/*
-      "returns 3 children given 1 premade and scope with 3 maxFuncsInObject (and rng mocked)" in {
+
+      "returns 4 children given 1 premade and scope with 3 maxFuncsInObject (and rng mocked)" in {
         val n = mock[Node]
-        val instance = factory.create(scope = s, Some(n))
+        val instance = factory.create(scope = s, premade = Some(Seq(n)))
 
         instance must beLike {
           case NodeTree(child) => {
-            child.length mustEqual 3
-            child(0) mustEqual n
+            child.length mustEqual 4 // 3 generated and 1 premade
+            child(3) mustEqual n
           }
         }
       }
-*/
+
       "throw if you ask updateScope" in {
         val s = mock[Scope]
 

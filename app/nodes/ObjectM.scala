@@ -29,13 +29,13 @@ case class ObjectMFactory @Inject()(injector: Injector,
   override def create(scope: Scope): Node = {
     // TODO create object level val nodes?
 
-    val (_, nodes) = createNodes(scope, None)
+    val (_, nodes) = createNodes(scope)
 
     ObjectM(nodes = nodes,
       name = "o" + scope.numObjects)
   }
 
-  private def createNodes(scope: Scope, premade: Option[Node]) = creator.createSeq(
+  private def createNodes(scope: Scope) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     ai = ai,

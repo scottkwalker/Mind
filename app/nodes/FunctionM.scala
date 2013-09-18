@@ -40,16 +40,16 @@ case class FunctionMFactory @Inject()(injector: Injector,
   )
 
   override def create(scope: Scope): Node = {
-    val (updatedScope, params) = createParams(scope, None)
+    val (updatedScope, params) = createParams(scope)
 
-    val (_, nodes) = createNodes(updatedScope, None)
+    val (_, nodes) = createNodes(updatedScope)
 
     FunctionM(params = params,
       nodes = nodes,
       name = "f" + scope.numFuncs)
   }
 
-  private def createParams(scope: Scope, premade: Option[Node]) = creator.createSeq(
+  private def createParams(scope: Scope) = creator.createSeq(
     possibleChildren = paramsNeighbours,
     scope = scope,
     ai = ai,
@@ -57,7 +57,7 @@ case class FunctionMFactory @Inject()(injector: Injector,
     saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumVals(accLength))
   )
 
-  private def createNodes(scope: Scope, premade: Option[Node]) = creator.createSeq(
+  private def createNodes(scope: Scope) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     ai = ai,

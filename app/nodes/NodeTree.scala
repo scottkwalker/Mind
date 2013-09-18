@@ -25,28 +25,28 @@ case class NodeTreeFactory @Inject()(injector: Injector,
                                      rng: Random) extends CreateChildNodes {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ObjectMFactory]))
 
-  override def create(scope: Scope, premade: Option[Seq[CreateChildNodes]]): Node = {
-    val (updatedScope, generated) = createNodes(scope, None)
+  override def create(scope: Scope, premade: Option[Seq[Node]]): Node = {
+    val (_, generated) = createNodes(scope)
     val nodes: Seq[Node] = premade match {
-      case Some(premade) => generated ++ premade.map(p => p.create(updatedScope))
+      case Some(pm) => generated ++ pm
       case _ => generated
     }
+
     NodeTree(nodes)
   }
 
   override def create(scope: Scope): Node = {
-    val (_, nodes) = createNodes(scope, None)
+    val (_, nodes) = createNodes(scope)
     NodeTree(nodes)
   }
 
   override def updateScope(scope: Scope): Scope = throw new scala.RuntimeException("Should not happen as you cannot have more than one NodeTree")
 
-  private def createNodes(scope: Scope, premade: Option[Node]): (Scope, Seq[Node]) = creator.createSeq(
+  private def createNodes(scope: Scope): (Scope, Seq[Node]) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     ai = ai,
     constraints = (s: Scope, accLength: Int) => accLength < 1 + rng.nextInt(s.maxObjectsInTree),
-    saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumFuncs(accLength)),
-    acc = {premade match {case Some(p) => Seq(p); case _ => Seq[Node]()}}
+    saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumFuncs(accLength))
   )
 }
