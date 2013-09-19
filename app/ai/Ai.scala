@@ -1,6 +1,7 @@
 package ai
 
 import nodes.helpers._
+import scala.util.Random
 
 trait Ai {
   def chooseChild(possibleChildren: Seq[CreateChildNodes]): CreateChildNodes
@@ -11,7 +12,9 @@ trait Ai {
     chooseChild(possibleChildren)
   }
 
-  def canAddAnother(accLength: Int, factoryLimit: Int): Boolean = {
-    accLength < factoryLimit
+  def canAddAnother(accLength: Int,
+                    factoryLimit: Int,
+                    rng: Random): Boolean = {
+    accLength < factoryLimit && rng.nextBoolean()
   }
 }

@@ -25,6 +25,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
 
         val rng = mock[Random]
         rng.nextInt(any[Int]) returns 2
+        rng.nextBoolean() returns true
 
         bind(classOf[Random]).toInstance(rng)
       }

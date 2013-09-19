@@ -53,7 +53,6 @@ case class FunctionMFactory @Inject()(injector: Injector,
     possibleChildren = paramsNeighbours,
     scope = scope,
     ai = ai,
-    constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxParamsInFunc),
     saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumVals(accLength)),
     factoryLimit = scope.maxParamsInFunc
   )
@@ -62,7 +61,6 @@ case class FunctionMFactory @Inject()(injector: Injector,
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     ai = ai,
-    constraints = (s: Scope, accLength: Int) => accLength < 1 + rng.nextInt(s.maxExpressionsInFunc),
     factoryLimit = scope.maxExpressionsInFunc
   )
 

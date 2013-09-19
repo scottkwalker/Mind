@@ -4,18 +4,18 @@ import com.google.inject.Inject
 import scala.annotation.tailrec
 import nodes.Node
 import ai.Ai
+import scala.util.Random
 
-case class CreateSeqNodes @Inject()(createNode: CreateNode) {
+case class CreateSeqNodes @Inject()(createNode: CreateNode, rng: Random) {
   @tailrec
   final def createSeq(possibleChildren: Seq[CreateChildNodes],
                       scope: Scope,
                       ai: Ai,
-                      constraints: ((Scope, Int) => Boolean),
                       saveAccLengthInScope: Option[((Scope, Int) => Scope)] = None,
                       acc: Seq[Node] = Seq[Node](),
                       factoryLimit: Int
                        ): (Scope, Seq[Node]) = {
-    constraints(scope, acc.length) && ai.canAddAnother(acc.length, factoryLimit) match {
+    ai.canAddAnother(acc.length, factoryLimit, rng) match {
       case false => {
         val updatedScope = saveAccLengthInScope match {
           case Some(s) => s(scope, acc.length)
@@ -30,7 +30,6 @@ case class CreateSeqNodes @Inject()(createNode: CreateNode) {
         createSeq(possibleChildren,
           updatedScope,
           ai,
-          constraints,
           saveAccLengthInScope,
           acc ++ Seq(child),
           factoryLimit
