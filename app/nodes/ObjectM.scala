@@ -38,7 +38,6 @@ case class ObjectMFactory @Inject()(injector: Injector,
   private def createNodes(scope: Scope) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
-    ai = ai,
     saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumFuncs(accLength)),
     factoryLimit = scope.maxFuncsInObject
   )

@@ -45,7 +45,6 @@ case class NodeTreeFactory @Inject()(injector: Injector,
   private def createNodes(scope: Scope): (Scope, Seq[Node]) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
-    ai = ai,
     saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumFuncs(accLength)),
     factoryLimit = scope.maxObjectsInTree
   )

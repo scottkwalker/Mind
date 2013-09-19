@@ -6,11 +6,10 @@ import nodes.Node
 import ai.Ai
 import scala.util.Random
 
-case class CreateSeqNodes @Inject()(createNode: CreateNode, rng: Random) {
+case class CreateSeqNodes @Inject()(createNode: CreateNode, rng: Random, ai: Ai) {
   @tailrec
   final def createSeq(possibleChildren: Seq[CreateChildNodes],
                       scope: Scope,
-                      ai: Ai,
                       saveAccLengthInScope: Option[((Scope, Int) => Scope)] = None,
                       acc: Seq[Node] = Seq[Node](),
                       factoryLimit: Int
@@ -29,7 +28,6 @@ case class CreateSeqNodes @Inject()(createNode: CreateNode, rng: Random) {
 
         createSeq(possibleChildren,
           updatedScope,
-          ai,
           saveAccLengthInScope,
           acc ++ Seq(child),
           factoryLimit

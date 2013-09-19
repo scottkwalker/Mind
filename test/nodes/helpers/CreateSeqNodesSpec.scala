@@ -22,11 +22,10 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         rng.nextBoolean() returns true
         val cn = mock[CreateNode]
         cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
-        val sut = CreateSeqNodes(cn, rng)
+        val sut = CreateSeqNodes(cn, rng, ai)
         
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
           scope = s,
-          ai = ai,
           factoryLimit = s.maxFuncsInObject
         )
         
@@ -47,11 +46,10 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val rng = mock[Random]
         rng.nextInt(any[Int]) returns 2
         rng.nextBoolean() returns true
-        val sut = CreateSeqNodes(cn, rng)
+        val sut = CreateSeqNodes(cn, rng, ai)
 
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
           scope = s,
-          ai = ai,
           factoryLimit = s.maxFuncsInObject
         )
 
@@ -72,11 +70,10 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val rng = mock[Random]
         rng.nextInt(any[Int]) returns 1
         rng.nextBoolean() returns true
-        val sut = CreateSeqNodes(cn, rng)
+        val sut = CreateSeqNodes(cn, rng, ai)
 
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
           scope = s,
-          ai = ai,
           factoryLimit = s.maxFuncsInObject
         )
 
@@ -97,11 +94,10 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val rng = mock[Random]
         rng.nextInt(any[Int]) returns 2
         rng.nextBoolean() returns true
-        val sut = CreateSeqNodes(cn, rng)
+        val sut = CreateSeqNodes(cn, rng, aig)
 
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
           scope = s,
-          ai = ai,
           acc = Seq(n),
           factoryLimit = s.maxFuncsInObject
         )
