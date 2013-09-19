@@ -2,6 +2,7 @@ package ai
 
 import nodes.helpers._
 import scala.util.Random
+import nodes.FunctionMFactory
 
 trait Ai {
   def chooseChild(possibleChildren: Seq[CreateChildNodes]): CreateChildNodes
@@ -16,5 +17,22 @@ trait Ai {
                     factoryLimit: Int,
                     rng: Random): Boolean = {
     accLength < factoryLimit && rng.nextBoolean()
+  }
+
+  def canAddAnother(accLength: Int,
+                    factoryLimit: Int,
+                    rng: Random,
+                    premade: Seq[CreateChildNodes]): Boolean = {
+    val wildcardFound = premade.tail match {
+      case _: FunctionMFactory => true // TODO Replace case with WildcardFactory
+      case _ => false
+    }
+
+    if(!wildcardFound) accLength < premade.length // Not wildcard so copy all premade
+    else
+    {
+      if(wildcardFound && accLength < premade.length) true // Wildcard so copy all premade and then random
+      else canAddAnother(accLength, factoryLimit, rng)
+    }
   }
 }

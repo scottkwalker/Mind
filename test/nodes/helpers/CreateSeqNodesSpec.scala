@@ -94,7 +94,7 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val rng = mock[Random]
         rng.nextInt(any[Int]) returns 2
         rng.nextBoolean() returns true
-        val sut = CreateSeqNodes(cn, rng, aig)
+        val sut = CreateSeqNodes(cn, rng, ai)
 
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
           scope = s,
