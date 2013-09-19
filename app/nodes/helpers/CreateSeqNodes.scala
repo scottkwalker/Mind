@@ -12,8 +12,10 @@ case class CreateSeqNodes @Inject()(createNode: CreateNode) {
                       ai: Ai,
                       constraints: ((Scope, Int) => Boolean),
                       saveAccLengthInScope: Option[((Scope, Int) => Scope)] = None,
-                      acc: Seq[Node] = Seq[Node]()): (Scope, Seq[Node]) = {
-    constraints(scope, acc.length) match {
+                      acc: Seq[Node] = Seq[Node](),
+                      factoryLimit: Int
+                       ): (Scope, Seq[Node]) = {
+    constraints(scope, acc.length) && ai.canAddAnother(acc.length, factoryLimit) match {
       case false => {
         val updatedScope = saveAccLengthInScope match {
           case Some(s) => s(scope, acc.length)
@@ -30,7 +32,9 @@ case class CreateSeqNodes @Inject()(createNode: CreateNode) {
           ai,
           constraints,
           saveAccLengthInScope,
-          acc ++ Seq(child))
+          acc ++ Seq(child),
+          factoryLimit
+        )
       }
     }
   }

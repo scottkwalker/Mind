@@ -5,6 +5,7 @@ import nodes._
 import org.specs2.mock.Mockito
 import ai.Ai
 import scala.util.Random
+import ai.aco.Aco
 
 class CreateSeqNodesSpec extends Specification with Mockito {
   "CreateSeqNodes" should {
@@ -16,8 +17,7 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val v = mock[CreateChildNodes]
         v.updateScope(s) returns s
         v.create(any[Scope]) returns n
-        val ai = mock[Ai]
-        ai.chooseChild(any[Seq[CreateChildNodes]], any[Scope]) returns v
+        val ai: Ai = Aco()
         val cn = mock[CreateNode]
         cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
         val sut = CreateSeqNodes(cn)
@@ -25,7 +25,8 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
           scope = s,
           ai = ai,
-          constraints = (s: Scope, accLength: Int) => accLength < s.maxFuncsInObject
+          constraints = (s: Scope, accLength: Int) => accLength < s.maxFuncsInObject,
+          factoryLimit = s.maxFuncsInObject
         )
         
         there was one(cn).create(Seq(v), s, ai)
@@ -39,8 +40,7 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val v = mock[CreateChildNodes]
         v.updateScope(s) returns s
         v.create(any[Scope]) returns n
-        val ai = mock[Ai]
-        ai.chooseChild(any[Seq[CreateChildNodes]], any[Scope]) returns v
+        val ai: Ai = Aco()
         val cn = mock[CreateNode]
         cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
         val rng = mock[Random]
@@ -50,7 +50,8 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
           scope = s,
           ai = ai,
-          constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxFuncsInObject)
+          constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxFuncsInObject),
+          factoryLimit = s.maxFuncsInObject
         )
 
         there was two(cn).create(Seq(v), s, ai)
@@ -64,8 +65,7 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val v = mock[CreateChildNodes]
         v.updateScope(s) returns s
         v.create(any[Scope]) returns n
-        val ai = mock[Ai]
-        ai.chooseChild(any[Seq[CreateChildNodes]], any[Scope]) returns v
+        val ai: Ai = Aco()
         val cn = mock[CreateNode]
         cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
         val rng = mock[Random]
@@ -75,7 +75,8 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
           scope = s,
           ai = ai,
-          constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxFuncsInObject)
+          constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxFuncsInObject),
+          factoryLimit = s.maxFuncsInObject
         )
 
         there was one(cn).create(Seq(v), s, ai)
@@ -89,8 +90,7 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val v = mock[CreateChildNodes]
         v.updateScope(s) returns s
         v.create(any[Scope]) returns n
-        val ai = mock[Ai]
-        ai.chooseChild(any[Seq[CreateChildNodes]], any[Scope]) returns v
+        val ai: Ai = Aco()
         val cn = mock[CreateNode]
         cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
         val rng = mock[Random]
@@ -101,7 +101,8 @@ class CreateSeqNodesSpec extends Specification with Mockito {
           scope = s,
           ai = ai,
           constraints = (s: Scope, accLength: Int) => accLength < rng.nextInt(s.maxFuncsInObject),
-          acc = Seq(n)
+          acc = Seq(n),
+          factoryLimit = s.maxFuncsInObject
         )
 
         there was one(cn).create(Seq(v), s, ai)

@@ -40,7 +40,8 @@ case class ObjectMFactory @Inject()(injector: Injector,
     scope = scope,
     ai = ai,
     constraints = (s: Scope, accLength: Int) => accLength < 1 + rng.nextInt(s.maxFuncsInObject),
-    saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumFuncs(accLength))
+    saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumFuncs(accLength)),
+    factoryLimit = scope.maxFuncsInObject
   )
 
   override def updateScope(scope: Scope) = scope.incrementObjects
