@@ -13,12 +13,12 @@ object ApplicationBuild extends Build {
 	// Add your project dependencies here,
     	jdbc,
     	anorm,
-	"org.specs2" %% "specs2" % "1.14" % "test",
-	"com.twitter" % "util-eval_2.10" % "6.3.7" withSources(),
-	"org.scalacheck" %% "scalacheck" % "1.10.1" % "test",
-	"org.mockito" % "mockito-all" % "1.9.5" % "test" withSources() withJavadoc(),
-	"com.google.inject" % "guice" % "3.0" withSources() withJavadoc(),
-	"com.tzavellas" % "sse-guice" % "0.7.1" withSources() withJavadoc()
+      "org.specs2" %% "specs2" % "2.2.2" % "test",
+      "com.twitter" % "util-eval_2.10" % "6.3.7",
+      "org.scalacheck" %% "scalacheck" % "1.10.1" % "test",
+      "org.mockito" % "mockito-all" % "1.9.5" % "test",
+      "com.google.inject" % "guice" % "3.0",
+      "com.tzavellas" % "sse-guice" % "0.7.1"
   )
 
 
