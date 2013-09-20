@@ -14,10 +14,10 @@ object ApplicationBuild extends Build {
     	jdbc,
     	anorm,
       "org.specs2" %% "specs2" % "2.2.2" % "test",
-      "com.twitter" % "util-eval_2.10" % "6.3.7",
+      "com.twitter" % "util-eval_2.10" % "6.5.0",
       "org.scalacheck" %% "scalacheck" % "1.10.1" % "test",
       "org.mockito" % "mockito-all" % "1.9.5" % "test",
-      "com.google.inject" % "guice" % "3.0",
+      "com.google.inject" % "guice" % "4.0-beta",
       "com.tzavellas" % "sse-guice" % "0.7.1"
   )
 
