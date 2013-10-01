@@ -18,6 +18,8 @@ case class ObjectM(nodes: Seq[Node], name: String) extends Node {
     })
   }
   else false
+
+  override def replaceEmpty(scope: Scope): Node = this
 }
 
 case class ObjectMFactory @Inject()(injector: Injector,

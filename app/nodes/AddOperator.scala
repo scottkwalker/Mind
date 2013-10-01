@@ -20,6 +20,8 @@ case class AddOperator (left: Node, right: Node) extends Node {
       case _ => false
     }
   }
+
+  override def replaceEmpty(scope: Scope): Node = this
 }
 
 

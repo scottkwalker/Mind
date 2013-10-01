@@ -41,5 +41,15 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
         nodeTree.validate(s) mustEqual false
       }
     }
+
+    "replaceEmpty" in {
+      "returns same when no wildcards" in {
+        val s = mock[Scope]
+        val f = mock[ObjectM]
+        val instance = new NodeTree(Seq(f))
+
+        instance.replaceEmpty(s) mustEqual instance
+      }
+    }
   }
 }

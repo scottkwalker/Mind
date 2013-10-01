@@ -26,5 +26,14 @@ class ValueRefSpec extends Specification with Mockito {
         ValueRef("").validate(s) mustEqual false
       }
     }
+
+    "replaceEmpty" in {
+      "returns same when no wildcards" in {
+        val s = mock[Scope]
+        val instance = ValueRef("a")
+
+        instance.replaceEmpty(s) mustEqual instance
+      }
+    }
   }
 }

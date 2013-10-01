@@ -66,6 +66,16 @@ class ObjectMSpec extends Specification with Mockito {
       val objectM = ObjectM(Seq(f), name)
 
       objectM.toRawScala mustEqual "object o0 { STUB }"
-    }    
+    }
+
+    "replaceEmpty" in {
+      "returns same when no wildcards" in {
+        val s = mock[Scope]
+        val f = mock[FunctionM]
+        val instance = ObjectM(Seq(f), name)
+
+        instance.replaceEmpty(s) mustEqual instance
+      }
+    }
   }
 }

@@ -90,5 +90,18 @@ class FunctionMSpec extends Specification with Mockito {
           name = "").toRawScala  must throwA[IllegalArgumentException]
       }
     }
+
+    "replaceEmpty" in {
+      "returns same when no wildcards" in {
+        val s = mock[Scope]
+        val v = mock[ValueRef]
+
+        val instance = FunctionM(params = params,
+          nodes = Seq(v, v),
+          name = name)
+
+        instance.replaceEmpty(s) mustEqual instance
+      }
+    }
   }
 }

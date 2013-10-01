@@ -64,5 +64,16 @@ class AddOperatorSpec extends Specification with Mockito {
         AddOperator(v, ObjectM(Nil, "ObjectM0")).validate(s) mustEqual false
       }
     }
+
+    "replaceEmpty" in {
+      "returns same when no wildcards" in {
+        val s = mock[Scope]
+        val v = mock[ValueRef]
+
+        val instance = AddOperator(v, v)
+
+        instance.replaceEmpty(s) mustEqual instance
+      }
+    }
   }
 }

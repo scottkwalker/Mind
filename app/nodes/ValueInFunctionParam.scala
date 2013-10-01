@@ -7,11 +7,13 @@ import ai.Ai
 case class ValueInFunctionParam(name: String, primitiveType: Node) extends Node {
   override def toRawScala: String = s"$name: ${primitiveType.toRawScala}"
 
-  override def validate(scope: Scope): Boolean = !name.isEmpty &&
+  override def validate(scope: Scope): Boolean = scope.hasDepthRemaining && !name.isEmpty &&
     (primitiveType match {
       case p: IntegerM => p.validate(scope)
       case _ => false
     })
+
+  override def replaceEmpty(scope: Scope): Node = this
 }
 
 case class ValueInFunctionParamFactory @Inject()(creator: CreateSeqNodes,

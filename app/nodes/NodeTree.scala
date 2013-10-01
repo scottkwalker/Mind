@@ -17,6 +17,8 @@ case class NodeTree(val nodes: Seq[Node]) extends Node {
     })
   }
   else false
+
+  override def replaceEmpty(scope: Scope): Node = this
 }
 
 case class NodeTreeFactory @Inject()(injector: Injector,

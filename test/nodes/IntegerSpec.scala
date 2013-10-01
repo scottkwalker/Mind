@@ -15,12 +15,12 @@ class IntegerSpec extends Specification with Mockito {
       IntegerM().validate(s) mustEqual true
     }
 
-    "replaceWildcards" in {
+    "replaceEmpty" in {
       "returns same when no wildcards" in {
         val s = mock[Scope]
         val instance = IntegerM()
 
-        instance.replaceWildcards(s) mustEqual instance
+        instance.replaceEmpty(s) mustEqual instance
       }
     }
   }
