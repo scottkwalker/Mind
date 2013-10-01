@@ -8,10 +8,10 @@ import com.google.inject.Guice
 import nodes.helpers.DevModule
 import ai.helpers.TestAiModule
 
-class ValueRefFactorySpec extends Specification with Mockito {
-  "ValueRefFactorySpec" should {
+class ValueInFunctionParamFactorySpec extends Specification with Mockito {
+  "ValueInFunctionParamFactorySpec" should {
     val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
-    val factory = injector.getInstance(classOf[ValueRefFactory])
+    val factory = injector.getInstance(classOf[ValueInFunctionParamFactory])
 
     "create" in {
       "returns instance of this type" in {
@@ -20,7 +20,7 @@ class ValueRefFactorySpec extends Specification with Mockito {
 
         val instance = factory.create(scope = s)
 
-        instance must beAnInstanceOf[ValueRef]
+        instance must beAnInstanceOf[ValueInFunctionParam]
       }
 
       "returns expected given scope with 0 vals" in {
@@ -30,7 +30,9 @@ class ValueRefFactorySpec extends Specification with Mockito {
         val instance = factory.create(scope = s)
 
         instance must beLike {
-          case ValueRef(name) => name mustEqual "v0"
+          case ValueInFunctionParam(name, primitiveType) => {name mustEqual "v0"
+            primitiveType must beAnInstanceOf[IntegerM]
+          }
         }
       }
 
@@ -41,7 +43,9 @@ class ValueRefFactorySpec extends Specification with Mockito {
         val instance = factory.create(scope = s)
 
         instance must beLike {
-          case ValueRef(name) => name mustEqual "v1"
+          case ValueInFunctionParam(name, primitiveType) => {name mustEqual "v1"
+            primitiveType must beAnInstanceOf[IntegerM]
+          }
         }
       }
     }
@@ -50,12 +54,12 @@ class ValueRefFactorySpec extends Specification with Mockito {
       factory.neighbours.length mustEqual 0
     }
 
-    "updateScope returns same" in {
+    "updateScope increments vals" in {
       val s = mock[Scope]
 
-      val s2 = factory.updateScope(s)
+      factory.updateScope(s)
 
-      s2 mustEqual s
+      there was one(s).incrementVals
     }
   }
 }

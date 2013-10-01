@@ -33,8 +33,6 @@ case class ValueInFunctionParamFactory @Inject()(creator: CreateSeqNodes,
   }
 
   override def updateScope(scope: Scope) = scope.incrementVals
-
-
 }
 
 

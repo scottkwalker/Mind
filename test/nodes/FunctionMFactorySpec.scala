@@ -66,7 +66,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
       "update scope calls increment functions" in {
         val s = mock[Scope]
 
-        val instance = factory.updateScope(s)
+        factory.updateScope(s)
 
         there was one(s).incrementFuncs
       }
