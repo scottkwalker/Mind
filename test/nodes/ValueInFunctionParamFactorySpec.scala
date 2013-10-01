@@ -15,8 +15,7 @@ class ValueInFunctionParamFactorySpec extends Specification with Mockito {
 
     "create" in {
       "returns instance of this type" in {
-        val s = mock[Scope]
-        s.numVals returns 0
+        val s = Scope(maxDepth = 10, maxParamsInFunc = 1)
 
         val instance = factory.create(scope = s)
 
@@ -24,8 +23,7 @@ class ValueInFunctionParamFactorySpec extends Specification with Mockito {
       }
 
       "returns expected given scope with 0 vals" in {
-        val s = mock[Scope]
-        s.numVals returns 0
+        val s = Scope(numVals = 0, maxParamsInFunc = 1, maxDepth = 10)
 
         val instance = factory.create(scope = s)
 
@@ -37,8 +35,7 @@ class ValueInFunctionParamFactorySpec extends Specification with Mockito {
       }
 
       "returns expected given scope with 1 val" in {
-        val s = mock[Scope]
-        s.numVals returns 1
+        val s = Scope(numVals = 1, maxParamsInFunc = 2, maxDepth = 10)
 
         val instance = factory.create(scope = s)
 
@@ -48,10 +45,6 @@ class ValueInFunctionParamFactorySpec extends Specification with Mockito {
           }
         }
       }
-    }
-
-    "has no possible children" in {
-      factory.neighbours.length mustEqual 0
     }
 
     "updateScope increments vals" in {

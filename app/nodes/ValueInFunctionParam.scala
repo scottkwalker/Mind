@@ -1,7 +1,7 @@
 package nodes
 
 import nodes.helpers._
-import com.google.inject.Inject
+import com.google.inject.{Injector, Inject}
 import ai.Ai
 
 case class ValueInFunctionParam(name: String, primitiveType: Node) extends Node {
@@ -22,9 +22,10 @@ case class ValueInFunctionParam(name: String, primitiveType: Node) extends Node 
   }
 }
 
-case class ValueInFunctionParamFactory @Inject()(creator: CreateSeqNodes,
+case class ValueInFunctionParamFactory @Inject()(injector: Injector,
+                                                 creator: CreateNode,
                                                  ai: Ai) extends CreateChildNodes {
-  val neighbours: Seq[CreateChildNodes] = Nil // No possible children
+  val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[IntegerMFactory]))
 
   override val canTerminateInStepsRemaining: Scope => Boolean = {
     def inner(f: Scope => Boolean)(scope: Scope): Boolean = scope.hasDepthRemaining
@@ -34,8 +35,10 @@ case class ValueInFunctionParamFactory @Inject()(creator: CreateSeqNodes,
   override def create(scope: Scope): Node = {
     val name = "v" + scope.numVals
 
+    val (_, primitiveType) = creator.create(legalNeighbours(scope), scope, ai)
+
     ValueInFunctionParam(name = name,
-      primitiveType = IntegerM()) // TODO need to make more types.
+      primitiveType = primitiveType) // TODO need to make more types.
   }
 
   override def updateScope(scope: Scope) = scope.incrementVals
