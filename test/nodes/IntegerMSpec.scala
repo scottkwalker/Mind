@@ -4,8 +4,8 @@ import org.specs2.mutable._
 import nodes.helpers.Scope
 import org.specs2.mock.Mockito
 
-class IntegerSpec extends Specification with Mockito {
-  "Integer" should {
+class IntegerMSpec extends Specification with Mockito {
+  "IntegerM" should {
     "toRawScala" in {
       IntegerM().toRawScala mustEqual "Int"
     }
@@ -16,7 +16,7 @@ class IntegerSpec extends Specification with Mockito {
     }
 
     "replaceEmpty" in {
-      "returns same when no wildcards" in {
+      "returns same when no empty nodes" in {
         val s = mock[Scope]
         val instance = IntegerM()
 

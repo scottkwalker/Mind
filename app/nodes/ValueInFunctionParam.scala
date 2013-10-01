@@ -8,12 +8,18 @@ case class ValueInFunctionParam(name: String, primitiveType: Node) extends Node 
   override def toRawScala: String = s"$name: ${primitiveType.toRawScala}"
 
   override def validate(scope: Scope): Boolean = scope.hasDepthRemaining && !name.isEmpty &&
-    (primitiveType match {
+    {primitiveType match {
       case p: IntegerM => p.validate(scope)
       case _ => false
-    })
+    }}
 
-  override def replaceEmpty(scope: Scope): Node = this
+  override def replaceEmpty(scope: Scope): Node = {
+    val p = primitiveType match {
+      case p: Empty => IntegerM() // TODO factory should generate the child node.
+      case p: Node => p.replaceEmpty(scope)
+    }
+    ValueInFunctionParam(name, p)
+  }
 }
 
 case class ValueInFunctionParamFactory @Inject()(creator: CreateSeqNodes,

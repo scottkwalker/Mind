@@ -69,7 +69,7 @@ class ObjectMSpec extends Specification with Mockito {
     }
 
     "replaceEmpty" in {
-      "returns same when no wildcards" in {
+      "returns same when no empty nodes" in {
         val s = mock[Scope]
         val f = mock[FunctionM]
         val instance = ObjectM(Seq(f), name)

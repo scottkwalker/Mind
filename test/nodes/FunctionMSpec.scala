@@ -92,7 +92,7 @@ class FunctionMSpec extends Specification with Mockito {
     }
 
     "replaceEmpty" in {
-      "returns same when no wildcards" in {
+      "returns same when no empty nodes" in {
         val s = mock[Scope]
         val v = mock[ValueRef]
 

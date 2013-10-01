@@ -55,13 +55,44 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
     }
 
     "replaceEmpty" in {
-      "returns same when no wildcards" in {
+      "calls replaceEmpty on child nodes" in {
         val s = mock[Scope]
         val name = "a"
         val p = mock[IntegerM]
+        p.replaceEmpty(any[Scope]) returns p
         val instance = ValueInFunctionParam(name, p)
 
-        instance.replaceEmpty(s) mustEqual instance
+        instance.replaceEmpty(s)
+
+        there was one(p).replaceEmpty(any[Scope])
+      }
+
+      "returns same when no empty nodes" in {
+        val s = mock[Scope]
+        val name = "a"
+        val p = mock[IntegerM]
+        p.replaceEmpty(any[Scope]) returns p
+        val instance = ValueInFunctionParam(name, p)
+
+        val result = instance.replaceEmpty(s)
+
+        result mustEqual instance
+      }
+
+      "returns without empty nodes given there were empty nodes" in {
+        val s = mock[Scope]
+        val name = "a"
+        val p = mock[Empty]
+        val instance = ValueInFunctionParam(name, p)
+
+        val result = instance.replaceEmpty(s)
+
+        result must beLike {
+          case ValueInFunctionParam(name, primitiveType) => {
+            name mustEqual "a"
+            primitiveType must beAnInstanceOf[IntegerM]
+          }
+        }
       }
     }
   }
