@@ -14,7 +14,7 @@ case class ValueInFunctionParam(name: String, primitiveType: Node) extends Node 
       case _ => false
     }}
 
-  override def replaceEmpty(scope: Scope, injector: Injector = null): Node = {
+  override def replaceEmpty(scope: Scope, injector: Injector): Node = {
     val p = primitiveType match {
       case p: Empty => injector.getInstance(classOf[IntegerMFactory]).create(scope) // TODO factory should generate the child node.
       case p: Node => p.replaceEmpty(scope, injector)

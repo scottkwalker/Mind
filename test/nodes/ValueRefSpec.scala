@@ -3,6 +3,7 @@ package nodes
 import org.specs2.mutable._
 import nodes.helpers.Scope
 import org.specs2.mock.Mockito
+import com.google.inject.Injector
 
 class ValueRefSpec extends Specification with Mockito {
   "ValueRef" should {
@@ -39,9 +40,10 @@ class ValueRefSpec extends Specification with Mockito {
       "returns same when no empty nodes" in {
         val s = mock[Scope]
         val name = "a"
+        val injector = mock[Injector]
         val instance = ValueRef(name)
 
-        instance.replaceEmpty(s) mustEqual instance
+        instance.replaceEmpty(s, injector) mustEqual instance
       }
     }
   }

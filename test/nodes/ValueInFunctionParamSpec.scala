@@ -59,11 +59,12 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
     "replaceEmpty" in {
       val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
 
-      "calls replaceEmpty on child nodes" in {
+      "calls replaceEmpty on non-empty child nodes" in {
         val s = mock[Scope]
         val name = "a"
         val p = mock[IntegerM]
         p.replaceEmpty(any[Scope], any[Injector]) returns p
+        val injector = mock[Injector]
         val instance = ValueInFunctionParam(name, p)
 
         instance.replaceEmpty(s, injector)
@@ -76,6 +77,7 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
         val name = "a"
         val p = mock[IntegerM]
         p.replaceEmpty(any[Scope], any[Injector]) returns p
+        val injector = mock[Injector]
         val instance = ValueInFunctionParam(name, p)
 
         val result = instance.replaceEmpty(s, injector)
