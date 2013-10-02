@@ -25,7 +25,7 @@ case class FunctionM(params: Seq[Node],
   }
   else false
 
-  override def replaceEmpty(scope: Scope): Node = this
+  override def replaceEmpty(scope: Scope, injector: Injector = null): Node = this
 }
 
 case class FunctionMFactory @Inject()(injector: Injector,

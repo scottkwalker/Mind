@@ -1,13 +1,13 @@
 package nodes
 
 import nodes.helpers.{Memoize, CreateChildNodes, CreateSeqNodes, Scope}
-import com.google.inject.Inject
+import com.google.inject.{Injector, Inject}
 import ai.Ai
 
 case class IntegerM() extends Node {
   override def toRawScala: String = "Int"
   override def validate(scope: Scope): Boolean = true
-  override def replaceEmpty(scope: Scope): Node = this
+  override def replaceEmpty(scope: Scope, injector: Injector = null): Node = this
 }
 
 case class IntegerMFactory @Inject()(creator: CreateSeqNodes,

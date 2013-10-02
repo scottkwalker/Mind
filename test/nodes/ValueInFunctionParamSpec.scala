@@ -1,8 +1,10 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.Scope
+import nodes.helpers.{DevModule, Scope}
 import org.specs2.mock.Mockito
+import com.google.inject.{Guice, Injector}
+import ai.helpers.TestAiModule
 
 class ValueInFunctionParamSpec extends Specification with Mockito {
   "ValueInFunctionParam" should {
@@ -55,26 +57,28 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
     }
 
     "replaceEmpty" in {
+      val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
+
       "calls replaceEmpty on child nodes" in {
         val s = mock[Scope]
         val name = "a"
         val p = mock[IntegerM]
-        p.replaceEmpty(any[Scope]) returns p
+        p.replaceEmpty(any[Scope], any[Injector]) returns p
         val instance = ValueInFunctionParam(name, p)
 
-        instance.replaceEmpty(s)
+        instance.replaceEmpty(s, injector)
 
-        there was one(p).replaceEmpty(any[Scope])
+        there was one(p).replaceEmpty(any[Scope], any[Injector])
       }
 
       "returns same when no empty nodes" in {
         val s = mock[Scope]
         val name = "a"
         val p = mock[IntegerM]
-        p.replaceEmpty(any[Scope]) returns p
+        p.replaceEmpty(any[Scope], any[Injector]) returns p
         val instance = ValueInFunctionParam(name, p)
 
-        val result = instance.replaceEmpty(s)
+        val result = instance.replaceEmpty(s, injector)
 
         result mustEqual instance
       }
@@ -85,7 +89,7 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
         val p = mock[Empty]
         val instance = ValueInFunctionParam(name, p)
 
-        val result = instance.replaceEmpty(s)
+        val result = instance.replaceEmpty(s, injector)
 
         result must beLike {
           case ValueInFunctionParam(name, primitiveType) => {

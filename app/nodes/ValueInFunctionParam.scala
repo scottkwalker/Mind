@@ -3,6 +3,7 @@ package nodes
 import nodes.helpers._
 import com.google.inject.{Injector, Inject}
 import ai.Ai
+import com.google.inject.util.Modules
 
 case class ValueInFunctionParam(name: String, primitiveType: Node) extends Node {
   override def toRawScala: String = s"$name: ${primitiveType.toRawScala}"
@@ -13,10 +14,10 @@ case class ValueInFunctionParam(name: String, primitiveType: Node) extends Node 
       case _ => false
     }}
 
-  override def replaceEmpty(scope: Scope): Node = {
+  override def replaceEmpty(scope: Scope, injector: Injector = null): Node = {
     val p = primitiveType match {
-      case p: Empty => IntegerM() // TODO factory should generate the child node.
-      case p: Node => p.replaceEmpty(scope)
+      case p: Empty => injector.getInstance(classOf[IntegerMFactory]).create(scope) // TODO factory should generate the child node.
+      case p: Node => p.replaceEmpty(scope, injector)
     }
     ValueInFunctionParam(name, p)
   }
