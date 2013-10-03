@@ -5,6 +5,7 @@ import nodes.helpers.{DevModule, Scope}
 import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import ai.helpers.TestAiModule
+import com.tzavellas.sse.guice.ScalaModule
 
 class ValueInFunctionParamSpec extends Specification with Mockito {
   "ValueInFunctionParam" should {
@@ -84,6 +85,15 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
       }
 
       "returns without empty nodes given there were empty nodes" in {
+        class TestDevModule extends ScalaModule {
+          def configure() {
+            val n: Node = mock[IntegerM]
+            val f = mock[ValueInFunctionParamFactory]
+            f.create(any[Scope]) returns n
+            bind(classOf[ValueInFunctionParamFactory]).toInstance(f)
+          }
+        }
+
         val s = mock[Scope]
         val name = "a"
         val p = mock[Empty]
