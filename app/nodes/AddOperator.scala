@@ -5,7 +5,7 @@ import com.google.inject.Injector
 import com.google.inject.Inject
 import ai.Ai
 
-case class AddOperator (left: Node, right: Node) extends Node {
+case class AddOperator(left: Node, right: Node) extends Node {
   override def toRawScala: String = s"${left.toRawScala} + ${right.toRawScala}"
 
   override def validate(scope: Scope): Boolean = {
@@ -21,13 +21,24 @@ case class AddOperator (left: Node, right: Node) extends Node {
     }
   }
 
-  override def replaceEmpty(scope: Scope, injector: Injector): Node = this
+  override def replaceEmpty(scope: Scope, injector: Injector): Node = {
+    val l = replaceEmpty(scope, injector, left)
+    val r = replaceEmpty(scope, injector, right)
+    AddOperator(l, r)
+  }
+
+  private def replaceEmpty(scope: Scope, injector: Injector, n: Node): Node = {
+    n match {
+      case _: Empty => injector.getInstance(classOf[ValueRefFactory]).create(scope)
+      case n: Node => n.replaceEmpty(scope, injector)
+    }
+  }
 }
 
 
-case class AddOperatorFactory @Inject() (injector: Injector,
-                                         creator: CreateNode,
-                                         ai: Ai) extends CreateChildNodes {
+case class AddOperatorFactory @Inject()(injector: Injector,
+                                        creator: CreateNode,
+                                        ai: Ai) extends CreateChildNodes {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ValueRefFactory]))
 
   override def create(scope: Scope): Node = {
