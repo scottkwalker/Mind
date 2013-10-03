@@ -3,6 +3,7 @@ package nodes
 import org.specs2.mutable._
 import nodes.helpers.Scope
 import org.specs2.mock.Mockito
+import com.google.inject.Injector
 
 class EmptySpec extends Specification with Mockito {
   "Empty" should {
@@ -17,9 +18,11 @@ class EmptySpec extends Specification with Mockito {
 
     "replaceEmpty throws" in {
       val s = mock[Scope]
+      val i = mock[Injector]
+
       val instance = Empty()
 
-      instance.replaceEmpty(s) must throwA[scala.RuntimeException]
+      instance.replaceEmpty(s, i) must throwA[scala.RuntimeException]
     }
   }
 }

@@ -3,6 +3,7 @@ package nodes
 import org.specs2.mutable._
 import nodes.helpers.Scope
 import org.specs2.mock.Mockito
+import com.google.inject.Injector
 
 class IntegerMSpec extends Specification with Mockito {
   "IntegerM" should {
@@ -18,9 +19,10 @@ class IntegerMSpec extends Specification with Mockito {
     "replaceEmpty" in {
       "returns same when no empty nodes" in {
         val s = mock[Scope]
+        val i = mock[Injector]
         val instance = IntegerM()
 
-        instance.replaceEmpty(s) mustEqual instance
+        instance.replaceEmpty(s, i) mustEqual instance
       }
     }
   }

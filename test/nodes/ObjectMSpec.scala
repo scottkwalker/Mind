@@ -3,6 +3,7 @@ package nodes
 import org.specs2.mutable._
 import nodes.helpers.Scope
 import org.specs2.mock.Mockito
+import com.google.inject.Injector
 
 class ObjectMSpec extends Specification with Mockito {
   "ObjectM" should {
@@ -72,9 +73,10 @@ class ObjectMSpec extends Specification with Mockito {
       "returns same when no empty nodes" in {
         val s = mock[Scope]
         val f = mock[FunctionM]
+        val i = mock[Injector]
         val instance = ObjectM(Seq(f), name)
 
-        instance.replaceEmpty(s) mustEqual instance
+        instance.replaceEmpty(s, i) mustEqual instance
       }
     }
   }

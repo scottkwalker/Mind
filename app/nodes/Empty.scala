@@ -6,5 +6,5 @@ import nodes.helpers.Scope
 case class Empty @Inject() () extends Node {
   override def toRawScala: String = throw new scala.RuntimeException
   override def validate(scope: Scope): Boolean = false
-  override def replaceEmpty(scope: Scope, injector: Injector = null): Node = throw new scala.RuntimeException
+  override def replaceEmpty(scope: Scope, injector: Injector): Node = throw new scala.RuntimeException
 }

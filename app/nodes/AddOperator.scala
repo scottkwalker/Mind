@@ -21,7 +21,7 @@ case class AddOperator (left: Node, right: Node) extends Node {
     }
   }
 
-  override def replaceEmpty(scope: Scope, injector: Injector = null): Node = this
+  override def replaceEmpty(scope: Scope, injector: Injector): Node = this
 }
 
 

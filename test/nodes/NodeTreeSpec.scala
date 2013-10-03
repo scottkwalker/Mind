@@ -4,6 +4,7 @@ import org.specs2.mutable.Specification
 import org.specs2.mock.Mockito
 import org.specs2.execute.PendingUntilFixed
 import nodes.helpers.Scope
+import com.google.inject.Injector
 
 class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTree" should {
@@ -46,9 +47,10 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
       "returns same when no empty nodes" in {
         val s = mock[Scope]
         val f = mock[ObjectM]
+        val i = mock[Injector]
         val instance = new NodeTree(Seq(f))
 
-        instance.replaceEmpty(s) mustEqual instance
+        instance.replaceEmpty(s, i) mustEqual instance
       }
     }
   }

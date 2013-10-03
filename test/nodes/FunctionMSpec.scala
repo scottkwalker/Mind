@@ -4,6 +4,7 @@ import org.specs2.mutable._
 import nodes.helpers.Scope
 import org.specs2.mock.Mockito
 import java.lang.IllegalArgumentException
+import com.google.inject.Injector
 
 class FunctionMSpec extends Specification with Mockito {
   "Function" should {
@@ -95,12 +96,13 @@ class FunctionMSpec extends Specification with Mockito {
       "returns same when no empty nodes" in {
         val s = mock[Scope]
         val v = mock[ValueRef]
+        val i = mock[Injector]
 
         val instance = FunctionM(params = params,
           nodes = Seq(v, v),
           name = name)
 
-        instance.replaceEmpty(s) mustEqual instance
+        instance.replaceEmpty(s, i) mustEqual instance
       }
     }
   }
