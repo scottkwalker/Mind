@@ -1,11 +1,11 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.{DevModule, Scope}
+import nodes.helpers.Scope
 import org.specs2.mock.Mockito
 import java.lang.IllegalArgumentException
 import com.google.inject.{Guice, Injector}
-import ai.helpers.TestAiModule
+import com.tzavellas.sse.guice.ScalaModule
 
 class FunctionMSpec extends Specification with Mockito {
   "Function" should {
@@ -89,7 +89,7 @@ class FunctionMSpec extends Specification with Mockito {
 
         FunctionM(params = params,
           nodes = Seq(a),
-          name = "").toRawScala  must throwA[IllegalArgumentException]
+          name = "").toRawScala must throwA[IllegalArgumentException]
       }
     }
 
@@ -126,10 +126,19 @@ class FunctionMSpec extends Specification with Mockito {
       }
 
       "returns without empty nodes given there were empty nodes" in {
-        val s = Scope(maxDepth = 3) //mock[Scope]
+        class TestDevModule extends ScalaModule {
+          def configure() {
+            val n: Node = mock[ValueRef]
+            val f = mock[FunctionMFactory]
+            f.create(any[Scope]) returns n
+            bind(classOf[FunctionMFactory]).toInstance(f)
+          }
+        }
+
+        val s = mock[Scope]
         val p = mock[Empty]
         val v = mock[Empty]
-        val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
+        val injector: Injector = Guice.createInjector(new TestDevModule)
         val instance = FunctionM(params = Seq(p),
           nodes = Seq(v),
           name = name)
@@ -138,8 +147,12 @@ class FunctionMSpec extends Specification with Mockito {
 
         result must beLike {
           case FunctionM(params, nodes, n) => {
-            params must   beAnInstanceOf[Seq[Empty]]
-            nodes must  beAnInstanceOf[Seq[Empty]]
+            params must beLike {
+              case Seq(p) => p must beAnInstanceOf[ValueRef]
+            }
+            nodes must beLike {
+              case Seq(n) => n must beAnInstanceOf[ValueRef]
+            }
             n mustEqual name
           }
         }
