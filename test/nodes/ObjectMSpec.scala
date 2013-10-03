@@ -3,7 +3,8 @@ package nodes
 import org.specs2.mutable._
 import nodes.helpers.Scope
 import org.specs2.mock.Mockito
-import com.google.inject.Injector
+import com.google.inject.{Guice, Injector}
+import com.tzavellas.sse.guice.ScalaModule
 
 class ObjectMSpec extends Specification with Mockito {
   "ObjectM" should {
@@ -70,13 +71,54 @@ class ObjectMSpec extends Specification with Mockito {
     }
 
     "replaceEmpty" in {
+      "calls replaceEmpty on non-empty child nodes" in {
+        val s = mock[Scope]
+        val f = mock[FunctionM]
+        f.replaceEmpty(any[Scope], any[Injector]) returns f
+        val i = mock[Injector]
+        val instance = ObjectM(Seq(f), name = name)
+
+        instance.replaceEmpty(s, i)
+
+        there was one(f).replaceEmpty(any[Scope], any[Injector])
+      }
+
       "returns same when no empty nodes" in {
         val s = mock[Scope]
         val f = mock[FunctionM]
+        f.replaceEmpty(any[Scope], any[Injector]) returns f
         val i = mock[Injector]
         val instance = ObjectM(Seq(f), name)
 
         instance.replaceEmpty(s, i) mustEqual instance
+      }
+
+      "returns without empty nodes given there were empty nodes" in {
+        class TestDevModule extends ScalaModule {
+          def configure() {
+            val n: Node = mock[FunctionM]
+            val f = mock[ObjectMFactory]
+            f.create(any[Scope]) returns n
+            bind(classOf[ObjectMFactory]).toInstance(f)
+          }
+        }
+
+        val s = mock[Scope]
+        val n = mock[Empty]
+        val injector: Injector = Guice.createInjector(new TestDevModule)
+        val instance = ObjectM(nodes = Seq(n),
+          name = name)
+
+        val result = instance.replaceEmpty(s, injector)
+
+        result must beLike {
+          case ObjectM(nodes, n) => {
+            nodes must beLike {
+              case Seq(n) => n must beAnInstanceOf[FunctionM]
+            }
+            n mustEqual name
+          }
+        }
       }
     }
   }
