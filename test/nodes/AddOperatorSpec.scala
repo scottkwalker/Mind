@@ -5,6 +5,7 @@ import nodes.helpers.{DevModule, Scope}
 import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import ai.helpers.TestAiModule
+import com.tzavellas.sse.guice.ScalaModule
 
 class AddOperatorSpec extends Specification with Mockito {
   "AddOperator" should {
@@ -91,9 +92,18 @@ class AddOperatorSpec extends Specification with Mockito {
       }
 
       "returns without empty nodes given there were empty nodes" in {
+        class TestDevModule extends ScalaModule {
+          def configure() {
+            val n: Node = mock[ValueRef]
+            val f = mock[AddOperatorFactory]
+            f.create(any[Scope]) returns n
+            bind(classOf[AddOperatorFactory]).toInstance(f)
+          }
+        }
+
         val s = mock[Scope]
         val v = mock[Empty]
-        val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
+        val injector: Injector = Guice.createInjector(new TestDevModule)
         val instance = AddOperator(v, v)
 
         val result = instance.replaceEmpty(s, injector)
