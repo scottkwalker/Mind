@@ -1,10 +1,11 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.Scope
+import nodes.helpers.{DevModule, Scope}
 import org.specs2.mock.Mockito
 import java.lang.IllegalArgumentException
-import com.google.inject.Injector
+import com.google.inject.{Guice, Injector}
+import ai.helpers.TestAiModule
 
 class FunctionMSpec extends Specification with Mockito {
   "Function" should {
@@ -93,16 +94,55 @@ class FunctionMSpec extends Specification with Mockito {
     }
 
     "replaceEmpty" in {
+      "calls replaceEmpty on non-empty child nodes" in {
+        val s = mock[Scope]
+        val p = mock[ValueInFunctionParam]
+        p.replaceEmpty(any[Scope], any[Injector]) returns p
+        val v = mock[ValueRef]
+        v.replaceEmpty(any[Scope], any[Injector]) returns v
+        val i = mock[Injector]
+        val instance = FunctionM(params = Seq(p),
+          nodes = Seq(v),
+          name = name)
+
+        instance.replaceEmpty(s, i)
+
+        there was one(p).replaceEmpty(any[Scope], any[Injector])
+        there was one(v).replaceEmpty(any[Scope], any[Injector])
+      }
+
       "returns same when no empty nodes" in {
         val s = mock[Scope]
+        val p = mock[ValueInFunctionParam]
+        p.replaceEmpty(any[Scope], any[Injector]) returns p
         val v = mock[ValueRef]
+        v.replaceEmpty(any[Scope], any[Injector]) returns v
         val i = mock[Injector]
-
-        val instance = FunctionM(params = params,
-          nodes = Seq(v, v),
+        val instance = FunctionM(params = Seq(p),
+          nodes = Seq(v),
           name = name)
 
         instance.replaceEmpty(s, i) mustEqual instance
+      }
+
+      "returns without empty nodes given there were empty nodes" in {
+        val s = Scope(maxDepth = 3) //mock[Scope]
+        val p = mock[Empty]
+        val v = mock[Empty]
+        val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
+        val instance = FunctionM(params = Seq(p),
+          nodes = Seq(v),
+          name = name)
+
+        val result = instance.replaceEmpty(s, injector)
+
+        result must beLike {
+          case FunctionM(params, nodes, n) => {
+            params must   beAnInstanceOf[Seq[Empty]]
+            nodes must  beAnInstanceOf[Seq[Empty]]
+            n mustEqual name
+          }
+        }
       }
     }
   }

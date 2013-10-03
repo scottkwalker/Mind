@@ -25,7 +25,18 @@ case class FunctionM(params: Seq[Node],
   }
   else false
 
-  override def replaceEmpty(scope: Scope, injector: Injector): Node = this
+  override def replaceEmpty(scope: Scope, injector: Injector): Node = {
+    val p = params.map(p => replaceEmpty(scope, injector, p))
+    val n = nodes.map(n => replaceEmpty(scope, injector, n))
+    FunctionM(p, n, name)
+  }
+
+  private def replaceEmpty(scope: Scope, injector: Injector, n: Node): Node = {
+    n match {
+      case _: Empty => injector.getInstance(classOf[FunctionMFactory]).create(scope)
+      case n: Node => n.replaceEmpty(scope, injector)
+    }
+  }
 }
 
 case class FunctionMFactory @Inject()(injector: Injector,
