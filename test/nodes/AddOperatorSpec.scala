@@ -22,15 +22,15 @@ class AddOperatorSpec extends Specification with Mockito {
         val s = Scope(maxDepth = 2)
         val v = mock[ValueRef]
         v.validate(any[Scope]) returns true
-        
+
         AddOperator(v, v).validate(s) mustEqual true
       }
-      
+
       "false given it cannot terminate in 0 steps" in {
         val s = Scope(maxDepth = 0)
         val v = mock[ValueRef]
         v.validate(any[Scope]) throws new RuntimeException
-        
+
         AddOperator(v, v).validate(s) mustEqual false
       }
 
@@ -38,7 +38,7 @@ class AddOperatorSpec extends Specification with Mockito {
         val s = Scope(maxDepth = 10)
         val v = mock[ValueRef]
         v.validate(any[Scope]) returns false
-        
+
         AddOperator(v, v).validate(s) mustEqual false
       }
 

@@ -28,7 +28,8 @@ class ValueInFunctionParamFactorySpec extends Specification with Mockito {
         val instance = factory.create(scope = s)
 
         instance must beLike {
-          case ValueInFunctionParam(name, primitiveType) => {name mustEqual "v0"
+          case ValueInFunctionParam(name, primitiveType) => {
+            name mustEqual "v0"
             primitiveType must beAnInstanceOf[IntegerM]
           }
         }
@@ -40,7 +41,8 @@ class ValueInFunctionParamFactorySpec extends Specification with Mockito {
         val instance = factory.create(scope = s)
 
         instance must beLike {
-          case ValueInFunctionParam(name, primitiveType) => {name mustEqual "v1"
+          case ValueInFunctionParam(name, primitiveType) => {
+            name mustEqual "v1"
             primitiveType must beAnInstanceOf[IntegerM]
           }
         }

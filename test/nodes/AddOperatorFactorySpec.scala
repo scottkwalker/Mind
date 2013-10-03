@@ -16,7 +16,7 @@ class AddOperatorFactorySpec extends Specification with Mockito {
       val factory = injector.getInstance(classOf[AddOperatorFactory])
 
       val instance = factory.create(scope = s)
-      
+
       instance must beAnInstanceOf[AddOperator]
     }
   }

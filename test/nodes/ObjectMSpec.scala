@@ -12,7 +12,7 @@ class ObjectMSpec extends Specification with Mockito {
       "true given it can terminates in under N steps" in {
         val s = Scope(maxDepth = 4)
         val f = mock[FunctionM]
-        f.validate(any[Scope]) returns true 
+        f.validate(any[Scope]) returns true
         val objectM = ObjectM(Seq(f), name)
 
         objectM.validate(s) mustEqual true
@@ -26,7 +26,7 @@ class ObjectMSpec extends Specification with Mockito {
 
         objectM.validate(s) mustEqual false
       }
-            
+
       "false given it cannot terminate in under N steps" in {
         val s = Scope(depth = 3)
         val f = mock[FunctionM]
@@ -39,7 +39,7 @@ class ObjectMSpec extends Specification with Mockito {
       "true given no empty nodes" in {
         val s = Scope(maxDepth = 10)
         val f = mock[FunctionM]
-        f.validate(any[Scope]) returns true 
+        f.validate(any[Scope]) returns true
         val objectM = ObjectM(Seq(f), name)
 
         objectM.validate(s) mustEqual true
@@ -56,7 +56,7 @@ class ObjectMSpec extends Specification with Mockito {
         val f = mock[FunctionM]
         f.validate(any[Scope]) returns true
         val objectM = ObjectM(Seq(f, Empty()), name)
-        
+
         objectM.validate(s) mustEqual false
       }
     }
