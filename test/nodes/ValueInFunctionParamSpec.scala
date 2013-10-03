@@ -97,7 +97,7 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
         val s = mock[Scope]
         val name = "a"
         val p = mock[Empty]
-        val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
+        val injector: Injector = Guice.createInjector(new TestDevModule, new TestAiModule)
         val instance = ValueInFunctionParam(name, p)
 
         val result = instance.replaceEmpty(s, injector)
