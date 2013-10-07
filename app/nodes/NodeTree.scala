@@ -18,7 +18,17 @@ case class NodeTree(val nodes: Seq[Node]) extends Node {
   }
   else false
 
-  override def replaceEmpty(scope: Scope, injector: Injector): Node = this
+  override def replaceEmpty(scope: Scope, injector: Injector): Node = {
+    val n = nodes.map(n => replaceEmpty(scope, injector, n))
+    NodeTree(n)
+  }
+
+  private def replaceEmpty(scope: Scope, injector: Injector, n: Node): Node = {
+    n match {
+      case _: Empty => injector.getInstance(classOf[NodeTreeFactory]).create(scope)
+      case n: Node => n.replaceEmpty(scope, injector)
+    }
+  }
 }
 
 case class NodeTreeFactory @Inject()(injector: Injector,

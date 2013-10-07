@@ -4,7 +4,8 @@ import org.specs2.mutable.Specification
 import org.specs2.mock.Mockito
 import org.specs2.execute.PendingUntilFixed
 import nodes.helpers.Scope
-import com.google.inject.Injector
+import com.google.inject.{Guice, Injector}
+import com.tzavellas.sse.guice.ScalaModule
 
 class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTree" should {
@@ -44,13 +45,52 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
     }
 
     "replaceEmpty" in {
+      "calls replaceEmpty on non-empty child nodes" in {
+        val s = mock[Scope]
+        val f = mock[ObjectM]
+        f.replaceEmpty(any[Scope], any[Injector]) returns f
+        val i = mock[Injector]
+        val instance = NodeTree(Seq(f))
+
+        instance.replaceEmpty(s, i)
+
+        there was one(f).replaceEmpty(any[Scope], any[Injector])
+      }
+
       "returns same when no empty nodes" in {
         val s = mock[Scope]
         val f = mock[ObjectM]
+        f.replaceEmpty(any[Scope], any[Injector]) returns f
         val i = mock[Injector]
         val instance = new NodeTree(Seq(f))
 
         instance.replaceEmpty(s, i) mustEqual instance
+      }
+
+      "returns without empty nodes given there were empty nodes" in {
+        class TestDevModule extends ScalaModule {
+          def configure() {
+            val n: Node = mock[ObjectM]
+            val f = mock[NodeTreeFactory]
+            f.create(any[Scope]) returns n
+            bind(classOf[NodeTreeFactory]).toInstance(f)
+          }
+        }
+
+        val s = mock[Scope]
+        val n = mock[Empty]
+        val injector: Injector = Guice.createInjector(new TestDevModule)
+        val instance = NodeTree(nodes = Seq(n))
+
+        val result = instance.replaceEmpty(s, injector)
+
+        result must beLike {
+          case NodeTree(nodes) => {
+            nodes must beLike {
+              case Seq(n) => n must beAnInstanceOf[ObjectM]
+            }
+          }
+        }
       }
     }
   }
