@@ -34,7 +34,7 @@ case class NodeTree(val nodes: Seq[Node]) extends Node {
 case class NodeTreeFactory @Inject()(injector: Injector,
                                      creator: CreateSeqNodes,
                                      ai: Ai,
-                                     rng: Random) extends CreateChildNodes {
+                                     rng: Random) extends CreateChildNodes with NodeTreeUpdateScope {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ObjectMFactory]))
 
   override def create(scope: Scope, premade: Option[Seq[CreateChildNodes]]): Node = {
@@ -52,12 +52,14 @@ case class NodeTreeFactory @Inject()(injector: Injector,
     NodeTree(nodes)
   }
 
-  override def updateScope(scope: Scope): Scope = throw new scala.RuntimeException("Should not happen as you cannot have more than one NodeTree")
-
   private def createNodes(scope: Scope): (Scope, Seq[Node]) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumFuncs(accLength)),
     factoryLimit = scope.maxObjectsInTree
   )
+}
+
+trait NodeTreeUpdateScope extends UpdateScope {
+  override def updateScope(scope: Scope): Scope = throw new scala.RuntimeException("Should not happen as you cannot have more than one NodeTree")
 }

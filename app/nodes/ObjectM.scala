@@ -35,7 +35,7 @@ case class ObjectM(nodes: Seq[Node], name: String) extends Node {
 case class ObjectMFactory @Inject()(injector: Injector,
                                     creator: CreateSeqNodes,
                                     ai: Ai,
-                                    rng: Random) extends CreateChildNodes {
+                                    rng: Random) extends CreateChildNodes with ObjectMUpdateScope {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
 
   override def create(scope: Scope): Node = {
@@ -53,6 +53,8 @@ case class ObjectMFactory @Inject()(injector: Injector,
     saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumFuncs(accLength)),
     factoryLimit = scope.maxFuncsInObject
   )
+}
 
-  override def updateScope(scope: Scope) = scope.incrementObjects
+trait ObjectMUpdateScope extends UpdateScope {
+  override def updateScope(scope: Scope): Scope = scope.incrementObjects
 }

@@ -6,7 +6,10 @@ import org.specs2.mock.Mockito
 
 class CreateChildNodesSpec extends Specification with Mockito {
   "CreateChildNodes" should {
-    case class mockFactoryNotTerminates1() extends CreateChildNodes {
+    trait MockUpdateScope extends UpdateScope {
+      override def updateScope(scope: Scope): Scope = scope
+    }
+    case class mockFactoryNotTerminates1() extends CreateChildNodes with MockUpdateScope {
       override val canTerminateInStepsRemaining: Scope => Boolean = {
         def inner(f: Scope => Boolean)(scope: Scope): Boolean = false
         Memoize.Y(inner)
@@ -17,7 +20,7 @@ class CreateChildNodesSpec extends Specification with Mockito {
       val neighbours: Seq[CreateChildNodes] = null
     }
 
-    case class mockFactoryTerminates1() extends CreateChildNodes {
+    case class mockFactoryTerminates1() extends CreateChildNodes with MockUpdateScope {
       override val canTerminateInStepsRemaining: Scope => Boolean = {
         def inner(f: Scope => Boolean)(scope: Scope): Boolean = true
         Memoize.Y(inner)
@@ -28,7 +31,7 @@ class CreateChildNodesSpec extends Specification with Mockito {
       val neighbours: Seq[CreateChildNodes] = null
     }
 
-    case class mockFactoryTerminates2() extends CreateChildNodes {
+    case class mockFactoryTerminates2() extends CreateChildNodes with MockUpdateScope {
       override val canTerminateInStepsRemaining: Scope => Boolean = {
         def inner(f: Scope => Boolean)(scope: Scope): Boolean = true
         Memoize.Y(inner)
@@ -43,7 +46,7 @@ class CreateChildNodesSpec extends Specification with Mockito {
     val n1 = mockFactoryTerminates1()
     val n2 = mockFactoryTerminates2()
 
-    case class TestCreateChildNodes() extends CreateChildNodes {
+    case class TestCreateChildNodes() extends CreateChildNodes with MockUpdateScope {
       val neighbours: Seq[CreateChildNodes] = Seq(nNot,
         n1,
         nNot,
@@ -52,7 +55,7 @@ class CreateChildNodesSpec extends Specification with Mockito {
       override def create(scope: Scope): Node = Empty()
     }
 
-    case class TestCreateChildNodesNoValidChildren() extends CreateChildNodes {
+    case class TestCreateChildNodesNoValidChildren() extends CreateChildNodes with MockUpdateScope {
       val neighbours: Seq[CreateChildNodes] = Seq(mockFactoryNotTerminates1())
 
       override def create(scope: Scope): Node = Empty()

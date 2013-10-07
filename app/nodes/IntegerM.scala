@@ -11,7 +11,7 @@ case class IntegerM() extends Node {
 }
 
 case class IntegerMFactory @Inject()(creator: CreateSeqNodes,
-                                     ai: Ai) extends CreateChildNodes {
+                                     ai: Ai) extends CreateChildNodes with IntegerMUpdateScope {
   val neighbours: Seq[CreateChildNodes] = Nil // No possible children
 
   override val canTerminateInStepsRemaining: Scope => Boolean = {
@@ -22,4 +22,8 @@ case class IntegerMFactory @Inject()(creator: CreateSeqNodes,
   override def create(scope: Scope): Node = {
     IntegerM()
   }
+}
+
+trait IntegerMUpdateScope extends UpdateScope {
+  override def updateScope(scope: Scope): Scope = scope
 }

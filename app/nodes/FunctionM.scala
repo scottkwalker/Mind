@@ -42,7 +42,7 @@ case class FunctionM(params: Seq[Node],
 case class FunctionMFactory @Inject()(injector: Injector,
                                       creator: CreateSeqNodes,
                                       ai: Ai,
-                                      rng: Random) extends CreateChildNodes {
+                                      rng: Random) extends CreateChildNodes with FunctionMUpdateScope {
   val paramsNeighbours: Seq[CreateChildNodes] = Seq(
     injector.getInstance(classOf[ValueInFunctionParamFactory])
   )
@@ -74,6 +74,8 @@ case class FunctionMFactory @Inject()(injector: Injector,
     scope = scope,
     factoryLimit = scope.maxExpressionsInFunc
   )
+}
 
-  override def updateScope(scope: Scope) = scope.incrementFuncs
+trait FunctionMUpdateScope extends UpdateScope {
+  override def updateScope(scope: Scope): Scope = scope.incrementFuncs
 }

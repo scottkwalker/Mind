@@ -9,7 +9,7 @@ case class ValueRef(name: String) extends Node {
   override def replaceEmpty(scope: Scope, injector: Injector): Node = this
 }
 
-case class ValueRefFactory @Inject() () extends CreateChildNodes {
+case class ValueRefFactory @Inject() () extends CreateChildNodes with ValueRefUpdateScope {
   val neighbours: Seq[CreateChildNodes] = Nil // No possible children
 
   override val canTerminateInStepsRemaining: Scope => Boolean = {
@@ -21,4 +21,8 @@ case class ValueRefFactory @Inject() () extends CreateChildNodes {
     val name = "v" + scope.numVals
     ValueRef(name = name)
   }
+}
+
+trait ValueRefUpdateScope extends UpdateScope {
+  override def updateScope(scope: Scope): Scope = scope
 }

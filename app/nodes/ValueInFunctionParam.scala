@@ -25,7 +25,7 @@ case class ValueInFunctionParam(name: String, primitiveType: Node) extends Node 
 
 case class ValueInFunctionParamFactory @Inject()(injector: Injector,
                                                  creator: CreateNode,
-                                                 ai: Ai) extends CreateChildNodes {
+                                                 ai: Ai) extends CreateChildNodes with ValueInFunctionParamUpdateScope {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[IntegerMFactory]))
 
   override val canTerminateInStepsRemaining: Scope => Boolean = {
@@ -41,8 +41,8 @@ case class ValueInFunctionParamFactory @Inject()(injector: Injector,
     ValueInFunctionParam(name = name,
       primitiveType = primitiveType) // TODO need to make more types.
   }
-
-  override def updateScope(scope: Scope) = scope.incrementVals
 }
 
-
+trait ValueInFunctionParamUpdateScope extends UpdateScope {
+  override def updateScope(scope: Scope): Scope = scope.incrementVals
+}

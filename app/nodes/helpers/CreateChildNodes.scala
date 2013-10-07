@@ -7,7 +7,7 @@ trait CreateChildNodes {
 
   def create(scope: Scope, premade: Option[Seq[CreateChildNodes]]): Node = Empty()
 
-  def updateScope(scope: Scope): Scope = scope
+  def updateScope(scope: Scope): Scope
 
   val neighbours: Seq[CreateChildNodes]
 
