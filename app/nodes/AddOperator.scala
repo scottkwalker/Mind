@@ -33,6 +33,8 @@ case class AddOperator(left: Node, right: Node) extends Node {
       case n: Node => n.replaceEmpty(scope, injector)
     }
   }
+
+  override def getMaxDepth: Int = 1 + math.max(left.getMaxDepth, right.getMaxDepth)
 }
 
 

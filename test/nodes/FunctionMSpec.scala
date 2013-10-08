@@ -157,6 +157,28 @@ class FunctionMSpec extends Specification with Mockito {
           }
         }
       }
+
+      "getMaxDepth" in {
+        "returns 1 + child getMaxDepth" in {
+          val v = mock[ValueRef]
+          v.getMaxDepth returns 2
+
+          FunctionM(params = params,
+            nodes = Seq(v, v),
+            name = name).getMaxDepth mustEqual 3
+        }
+
+        "returns 1 + child getMaxDepth when children have different depths" in {
+          val v = mock[ValueRef]
+          v.getMaxDepth returns 1
+          val v2 = mock[ValueRef]
+          v2.getMaxDepth returns 2
+
+          FunctionM(params = params,
+            nodes = Seq(v, v2),
+            name = name).getMaxDepth mustEqual 3
+        }
+      }
     }
   }
 }

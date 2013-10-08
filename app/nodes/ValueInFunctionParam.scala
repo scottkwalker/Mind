@@ -21,6 +21,8 @@ case class ValueInFunctionParam(name: String, primitiveType: Node) extends Node 
     }
     ValueInFunctionParam(name, p)
   }
+
+  override def getMaxDepth = 1 + primitiveType.getMaxDepth
 }
 
 case class ValueInFunctionParamFactory @Inject()(injector: Injector,

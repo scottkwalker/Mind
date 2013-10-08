@@ -110,5 +110,13 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
         }
       }
     }
+
+    "getMaxDepth returns 1 + child getMaxDepth" in {
+      val name = "a"
+      val p = mock[IntegerM]
+      p.getMaxDepth returns 1
+
+      ValueInFunctionParam(name, p).getMaxDepth mustEqual 2
+    }
   }
 }

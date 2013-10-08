@@ -37,6 +37,10 @@ case class FunctionM(params: Seq[Node],
       case n: Node => n.replaceEmpty(scope, injector)
     }
   }
+
+  override def getMaxDepth: Int = 1 + math.max(getMaxDepth(params), getMaxDepth(nodes))
+
+  private def getMaxDepth(n: Seq[Node]): Int = n.map(_.getMaxDepth).reduceLeft(math.max)
 }
 
 case class FunctionMFactory @Inject()(injector: Injector,

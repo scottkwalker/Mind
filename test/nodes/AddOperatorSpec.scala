@@ -115,6 +115,13 @@ class AddOperatorSpec extends Specification with Mockito {
           }
         }
       }
+
+      "getMaxDepth returns 1 + child getMaxDepth" in {
+        val v = mock[ValueRef]
+        v.getMaxDepth returns 1
+
+        AddOperator(v, v).getMaxDepth mustEqual 2
+      }
     }
   }
 }

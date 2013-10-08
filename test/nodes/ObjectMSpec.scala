@@ -120,6 +120,26 @@ class ObjectMSpec extends Specification with Mockito {
           }
         }
       }
+
+      "getMaxDepth" in {
+        "getMaxDepth returns 1 + child getMaxDepth" in {
+          val f = mock[FunctionM]
+          f.getMaxDepth returns 2
+          val objectM = ObjectM(Seq(f), name)
+
+          objectM.getMaxDepth mustEqual 3
+        }
+
+        "getMaxDepth returns 1 + child getMaxDepth" in {
+          val f = mock[FunctionM]
+          f.getMaxDepth returns 1
+          val f2 = mock[FunctionM]
+          f2.getMaxDepth returns 2
+          val objectM = ObjectM(Seq(f, f2), name)
+
+          objectM.getMaxDepth mustEqual 3
+        }
+      }
     }
   }
 }

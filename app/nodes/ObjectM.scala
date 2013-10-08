@@ -30,6 +30,8 @@ case class ObjectM(nodes: Seq[Node], name: String) extends Node {
       case n: Node => n.replaceEmpty(scope, injector)
     }
   }
+
+  override def getMaxDepth: Int = 1 + nodes.map(_.getMaxDepth).reduceLeft(math.max)
 }
 
 case class ObjectMFactory @Inject()(injector: Injector,

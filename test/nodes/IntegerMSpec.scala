@@ -25,5 +25,9 @@ class IntegerMSpec extends Specification with Mockito {
         instance.replaceEmpty(s, i) mustEqual instance
       }
     }
+
+    "getMaxDepth returns 1" in {
+      IntegerM().getMaxDepth mustEqual 1
+    }
   }
 }

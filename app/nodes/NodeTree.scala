@@ -29,6 +29,8 @@ case class NodeTree(val nodes: Seq[Node]) extends Node {
       case n: Node => n.replaceEmpty(scope, injector)
     }
   }
+
+  override def getMaxDepth = 1 + nodes.map(_.getMaxDepth).reduceLeft(math.max)
 }
 
 case class NodeTreeFactory @Inject()(injector: Injector,

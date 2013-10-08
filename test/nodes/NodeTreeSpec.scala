@@ -93,5 +93,25 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
         }
       }
     }
+
+    "getMaxDepth" in {
+      "returns 1 + child getMaxDepth" in {
+        val f = mock[ObjectM]
+        f.getMaxDepth returns 2
+        val nodeTree = new NodeTree(Seq(f))
+
+        nodeTree.getMaxDepth mustEqual 3
+      }
+
+      "returns 1 + child getMaxDepth" in {
+        val f = mock[ObjectM]
+        f.getMaxDepth returns 1
+        val f2 = mock[ObjectM]
+        f2.getMaxDepth returns 2
+        val nodeTree = new NodeTree(Seq(f, f2))
+
+        nodeTree.getMaxDepth mustEqual 3
+      }
+    }
   }
 }

@@ -8,6 +8,7 @@ case class IntegerM() extends Node {
   override def toRawScala: String = "Int"
   override def validate(scope: Scope): Boolean = true
   override def replaceEmpty(scope: Scope, injector: Injector): Node = this
+  override def getMaxDepth = 1
 }
 
 case class IntegerMFactory @Inject()(creator: CreateSeqNodes,

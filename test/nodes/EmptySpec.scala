@@ -24,5 +24,9 @@ class EmptySpec extends Specification with Mockito {
 
       instance.replaceEmpty(s, i) must throwA[scala.RuntimeException]
     }
+
+    "depth returns 0" in {
+      Empty().getMaxDepth mustEqual 0
+    }
   }
 }

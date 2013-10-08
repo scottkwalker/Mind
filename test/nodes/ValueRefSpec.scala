@@ -46,5 +46,11 @@ class ValueRefSpec extends Specification with Mockito {
         instance.replaceEmpty(s, injector) mustEqual instance
       }
     }
+
+    "getMaxDepth returns 1" in {
+      val name = "a"
+
+      ValueRef(name).getMaxDepth mustEqual 1
+    }
   }
 }
