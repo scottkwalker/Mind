@@ -112,6 +112,20 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
 
         nodeTree.getMaxDepth mustEqual 3
       }
+
+      "returns correct value for realistic tree" in {
+        val nodeTree = new NodeTree(
+          Seq(
+            ObjectM(Seq(
+              FunctionM(params = Seq(ValueInFunctionParam("a", IntegerM()), ValueInFunctionParam("b", IntegerM())),
+                nodes = Seq(
+                  AddOperator(
+                    ValueRef("a"), ValueRef("b"))
+                ), name = "f0")),
+              name = "o0")))
+
+        nodeTree.getMaxDepth mustEqual 5
+      }
     }
   }
 }

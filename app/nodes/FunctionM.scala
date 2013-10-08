@@ -34,7 +34,7 @@ case class FunctionM(params: Seq[Node],
   private def replaceEmpty(scope: Scope, injector: Injector, n: Node): Node = {
     n match {
       case _: Empty => injector.getInstance(classOf[FunctionMFactory]).create(scope)
-      case n: Node => n.replaceEmpty(scope, injector)
+      case n: Node => n.replaceEmpty(scope.incrementDepth, injector)
     }
   }
 
@@ -46,7 +46,7 @@ case class FunctionM(params: Seq[Node],
 case class FunctionMFactory @Inject()(injector: Injector,
                                       creator: CreateSeqNodes,
                                       ai: Ai,
-                                      rng: Random) extends CreateChildNodes with FunctionMUpdateScope {
+                                      rng: Random) extends CreateChildNodes with UpdateScopeIncrementFuncs {
   val paramsNeighbours: Seq[CreateChildNodes] = Seq(
     injector.getInstance(classOf[ValueInFunctionParamFactory])
   )
@@ -78,8 +78,4 @@ case class FunctionMFactory @Inject()(injector: Injector,
     scope = scope,
     factoryLimit = scope.maxExpressionsInFunc
   )
-}
-
-trait FunctionMUpdateScope extends UpdateScope {
-  override def updateScope(scope: Scope): Scope = scope.incrementFuncs
 }

@@ -30,7 +30,7 @@ case class AddOperator(left: Node, right: Node) extends Node {
   private def replaceEmpty(scope: Scope, injector: Injector, n: Node): Node = {
     n match {
       case _: Empty => injector.getInstance(classOf[ValueRefFactory]).create(scope)
-      case n: Node => n.replaceEmpty(scope, injector)
+      case n: Node => n.replaceEmpty(scope.incrementDepth, injector)
     }
   }
 
@@ -40,7 +40,7 @@ case class AddOperator(left: Node, right: Node) extends Node {
 
 case class AddOperatorFactory @Inject()(injector: Injector,
                                         creator: CreateNode,
-                                        ai: Ai) extends CreateChildNodes with AddOperatorUpdateScope {
+                                        ai: Ai) extends CreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ValueRefFactory]))
 
   override def create(scope: Scope): Node = {
@@ -49,8 +49,4 @@ case class AddOperatorFactory @Inject()(injector: Injector,
     AddOperator(left = leftChild,
       right = rightChild)
   }
-}
-
-trait AddOperatorUpdateScope extends UpdateScope {
-  override def updateScope(scope: Scope): Scope = scope
 }

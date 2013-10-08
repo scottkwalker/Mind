@@ -10,7 +10,7 @@ case class ValueRef(name: String) extends Node {
   override def getMaxDepth = 1
 }
 
-case class ValueRefFactory @Inject() () extends CreateChildNodes with ValueRefUpdateScope {
+case class ValueRefFactory @Inject() () extends CreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[CreateChildNodes] = Nil // No possible children
 
   override val canTerminateInStepsRemaining: Scope => Boolean = {
@@ -22,8 +22,4 @@ case class ValueRefFactory @Inject() () extends CreateChildNodes with ValueRefUp
     val name = "v" + scope.numVals
     ValueRef(name = name)
   }
-}
-
-trait ValueRefUpdateScope extends UpdateScope {
-  override def updateScope(scope: Scope): Scope = scope
 }
