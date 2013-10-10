@@ -5,8 +5,9 @@ import com.google.inject.Injector
 import com.google.inject.Inject
 import ai.Ai
 import scala.util.Random
+import scala.annotation.tailrec
 
-case class NodeTree(val nodes: Seq[Node]) extends Node {
+case class NodeTree(val nodes: Seq[Node]) extends Node with UpdateScopeThrows {
   override def toRawScala: String = nodes.map(f => f.toRawScala).mkString(" ")
 
   override def validate(scope: Scope): Boolean = if (scope.hasDepthRemaining) {
@@ -19,8 +20,16 @@ case class NodeTree(val nodes: Seq[Node]) extends Node {
   else false
 
   override def replaceEmpty(scope: Scope, injector: Injector): Node = {
-    val n = nodes.map(n => replaceEmpty(scope, injector, n))
+    val n = replaceEmptyInSeq(scope, injector, nodes)
     NodeTree(n)
+  }
+
+  @tailrec
+  private def replaceEmptyInSeq(scope: Scope, injector: Injector, n: Seq[Node], acc: Seq[Node] = Seq[Node]()): Seq[Node] = {
+    n match {
+      case x :: xs => replaceEmptyInSeq(scope, injector, xs, acc ++ Seq(replaceEmpty(scope, injector, x)))
+      case nil => acc
+    }
   }
 
   private def replaceEmpty(scope: Scope, injector: Injector, n: Node): Node = {

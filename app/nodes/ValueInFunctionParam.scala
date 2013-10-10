@@ -5,7 +5,7 @@ import com.google.inject.{Injector, Inject}
 import ai.Ai
 import com.google.inject.util.Modules
 
-case class ValueInFunctionParam(name: String, primitiveType: Node) extends Node {
+case class ValueInFunctionParam(name: String, primitiveType: Node) extends Node with UpdateScopeIncrementVals {
   override def toRawScala: String = s"$name: ${primitiveType.toRawScala}"
 
   override def validate(scope: Scope): Boolean = scope.hasDepthRemaining && !name.isEmpty &&
@@ -16,8 +16,8 @@ case class ValueInFunctionParam(name: String, primitiveType: Node) extends Node 
 
   override def replaceEmpty(scope: Scope, injector: Injector): Node = {
     val p = primitiveType match {
-      case p: Empty => injector.getInstance(classOf[IntegerMFactory]).create(scope) // TODO factory should generate the child node.
-      case p: Node => p.replaceEmpty(scope.incrementDepth, injector)
+      case p: Empty => injector.getInstance(classOf[IntegerMFactory]).create(scope)
+      case p: Node => p.replaceEmpty(updateScope(scope.incrementDepth), injector)
     }
     ValueInFunctionParam(name, p)
   }

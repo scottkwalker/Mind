@@ -60,6 +60,8 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
     "replaceEmpty" in {
       "calls replaceEmpty on non-empty child nodes" in {
         val s = mock[Scope]
+        s.incrementVals returns s
+        s.incrementDepth returns s
         val name = "a"
         val p = mock[IntegerM]
         p.replaceEmpty(any[Scope], any[Injector]) returns p
@@ -73,6 +75,8 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
 
       "returns same when no empty nodes" in {
         val s = mock[Scope]
+        s.incrementVals returns s
+        s.incrementDepth returns s
         val name = "a"
         val p = mock[IntegerM]
         p.replaceEmpty(any[Scope], any[Injector]) returns p

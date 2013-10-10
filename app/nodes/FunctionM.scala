@@ -5,10 +5,11 @@ import com.google.inject.Injector
 import com.google.inject.Inject
 import ai.Ai
 import scala.util.Random
+import scala.annotation.tailrec
 
 case class FunctionM(params: Seq[Node],
                      nodes: Seq[Node],
-                     name: String) extends Node {
+                     name: String) extends Node with UpdateScopeIncrementFuncs {
   override def toRawScala: String = {
     require(!name.isEmpty)
     s"def $name${params.map(f => f.toRawScala).mkString("(", ", ", ")")} = ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
@@ -26,9 +27,17 @@ case class FunctionM(params: Seq[Node],
   else false
 
   override def replaceEmpty(scope: Scope, injector: Injector): Node = {
-    val p = params.map(p => replaceEmpty(scope, injector, p))
-    val n = nodes.map(n => replaceEmpty(scope, injector, n))
+    val p = replaceEmptyInSeq(scope, injector, params)
+    val n = replaceEmptyInSeq(scope, injector, nodes)
     FunctionM(p, n, name)
+  }
+
+  @tailrec
+  private def replaceEmptyInSeq(scope: Scope, injector: Injector, n: Seq[Node], acc: Seq[Node] = Seq[Node]()): Seq[Node] = {
+    n match {
+      case x :: xs => replaceEmptyInSeq(updateScope(scope), injector, xs, acc ++ Seq(replaceEmpty(scope, injector, x)))
+      case nil => acc
+    }
   }
 
   private def replaceEmpty(scope: Scope, injector: Injector, n: Node): Node = {

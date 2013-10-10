@@ -21,22 +21,22 @@ case class ObjectM(nodes: Seq[Node], name: String) extends Node with UpdateScope
   else false
 
   override def replaceEmpty(scope: Scope, injector: Injector): Node = {
-    val n = replaceEmpty(scope, injector, nodes)//nodes.map(n => replaceEmpty(scope, injector, n))
+    val n = replaceEmptyInSeq(scope, injector, nodes)
     ObjectM(n, name)
   }
 
+  @tailrec
+  private def replaceEmptyInSeq(scope: Scope, injector: Injector, n: Seq[Node], acc: Seq[Node] = Seq[Node]()): Seq[Node] = {
+    n match {
+      case x :: xs => replaceEmptyInSeq(updateScope(scope), injector, xs, acc ++ Seq(replaceEmpty(scope, injector, x)))
+      case nil => acc
+    }
+  }
+  
   private def replaceEmpty(scope: Scope, injector: Injector, n: Node): Node = {
     n match {
       case _: Empty => injector.getInstance(classOf[ObjectMFactory]).create(scope)
       case n: Node => n.replaceEmpty(scope.incrementDepth, injector)
-    }
-  }
-
-  @tailrec
-  private def replaceEmpty(scope: Scope, injector: Injector, n: Seq[Node], acc: Seq[Node] = Seq[Node]()): Seq[Node] = {
-    n match {
-      case x :: xs => replaceEmpty(updateScope(scope), injector, xs, acc ++ Seq(replaceEmpty(scope, injector, x)))
-      case nil => acc
     }
   }
 
