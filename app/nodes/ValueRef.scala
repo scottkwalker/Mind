@@ -3,7 +3,7 @@ package nodes
 import nodes.helpers._
 import com.google.inject.{Injector, Inject}
 
-case class ValueRef(name: String) extends Node {
+case class  ValueRef(name: String) extends Node with UpdateScopeNoChange {
   override def toRawScala: String = name
   override def validate(scope: Scope): Boolean = if (scope.hasDepthRemaining) !name.isEmpty else false
   override def replaceEmpty(scope: Scope, injector: Injector): Node = this

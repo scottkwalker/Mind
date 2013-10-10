@@ -4,7 +4,7 @@ import nodes.helpers.{Memoize, CreateChildNodes, CreateSeqNodes, Scope}
 import com.google.inject.{Injector, Inject}
 import ai.Ai
 
-case class IntegerM() extends Node {
+case class IntegerM() extends Node with UpdateScopeNoChange {
   override def toRawScala: String = "Int"
   override def validate(scope: Scope): Boolean = true
   override def replaceEmpty(scope: Scope, injector: Injector): Node = this

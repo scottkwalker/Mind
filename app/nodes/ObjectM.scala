@@ -28,7 +28,11 @@ case class ObjectM(nodes: Seq[Node], name: String) extends Node with UpdateScope
   @tailrec
   private def replaceEmptyInSeq(scope: Scope, injector: Injector, n: Seq[Node], acc: Seq[Node] = Seq[Node]()): Seq[Node] = {
     n match {
-      case x :: xs => replaceEmptyInSeq(updateScope(scope), injector, xs, acc ++ Seq(replaceEmpty(scope, injector, x)))
+      case x :: xs => {
+        val replaced = replaceEmpty(scope, injector, x)
+        val updatedScope = replaced.updateScope(scope)
+        replaceEmptyInSeq(updatedScope, injector, xs, acc ++ Seq(replaced))
+      }
       case nil => acc
     }
   }

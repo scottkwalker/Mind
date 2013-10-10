@@ -8,4 +8,5 @@ trait Node {
   def validate(scope: Scope): Boolean
   def replaceEmpty(scope: Scope, injector: Injector): Node
   def getMaxDepth: Int = 0
+  def updateScope(scope: Scope): Scope
 }

@@ -5,7 +5,7 @@ import com.google.inject.Injector
 import com.google.inject.Inject
 import ai.Ai
 
-case class AddOperator(left: Node, right: Node) extends Node {
+case class AddOperator(left: Node, right: Node) extends Node with UpdateScopeNoChange {
   override def toRawScala: String = s"${left.toRawScala} + ${right.toRawScala}"
 
   override def validate(scope: Scope): Boolean = {
