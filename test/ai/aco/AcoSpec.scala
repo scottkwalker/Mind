@@ -42,7 +42,7 @@ class AcoSpec extends Specification with Mockito {
         maxObjectsInTree = 1)
 
       try {
-        for (i <- 1 to 100){
+        for (i <- 1 to 10){
           val nodeTree: NodeTree = premade.replaceEmpty(scope, injector).asInstanceOf[NodeTree]
 
           //println(nodeTree)
