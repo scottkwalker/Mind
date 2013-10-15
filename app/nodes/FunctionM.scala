@@ -46,7 +46,7 @@ case class FunctionM(params: Seq[Node],
 
   private def replaceEmpty(scope: Scope, injector: Injector, n: Node): Node = {
     n match {
-      case _: Empty => injector.getInstance(classOf[FunctionMFactory]).create(scope)
+      case _: Empty => injector.getInstance(classOf[AddOperatorFactory]).create(scope) // TODO need to be able to replace when there are multiple to choose from
       case n: Node => n.replaceEmpty(scope.incrementDepth, injector)
     }
   }

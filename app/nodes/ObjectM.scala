@@ -39,7 +39,7 @@ case class ObjectM(nodes: Seq[Node], name: String) extends Node with UpdateScope
   
   private def replaceEmpty(scope: Scope, injector: Injector, n: Node): Node = {
     n match {
-      case _: Empty => injector.getInstance(classOf[ObjectMFactory]).create(scope)
+      case _: Empty => injector.getInstance(classOf[FunctionMFactory]).create(scope)
       case n: Node => n.replaceEmpty(scope.incrementDepth, injector)
     }
   }

@@ -38,7 +38,7 @@ case class NodeTree(val nodes: Seq[Node]) extends Node with UpdateScopeThrows {
 
   private def replaceEmpty(scope: Scope, injector: Injector, n: Node): Node = {
     n match {
-      case _: Empty => injector.getInstance(classOf[NodeTreeFactory]).create(scope)
+      case _: Empty => injector.getInstance(classOf[ObjectMFactory]).create(scope)
       case n: Node => n.replaceEmpty(scope.incrementDepth, injector)
     }
   }
