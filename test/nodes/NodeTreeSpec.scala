@@ -3,9 +3,10 @@ package nodes
 import org.specs2.mutable.Specification
 import org.specs2.mock.Mockito
 import org.specs2.execute.PendingUntilFixed
-import nodes.helpers.Scope
+import nodes.helpers.{DevModule, Scope}
 import com.google.inject.{Guice, Injector}
 import com.tzavellas.sse.guice.ScalaModule
+import ai.helpers.TestAiModule
 
 class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTree" should {
@@ -68,18 +69,13 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
       }
 
       "returns without empty nodes given there were empty nodes" in {
-        class TestDevModule extends ScalaModule {
-          def configure() {
-            val n: Node = mock[ObjectM]
-            val f = mock[NodeTreeFactory]
-            f.create(any[Scope]) returns n
-            bind(classOf[NodeTreeFactory]).toInstance(f)
-          }
-        }
-
-        val s = mock[Scope]
+        val s = Scope(maxExpressionsInFunc = 1,
+          maxFuncsInObject = 1,
+          maxParamsInFunc = 1,
+          maxDepth = 5,
+          maxObjectsInTree = 1)
         val n = mock[Empty]
-        val injector: Injector = Guice.createInjector(new TestDevModule)
+        val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
         val instance = NodeTree(nodes = Seq(n))
 
         val result = instance.replaceEmpty(s, injector)

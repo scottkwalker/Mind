@@ -35,13 +35,11 @@ case class FunctionM(params: Seq[Node],
 
   private def funcCreateParams(scope: Scope, injector: Injector, premade: Seq[Node]): (Scope, Seq[Node]) = {
     val factory = injector.getInstance(classOf[FunctionMFactory])
-    println("p")
     factory.createParams(scope = scope, acc = premade.init)
   }
 
   private def funcCreateNodes(scope: Scope, injector: Injector, premade: Seq[Node]): (Scope, Seq[Node]) = {
     val factory = injector.getInstance(classOf[FunctionMFactory])
-    println("n")
     factory.createNodes(scope = scope, acc = premade.init)
   }
 

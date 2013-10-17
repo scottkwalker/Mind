@@ -23,7 +23,6 @@ case class CreateSeqNodes @Inject()(createNode: CreateNode, rng: Random, ai: Ai)
         (updatedScope, acc)
       }
       case true => {
-        println("scope.numFuncs: " + scope.numFuncs)
         val (updatedScope, child) = createNode.create(possibleChildren, scope, ai)
 
         createSeq(possibleChildren,

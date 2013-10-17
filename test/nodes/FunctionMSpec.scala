@@ -139,7 +139,7 @@ class FunctionMSpec extends Specification with Mockito {
           name = name)
 
         val result = instance.replaceEmpty(s, injector)
-println("** " +result)
+
         result must beLike {
           case FunctionM(params, nodes, n) => {
             params must beLike {
