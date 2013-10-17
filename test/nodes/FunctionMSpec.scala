@@ -1,11 +1,11 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.Scope
+import nodes.helpers.{DevModule, Scope}
 import org.specs2.mock.Mockito
 import java.lang.IllegalArgumentException
 import com.google.inject.{Guice, Injector}
-import com.tzavellas.sse.guice.ScalaModule
+import ai.helpers.TestAiModule
 
 class FunctionMSpec extends Specification with Mockito {
   "Function" should {
@@ -126,32 +126,27 @@ class FunctionMSpec extends Specification with Mockito {
       }
 
       "returns without empty nodes given there were empty nodes" in {
-        class TestDevModule extends ScalaModule {
-          def configure() {
-            val n: Node = mock[ValueRef]
-            val f = mock[FunctionMFactory]
-            f.create(any[Scope]) returns n
-            bind(classOf[FunctionMFactory]).toInstance(f)
-          }
-        }
-
-        val s = mock[Scope]
+        val s = Scope(maxExpressionsInFunc = 1,
+          maxFuncsInObject = 1,
+          maxParamsInFunc = 1,
+          maxDepth = 5,
+          maxObjectsInTree = 1)
         val p = mock[Empty]
         val v = mock[Empty]
-        val injector: Injector = Guice.createInjector(new TestDevModule)
+        val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
         val instance = FunctionM(params = Seq(p),
           nodes = Seq(v),
           name = name)
 
         val result = instance.replaceEmpty(s, injector)
-
+println("** " +result)
         result must beLike {
           case FunctionM(params, nodes, n) => {
             params must beLike {
-              case Seq(p) => p must beAnInstanceOf[ValueRef]
+              case Seq(p) => p must beAnInstanceOf[ValueInFunctionParam]
             }
             nodes must beLike {
-              case Seq(n) => n must beAnInstanceOf[ValueRef]
+              case Seq(n) => n must beAnInstanceOf[AddOperator]
             }
             n mustEqual name
           }

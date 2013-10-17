@@ -16,7 +16,8 @@ trait Ai {
   def canAddAnother(accLength: Int,
                     factoryLimit: Int,
                     rng: Random): Boolean = {
-    accLength < factoryLimit && rng.nextBoolean()
+    accLength < 1 ||
+      (accLength < factoryLimit && rng.nextBoolean())
   }
 
   def canAddAnother(accLength: Int,
@@ -28,10 +29,9 @@ trait Ai {
       case _ => false
     }
 
-    if(!wildcardFound) accLength < premade.length // Not wildcard so copy all premade
-    else
-    {
-      if(wildcardFound && accLength < premade.length) true // Wildcard so copy all premade and then random
+    if (!wildcardFound) accLength < premade.length // Not wildcard so copy all premade
+    else {
+      if (wildcardFound && accLength < premade.length) true // Wildcard so copy all premade and then random
       else canAddAnother(accLength, factoryLimit, rng)
     }
   }

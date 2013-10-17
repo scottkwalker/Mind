@@ -27,29 +27,44 @@ case class FunctionM(params: Seq[Node],
   else false
 
   override def replaceEmpty(scope: Scope, injector: Injector): Node = {
-    val p = replaceEmptyInSeq(scope, injector, params)
-    val n = replaceEmptyInSeq(scope, injector, nodes)
+    val (updatedScope, p) = replaceEmptyInSeq(scope, injector, params, funcCreateParams)
+    val (_, n) = replaceEmptyInSeq(updatedScope, injector, nodes, funcCreateNodes)
+
     FunctionM(p, n, name)
   }
 
+  private def funcCreateParams(scope: Scope, injector: Injector, premade: Seq[Node]): (Scope, Seq[Node]) = {
+    val factory = injector.getInstance(classOf[FunctionMFactory])
+    println("p")
+    factory.createParams(scope = scope, acc = premade.init)
+  }
+
+  private def funcCreateNodes(scope: Scope, injector: Injector, premade: Seq[Node]): (Scope, Seq[Node]) = {
+    val factory = injector.getInstance(classOf[FunctionMFactory])
+    println("n")
+    factory.createNodes(scope = scope, acc = premade.init)
+  }
+
   @tailrec
-  private def replaceEmptyInSeq(scope: Scope, injector: Injector, n: Seq[Node], acc: Seq[Node] = Seq[Node]()): Seq[Node] = {
+  private def replaceEmptyInSeq(scope: Scope, injector: Injector, n: Seq[Node], f: ((Scope, Injector, Seq[Node]) => (Scope, Seq[Node])), acc: Seq[Node] = Seq[Node]()): (Scope, Seq[Node]) = {
     n match {
       case x :: xs => {
-        val replaced = replaceEmpty(scope, injector, x)
-        val updatedScope = replaced.updateScope(scope)
-        replaceEmptyInSeq(updatedScope, injector, xs, acc ++ Seq(replaced))
+        val (updatedScope, replaced) = x match {
+          case _: Empty => {
+            f(scope, injector, n)
+          }
+          case n: Node => {
+            val r = n.replaceEmpty(scope, injector)
+            val u = r.updateScope(scope)
+            (u, Seq(r))
+          }
+        }
+        replaceEmptyInSeq(updatedScope, injector, xs, f, acc ++ replaced)
       }
-      case nil => acc
+      case nil => (scope, acc)
     }
   }
 
-  private def replaceEmpty(scope: Scope, injector: Injector, n: Node): Node = {
-    n match {
-      case _: Empty => injector.getInstance(classOf[FunctionMFactory]).create(scope)
-      case n: Node => n.replaceEmpty(scope.incrementDepth, injector)
-    }
-  }
 
   override def getMaxDepth: Int = 1 + math.max(getMaxDepth(params), getMaxDepth(nodes))
 
@@ -79,16 +94,18 @@ case class FunctionMFactory @Inject()(injector: Injector,
       name = "f" + scope.numFuncs)
   }
 
-  private def createParams(scope: Scope) = creator.createSeq(
+  def createParams(scope: Scope, acc: Seq[Node] = Seq[Node]()) = creator.createSeq(
     possibleChildren = paramsNeighbours,
     scope = scope,
     saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumVals(accLength)),
+    acc = acc,
     factoryLimit = scope.maxParamsInFunc
   )
 
-  private def createNodes(scope: Scope) = creator.createSeq(
+  def createNodes(scope: Scope, acc: Seq[Node] = Seq[Node]()) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
+    acc = acc,
     factoryLimit = scope.maxExpressionsInFunc
   )
 }
