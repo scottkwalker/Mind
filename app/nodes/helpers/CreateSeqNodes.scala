@@ -17,10 +17,9 @@ case class CreateSeqNodes @Inject()(createNode: CreateNode, rng: Random, ai: Ai)
     ai.canAddAnother(acc.length, factoryLimit, rng) match {
       case false => {
         val updatedScope = saveAccLengthInScope match {
-          case Some(s) => s(scope, acc.length)
+          case Some(f) => f(scope, acc.length)
           case None => scope
         }
-
         (updatedScope, acc)
       }
       case true => {

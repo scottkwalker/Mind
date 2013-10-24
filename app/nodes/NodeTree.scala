@@ -20,26 +20,32 @@ case class NodeTree(val nodes: Seq[Node]) extends Node with UpdateScopeThrows {
   else false
 
   override def replaceEmpty(scope: Scope, injector: Injector): Node = {
-    val n = replaceEmptyInSeq(scope, injector, nodes)
+    val (_, n) = replaceEmptyInSeq(scope, injector, nodes, funcCreateNodes)
     NodeTree(n)
   }
 
-  @tailrec
-  private def replaceEmptyInSeq(scope: Scope, injector: Injector, n: Seq[Node], acc: Seq[Node] = Seq[Node]()): Seq[Node] = {
-    n match {
-      case x :: xs => {
-        val replaced = replaceEmpty(scope, injector, x)
-        val updatedScope = replaced.updateScope(scope)
-        replaceEmptyInSeq(updatedScope, injector, xs, acc ++ Seq(replaced))
-      }
-      case nil => acc
-    }
+  private def funcCreateNodes(scope: Scope, injector: Injector, premade: Seq[Node]): (Scope, Seq[Node]) = {
+    val factory = injector.getInstance(classOf[NodeTreeFactory])
+    factory.createNodes(scope = scope, acc = premade.init)
   }
 
-  private def replaceEmpty(scope: Scope, injector: Injector, n: Node): Node = {
+  @tailrec
+  private def replaceEmptyInSeq(scope: Scope, injector: Injector, n: Seq[Node], f: ((Scope, Injector, Seq[Node]) => (Scope, Seq[Node])), acc: Seq[Node] = Seq[Node]()): (Scope, Seq[Node]) = {
     n match {
-      case _: Empty => injector.getInstance(classOf[ObjectMFactory]).create(scope)
-      case n: Node => n.replaceEmpty(scope.incrementDepth, injector)
+      case x :: xs => {
+        val (updatedScope, replaced) = x match {
+          case _: Empty => {
+            f(scope, injector, n)
+          }
+          case n: Node => {
+            val r = n.replaceEmpty(scope, injector)
+            val u = r.updateScope(scope)
+            (u, Seq(r))
+          }
+        }
+        replaceEmptyInSeq(updatedScope, injector, xs, f, acc ++ replaced)
+      }
+      case nil => (scope, acc)
     }
   }
 
@@ -67,10 +73,11 @@ case class NodeTreeFactory @Inject()(injector: Injector,
     NodeTree(nodes)
   }
 
-  private def createNodes(scope: Scope): (Scope, Seq[Node]) = creator.createSeq(
+  def createNodes(scope: Scope, acc: Seq[Node] = Seq()): (Scope, Seq[Node]) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumFuncs(accLength)),
+    acc = acc,
     factoryLimit = scope.maxObjectsInTree
   )
 }

@@ -16,10 +16,17 @@ trait Ai {
   def canAddAnother(accLength: Int,
                     factoryLimit: Int,
                     rng: Random): Boolean = {
-    accLength < factoryLimit && rng.nextBoolean()
+    accLength < 1 ||
+      (accLength < factoryLimit && rng.nextBoolean())
   }
 
-  def canAddAnother(accLength: Int,
+  def chooseIndex(seqLength: Int,
+                  rng: Random): Int = {
+    require (seqLength > 0, "Sequence must not be empty otherwise we cannot pick an index from it")
+    rng.nextInt(seqLength)
+  }
+
+  /*def canAddAnother(accLength: Int,
                     factoryLimit: Int,
                     rng: Random,
                     premade: Seq[CreateChildNodes]): Boolean = {
@@ -28,11 +35,10 @@ trait Ai {
       case _ => false
     }
 
-    if(!wildcardFound) accLength < premade.length // Not wildcard so copy all premade
-    else
-    {
-      if(wildcardFound && accLength < premade.length) true // Wildcard so copy all premade and then random
+    if (!wildcardFound) accLength < premade.length // Not wildcard so copy all premade
+    else {
+      if (wildcardFound && accLength < premade.length) true // Wildcard so copy all premade and then random
       else canAddAnother(accLength, factoryLimit, rng)
     }
-  }
+  }*/
 }

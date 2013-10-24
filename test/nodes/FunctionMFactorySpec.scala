@@ -72,7 +72,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
       }
 
       "returns 3 children given scope with 3 maxExpressionsInFunc (and rng mocked)" in {
-        val s = Scope(numFuncs = 0, maxDepth = 10, maxExpressionsInFunc = 3)
+        val s = Scope(numFuncs = 0, maxDepth = 10, maxParamsInFunc = 3, maxExpressionsInFunc = 3)
 
         val instance = factory.create(scope = s)
 

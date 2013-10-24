@@ -2,6 +2,8 @@ package nodes
 
 import nodes.helpers._
 import com.google.inject.{Injector, Inject}
+import ai.Ai
+import scala.util.Random
 
 case class  ValueRef(name: String) extends Node with UpdateScopeNoChange {
   override def toRawScala: String = name
@@ -10,7 +12,8 @@ case class  ValueRef(name: String) extends Node with UpdateScopeNoChange {
   override def getMaxDepth = 1
 }
 
-case class ValueRefFactory @Inject() () extends CreateChildNodes with UpdateScopeNoChange {
+case class ValueRefFactory @Inject() (ai: Ai,
+                                      rng: Random) extends CreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[CreateChildNodes] = Nil // No possible children
 
   override val canTerminateInStepsRemaining: Scope => Boolean = {
@@ -19,7 +22,7 @@ case class ValueRefFactory @Inject() () extends CreateChildNodes with UpdateScop
   }
 
   override def create(scope: Scope): Node = {
-    val name = "v" + scope.numVals
+    val name = "v" + ai.chooseIndex(scope.numVals, rng)
     ValueRef(name = name)
   }
 }

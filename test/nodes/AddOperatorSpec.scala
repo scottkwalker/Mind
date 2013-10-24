@@ -102,8 +102,9 @@ class AddOperatorSpec extends Specification with Mockito {
         }
 
         val s = mock[Scope]
+        s.numVals returns 1
         val v = mock[Empty]
-        val injector: Injector = Guice.createInjector(new TestDevModule)
+        val injector: Injector = Guice.createInjector(new TestDevModule, new TestAiModule)
         val instance = AddOperator(v, v)
 
         val result = instance.replaceEmpty(s, injector)

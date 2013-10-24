@@ -1,10 +1,11 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.Scope
+import nodes.helpers.{DevModule, Scope}
 import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import com.tzavellas.sse.guice.ScalaModule
+import ai.helpers.TestAiModule
 
 class ObjectMSpec extends Specification with Mockito {
   "ObjectM" should {
@@ -94,18 +95,13 @@ class ObjectMSpec extends Specification with Mockito {
       }
 
       "returns without empty nodes given there were empty nodes" in {
-        class TestDevModule extends ScalaModule {
-          def configure() {
-            val n: Node = mock[FunctionM]
-            val f = mock[ObjectMFactory]
-            f.create(any[Scope]) returns n
-            bind(classOf[ObjectMFactory]).toInstance(f)
-          }
-        }
-
-        val s = mock[Scope]
+        val s = Scope(maxExpressionsInFunc = 1,
+          maxFuncsInObject = 1,
+          maxParamsInFunc = 1,
+          maxDepth = 5,
+          maxObjectsInTree = 1)
         val n = mock[Empty]
-        val injector: Injector = Guice.createInjector(new TestDevModule)
+        val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
         val instance = ObjectM(nodes = Seq(n),
           name = name)
 
