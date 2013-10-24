@@ -14,6 +14,7 @@ import nodes.NodeTree
 import nodes.FunctionM
 import ai.helpers.TestAiModule
 import scala.util.Random
+import ai.randomWalk.RandomWalkModule
 
 class AcoSpec extends Specification with Mockito {
   "Aco" should {
@@ -26,68 +27,101 @@ class AcoSpec extends Specification with Mockito {
       sut.chooseChild(possibleChildren) must beAnInstanceOf[CreateChildNodes]
     }
 
-    "create an individual does not throw (using mock module that returns index zero)" in {
-      val injector = Guice.createInjector(new DevModule, new TestAiModule)
-      val premade = new NodeTree(
-        Seq(
-          ObjectM(Seq(
-            FunctionM(
-              params = Seq(ValueInFunctionParam("v0", IntegerM()), ValueInFunctionParam("v1", IntegerM())),
-              nodes = Seq(
-                Empty()
-              ), name = "f0")),
-            name = "o0")))
-      val scope = Scope(
-        maxExpressionsInFunc = 1,
-        maxFuncsInObject = 1,
-        maxParamsInFunc = 2,
-        maxDepth = 5,
-        maxObjectsInTree = 1)
+    "create and test an individual does not throw" in {
+      "using test Ai that always returns index zero" in {
+        val injector = Guice.createInjector(new DevModule, new TestAiModule)
+        val premade = new NodeTree(
+          Seq(
+            ObjectM(Seq(
+              FunctionM(
+                params = Seq(ValueInFunctionParam("v0", IntegerM()), ValueInFunctionParam("v1", IntegerM())),
+                nodes = Seq(
+                  Empty()
+                ), name = "f0")),
+              name = "o0")))
+        val scope = Scope(
+          maxExpressionsInFunc = 1,
+          maxFuncsInObject = 1,
+          maxParamsInFunc = 2,
+          maxDepth = 5,
+          maxObjectsInTree = 1)
 
-      try {
-        val nodeTree: NodeTree = premade.replaceEmpty(scope, injector).asInstanceOf[NodeTree]
-        val f = new AddTwoInts(nodeTree)
-        f.fitness
-
-        success
-      }
-      catch {
-        case e => failure("Should not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
-      }
-    }
-
-    "create an individual does not throw (using ACO module)" in {
-      val injector = Guice.createInjector(new DevModule, new AcoModule)
-      val premade = new NodeTree(
-        Seq(
-          ObjectM(Seq(
-            FunctionM(
-              params = Seq(ValueInFunctionParam("v0", IntegerM()), ValueInFunctionParam("v1", IntegerM())),
-              nodes = Seq(
-                Empty()
-              ), name = "f0")),
-            name = "o0")))
-      val scope = Scope(
-        maxExpressionsInFunc = 1,
-        maxFuncsInObject = 1,
-        maxParamsInFunc = 2,
-        maxDepth = 5,
-        maxObjectsInTree = 1)
-
-      try {
-        for (i <- 1 to 10) {
+        try {
           val nodeTree: NodeTree = premade.replaceEmpty(scope, injector).asInstanceOf[NodeTree]
-
-          //println(nodeTree)
-          //println("validate: " + nodeTree.validate(scope))
-          //println("toRawScala: " + nodeTree.toRawScala)
           val f = new AddTwoInts(nodeTree)
           f.fitness
+
+          success
         }
-        success
+        catch {
+          case e => failure("Should not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
+        }
       }
-      catch {
-        case e => failure("Should not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
+
+      "using random walk module" in {
+        val injector = Guice.createInjector(new DevModule, new RandomWalkModule)
+        val premade = new NodeTree(
+          Seq(
+            ObjectM(Seq(
+              FunctionM(
+                params = Seq(ValueInFunctionParam("v0", IntegerM()), ValueInFunctionParam("v1", IntegerM())),
+                nodes = Seq(
+                  Empty()
+                ), name = "f0")),
+              name = "o0")))
+        val scope = Scope(
+          maxExpressionsInFunc = 1,
+          maxFuncsInObject = 1,
+          maxParamsInFunc = 2,
+          maxDepth = 5,
+          maxObjectsInTree = 1)
+
+        try {
+          for (i <- 1 to 10) {
+            val nodeTree: NodeTree = premade.replaceEmpty(scope, injector).asInstanceOf[NodeTree]
+            val f = new AddTwoInts(nodeTree)
+            f.fitness
+          }
+          success
+        }
+        catch {
+          case e => failure("Should not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
+        }
+      }
+
+      "using ACO module" in {
+        val injector = Guice.createInjector(new DevModule, new AcoModule)
+        val premade = new NodeTree(
+          Seq(
+            ObjectM(Seq(
+              FunctionM(
+                params = Seq(ValueInFunctionParam("v0", IntegerM()), ValueInFunctionParam("v1", IntegerM())),
+                nodes = Seq(
+                  Empty()
+                ), name = "f0")),
+              name = "o0")))
+        val scope = Scope(
+          maxExpressionsInFunc = 1,
+          maxFuncsInObject = 1,
+          maxParamsInFunc = 2,
+          maxDepth = 5,
+          maxObjectsInTree = 1)
+
+        try {
+          for (i <- 1 to 10) {
+            val nodeTree: NodeTree = premade.replaceEmpty(scope, injector).asInstanceOf[NodeTree]
+
+            //println(nodeTree)
+            //println("validate: " + nodeTree.validate(scope))
+            //println("toRawScala: " + nodeTree.toRawScala)
+            val f = new AddTwoInts(nodeTree)
+            f.fitness
+          }
+          success
+        }
+        catch {
+          case e => failure("Should not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
+        }
       }
     }
   }

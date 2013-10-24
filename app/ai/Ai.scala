@@ -7,8 +7,7 @@ trait Ai {
   def chooseChild(possibleChildren: Seq[CreateChildNodes]): CreateChildNodes
 
   def chooseChild(possibleChildren: Seq[CreateChildNodes], scope: Scope): CreateChildNodes = {
-    if (possibleChildren.isEmpty) throw new scala.RuntimeException("Should not happen as we should have moved to a node has said that it or a descendent can terminate")
-
+    require(!possibleChildren.isEmpty, "Sequence possibleChildren must not be empty otherwise we cannot pick an node from it")
     chooseChild(possibleChildren)
   }
 

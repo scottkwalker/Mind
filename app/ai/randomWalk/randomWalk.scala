@@ -1,4 +1,4 @@
-package ai.aco
+package ai.randomWalk
 
 import ai.Ai
 import nodes.helpers._
@@ -6,7 +6,7 @@ import scala.util.Random
 import com.google.inject.Inject
 
 
-case class Aco @Inject()(rng: Random) extends Ai {
+case class RandomWalk @Inject()(rng: Random) extends Ai {
   override def chooseChild(possibleChildren: Seq[CreateChildNodes]): CreateChildNodes = {
     require(possibleChildren.length > 0, "Sequence must not be empty otherwise we cannot pick an node from it")
     val index = rng.nextInt(possibleChildren.length)
