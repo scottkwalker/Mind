@@ -6,8 +6,11 @@ import ai.Ai
 
 case class IntegerM() extends Node with UpdateScopeNoChange {
   override def toRawScala: String = "Int"
+
   override def validate(scope: Scope): Boolean = true
+
   override def replaceEmpty(scope: Scope, injector: Injector): Node = this
+
   override def getMaxDepth = 1
 }
 

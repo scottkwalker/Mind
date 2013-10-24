@@ -5,7 +5,6 @@ import org.specs2.mock.Mockito
 import org.specs2.execute.PendingUntilFixed
 import nodes.helpers.{DevModule, Scope}
 import com.google.inject.{Guice, Injector}
-import com.tzavellas.sse.guice.ScalaModule
 import ai.helpers.TestAiModule
 
 class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {

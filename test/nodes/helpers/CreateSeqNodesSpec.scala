@@ -17,9 +17,9 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val v = mock[CreateChildNodes]
         v.updateScope(s) returns s
         v.create(any[Scope]) returns n
-        val ai: Ai = Aco()
         val rng = mock[Random]
         rng.nextBoolean() returns true
+        val ai: Ai = Aco(rng)
         val cn = mock[CreateNode]
         cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
         val sut = CreateSeqNodes(cn, rng, ai)
@@ -40,12 +40,12 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val v = mock[CreateChildNodes]
         v.updateScope(s) returns s
         v.create(any[Scope]) returns n
-        val ai: Ai = Aco()
         val cn = mock[CreateNode]
         cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
         val rng = mock[Random]
         rng.nextInt(any[Int]) returns 2
         rng.nextBoolean() returns true
+        val ai: Ai = Aco(rng)
         val sut = CreateSeqNodes(cn, rng, ai)
 
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
@@ -64,12 +64,12 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val v = mock[CreateChildNodes]
         v.updateScope(s) returns s
         v.create(any[Scope]) returns n
-        val ai: Ai = Aco()
         val cn = mock[CreateNode]
         cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
         val rng = mock[Random]
         rng.nextInt(any[Int]) returns 1
         rng.nextBoolean() returns true
+        val ai: Ai = Aco(rng)
         val sut = CreateSeqNodes(cn, rng, ai)
 
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
@@ -88,12 +88,12 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val v = mock[CreateChildNodes]
         v.updateScope(s) returns s
         v.create(any[Scope]) returns n
-        val ai: Ai = Aco()
         val cn = mock[CreateNode]
         cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
         val rng = mock[Random]
         rng.nextInt(any[Int]) returns 2
         rng.nextBoolean() returns true
+        val ai: Ai = Aco(rng)
         val sut = CreateSeqNodes(cn, rng, ai)
 
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),

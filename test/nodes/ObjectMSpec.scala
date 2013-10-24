@@ -4,7 +4,6 @@ import org.specs2.mutable._
 import nodes.helpers.{DevModule, Scope}
 import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
-import com.tzavellas.sse.guice.ScalaModule
 import ai.helpers.TestAiModule
 
 class ObjectMSpec extends Specification with Mockito {

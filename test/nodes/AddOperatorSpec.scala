@@ -1,7 +1,7 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.{DevModule, Scope}
+import nodes.helpers.Scope
 import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import ai.helpers.TestAiModule

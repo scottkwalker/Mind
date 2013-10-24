@@ -2,7 +2,6 @@ package ai
 
 import nodes.helpers._
 import scala.util.Random
-import nodes.FunctionMFactory
 
 trait Ai {
   def chooseChild(possibleChildren: Seq[CreateChildNodes]): CreateChildNodes
@@ -20,11 +19,7 @@ trait Ai {
       (accLength < factoryLimit && rng.nextBoolean())
   }
 
-  def chooseIndex(seqLength: Int,
-                  rng: Random): Int = {
-    require (seqLength > 0, "Sequence must not be empty otherwise we cannot pick an index from it")
-    rng.nextInt(seqLength)
-  }
+  def chooseIndex(seqLength: Int): Int
 
   /*def canAddAnother(accLength: Int,
                     factoryLimit: Int,
