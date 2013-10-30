@@ -82,7 +82,7 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
         result must beLike {
           case NodeTree(nodes) => {
             nodes must beLike {
-              case Seq(n) => n must beAnInstanceOf[ObjectDef]
+              case Seq(n2) => n2 must beAnInstanceOf[ObjectDef]
             }
           }
         }

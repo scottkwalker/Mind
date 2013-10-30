@@ -107,8 +107,8 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
         val result = instance.replaceEmpty(s, injector)
 
         result must beLike {
-          case ValDclInFunctionParam(name, primitiveType) => {
-            name mustEqual "a"
+          case ValDclInFunctionParam(name2, primitiveType) => {
+            name2 mustEqual "a"
             primitiveType must beAnInstanceOf[IntegerM]
           }
         }
