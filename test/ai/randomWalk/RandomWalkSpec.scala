@@ -1,4 +1,4 @@
-package ai.aco
+package ai.randomWalk
 
 import org.specs2.mutable._
 import nodes.helpers._
@@ -14,13 +14,12 @@ import nodes.NodeTree
 import nodes.FunctionM
 import ai.helpers.TestAiModule
 import scala.util.Random
-import ai.randomWalk.RandomWalkModule
 
-class AcoSpec extends Specification with Mockito {
-  "Aco" should {
+class RandomWalkSpec extends Specification with Mockito {
+  "RandomWalk" should {
     "chooseChild returns expected instance given only one valid choice" in {
       val rng = mock[Random]
-      val sut = Aco(rng)
+      val sut = RandomWalk(rng)
       val v = mock[CreateChildNodes]
       val possibleChildren = Seq(v)
 
@@ -28,39 +27,8 @@ class AcoSpec extends Specification with Mockito {
     }
 
     "create and test an individual does not throw" in {
-      // TODO mode to new spec file
-      "using test Ai that always returns index zero" in {
-        val injector = Guice.createInjector(new DevModule, new TestAiModule)
-        val premade = new NodeTree(
-          Seq(
-            ObjectDef(Seq(
-              FunctionM(
-                params = Seq(ValDclInFunctionParam("v0", IntegerM()), ValDclInFunctionParam("v1", IntegerM())),
-                nodes = Seq(
-                  Empty()
-                ), name = "f0")),
-              name = "o0")))
-        val scope = Scope(
-          maxExpressionsInFunc = 1,
-          maxFuncsInObject = 1,
-          maxParamsInFunc = 2,
-          maxDepth = 5,
-          maxObjectsInTree = 1)
-
-        try {
-          val nodeTree: NodeTree = premade.replaceEmpty(scope, injector).asInstanceOf[NodeTree]
-          val f = new AddTwoInts(nodeTree)
-          f.fitness
-
-          success
-        }
-        catch {
-          case e => failure("Should not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
-        }
-      }
-
-      "using ACO module" in {
-        val injector = Guice.createInjector(new DevModule, new AcoModule)
+      "using random walk module" in {
+        val injector = Guice.createInjector(new DevModule, new RandomWalkModule)
         val premade = new NodeTree(
           Seq(
             ObjectDef(Seq(
@@ -80,10 +48,6 @@ class AcoSpec extends Specification with Mockito {
         try {
           for (i <- 1 to 10) {
             val nodeTree: NodeTree = premade.replaceEmpty(scope, injector).asInstanceOf[NodeTree]
-
-            //println(nodeTree)
-            //println("validate: " + nodeTree.validate(scope))
-            //println("toRawScala: " + nodeTree.toRawScala)
             val f = new AddTwoInts(nodeTree)
             f.fitness
           }
