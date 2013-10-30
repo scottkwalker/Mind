@@ -64,7 +64,7 @@ class AddOperatorSpec extends Specification with Mockito {
         val v = mock[ValueRef]
         v.validate(any[Scope]) returns true
 
-        AddOperator(v, ObjectM(Nil, "ObjectM0")).validate(s) mustEqual false
+        AddOperator(v, ObjectDef(Nil, "ObjectM0")).validate(s) mustEqual false
       }
     }
 

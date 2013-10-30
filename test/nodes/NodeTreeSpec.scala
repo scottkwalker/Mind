@@ -12,7 +12,7 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
     "validate" in {
       "true given it can terminates in under N steps" in {
         val s = Scope(maxDepth = 10)
-        val f = mock[ObjectM]
+        val f = mock[ObjectDef]
         f.validate(any[Scope]) returns true
         val nodeTree = new NodeTree(Seq(f))
 
@@ -21,7 +21,7 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
 
       "false given it cannot terminate in under N steps" in {
         val s = Scope(maxDepth = 10)
-        val f = mock[ObjectM]
+        val f = mock[ObjectDef]
         f.validate(any[Scope]) returns false
         val nodeTree = new NodeTree(Seq(f))
 
@@ -30,7 +30,7 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
 
       "true given none empty" in {
         val s = Scope(maxDepth = 10)
-        val f = mock[ObjectM]
+        val f = mock[ObjectDef]
         f.validate(any[Scope]) returns true
         val nodeTree = new NodeTree(Seq(f))
 
@@ -47,7 +47,7 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
     "replaceEmpty" in {
       "calls replaceEmpty on non-empty child nodes" in {
         val s = mock[Scope]
-        val f = mock[ObjectM]
+        val f = mock[ObjectDef]
         f.replaceEmpty(any[Scope], any[Injector]) returns f
         val i = mock[Injector]
         val instance = NodeTree(Seq(f))
@@ -59,7 +59,7 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
 
       "returns same when no empty nodes" in {
         val s = mock[Scope]
-        val f = mock[ObjectM]
+        val f = mock[ObjectDef]
         f.replaceEmpty(any[Scope], any[Injector]) returns f
         val i = mock[Injector]
         val instance = new NodeTree(Seq(f))
@@ -82,7 +82,7 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
         result must beLike {
           case NodeTree(nodes) => {
             nodes must beLike {
-              case Seq(n) => n must beAnInstanceOf[ObjectM]
+              case Seq(n) => n must beAnInstanceOf[ObjectDef]
             }
           }
         }
@@ -91,7 +91,7 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
 
     "getMaxDepth" in {
       "returns 1 + child getMaxDepth" in {
-        val f = mock[ObjectM]
+        val f = mock[ObjectDef]
         f.getMaxDepth returns 2
         val nodeTree = new NodeTree(Seq(f))
 
@@ -99,9 +99,9 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
       }
 
       "returns 1 + child getMaxDepth" in {
-        val f = mock[ObjectM]
+        val f = mock[ObjectDef]
         f.getMaxDepth returns 1
-        val f2 = mock[ObjectM]
+        val f2 = mock[ObjectDef]
         f2.getMaxDepth returns 2
         val nodeTree = new NodeTree(Seq(f, f2))
 
@@ -111,8 +111,8 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
       "returns correct value for realistic tree" in {
         val nodeTree = new NodeTree(
           Seq(
-            ObjectM(Seq(
-              FunctionM(params = Seq(ValueInFunctionParam("a", IntegerM()), ValueInFunctionParam("b", IntegerM())),
+            ObjectDef(Seq(
+              FunctionM(params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM())),
                 nodes = Seq(
                   AddOperator(
                     ValueRef("a"), ValueRef("b"))

@@ -8,10 +8,10 @@ import com.google.inject.Guice
 import nodes.helpers.DevModule
 import ai.helpers.TestAiModule
 
-class ValueInFunctionParamFactorySpec extends Specification with Mockito {
-  "ValueInFunctionParamFactorySpec" should {
+class ValDclInFunctionParamFactorySpec extends Specification with Mockito {
+  "ValDclInFunctionParamFactory" should {
     val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
-    val factory = injector.getInstance(classOf[ValueInFunctionParamFactory])
+    val factory = injector.getInstance(classOf[ValDclFunctionParamFactory])
 
     "create" in {
       "returns instance of this type" in {
@@ -19,7 +19,7 @@ class ValueInFunctionParamFactorySpec extends Specification with Mockito {
 
         val instance = factory.create(scope = s)
 
-        instance must beAnInstanceOf[ValueInFunctionParam]
+        instance must beAnInstanceOf[ValDclInFunctionParam]
       }
 
       "returns expected given scope with 0 vals" in {
@@ -28,7 +28,7 @@ class ValueInFunctionParamFactorySpec extends Specification with Mockito {
         val instance = factory.create(scope = s)
 
         instance must beLike {
-          case ValueInFunctionParam(name, primitiveType) => {
+          case ValDclInFunctionParam(name, primitiveType) => {
             name mustEqual "v0"
             primitiveType must beAnInstanceOf[IntegerM]
           }
@@ -41,7 +41,7 @@ class ValueInFunctionParamFactorySpec extends Specification with Mockito {
         val instance = factory.create(scope = s)
 
         instance must beLike {
-          case ValueInFunctionParam(name, primitiveType) => {
+          case ValDclInFunctionParam(name, primitiveType) => {
             name mustEqual "v1"
             primitiveType must beAnInstanceOf[IntegerM]
           }

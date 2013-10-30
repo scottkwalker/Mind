@@ -17,9 +17,9 @@ class AddTwoIntsSpec extends Specification with Mockito {
     "1 add 1 equals 2 with NodeTree that converts nodes to raw Scala" in {
       val nodeTree = new NodeTree(
         Seq(
-          ObjectM(Seq(
+          ObjectDef(Seq(
             FunctionM(
-              params = Seq(ValueInFunctionParam("a", IntegerM()), ValueInFunctionParam("b", IntegerM())),
+              params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM())),
               nodes = Seq(
                 AddOperator(ValueRef("a"), ValueRef("b"))
               ), name = "f0")),

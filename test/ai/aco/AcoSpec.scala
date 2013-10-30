@@ -6,10 +6,10 @@ import org.specs2.mock.Mockito
 import nodes._
 import com.google.inject.Guice
 import fitness.AddTwoInts
-import nodes.ObjectM
+import nodes.ObjectDef
 import nodes.helpers.Scope
 import nodes.IntegerM
-import nodes.ValueInFunctionParam
+import nodes.ValDclInFunctionParam
 import nodes.NodeTree
 import nodes.FunctionM
 import ai.helpers.TestAiModule
@@ -32,9 +32,9 @@ class AcoSpec extends Specification with Mockito {
         val injector = Guice.createInjector(new DevModule, new TestAiModule)
         val premade = new NodeTree(
           Seq(
-            ObjectM(Seq(
+            ObjectDef(Seq(
               FunctionM(
-                params = Seq(ValueInFunctionParam("v0", IntegerM()), ValueInFunctionParam("v1", IntegerM())),
+                params = Seq(ValDclInFunctionParam("v0", IntegerM()), ValDclInFunctionParam("v1", IntegerM())),
                 nodes = Seq(
                   Empty()
                 ), name = "f0")),
@@ -62,9 +62,9 @@ class AcoSpec extends Specification with Mockito {
         val injector = Guice.createInjector(new DevModule, new RandomWalkModule)
         val premade = new NodeTree(
           Seq(
-            ObjectM(Seq(
+            ObjectDef(Seq(
               FunctionM(
-                params = Seq(ValueInFunctionParam("v0", IntegerM()), ValueInFunctionParam("v1", IntegerM())),
+                params = Seq(ValDclInFunctionParam("v0", IntegerM()), ValDclInFunctionParam("v1", IntegerM())),
                 nodes = Seq(
                   Empty()
                 ), name = "f0")),
@@ -93,9 +93,9 @@ class AcoSpec extends Specification with Mockito {
         val injector = Guice.createInjector(new DevModule, new AcoModule)
         val premade = new NodeTree(
           Seq(
-            ObjectM(Seq(
+            ObjectDef(Seq(
               FunctionM(
-                params = Seq(ValueInFunctionParam("v0", IntegerM()), ValueInFunctionParam("v1", IntegerM())),
+                params = Seq(ValDclInFunctionParam("v0", IntegerM()), ValDclInFunctionParam("v1", IntegerM())),
                 nodes = Seq(
                   Empty()
                 ), name = "f0")),

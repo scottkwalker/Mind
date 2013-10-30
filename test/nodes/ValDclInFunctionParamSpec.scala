@@ -7,14 +7,14 @@ import com.google.inject.{Guice, Injector}
 import ai.helpers.TestAiModule
 import com.tzavellas.sse.guice.ScalaModule
 
-class ValueInFunctionParamSpec extends Specification with Mockito {
-  "ValueInFunctionParam" should {
+class ValDclInFunctionParamSpec extends Specification with Mockito {
+  "ValDclInFunctionParam" should {
     "toRawScala" in {
       val p = mock[IntegerM]
       p.toRawScala returns "Int"
       val name = "a"
 
-      ValueInFunctionParam(name, p).toRawScala mustEqual "a: Int"
+      ValDclInFunctionParam(name, p).toRawScala mustEqual "a: Int"
     }
 
     "validate" in {
@@ -24,7 +24,7 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
         val name = "a"
         val p = mock[IntegerM]
 
-        ValueInFunctionParam(name, p).validate(s) mustEqual false
+        ValDclInFunctionParam(name, p).validate(s) mustEqual false
       }
 
       "false given an empty name" in {
@@ -33,7 +33,7 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
         val name = ""
         val p = mock[IntegerM]
 
-        ValueInFunctionParam(name, p).validate(s) mustEqual false
+        ValDclInFunctionParam(name, p).validate(s) mustEqual false
       }
 
       "false given an invalid child" in {
@@ -43,7 +43,7 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
         val p = mock[IntegerM]
         p.validate(any[Scope]) returns false
 
-        ValueInFunctionParam(name, p).validate(s) mustEqual false
+        ValDclInFunctionParam(name, p).validate(s) mustEqual false
       }
 
       "true given it can terminate, has a non-empty name and valid child" in {
@@ -53,7 +53,7 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
         val p = mock[IntegerM]
         p.validate(any[Scope]) returns true
 
-        ValueInFunctionParam(name, p).validate(s) mustEqual true
+        ValDclInFunctionParam(name, p).validate(s) mustEqual true
       }
     }
 
@@ -66,7 +66,7 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
         val p = mock[IntegerM]
         p.replaceEmpty(any[Scope], any[Injector]) returns p
         val i = mock[Injector]
-        val instance = ValueInFunctionParam(name, p)
+        val instance = ValDclInFunctionParam(name, p)
 
         instance.replaceEmpty(s, i)
 
@@ -81,7 +81,7 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
         val p = mock[IntegerM]
         p.replaceEmpty(any[Scope], any[Injector]) returns p
         val i = mock[Injector]
-        val instance = ValueInFunctionParam(name, p)
+        val instance = ValDclInFunctionParam(name, p)
 
         val result = instance.replaceEmpty(s, i)
 
@@ -92,9 +92,9 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
         class TestDevModule extends ScalaModule {
           def configure() {
             val n: Node = mock[IntegerM]
-            val f = mock[ValueInFunctionParamFactory]
+            val f = mock[ValDclFunctionParamFactory]
             f.create(any[Scope]) returns n
-            bind(classOf[ValueInFunctionParamFactory]).toInstance(f)
+            bind(classOf[ValDclFunctionParamFactory]).toInstance(f)
           }
         }
 
@@ -102,12 +102,12 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
         val name = "a"
         val p = mock[Empty]
         val injector: Injector = Guice.createInjector(new TestDevModule, new TestAiModule)
-        val instance = ValueInFunctionParam(name, p)
+        val instance = ValDclInFunctionParam(name, p)
 
         val result = instance.replaceEmpty(s, injector)
 
         result must beLike {
-          case ValueInFunctionParam(name, primitiveType) => {
+          case ValDclInFunctionParam(name, primitiveType) => {
             name mustEqual "a"
             primitiveType must beAnInstanceOf[IntegerM]
           }
@@ -120,7 +120,7 @@ class ValueInFunctionParamSpec extends Specification with Mockito {
       val p = mock[IntegerM]
       p.getMaxDepth returns 1
 
-      ValueInFunctionParam(name, p).getMaxDepth mustEqual 2
+      ValDclInFunctionParam(name, p).getMaxDepth mustEqual 2
     }
   }
 }

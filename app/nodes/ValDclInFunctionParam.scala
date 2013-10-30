@@ -4,7 +4,7 @@ import nodes.helpers._
 import com.google.inject.{Injector, Inject}
 import ai.Ai
 
-case class ValueInFunctionParam(name: String, primitiveType: Node) extends Node with UpdateScopeIncrementVals {
+case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node with UpdateScopeIncrementVals {
   override def toRawScala: String = s"$name: ${primitiveType.toRawScala}"
 
   override def validate(scope: Scope): Boolean = scope.hasDepthRemaining && !name.isEmpty && {
@@ -19,13 +19,13 @@ case class ValueInFunctionParam(name: String, primitiveType: Node) extends Node 
       case p: Empty => injector.getInstance(classOf[IntegerMFactory]).create(scope)
       case p: Node => p.replaceEmpty(updateScope(scope.incrementDepth), injector)
     }
-    ValueInFunctionParam(name, p)
+    ValDclInFunctionParam(name, p)
   }
 
   override def getMaxDepth = 1 + primitiveType.getMaxDepth
 }
 
-case class ValueInFunctionParamFactory @Inject()(injector: Injector,
+case class ValDclFunctionParamFactory @Inject()(injector: Injector,
                                                  creator: CreateNode,
                                                  ai: Ai) extends CreateChildNodes with UpdateScopeIncrementVals {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[IntegerMFactory]))
@@ -40,7 +40,7 @@ case class ValueInFunctionParamFactory @Inject()(injector: Injector,
 
     val (_, primitiveType) = creator.create(legalNeighbours(scope), scope, ai)
 
-    ValueInFunctionParam(name = name,
+    ValDclInFunctionParam(name = name,
       primitiveType = primitiveType) // TODO need to make more types.
   }
 }

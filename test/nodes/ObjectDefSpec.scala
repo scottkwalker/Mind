@@ -6,15 +6,15 @@ import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import ai.helpers.TestAiModule
 
-class ObjectMSpec extends Specification with Mockito {
-  "ObjectM" should {
+class ObjectDefSpec extends Specification with Mockito {
+  "ObjectDef" should {
     val name = "o0"
     "validate" in {
       "true given it can terminates in under N steps" in {
         val s = Scope(maxDepth = 4)
         val f = mock[FunctionM]
         f.validate(any[Scope]) returns true
-        val objectM = ObjectM(Seq(f), name)
+        val objectM = ObjectDef(Seq(f), name)
 
         objectM.validate(s) mustEqual true
       }
@@ -23,7 +23,7 @@ class ObjectMSpec extends Specification with Mockito {
         val s = Scope(depth = 0)
         val f = mock[FunctionM]
         f.validate(any[Scope]) throws new RuntimeException
-        val objectM = ObjectM(Seq(f), name)
+        val objectM = ObjectDef(Seq(f), name)
 
         objectM.validate(s) mustEqual false
       }
@@ -32,7 +32,7 @@ class ObjectMSpec extends Specification with Mockito {
         val s = Scope(depth = 3)
         val f = mock[FunctionM]
         f.validate(any[Scope]) returns false
-        val objectM = ObjectM(Seq(f), name)
+        val objectM = ObjectDef(Seq(f), name)
 
         objectM.validate(s) mustEqual false
       }
@@ -41,14 +41,14 @@ class ObjectMSpec extends Specification with Mockito {
         val s = Scope(maxDepth = 10)
         val f = mock[FunctionM]
         f.validate(any[Scope]) returns true
-        val objectM = ObjectM(Seq(f), name)
+        val objectM = ObjectDef(Seq(f), name)
 
         objectM.validate(s) mustEqual true
       }
 
       "false given single empty method node" in {
         val s = Scope(maxDepth = 10)
-        val objectM = ObjectM(Seq(Empty()), name)
+        val objectM = ObjectDef(Seq(Empty()), name)
         objectM.validate(s) mustEqual false
       }
 
@@ -56,7 +56,7 @@ class ObjectMSpec extends Specification with Mockito {
         val s = Scope(maxDepth = 10)
         val f = mock[FunctionM]
         f.validate(any[Scope]) returns true
-        val objectM = ObjectM(Seq(f, Empty()), name)
+        val objectM = ObjectDef(Seq(f, Empty()), name)
 
         objectM.validate(s) mustEqual false
       }
@@ -65,7 +65,7 @@ class ObjectMSpec extends Specification with Mockito {
     "toRawScala" in {
       val f = mock[FunctionM]
       f.toRawScala returns "STUB"
-      val objectM = ObjectM(Seq(f), name)
+      val objectM = ObjectDef(Seq(f), name)
 
       objectM.toRawScala mustEqual "object o0 { STUB }"
     }
@@ -76,7 +76,7 @@ class ObjectMSpec extends Specification with Mockito {
         val f = mock[FunctionM]
         f.replaceEmpty(any[Scope], any[Injector]) returns f
         val i = mock[Injector]
-        val instance = ObjectM(Seq(f), name = name)
+        val instance = ObjectDef(Seq(f), name = name)
 
         instance.replaceEmpty(s, i)
 
@@ -88,7 +88,7 @@ class ObjectMSpec extends Specification with Mockito {
         val f = mock[FunctionM]
         f.replaceEmpty(any[Scope], any[Injector]) returns f
         val i = mock[Injector]
-        val instance = ObjectM(Seq(f), name)
+        val instance = ObjectDef(Seq(f), name)
 
         instance.replaceEmpty(s, i) mustEqual instance
       }
@@ -101,13 +101,13 @@ class ObjectMSpec extends Specification with Mockito {
           maxObjectsInTree = 1)
         val n = mock[Empty]
         val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
-        val instance = ObjectM(nodes = Seq(n),
+        val instance = ObjectDef(nodes = Seq(n),
           name = name)
 
         val result = instance.replaceEmpty(s, injector)
 
         result must beLike {
-          case ObjectM(nodes, n) => {
+          case ObjectDef(nodes, n) => {
             nodes must beLike {
               case Seq(n) => n must beAnInstanceOf[FunctionM]
             }
@@ -120,7 +120,7 @@ class ObjectMSpec extends Specification with Mockito {
         "getMaxDepth returns 1 + child getMaxDepth" in {
           val f = mock[FunctionM]
           f.getMaxDepth returns 2
-          val objectM = ObjectM(Seq(f), name)
+          val objectM = ObjectDef(Seq(f), name)
 
           objectM.getMaxDepth mustEqual 3
         }
@@ -130,7 +130,7 @@ class ObjectMSpec extends Specification with Mockito {
           f.getMaxDepth returns 1
           val f2 = mock[FunctionM]
           f2.getMaxDepth returns 2
-          val objectM = ObjectM(Seq(f, f2), name)
+          val objectM = ObjectDef(Seq(f, f2), name)
 
           objectM.getMaxDepth mustEqual 3
         }

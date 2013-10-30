@@ -73,7 +73,7 @@ case class FunctionMFactory @Inject()(injector: Injector,
                                       ai: Ai,
                                       rng: Random) extends CreateChildNodes with UpdateScopeIncrementFuncs {
   val paramsNeighbours: Seq[CreateChildNodes] = Seq(
-    injector.getInstance(classOf[ValueInFunctionParamFactory])
+    injector.getInstance(classOf[ValDclFunctionParamFactory])
   )
 
   val neighbours: Seq[CreateChildNodes] = Seq(

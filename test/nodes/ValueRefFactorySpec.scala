@@ -9,7 +9,7 @@ import nodes.helpers.DevModule
 import ai.helpers.TestAiModule
 
 class ValueRefFactorySpec extends Specification with Mockito {
-  "ValueRefFactorySpec" should {
+  "ValueRefFactory" should {
     val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
     val factory = injector.getInstance(classOf[ValueRefFactory])
 

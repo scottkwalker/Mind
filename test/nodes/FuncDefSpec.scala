@@ -7,10 +7,10 @@ import java.lang.IllegalArgumentException
 import com.google.inject.{Guice, Injector}
 import ai.helpers.TestAiModule
 
-class FunctionMSpec extends Specification with Mockito {
-  "Function" should {
+class FuncDefSpec extends Specification with Mockito {
+  "FuncDef" should {
     val name = "f0"
-    val params = Seq(ValueInFunctionParam("a", IntegerM()), ValueInFunctionParam("b", IntegerM()))
+    val params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM()))
 
     "validate" in {
       "false given an empty name" in {
@@ -96,7 +96,7 @@ class FunctionMSpec extends Specification with Mockito {
     "replaceEmpty" in {
       "calls replaceEmpty on non-empty child nodes" in {
         val s = mock[Scope]
-        val p = mock[ValueInFunctionParam]
+        val p = mock[ValDclInFunctionParam]
         p.replaceEmpty(any[Scope], any[Injector]) returns p
         val v = mock[ValueRef]
         v.replaceEmpty(any[Scope], any[Injector]) returns v
@@ -113,7 +113,7 @@ class FunctionMSpec extends Specification with Mockito {
 
       "returns same when no empty nodes" in {
         val s = mock[Scope]
-        val p = mock[ValueInFunctionParam]
+        val p = mock[ValDclInFunctionParam]
         p.replaceEmpty(any[Scope], any[Injector]) returns p
         val v = mock[ValueRef]
         v.replaceEmpty(any[Scope], any[Injector]) returns v
@@ -143,7 +143,7 @@ class FunctionMSpec extends Specification with Mockito {
         result must beLike {
           case FunctionM(params, nodes, n) => {
             params must beLike {
-              case Seq(p) => p must beAnInstanceOf[ValueInFunctionParam]
+              case Seq(p) => p must beAnInstanceOf[ValDclInFunctionParam]
             }
             nodes must beLike {
               case Seq(n) => n must beAnInstanceOf[AddOperator]

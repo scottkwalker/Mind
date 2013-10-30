@@ -8,7 +8,7 @@ import ai.Ai
 import scala.util.Random
 import scala.annotation.tailrec
 
-case class ObjectM(nodes: Seq[Node], name: String) extends Node with UpdateScopeIncrementObjects {
+case class ObjectDef(nodes: Seq[Node], name: String) extends Node with UpdateScopeIncrementObjects {
   override def toRawScala: String = s"object $name ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
 
   override def validate(scope: Scope): Boolean = if (scope.hasDepthRemaining) {
@@ -22,11 +22,11 @@ case class ObjectM(nodes: Seq[Node], name: String) extends Node with UpdateScope
 
   override def replaceEmpty(scope: Scope, injector: Injector): Node = {
     val (_, n) = replaceEmptyInSeq(scope, injector, nodes, funcCreateNodes)
-    ObjectM(n, name)
+    ObjectDef(n, name)
   }
 
   private def funcCreateNodes(scope: Scope, injector: Injector, premade: Seq[Node]): (Scope, Seq[Node]) = {
-    val factory = injector.getInstance(classOf[ObjectMFactory])
+    val factory = injector.getInstance(classOf[ObjectDefFactory])
     factory.createNodes(scope = scope, acc = premade.init)
   }
 
@@ -53,7 +53,7 @@ case class ObjectM(nodes: Seq[Node], name: String) extends Node with UpdateScope
   override def getMaxDepth: Int = 1 + nodes.map(_.getMaxDepth).reduceLeft(math.max)
 }
 
-case class ObjectMFactory @Inject()(injector: Injector,
+case class ObjectDefFactory @Inject()(injector: Injector,
                                     creator: CreateSeqNodes,
                                     ai: Ai,
                                     rng: Random) extends CreateChildNodes with UpdateScopeIncrementObjects {
@@ -64,7 +64,7 @@ case class ObjectMFactory @Inject()(injector: Injector,
 
     val (_, nodes) = createNodes(scope)
 
-    ObjectM(nodes = nodes,
+    ObjectDef(nodes = nodes,
       name = "o" + scope.numObjects)
   }
 

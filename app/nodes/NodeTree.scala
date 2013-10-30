@@ -7,12 +7,12 @@ import ai.Ai
 import scala.util.Random
 import scala.annotation.tailrec
 
-case class NodeTree(val nodes: Seq[Node]) extends Node with UpdateScopeThrows {
+case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows {
   override def toRawScala: String = nodes.map(f => f.toRawScala).mkString(" ")
 
   override def validate(scope: Scope): Boolean = if (scope.hasDepthRemaining) {
     nodes.forall(n => n match {
-      case _: ObjectM => n.validate(scope.incrementDepth)
+      case _: ObjectDef => n.validate(scope.incrementDepth)
       case _: Empty => false
       case _ => false
     })
@@ -56,7 +56,7 @@ case class NodeTreeFactory @Inject()(injector: Injector,
                                      creator: CreateSeqNodes,
                                      ai: Ai,
                                      rng: Random) extends CreateChildNodes with UpdateScopeThrows {
-  val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ObjectMFactory]))
+  val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ObjectDefFactory]))
 
   override def create(scope: Scope, premade: Option[Seq[CreateChildNodes]]): Node = {
     val (_, generated) = createNodes(scope)

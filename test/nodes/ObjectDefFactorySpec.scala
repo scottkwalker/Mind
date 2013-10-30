@@ -8,17 +8,17 @@ import com.google.inject.Guice
 import ai.helpers.TestAiModule
 import scala.util.Random
 
-class FunctionMFactorySpec extends Specification with Mockito {
-  "FunctionMFactory" should {
+class ObjectDefFactorySpec extends Specification with Mockito {
+  "ObjectDefFactory" should {
     class TestDevModule extends DevModule {
       override def configure() {
         bind(classOf[AddOperatorFactory]).asEagerSingleton()
         bind(classOf[Empty]).asEagerSingleton()
         bind(classOf[FunctionMFactory]).asEagerSingleton()
         bind(classOf[NodeTreeFactory]).asEagerSingleton()
-        bind(classOf[ObjectMFactory]).asEagerSingleton()
+        bind(classOf[ObjectDefFactory]).asEagerSingleton()
         bind(classOf[ValueRefFactory]).asEagerSingleton()
-        bind(classOf[ValueInFunctionParamFactory]).asEagerSingleton()
+        bind(classOf[ValDclFunctionParamFactory]).asEagerSingleton()
         bind(classOf[Scope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1))
         bind(classOf[CreateNode]).asEagerSingleton()
         bind(classOf[CreateSeqNodes]).asEagerSingleton()
@@ -32,7 +32,7 @@ class FunctionMFactorySpec extends Specification with Mockito {
     }
 
     val injector: Injector = Guice.createInjector(new TestDevModule, new TestAiModule)
-    val factory = injector.getInstance(classOf[FunctionMFactory])
+    val factory = injector.getInstance(classOf[ObjectDefFactory])
 
     "create" in {
       "returns instance of this type" in {
@@ -40,44 +40,44 @@ class FunctionMFactorySpec extends Specification with Mockito {
 
         val instance = factory.create(scope = s)
 
-        instance must beAnInstanceOf[FunctionM]
+        instance must beAnInstanceOf[ObjectDef]
       }
 
       "returns expected given scope with 0 functions" in {
-        val s = Scope(numFuncs = 0, maxDepth = 10)
+        val s = Scope(numObjects = 0, maxDepth = 10)
 
         val instance = factory.create(scope = s)
 
         instance must beLike {
-          case FunctionM(_, _, name) => name mustEqual "f0"
+          case ObjectDef(_, name) => name mustEqual "o0"
         }
       }
 
       "returns expected given scope with 1 functions" in {
-        val s = Scope(numFuncs = 1, maxDepth = 10)
+        val s = Scope(numObjects = 1, maxDepth = 10)
 
         val instance = factory.create(scope = s)
 
         instance must beLike {
-          case FunctionM(_, _, name) => name mustEqual "f1"
+          case ObjectDef(_, name) => name mustEqual "o1"
         }
       }
 
-      "update scope calls increment functions" in {
+      "update scope calls increment objects" in {
         val s = mock[Scope]
 
         factory.updateScope(s)
 
-        there was one(s).incrementFuncs
+        there was one(s).incrementObjects
       }
 
       "returns 3 children given scope with 3 maxExpressionsInFunc (and rng mocked)" in {
-        val s = Scope(numFuncs = 0, maxDepth = 10, maxParamsInFunc = 3, maxExpressionsInFunc = 3)
+        val s = Scope(numFuncs = 0, maxDepth = 10, maxFuncsInObject = 3)
 
         val instance = factory.create(scope = s)
 
         instance must beLike {
-          case FunctionM(_, children, _) => children.length mustEqual 3
+          case ObjectDef(child, _) => child.length mustEqual 3
         }
       }
     }
