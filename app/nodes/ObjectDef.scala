@@ -12,11 +12,11 @@ case class ObjectDef(nodes: Seq[Node], name: String) extends Node with UpdateSco
   override def toRawScala: String = s"object $name ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
 
   override def validate(scope: Scope): Boolean = if (scope.hasDepthRemaining) {
-    nodes.forall(n => n match {
-      case _: FunctionM => n.validate(scope.incrementDepth)
+    nodes.forall {
+      case n@_ => n.validate(scope.incrementDepth)
       case _: Empty => false
       case _ => false
-    })
+    }
   }
   else false
 

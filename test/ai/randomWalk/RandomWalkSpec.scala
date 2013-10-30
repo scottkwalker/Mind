@@ -54,7 +54,7 @@ class RandomWalkSpec extends Specification with Mockito {
           success
         }
         catch {
-          case e => failure("Should not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
+          case e: Throwable => failure("Should not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
         }
       }
     }

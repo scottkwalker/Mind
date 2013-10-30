@@ -17,12 +17,12 @@ case class FunctionM(params: Seq[Node],
 
   override def validate(scope: Scope): Boolean = if (scope.hasDepthRemaining) {
     !name.isEmpty &&
-      nodes.forall(_ match {
+      nodes.forall {
         case n: AddOperator => n.validate(scope.incrementDepth)
         case n: ValueRef => n.validate(scope.incrementDepth)
         case _: Empty => false
         case _ => false
-      })
+      }
   }
   else false
 

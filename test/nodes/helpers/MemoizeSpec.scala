@@ -5,8 +5,8 @@ import org.specs2.mutable._
 class MemoizeSpec extends Specification {
   "Memoize" should {
     "memoize recursive functions" in {
-      val fib: BigInt => BigInt = {
-        def fibRec(f: BigInt => BigInt)(n: BigInt): BigInt = {
+      val fib: Int => Int = {
+        def fibRec(f: Int => Int)(n: Int): Int = {
           if (n == 0) 1
           else if (n == 1) 1
           else f(n - 1) + f(n - 2)

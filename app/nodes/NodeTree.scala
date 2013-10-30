@@ -11,11 +11,11 @@ case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows {
   override def toRawScala: String = nodes.map(f => f.toRawScala).mkString(" ")
 
   override def validate(scope: Scope): Boolean = if (scope.hasDepthRemaining) {
-    nodes.forall(n => n match {
-      case _: ObjectDef => n.validate(scope.incrementDepth)
+    nodes.forall {
+      case n: ObjectDef => n.validate(scope.incrementDepth)
       case _: Empty => false
       case _ => false
-    })
+    }
   }
   else false
 
