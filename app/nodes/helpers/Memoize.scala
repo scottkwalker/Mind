@@ -1,5 +1,9 @@
 package nodes.helpers
 
+import scala.collection.mutable
+
+case class MemoizeDi (store: mutable.Map[Scope, Boolean] = mutable.Map.empty[Scope, Boolean]) {}
+
 /**
  * A memoized unary function.
  *
@@ -8,9 +12,6 @@ package nodes.helpers
  *          R the return type
  */
 class Memoize1[-T, +R](f: T => R) extends (T => R) {
-
-  import scala.collection.mutable
-
   // map that stores (argument, result) pairs
   private[this] val vals = mutable.Map.empty[T, R]
 

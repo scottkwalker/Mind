@@ -11,7 +11,7 @@ import ai.helpers.TestAiModule
 class ValDclInFunctionParamFactorySpec extends Specification with Mockito {
   "ValDclInFunctionParamFactory" should {
     val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
-    val factory = injector.getInstance(classOf[ValDclFunctionParamFactory])
+    val factory = injector.getInstance(classOf[ValDclInFunctionParamFactory])
 
     "create" in {
       "returns instance of this type" in {

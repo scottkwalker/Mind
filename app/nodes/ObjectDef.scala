@@ -13,7 +13,7 @@ case class ObjectDef(nodes: Seq[Node], name: String) extends Node with UpdateSco
 
   override def validate(scope: Scope): Boolean = if (scope.hasDepthRemaining) {
     nodes.forall {
-      case n@_ => n.validate(scope.incrementDepth)
+      case n: FunctionM => n.validate(scope.incrementDepth)
       case _: Empty => false
       case _ => false
     }
@@ -56,7 +56,8 @@ case class ObjectDef(nodes: Seq[Node], name: String) extends Node with UpdateSco
 case class ObjectDefFactory @Inject()(injector: Injector,
                                     creator: CreateSeqNodes,
                                     ai: Ai,
-                                    rng: Random) extends CreateChildNodes with UpdateScopeIncrementObjects {
+                                    rng: Random,
+                                    memoizeCanTerminateInStepsRemaining: MemoizeDi) extends CreateChildNodes with UpdateScopeIncrementObjects {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
 
   override def create(scope: Scope): Node = {

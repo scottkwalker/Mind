@@ -12,12 +12,12 @@ class DevModule extends ScalaModule {
     bind(classOf[NodeTreeFactory]).asEagerSingleton()
     bind(classOf[ObjectDefFactory]).asEagerSingleton()
     bind(classOf[ValueRefFactory]).asEagerSingleton()
-    bind(classOf[ValDclFunctionParamFactory]).asEagerSingleton()
+    bind(classOf[ValDclInFunctionParamFactory]).asEagerSingleton()
     bind(classOf[Scope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1))
     bind(classOf[CreateNode]).asEagerSingleton()
     bind(classOf[CreateSeqNodes]).asEagerSingleton()
     bind(classOf[Random]).asEagerSingleton()
-
+    bind(classOf[MemoizeDi]).toInstance(MemoizeDi())
     //val injector: Injector =  Guice.createInjector(new DevModule)
     //val component = injector.getInstance(classOf[AddOperatorFactory])
   }

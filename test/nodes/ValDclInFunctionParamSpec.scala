@@ -1,7 +1,7 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.Scope
+import nodes.helpers.{MemoizeDi, Scope}
 import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import ai.helpers.TestAiModule
@@ -92,9 +92,10 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
         class TestDevModule extends ScalaModule {
           def configure() {
             val n: Node = mock[IntegerM]
-            val f = mock[ValDclFunctionParamFactory]
+            val f = mock[ValDclInFunctionParamFactory]
             f.create(any[Scope]) returns n
-            bind(classOf[ValDclFunctionParamFactory]).toInstance(f)
+            bind(classOf[ValDclInFunctionParamFactory]).toInstance(f)
+            bind(classOf[MemoizeDi]).toInstance(MemoizeDi())
           }
         }
 

@@ -25,14 +25,19 @@ case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node
   override def getMaxDepth = 1 + primitiveType.getMaxDepth
 }
 
-case class ValDclFunctionParamFactory @Inject()(injector: Injector,
+case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
                                                  creator: CreateNode,
-                                                 ai: Ai) extends CreateChildNodes with UpdateScopeIncrementVals {
+                                                 ai: Ai,
+                                                 memoizeCanTerminateInStepsRemaining: MemoizeDi) extends CreateChildNodes with UpdateScopeIncrementVals {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[IntegerMFactory]))
 
-  override val canTerminateInStepsRemaining: Scope => Boolean = {
+/*  override val canTerminateInStepsRemaining: Scope => Boolean = {
     def inner(f: Scope => Boolean)(scope: Scope): Boolean = scope.hasDepthRemaining
     Memoize.Y(inner)
+  }*/
+  override def canTerminateInStepsRemaining(scope: Scope): Boolean = {
+    val result = scope.hasDepthRemaining
+    memoizeCanTerminateInStepsRemaining.store getOrElseUpdate(scope, result)
   }
 
   override def create(scope: Scope): Node = {

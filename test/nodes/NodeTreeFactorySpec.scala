@@ -12,10 +12,11 @@ import nodes.helpers.CreateNode
 import nodes.helpers.Scope
 import nodes.helpers.CreateSeqNodes
 import scala.Some
+import com.tzavellas.sse.guice.ScalaModule
 
 class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTreeFactory" should {
-    class TestDevModule extends DevModule {
+    class TestDevModule extends ScalaModule {
       override def configure() {
         bind(classOf[AddOperatorFactory]).asEagerSingleton()
         bind(classOf[Empty]).asEagerSingleton()
@@ -23,7 +24,7 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
         bind(classOf[NodeTreeFactory]).asEagerSingleton()
         bind(classOf[ObjectDefFactory]).asEagerSingleton()
         bind(classOf[ValueRefFactory]).asEagerSingleton()
-        bind(classOf[ValDclFunctionParamFactory]).asEagerSingleton()
+        bind(classOf[ValDclInFunctionParamFactory]).asEagerSingleton()
         bind(classOf[Scope]).toInstance(Scope(maxDepth = 10, maxExpressionsInFunc = 2, maxFuncsInObject = 3, maxParamsInFunc = 2, maxObjectsInTree = 3))
         bind(classOf[CreateNode]).asEagerSingleton()
         bind(classOf[CreateSeqNodes]).asEagerSingleton()
@@ -33,6 +34,8 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
         rng.nextBoolean() returns true
 
         bind(classOf[Random]).toInstance(rng)
+
+        bind(classOf[MemoizeDi]).toInstance(MemoizeDi())
       }
     }
 

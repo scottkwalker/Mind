@@ -16,12 +16,13 @@ case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
 }
 
 case class ValueRefFactory @Inject()(ai: Ai,
-                                     rng: Random) extends CreateChildNodes with UpdateScopeNoChange {
+                                     rng: Random,
+                                     memoizeCanTerminateInStepsRemaining: MemoizeDi) extends CreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[CreateChildNodes] = Nil // No possible children
 
-  override val canTerminateInStepsRemaining: Scope => Boolean = {
-    def inner(f: Scope => Boolean)(scope: Scope): Boolean = scope.hasDepthRemaining
-    Memoize.Y(inner)
+  override def canTerminateInStepsRemaining(scope: Scope): Boolean = {
+    val result = scope.hasDepthRemaining
+    memoizeCanTerminateInStepsRemaining.store getOrElseUpdate(scope, result)
   }
 
   override def create(scope: Scope): Node = {
