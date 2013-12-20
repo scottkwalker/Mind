@@ -30,3 +30,6 @@ dist
 /.project
 /RUNNING_PID
 /.settings
+
+.css/
+.img/

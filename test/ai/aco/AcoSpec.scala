@@ -28,7 +28,7 @@ class AcoSpec extends Specification with Mockito {
     }
 
     "create and test an individual does not throw" in {
-      // TODO mode to new spec file
+      // TODO move to new spec file
       "using test Ai that always returns index zero" in {
         val injector = Guice.createInjector(new DevModule, new TestAiModule)
         val premade = new NodeTree(
