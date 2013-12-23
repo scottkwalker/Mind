@@ -57,7 +57,7 @@ class AcoSpec extends Specification with Mockito {
         catch {
           case e: Throwable => failure("Should not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
         }
-      }.pendingUntilFixed("Error thrown after upgrading specs2")
+      }
 
       "using ACO module" in {
         val injector = Guice.createInjector(new DevModule, new AcoModule)
@@ -92,7 +92,7 @@ class AcoSpec extends Specification with Mockito {
         catch {
           case e: Throwable => failure("Should not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
         }
-      }.pendingUntilFixed("Error thrown after upgrading specs2")
+      }
     }
   }
 }

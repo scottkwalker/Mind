@@ -12,7 +12,7 @@ class AddTwoIntsSpec extends Specification with Mockito {
       nodeTree.toRawScala returns "object o0 { def f0(a: Int, b: Int) = a + b }"
       val f = new AddTwoInts(nodeTree)
       f.fitness mustEqual maxFitness
-    }.pendingUntilFixed("Error thrown after upgrading specs2")
+    }
 
     "1 add 1 equals 2 with NodeTree that converts nodes to raw Scala" in {
       val nodeTree = new NodeTree(
@@ -26,6 +26,6 @@ class AddTwoIntsSpec extends Specification with Mockito {
             name = "o0")))
       val f = new AddTwoInts(nodeTree)
       f.fitness mustEqual maxFitness
-    }.pendingUntilFixed("Error thrown after upgrading specs2")
+    }
   }
 }
