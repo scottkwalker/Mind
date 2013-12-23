@@ -13,9 +13,9 @@ object ApplicationBuild extends Build {
     // Add your project dependencies here,
     jdbc,
     anorm,
-    "org.specs2" %% "specs2" % "2.2.2" % "test", // For specs2
+    "org.specs2" %% "specs2" % "2.3.6" % "test" withSources() withJavadoc(),
     "org.scalamock" %% "scalamock-specs2-support" % "3.0.1" % "test", // For specs2
-    "org.mockito" % "mockito-all" % "1.9.5" % "test", // For specs2
+    "org.mockito" % "mockito-all" % "1.9.5" % "test" withSources() withJavadoc(), // For specs2
     "com.twitter" % "util-eval_2.10" % "6.5.0",
     "org.scalacheck" %% "scalacheck" % "1.10.1" % "test",
     "com.google.inject" % "guice" % "4.0-beta",

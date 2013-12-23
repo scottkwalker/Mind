@@ -133,7 +133,7 @@ class CreateSeqNodesSpecScalaTest extends FlatSpec with Matchers with Mockito {
       scope = s,
       factoryLimit = s.maxFuncsInObject
     )
-
+trait sss {}
     there was one(cn).create(Seq(v), s, ai)
     nodes.length should equal(1)
   }
