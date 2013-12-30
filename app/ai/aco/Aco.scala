@@ -2,7 +2,6 @@ package ai.aco
 
 import ai.{IRandomNumberGenerator, AiCommon}
 import nodes.helpers._
-import scala.util.Random
 import com.google.inject.Inject
 
 

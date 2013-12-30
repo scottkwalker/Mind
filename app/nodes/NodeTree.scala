@@ -3,7 +3,7 @@ package nodes
 import nodes.helpers._
 import com.google.inject.Injector
 import com.google.inject.Inject
-import ai.{IAi, AiCommon}
+import ai.IAi
 import scala.util.Random
 import scala.annotation.tailrec
 

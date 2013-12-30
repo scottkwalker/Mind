@@ -2,7 +2,7 @@ package nodes
 
 import nodes.helpers._
 import com.google.inject.{Injector, Inject}
-import ai.{IAi, AiCommon}
+import ai.IAi
 
 case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node with UpdateScopeIncrementVals {
   override def toRawScala: String = s"$name: ${primitiveType.toRawScala}"
@@ -26,15 +26,15 @@ case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node
 }
 
 case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
-                                                 creator: ICreateNode,
-                                                 ai: IAi,
-                                                 memoizeCanTerminateInStepsRemaining: MemoizeDi) extends ICreateChildNodes with UpdateScopeIncrementVals {
+                                                  creator: ICreateNode,
+                                                  ai: IAi,
+                                                  memoizeCanTerminateInStepsRemaining: MemoizeDi) extends ICreateChildNodes with UpdateScopeIncrementVals {
   val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[IntegerMFactory]))
 
-/*  override val canTerminateInStepsRemaining: IScope => Boolean = {
-    def inner(f: IScope => Boolean)(scope: IScope): Boolean = scope.hasDepthRemaining
-    Memoize.Y(inner)
-  }*/
+  /*  override val canTerminateInStepsRemaining: IScope => Boolean = {
+      def inner(f: IScope => Boolean)(scope: IScope): Boolean = scope.hasDepthRemaining
+      Memoize.Y(inner)
+    }*/
   override def canTerminateInStepsRemaining(scope: IScope): Boolean = {
     val result = scope.hasDepthRemaining
     memoizeCanTerminateInStepsRemaining.store getOrElseUpdate(scope, result)

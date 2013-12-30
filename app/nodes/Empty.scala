@@ -1,7 +1,7 @@
 package nodes
 
 import com.google.inject.{Injector, Inject}
-import nodes.helpers.{IScope, Scope}
+import nodes.helpers.IScope
 
 case class Empty @Inject()() extends Node with UpdateScopeThrows {
   override def toRawScala: String = throw new scala.RuntimeException

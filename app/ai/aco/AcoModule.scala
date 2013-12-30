@@ -1,7 +1,7 @@
 package ai.aco
 
 import com.tzavellas.sse.guice.ScalaModule
-import ai.{IAi, AiCommon}
+import ai.IAi
 
 class AcoModule extends ScalaModule {
   def configure() {

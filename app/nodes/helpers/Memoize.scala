@@ -2,7 +2,7 @@ package nodes.helpers
 
 import scala.collection.mutable
 
-case class MemoizeDi (store: mutable.Map[IScope, Boolean] = mutable.Map.empty[IScope, Boolean]) {}
+case class MemoizeDi(store: mutable.Map[IScope, Boolean] = mutable.Map.empty[IScope, Boolean]) {}
 
 /**
  * A memoized unary function.

@@ -1,7 +1,6 @@
 package ai
 
 import nodes.helpers._
-import scala.util.Random
 
 
 trait AiCommon extends IAi {

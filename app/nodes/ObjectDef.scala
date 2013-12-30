@@ -1,10 +1,9 @@
 package nodes
 
 import nodes.helpers._
-import nodes.helpers.Scope
 import com.google.inject.Injector
 import com.google.inject.Inject
-import ai.{IAi, AiCommon}
+import ai.IAi
 import scala.util.Random
 import scala.annotation.tailrec
 
@@ -54,10 +53,10 @@ case class ObjectDef(nodes: Seq[Node], name: String) extends Node with UpdateSco
 }
 
 case class ObjectDefFactory @Inject()(injector: Injector,
-                                    creator: CreateSeqNodes,
-                                    ai: IAi,
-                                    rng: Random,
-                                    memoizeCanTerminateInStepsRemaining: MemoizeDi) extends ICreateChildNodes with UpdateScopeIncrementObjects {
+                                      creator: CreateSeqNodes,
+                                      ai: IAi,
+                                      rng: Random,
+                                      memoizeCanTerminateInStepsRemaining: MemoizeDi) extends ICreateChildNodes with UpdateScopeIncrementObjects {
   val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
 
   override def create(scope: IScope): Node = {

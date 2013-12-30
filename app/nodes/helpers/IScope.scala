@@ -12,10 +12,16 @@ trait IScope {
   val maxObjectsInTree: Int
 
   def incrementVals: IScope
+
   def incrementFuncs: IScope
+
   def incrementObjects: IScope
+
   def incrementDepth: IScope
+
   def setNumFuncs(newValue: Int): IScope
+
   def setNumVals(newValue: Int): IScope
+
   def hasDepthRemaining: Boolean
 }

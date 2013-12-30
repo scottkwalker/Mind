@@ -2,7 +2,6 @@ package nodes.helpers
 
 import com.tzavellas.sse.guice.ScalaModule
 import nodes._
-import scala.util.Random
 import ai.{RandomNumberGenerator, IRandomNumberGenerator}
 
 class DevModule extends ScalaModule {

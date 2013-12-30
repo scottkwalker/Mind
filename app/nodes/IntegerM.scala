@@ -2,9 +2,8 @@ package nodes
 
 import nodes.helpers._
 import com.google.inject.{Injector, Inject}
-import ai.{IAi, AiCommon}
+import ai.IAi
 import nodes.helpers.CreateSeqNodes
-import nodes.helpers.Scope
 
 case class IntegerM() extends Node with UpdateScopeNoChange {
   override def toRawScala: String = "Int"

@@ -20,17 +20,17 @@ trait ICreateChildNodes {
     }
     Memoize.Y(inner)
   }
-/*
-  protected val canTerminateInStepsRemaining: IScope => Boolean = {
-    def inner(f: IScope => Boolean)(scope: IScope): Boolean = {
-      scope.hasDepthRemaining match {
-        case true => neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
-        case false => false
+  /*
+    protected val canTerminateInStepsRemaining: IScope => Boolean = {
+      def inner(f: IScope => Boolean)(scope: IScope): Boolean = {
+        scope.hasDepthRemaining match {
+          case true => neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
+          case false => false
+        }
       }
+      Memoize.Y(inner)
     }
-    Memoize.Y(inner)
-  }
-*/
+  */
 
   protected def canTerminateInStepsRemaining(scope: IScope): Boolean = {
     def result = scope.hasDepthRemaining match {
