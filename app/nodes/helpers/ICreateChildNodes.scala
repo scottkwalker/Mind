@@ -33,10 +33,10 @@ trait ICreateChildNodes {
   */
 
   protected def canTerminateInStepsRemaining(scope: IScope): Boolean = {
-    def result = scope.hasDepthRemaining match {
+    def calc = scope.hasDepthRemaining match {
       case true => neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
       case false => false
     }
-    memoizeCanTerminateInStepsRemaining.store getOrElseUpdate(scope, result)
+    memoizeCanTerminateInStepsRemaining.store getOrElseUpdate(scope, calc)
   }
 }
