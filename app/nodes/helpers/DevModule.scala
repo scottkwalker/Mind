@@ -17,7 +17,7 @@ class DevModule extends ScalaModule {
     bind(classOf[ICreateNode]).toInstance(CreateNode())
     bind(classOf[CreateSeqNodes]).asEagerSingleton()
     bind(classOf[IRandomNumberGenerator]).toInstance(RandomNumberGenerator())
-    bind(classOf[MemoizeDi]).toInstance(MemoizeDi())
+    bind(classOf[MemoizeDi[Boolean]]).toInstance(MemoizeDi[Boolean]())
     //val injector: Injector =  Guice.createInjector(new DevModule)
     //val component = injector.getInstance(classOf[AddOperatorFactory])
   }

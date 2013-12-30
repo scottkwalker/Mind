@@ -35,7 +35,7 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
 
         bind(classOf[IRandomNumberGenerator]).toInstance(rng)
 
-        bind(classOf[MemoizeDi]).toInstance(MemoizeDi())
+        bind(classOf[MemoizeDi[Boolean]]).toInstance(MemoizeDi[Boolean]())
       }
     }
 

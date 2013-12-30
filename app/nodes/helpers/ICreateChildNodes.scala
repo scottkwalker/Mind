@@ -5,7 +5,7 @@ import nodes.{Empty, Node}
 trait ICreateChildNodes {
   val neighbours: Seq[ICreateChildNodes]
 
-  val memoizeCanTerminateInStepsRemaining: MemoizeDi
+  val memoizeCanTerminateInStepsRemaining: MemoizeDi[Boolean]
 
   def create(scope: IScope): Node = Empty()
 

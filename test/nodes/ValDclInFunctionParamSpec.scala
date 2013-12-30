@@ -96,7 +96,7 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
             val f = mock[ValDclInFunctionParamFactory]
             f.create(any[Scope]) returns n
             bind(classOf[ValDclInFunctionParamFactory]).toInstance(f)
-            bind(classOf[MemoizeDi]).toInstance(MemoizeDi())
+            bind(classOf[MemoizeDi[Boolean]]).toInstance(MemoizeDi[Boolean]())
             bind(classOf[IRandomNumberGenerator]).toInstance(RandomNumberGenerator())
             bind(classOf[ICreateNode]).toInstance(CreateNode())
           }

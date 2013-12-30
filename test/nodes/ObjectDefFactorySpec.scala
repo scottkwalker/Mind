@@ -33,7 +33,7 @@ class ObjectDefFactorySpec extends Specification with Mockito {
 
         bind(classOf[IRandomNumberGenerator]).toInstance(rng)
 
-        bind(classOf[MemoizeDi]).toInstance(MemoizeDi())
+        bind(classOf[MemoizeDi[Boolean]]).toInstance(MemoizeDi[Boolean]())
       }
     }
 

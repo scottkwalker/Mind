@@ -1,8 +1,12 @@
 package nodes.helpers
 
 import scala.collection.mutable
+import com.google.inject.Inject
 
-case class MemoizeDi(store: mutable.Map[IScope, Boolean] = mutable.Map.empty[IScope, Boolean]) {}
+
+case class MemoizeDi[TResult] @Inject()() {
+  val store: mutable.Map[IScope, TResult] = mutable.Map.empty[IScope, TResult]
+}
 
 /**
  * A memoized unary function.
@@ -11,14 +15,14 @@ case class MemoizeDi(store: mutable.Map[IScope, Boolean] = mutable.Map.empty[ISc
  *          T the argument type
  *          R the return type
  */
-class Memoize1[-T, +R](f: T => R) extends (T => R) {
+class Memoize1[-TInput, +TOutput](f: TInput => TOutput) extends (TInput => TOutput) {
   // map that stores (argument, result) pairs
-  private[this] val vals = mutable.Map.empty[T, R]
+  private[this] val vals = mutable.Map.empty[TInput, TOutput]
 
   // Given an argument x,
   //   If vals contains x return vals(x).
   //   Otherwise, update vals so that vals(x) == f(x) and return f(x).
-  def apply(x: T): R = vals getOrElseUpdate(x, f(x))
+  def apply(x: TInput): TOutput = vals getOrElseUpdate(x, f(x))
 }
 
 object Memoize {
@@ -27,8 +31,8 @@ object Memoize {
    *
    * @param f the unary function to memoize
    */
-  def memoize[T, R](f: T => R): (T => R) = new Memoize1(f)
-
+  def memoize[TInput, TOutput](f: TInput => TOutput): (TInput => TOutput) = new Memoize1(f)
+/*
   /**
    * Memoize a binary (two-argument) function.
    *
@@ -51,12 +55,12 @@ object Memoize {
     Function.untupled(memoize(f.tupled))
 
   // ... more memoize methods for higher-arity functions ...
-
+*/
   /**
    * Fixed-point combinator (for memoizing recursive functions).
    */
-  def Y[T, R](f: (T => R) => T => R): (T => R) = {
-    lazy val yf: (T => R) = memoize(f(yf)(_))
+  def Y[TInput, TOutput](f: (TInput => TOutput) => TInput => TOutput): (TInput => TOutput) = {
+    lazy val yf: (TInput => TOutput) = memoize(f(yf)(_))
     yf
   }
 }

@@ -100,7 +100,7 @@ class AddOperatorSpec extends Specification with Mockito {
             f.create(any[Scope]) returns n
             val rng = mock[IRandomNumberGenerator]
             bind(classOf[AddOperatorFactory]).toInstance(f)
-            bind(classOf[MemoizeDi]).toInstance(MemoizeDi())
+            bind(classOf[MemoizeDi[Boolean]]).toInstance(MemoizeDi[Boolean]())
             bind(classOf[IRandomNumberGenerator]).toInstance(rng)
           }
         }
