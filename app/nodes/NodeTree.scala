@@ -3,7 +3,7 @@ package nodes
 import nodes.helpers._
 import com.google.inject.Injector
 import com.google.inject.Inject
-import ai.Ai
+import ai.{IAi, Ai}
 import scala.util.Random
 import scala.annotation.tailrec
 
@@ -54,7 +54,7 @@ case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows {
 
 case class NodeTreeFactory @Inject()(injector: Injector,
                                      creator: CreateSeqNodes,
-                                     ai: Ai,
+                                     ai: IAi,
                                      rng: Random,
                                      memoizeCanTerminateInStepsRemaining: MemoizeDi) extends ICreateChildNodes with UpdateScopeThrows {
   val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[ObjectDefFactory]))

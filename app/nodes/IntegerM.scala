@@ -2,7 +2,7 @@ package nodes
 
 import nodes.helpers._
 import com.google.inject.{Injector, Inject}
-import ai.Ai
+import ai.{IAi, Ai}
 import nodes.helpers.CreateSeqNodes
 import nodes.helpers.Scope
 
@@ -17,7 +17,7 @@ case class IntegerM() extends Node with UpdateScopeNoChange {
 }
 
 case class IntegerMFactory @Inject()(creator: CreateSeqNodes,
-                                     ai: Ai,
+                                     ai: IAi,
                                      memoizeCanTerminateInStepsRemaining: MemoizeDi) extends ICreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[ICreateChildNodes] = Nil // No possible children
 

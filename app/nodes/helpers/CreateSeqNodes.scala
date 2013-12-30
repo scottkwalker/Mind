@@ -3,10 +3,10 @@ package nodes.helpers
 import com.google.inject.Inject
 import scala.annotation.tailrec
 import nodes.Node
-import ai.{IRandomNumberGenerator, Ai}
+import ai.{IAi, IRandomNumberGenerator, Ai}
 import scala.util.Random
 
-case class CreateSeqNodes @Inject()(createNode: ICreateNode, rng: IRandomNumberGenerator, ai: Ai) {
+case class CreateSeqNodes @Inject()(createNode: ICreateNode, rng: IRandomNumberGenerator, ai: IAi) {
   @tailrec
   final def createSeq(possibleChildren: Seq[ICreateChildNodes],
                       scope: IScope,

@@ -3,7 +3,7 @@ package nodes
 import nodes.helpers._
 import com.google.inject.Injector
 import com.google.inject.Inject
-import ai.Ai
+import ai.{IAi, Ai}
 import scala.util.Random
 import scala.annotation.tailrec
 
@@ -70,7 +70,7 @@ case class FunctionM(params: Seq[Node],
 
 case class FunctionMFactory @Inject()(injector: Injector,
                                       creator: CreateSeqNodes,
-                                      ai: Ai,
+                                      ai: IAi,
                                       rng: Random,
                                       memoizeCanTerminateInStepsRemaining: MemoizeDi) extends ICreateChildNodes with UpdateScopeIncrementFuncs {
   val paramsNeighbours: Seq[ICreateChildNodes] = Seq(

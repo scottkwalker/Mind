@@ -2,7 +2,7 @@ package nodes
 
 import nodes.helpers._
 import com.google.inject.{Injector, Inject}
-import ai.Ai
+import ai.{IAi, Ai}
 
 case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node with UpdateScopeIncrementVals {
   override def toRawScala: String = s"$name: ${primitiveType.toRawScala}"
@@ -27,7 +27,7 @@ case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node
 
 case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
                                                  creator: ICreateNode,
-                                                 ai: Ai,
+                                                 ai: IAi,
                                                  memoizeCanTerminateInStepsRemaining: MemoizeDi) extends ICreateChildNodes with UpdateScopeIncrementVals {
   val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[IntegerMFactory]))
 

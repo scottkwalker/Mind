@@ -2,7 +2,7 @@ package nodes
 
 import nodes.helpers._
 import com.google.inject.{Injector, Inject}
-import ai.Ai
+import ai.{IAi, Ai}
 import scala.util.Random
 
 case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
@@ -15,7 +15,7 @@ case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
   override def getMaxDepth = 1
 }
 
-case class ValueRefFactory @Inject()(ai: Ai,
+case class ValueRefFactory @Inject()(ai: IAi,
                                      rng: Random,
                                      memoizeCanTerminateInStepsRemaining: MemoizeDi) extends ICreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[ICreateChildNodes] = Nil // No possible children

@@ -4,8 +4,7 @@ import org.scalatest.WordSpec
 import org.scalatest.mock.EasyMockSugar
 import nodes.Node
 import org.easymock.EasyMock._
-import ai.{Ai, IRandomNumberGenerator}
-import ai.aco.Aco
+import ai.{IAi, IRandomNumberGenerator}
 
 class CreateSeqNodeScalaTestSpec extends WordSpec with EasyMockSugar {
   "create" should {
@@ -17,7 +16,7 @@ class CreateSeqNodeScalaTestSpec extends WordSpec with EasyMockSugar {
       val v = strictMock[ICreateChildNodes]
       val rng = strictMock[IRandomNumberGenerator]
       val cn = strictMock[ICreateNode]
-      val ai = strictMock[Ai]
+      val ai = strictMock[IAi]
 
       val sut = CreateSeqNodes(cn, rng, ai)
 
@@ -29,7 +28,7 @@ class CreateSeqNodeScalaTestSpec extends WordSpec with EasyMockSugar {
 
         cn.create(anyObject[Seq[ICreateChildNodes]],
           anyObject[IScope],
-          anyObject[Ai]) andReturn ((s, n))
+          anyObject[IAi]) andReturn ((s, n))
       }
 
       whenExecuting(s, n, v, rng, cn, ai) {
@@ -52,7 +51,7 @@ class CreateSeqNodeScalaTestSpec extends WordSpec with EasyMockSugar {
       val v = strictMock[ICreateChildNodes]
       val rng = strictMock[IRandomNumberGenerator]
       val cn = strictMock[ICreateNode]
-      val ai = strictMock[Ai]
+      val ai = strictMock[IAi]
 
       val sut = CreateSeqNodes(cn, rng, ai)
 
@@ -64,7 +63,7 @@ class CreateSeqNodeScalaTestSpec extends WordSpec with EasyMockSugar {
 
         (cn.create(anyObject[Seq[ICreateChildNodes]],
           anyObject[IScope],
-          anyObject[Ai]) andReturn ((s, n))).
+          anyObject[IAi]) andReturn ((s, n))).
           times(2)
       }
 
@@ -88,7 +87,7 @@ class CreateSeqNodeScalaTestSpec extends WordSpec with EasyMockSugar {
       val v = strictMock[ICreateChildNodes]
       val rng = strictMock[IRandomNumberGenerator]
       val cn = strictMock[ICreateNode]
-      val ai = strictMock[Ai]
+      val ai = strictMock[IAi]
 
       val sut = CreateSeqNodes(cn, rng, ai)
 
@@ -100,7 +99,7 @@ class CreateSeqNodeScalaTestSpec extends WordSpec with EasyMockSugar {
 
         (cn.create(anyObject[Seq[ICreateChildNodes]],
           anyObject[IScope],
-          anyObject[Ai]) andReturn ((s, n))).
+          anyObject[IAi]) andReturn ((s, n))).
           once
       }
 
@@ -124,7 +123,7 @@ class CreateSeqNodeScalaTestSpec extends WordSpec with EasyMockSugar {
       val v = strictMock[ICreateChildNodes]
       val rng = strictMock[IRandomNumberGenerator]
       val cn = strictMock[ICreateNode]
-      val ai = strictMock[Ai]
+      val ai = strictMock[IAi]
 
       val sut = CreateSeqNodes(cn, rng, ai)
 
@@ -136,7 +135,7 @@ class CreateSeqNodeScalaTestSpec extends WordSpec with EasyMockSugar {
 
         (cn.create(anyObject[Seq[ICreateChildNodes]],
           anyObject[IScope],
-          anyObject[Ai]) andReturn ((s, n))).
+          anyObject[IAi]) andReturn ((s, n))).
           once
       }
 

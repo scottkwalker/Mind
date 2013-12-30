@@ -3,7 +3,7 @@ package nodes
 import nodes.helpers._
 import com.google.inject.Injector
 import com.google.inject.Inject
-import ai.Ai
+import ai.IAi
 
 case class AddOperator(left: Node, right: Node) extends Node with UpdateScopeNoChange {
   override def toRawScala: String = s"${left.toRawScala} + ${right.toRawScala}"
@@ -40,7 +40,7 @@ case class AddOperator(left: Node, right: Node) extends Node with UpdateScopeNoC
 
 case class AddOperatorFactory @Inject()(injector: Injector,
                                         creator: ICreateNode,
-                                        ai: Ai,
+                                        ai: IAi,
                                         memoizeCanTerminateInStepsRemaining: MemoizeDi) extends ICreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[ValueRefFactory]))
 

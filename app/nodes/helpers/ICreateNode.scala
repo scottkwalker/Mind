@@ -1,8 +1,8 @@
 package nodes.helpers
 
-import ai.Ai
+import ai.IAi
 import nodes.Node
 
 trait ICreateNode {
-  def create(possibleChildren: Seq[ICreateChildNodes], scope: IScope, ai: Ai): (IScope, Node)
+  def create(possibleChildren: Seq[ICreateChildNodes], scope: IScope, ai: IAi): (IScope, Node)
 }

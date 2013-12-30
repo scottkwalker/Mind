@@ -3,7 +3,9 @@ package ai
 import nodes.helpers._
 import scala.util.Random
 
-trait Ai {
+
+
+trait Ai extends IAi {
   def chooseChild(possibleChildren: Seq[ICreateChildNodes]): ICreateChildNodes
 
   def chooseChild(possibleChildren: Seq[ICreateChildNodes], scope: IScope): ICreateChildNodes = {
