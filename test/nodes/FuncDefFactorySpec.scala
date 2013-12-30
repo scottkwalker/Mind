@@ -25,7 +25,7 @@ class FuncDefFactorySpec extends Specification with Mockito {
         bind(classOf[ValueRefFactory]).asEagerSingleton()
         bind(classOf[ValDclInFunctionParamFactory]).asEagerSingleton()
         bind(classOf[Scope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1))
-        bind(classOf[CreateNode]).asEagerSingleton()
+        bind(classOf[ICreateNode]).toInstance(CreateNode())
         bind(classOf[CreateSeqNodes]).asEagerSingleton()
 
         val rng = mock[IRandomNumberGenerator]

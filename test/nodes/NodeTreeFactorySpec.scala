@@ -27,7 +27,7 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
         bind(classOf[ValueRefFactory]).asEagerSingleton()
         bind(classOf[ValDclInFunctionParamFactory]).asEagerSingleton()
         bind(classOf[Scope]).toInstance(Scope(maxDepth = 10, maxExpressionsInFunc = 2, maxFuncsInObject = 3, maxParamsInFunc = 2, maxObjectsInTree = 3))
-        bind(classOf[CreateNode]).asEagerSingleton()
+        bind(classOf[ICreateNode]).toInstance(CreateNode())
         bind(classOf[CreateSeqNodes]).asEagerSingleton()
 
         val rng = mock[IRandomNumberGenerator]

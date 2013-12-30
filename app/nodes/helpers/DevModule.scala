@@ -15,7 +15,7 @@ class DevModule extends ScalaModule {
     bind(classOf[ValueRefFactory]).asEagerSingleton()
     bind(classOf[ValDclInFunctionParamFactory]).asEagerSingleton()
     bind(classOf[IScope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1))
-    bind(classOf[CreateNode]).asEagerSingleton()
+    bind(classOf[ICreateNode]).toInstance(CreateNode())
     bind(classOf[CreateSeqNodes]).asEagerSingleton()
     bind(classOf[IRandomNumberGenerator]).toInstance(RandomNumberGenerator())
     bind(classOf[MemoizeDi]).toInstance(MemoizeDi())

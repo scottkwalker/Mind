@@ -6,7 +6,7 @@ import nodes.Node
 import ai.{IRandomNumberGenerator, Ai}
 import scala.util.Random
 
-case class CreateSeqNodes @Inject()(createNode: CreateNode, rng: IRandomNumberGenerator, ai: Ai) {
+case class CreateSeqNodes @Inject()(createNode: ICreateNode, rng: IRandomNumberGenerator, ai: Ai) {
   @tailrec
   final def createSeq(possibleChildren: Seq[CreateChildNodes],
                       scope: IScope,

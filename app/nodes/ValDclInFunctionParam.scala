@@ -26,7 +26,7 @@ case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node
 }
 
 case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
-                                                 creator: CreateNode,
+                                                 creator: ICreateNode,
                                                  ai: Ai,
                                                  memoizeCanTerminateInStepsRemaining: MemoizeDi) extends CreateChildNodes with UpdateScopeIncrementVals {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[IntegerMFactory]))

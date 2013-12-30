@@ -1,7 +1,7 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.{MemoizeDi, Scope}
+import nodes.helpers.{ICreateNode, CreateNode, MemoizeDi, Scope}
 import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import ai.helpers.TestAiModule
@@ -98,6 +98,7 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
             bind(classOf[ValDclInFunctionParamFactory]).toInstance(f)
             bind(classOf[MemoizeDi]).toInstance(MemoizeDi())
             bind(classOf[IRandomNumberGenerator]).toInstance(RandomNumberGenerator())
+            bind(classOf[ICreateNode]).toInstance(CreateNode())
           }
         }
 
