@@ -1,7 +1,7 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.{MemoizeDi, Scope}
+import nodes.helpers.{IScope, MemoizeDi, Scope}
 import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import ai.helpers.TestAiModule
@@ -100,7 +100,7 @@ class AddOperatorSpec extends Specification with Mockito {
             f.create(any[Scope]) returns n
             val rng = mock[IRandomNumberGenerator]
             bind(classOf[AddOperatorFactory]).toInstance(f)
-            bind(classOf[MemoizeDi[Boolean]]).toInstance(MemoizeDi[Boolean]())
+            bind(classOf[MemoizeDi[IScope, Boolean]]).toInstance(MemoizeDi[IScope, Boolean]())
             bind(classOf[IRandomNumberGenerator]).toInstance(rng)
           }
         }

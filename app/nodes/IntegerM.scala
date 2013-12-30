@@ -17,7 +17,7 @@ case class IntegerM() extends Node with UpdateScopeNoChange {
 
 case class IntegerMFactory @Inject()(creator: CreateSeqNodes,
                                      ai: IAi,
-                                     memoizeCanTerminateInStepsRemaining: MemoizeDi[Boolean]) extends ICreateChildNodes with UpdateScopeNoChange {
+                                     memoizeCanTerminateInStepsRemaining: MemoizeDi[IScope, Boolean]) extends ICreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[ICreateChildNodes] = Nil // No possible children
 
   /*

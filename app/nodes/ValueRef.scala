@@ -16,7 +16,7 @@ case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
 
 case class ValueRefFactory @Inject()(ai: IAi,
                                      rng: IRandomNumberGenerator,
-                                     memoizeCanTerminateInStepsRemaining: MemoizeDi[Boolean]) extends ICreateChildNodes with UpdateScopeNoChange {
+                                     memoizeCanTerminateInStepsRemaining: MemoizeDi[IScope, Boolean]) extends ICreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[ICreateChildNodes] = Nil // No possible children
 
   override def canTerminateInStepsRemaining(scope: IScope): Boolean = {

@@ -27,7 +27,7 @@ class MemoizeSpec extends WordSpec with EasyMockSugar {
         def doCalc: Boolean
       }
       val calc = strictMock[ICalc]
-      val memoizeDi = MemoizeDi[Boolean]()
+      val memoizeDi = MemoizeDi[IScope, Boolean]()
 
       expecting {
         (calc.doCalc andReturn true).once()

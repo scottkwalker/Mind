@@ -4,8 +4,8 @@ import scala.collection.mutable
 import com.google.inject.Inject
 
 
-case class MemoizeDi[TResult] @Inject()() {
-  val store: mutable.Map[IScope, TResult] = mutable.Map.empty[IScope, TResult]
+case class MemoizeDi[TInput, TResult] @Inject()() {
+  val store: mutable.Map[TInput, TResult] = mutable.Map.empty[TInput, TResult]
 }
 
 /**
