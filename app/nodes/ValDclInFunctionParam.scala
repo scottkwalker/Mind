@@ -2,7 +2,7 @@ package nodes
 
 import nodes.helpers._
 import com.google.inject.{Injector, Inject}
-import ai.{IAi, Ai}
+import ai.{IAi, AiCommon}
 
 case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node with UpdateScopeIncrementVals {
   override def toRawScala: String = s"$name: ${primitiveType.toRawScala}"

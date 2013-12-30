@@ -4,7 +4,7 @@ import nodes.helpers._
 import nodes.helpers.Scope
 import com.google.inject.Injector
 import com.google.inject.Inject
-import ai.{IAi, Ai}
+import ai.{IAi, AiCommon}
 import scala.util.Random
 import scala.annotation.tailrec
 

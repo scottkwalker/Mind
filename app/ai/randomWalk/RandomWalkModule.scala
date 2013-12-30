@@ -1,7 +1,7 @@
 package ai.randomWalk
 
 import com.tzavellas.sse.guice.ScalaModule
-import ai.{IAi, Ai}
+import ai.{IAi, AiCommon}
 
 class RandomWalkModule extends ScalaModule {
   def configure() {

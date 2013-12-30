@@ -3,7 +3,7 @@ package nodes.helpers
 import com.google.inject.Inject
 import scala.annotation.tailrec
 import nodes.Node
-import ai.{IAi, IRandomNumberGenerator, Ai}
+import ai.{IAi, IRandomNumberGenerator, AiCommon}
 import scala.util.Random
 
 case class CreateSeqNodes @Inject()(createNode: ICreateNode, rng: IRandomNumberGenerator, ai: IAi) {

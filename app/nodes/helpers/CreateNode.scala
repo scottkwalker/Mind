@@ -1,7 +1,7 @@
 package nodes.helpers
 
 import com.google.inject.Inject
-import ai.{IAi, Ai}
+import ai.{IAi, AiCommon}
 import nodes.Node
 
 case class CreateNode @Inject()() extends ICreateNode {

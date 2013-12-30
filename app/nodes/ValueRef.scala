@@ -2,7 +2,7 @@ package nodes
 
 import nodes.helpers._
 import com.google.inject.{Injector, Inject}
-import ai.{IAi, Ai}
+import ai.{IAi, AiCommon}
 import scala.util.Random
 
 case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
