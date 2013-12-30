@@ -14,14 +14,12 @@ object ApplicationBuild extends Build {
     jdbc,
     anorm,
     "org.specs2" %% "specs2" % "2.3.6" % "test" withSources() withJavadoc(),
-    "org.scalamock" %% "scalamock-specs2-support" % "3.0.1" % "test", // For specs2
     "org.mockito" % "mockito-all" % "1.9.5" % "test" withSources() withJavadoc(), // For specs2
     "com.twitter" % "util-eval_2.10" % "6.5.0",
     "org.scalacheck" %% "scalacheck" % "1.10.1" % "test",
     "com.google.inject" % "guice" % "4.0-beta",
     "com.tzavellas" % "sse-guice" % "0.7.1",
-    "org.scalatest" % "scalatest_2.10" % "2.0" % "test", // For ScalaTest
-    "org.scalamock" %% "scalamock-scalatest-support" % "3.0.1" % "test" // For ScalaTest
+    "org.scalatest" % "scalatest_2.10" % "2.0" % "test"
   )
 
 
