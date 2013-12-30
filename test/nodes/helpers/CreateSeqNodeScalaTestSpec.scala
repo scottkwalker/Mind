@@ -7,56 +7,74 @@ import org.easymock.EasyMock._
 import ai.{Ai, IRandomNumberGenerator}
 import ai.aco.Aco
 
-class CreateSeqNodeScalaTestSpec  extends WordSpec with EasyMockSugar {
+class CreateSeqNodeScalaTestSpec extends WordSpec with EasyMockSugar {
   "create" should {
-/*
+
     "call a factory once given only space for 1 func in obj and mocked rng the same" in {
+      val expected = 1
+
       val s = strictMock[IScope]
       val n = strictMock[Node]
-      val v = strictMock[CreateChildNodes]
+      val v = strictMock[ICreateChildNodes]
       val rng = strictMock[IRandomNumberGenerator]
-      val ai: Ai = Aco(rng)
       val cn = strictMock[ICreateNode]
+
+      val ai: Ai = Aco(rng)
+      val sut = CreateSeqNodes(cn, rng, ai)
 
       expecting {
         s.maxFuncsInObject andReturn 1
-        v.updateScope(s) andReturn s
-        v.create(anyObject[IScope]()) andReturn n
-        rng.nextBoolean() andReturn true
+        cn.create(anyObject[Seq[ICreateChildNodes]],
+          anyObject[IScope],
+          anyObject[Ai]) andReturn ((s, n))
       }
 
-      whenExecuting(s) {
+      whenExecuting(s, n, v, rng, cn) {
         // Act
-
+        val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
+          scope = s,
+          factoryLimit = s.maxFuncsInObject
+        )
 
         // Assert
-
+        assert(nodes.length == expected)
       }
-
-
-      /*
-
-
-
-
-
-
-
-      cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
-      val sut = CreateSeqNodes(cn, rng, ai)
-
-      val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
-        scope = s,
-        factoryLimit = s.maxFuncsInObject
-      )
-
-      there was one(cn).create(Seq(v), s, ai)
-      nodes.length must equalTo(1)
-      */
     }
 
+    "calls create on factory twice given space for 2 func in obj and mocked rng the same" in {
+      val expected = 2
 
-*/
+      val s = strictMock[IScope]
+      val n = strictMock[Node]
+      val v = strictMock[ICreateChildNodes]
+      val rng = strictMock[IRandomNumberGenerator]
+      val cn = strictMock[ICreateNode]
+
+      val ai: Ai = Aco(rng)
+      val sut = CreateSeqNodes(cn, rng, ai)
+
+      expecting {
+        s.maxFuncsInObject andReturn 2
+        rng.nextBoolean() andReturn true
+
+        (cn.create(anyObject[Seq[ICreateChildNodes]],
+          anyObject[IScope],
+          anyObject[Ai]) andReturn ((s, n))).
+          times(2)
+      }
+
+      whenExecuting(s, n, v, rng, cn) {
+        // Act
+        val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
+          scope = s,
+          factoryLimit = s.maxFuncsInObject
+        )
+
+        // Assert
+        assert(nodes.length == expected)
+      }
+    }
+
 
   }
 }

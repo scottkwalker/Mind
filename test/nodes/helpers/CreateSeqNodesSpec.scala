@@ -14,14 +14,14 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val s = mock[Scope]
         s.maxFuncsInObject returns 1
         val n = mock[Node]
-        val v = mock[CreateChildNodes]
+        val v = mock[ICreateChildNodes]
         v.updateScope(s) returns s
         v.create(any[Scope]) returns n
         val rng = mock[IRandomNumberGenerator]
         rng.nextBoolean() returns true
         val ai: Ai = Aco(rng)
         val cn = mock[CreateNode]
-        cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
+        cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
         val sut = CreateSeqNodes(cn, rng, ai)
 
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
@@ -37,11 +37,11 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val s = mock[Scope]
         s.maxFuncsInObject returns 2
         val n = mock[Node]
-        val v = mock[CreateChildNodes]
+        val v = mock[ICreateChildNodes]
         v.updateScope(s) returns s
         v.create(any[Scope]) returns n
         val cn = mock[CreateNode]
-        cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
+        cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
         val rng = mock[IRandomNumberGenerator]
         rng.nextInt(any[Int]) returns 2
         rng.nextBoolean() returns true
@@ -61,11 +61,11 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val s = mock[Scope]
         s.maxFuncsInObject returns 2
         val n = mock[Node]
-        val v = mock[CreateChildNodes]
+        val v = mock[ICreateChildNodes]
         v.updateScope(s) returns s
         v.create(any[Scope]) returns n
         val cn = mock[CreateNode]
-        cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
+        cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
         val rng = mock[IRandomNumberGenerator]
         rng.nextInt(any[Int]) returns 1
         rng.nextBoolean() returns true
@@ -85,11 +85,11 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val s = mock[Scope]
         s.maxFuncsInObject returns 2
         val n = mock[Node]
-        val v = mock[CreateChildNodes]
+        val v = mock[ICreateChildNodes]
         v.updateScope(s) returns s
         v.create(any[Scope]) returns n
         val cn = mock[CreateNode]
-        cn.create(any[Seq[CreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
+        cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[Ai]) returns ((s, n))
         val rng = mock[IRandomNumberGenerator]
         rng.nextInt(any[Int]) returns 2
         rng.nextBoolean() returns true

@@ -9,7 +9,7 @@ class CreateChildNodesSpec extends Specification with Mockito {
     trait MockUpdateScope extends UpdateScope {
       override def updateScope(scope: IScope): IScope = scope
     }
-    case class mockFactoryNotTerminates1(memoizeCanTerminateInStepsRemaining: MemoizeDi = MemoizeDi()) extends CreateChildNodes with MockUpdateScope {
+    case class mockFactoryNotTerminates1(memoizeCanTerminateInStepsRemaining: MemoizeDi = MemoizeDi()) extends ICreateChildNodes with MockUpdateScope {
       /*override val canTerminateInStepsRemaining: Scope => Boolean = {
         def inner(f: Scope => Boolean)(scope: IScope): Boolean = false
         Memoize.Y(inner)
@@ -21,10 +21,10 @@ class CreateChildNodesSpec extends Specification with Mockito {
 
       override def create(scope: IScope) = null
 
-      val neighbours: Seq[CreateChildNodes] = null
+      val neighbours: Seq[ICreateChildNodes] = null
     }
 
-    case class mockFactoryTerminates1(memoizeCanTerminateInStepsRemaining: MemoizeDi = MemoizeDi()) extends CreateChildNodes with MockUpdateScope {
+    case class mockFactoryTerminates1(memoizeCanTerminateInStepsRemaining: MemoizeDi = MemoizeDi()) extends ICreateChildNodes with MockUpdateScope {
       /*override val canTerminateInStepsRemaining: Scope => Boolean = {
         def inner(f: Scope => Boolean)(scope: IScope): Boolean = true
         Memoize.Y(inner)
@@ -36,10 +36,10 @@ class CreateChildNodesSpec extends Specification with Mockito {
 
       override def create(scope: IScope) = null
 
-      val neighbours: Seq[CreateChildNodes] = null
+      val neighbours: Seq[ICreateChildNodes] = null
     }
 
-    case class mockFactoryTerminates2(memoizeCanTerminateInStepsRemaining: MemoizeDi = MemoizeDi()) extends CreateChildNodes with MockUpdateScope {
+    case class mockFactoryTerminates2(memoizeCanTerminateInStepsRemaining: MemoizeDi = MemoizeDi()) extends ICreateChildNodes with MockUpdateScope {
       /*override val canTerminateInStepsRemaining: Scope => Boolean = {
         def inner(f: Scope => Boolean)(scope: IScope): Boolean = true
         Memoize.Y(inner)
@@ -51,15 +51,15 @@ class CreateChildNodesSpec extends Specification with Mockito {
 
       override def create(scope: IScope) = null
 
-      val neighbours: Seq[CreateChildNodes] = null
+      val neighbours: Seq[ICreateChildNodes] = null
     }
 
     val nNot = mockFactoryNotTerminates1()
     val n1 = mockFactoryTerminates1()
     val n2 = mockFactoryTerminates2()
 
-    case class TestCreateChildNodes(memoizeCanTerminateInStepsRemaining: MemoizeDi = MemoizeDi()) extends CreateChildNodes with MockUpdateScope {
-      val neighbours: Seq[CreateChildNodes] = Seq(nNot,
+    case class TestCreateChildNodes(memoizeCanTerminateInStepsRemaining: MemoizeDi = MemoizeDi()) extends ICreateChildNodes with MockUpdateScope {
+      val neighbours: Seq[ICreateChildNodes] = Seq(nNot,
         n1,
         nNot,
         n2)
@@ -67,8 +67,8 @@ class CreateChildNodesSpec extends Specification with Mockito {
       override def create(scope: IScope): Node = Empty()
     }
 
-    case class TestCreateChildNodesNoValidChildren(memoizeCanTerminateInStepsRemaining: MemoizeDi = MemoizeDi()) extends CreateChildNodes with MockUpdateScope {
-      val neighbours: Seq[CreateChildNodes] = Seq(mockFactoryNotTerminates1())
+    case class TestCreateChildNodesNoValidChildren(memoizeCanTerminateInStepsRemaining: MemoizeDi = MemoizeDi()) extends ICreateChildNodes with MockUpdateScope {
+      val neighbours: Seq[ICreateChildNodes] = Seq(mockFactoryNotTerminates1())
 
       override def create(scope: IScope): Node = Empty()
     }

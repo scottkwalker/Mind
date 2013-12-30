@@ -56,10 +56,10 @@ case class NodeTreeFactory @Inject()(injector: Injector,
                                      creator: CreateSeqNodes,
                                      ai: Ai,
                                      rng: Random,
-                                     memoizeCanTerminateInStepsRemaining: MemoizeDi) extends CreateChildNodes with UpdateScopeThrows {
-  val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ObjectDefFactory]))
+                                     memoizeCanTerminateInStepsRemaining: MemoizeDi) extends ICreateChildNodes with UpdateScopeThrows {
+  val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[ObjectDefFactory]))
 
-  override def create(scope: IScope, premade: Option[Seq[CreateChildNodes]]): Node = {
+  override def create(scope: IScope, premade: Option[Seq[ICreateChildNodes]]): Node = {
     val (_, generated) = createNodes(scope)
     val nodes: Seq[Node] = premade match {
       case Some(pm) => generated ++ pm.map(p => p.create(scope))

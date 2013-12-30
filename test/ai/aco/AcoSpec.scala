@@ -22,10 +22,10 @@ class AcoSpec extends Specification with Mockito {
     "chooseChild returns expected instance given only one valid choice" in {
       val rng = mock[IRandomNumberGenerator]
       val sut = Aco(rng)
-      val v = mock[CreateChildNodes]
+      val v = mock[ICreateChildNodes]
       val possibleChildren = Seq(v)
 
-      sut.chooseChild(possibleChildren) must beAnInstanceOf[CreateChildNodes]
+      sut.chooseChild(possibleChildren) must beAnInstanceOf[ICreateChildNodes]
     }
 
     "create and test an individual does not throw" in {

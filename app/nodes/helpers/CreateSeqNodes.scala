@@ -8,7 +8,7 @@ import scala.util.Random
 
 case class CreateSeqNodes @Inject()(createNode: ICreateNode, rng: IRandomNumberGenerator, ai: Ai) {
   @tailrec
-  final def createSeq(possibleChildren: Seq[CreateChildNodes],
+  final def createSeq(possibleChildren: Seq[ICreateChildNodes],
                       scope: IScope,
                       saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
                       acc: Seq[Node] = Seq[Node](),

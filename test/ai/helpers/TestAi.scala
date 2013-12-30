@@ -6,7 +6,7 @@ import scala.util.Random
 import com.google.inject.Inject
 
 case class TestAi @Inject()(rng: Random) extends Ai {
-  override def chooseChild(possibleChildren: Seq[CreateChildNodes]): CreateChildNodes = {
+  override def chooseChild(possibleChildren: Seq[ICreateChildNodes]): ICreateChildNodes = {
     require(possibleChildren.length > 0, "Sequence must not be empty otherwise we cannot pick an node from it")
     possibleChildren(0)
   }
