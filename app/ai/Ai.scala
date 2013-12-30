@@ -13,7 +13,7 @@ trait Ai {
 
   def canAddAnother(accLength: Int,
                     factoryLimit: Int,
-                    rng: Random): Boolean = {
+                    rng: IRandomNumberGenerator): Boolean = {
     accLength < 1 ||
       (accLength < factoryLimit && rng.nextBoolean())
   }

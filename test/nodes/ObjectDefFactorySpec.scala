@@ -11,6 +11,7 @@ import nodes.helpers.CreateNode
 import nodes.helpers.Scope
 import nodes.helpers.CreateSeqNodes
 import com.tzavellas.sse.guice.ScalaModule
+import ai.IRandomNumberGenerator
 
 class ObjectDefFactorySpec extends Specification with Mockito {
   "ObjectDefFactory" should {
@@ -27,11 +28,11 @@ class ObjectDefFactorySpec extends Specification with Mockito {
         bind(classOf[CreateNode]).asEagerSingleton()
         bind(classOf[CreateSeqNodes]).asEagerSingleton()
 
-        val rng = mock[Random]
+        val rng = mock[IRandomNumberGenerator]
         rng.nextInt(any[Int]) returns 2
         rng.nextBoolean() returns true
 
-        bind(classOf[Random]).toInstance(rng)
+        bind(classOf[IRandomNumberGenerator]).toInstance(rng)
 
         bind(classOf[MemoizeDi]).toInstance(MemoizeDi())
       }

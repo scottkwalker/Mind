@@ -13,6 +13,7 @@ import nodes.helpers.Scope
 import nodes.helpers.CreateSeqNodes
 import scala.Some
 import com.tzavellas.sse.guice.ScalaModule
+import ai.IRandomNumberGenerator
 
 class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTreeFactory" should {
@@ -29,11 +30,11 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
         bind(classOf[CreateNode]).asEagerSingleton()
         bind(classOf[CreateSeqNodes]).asEagerSingleton()
 
-        val rng = mock[Random]
+        val rng = mock[IRandomNumberGenerator]
         rng.nextInt(any[Int]) returns 2
         rng.nextBoolean() returns true
 
-        bind(classOf[Random]).toInstance(rng)
+        bind(classOf[IRandomNumberGenerator]).toInstance(rng)
 
         bind(classOf[MemoizeDi]).toInstance(MemoizeDi())
       }

@@ -4,8 +4,7 @@ import org.scalatest.WordSpec
 import org.scalatest.mock.EasyMockSugar
 import nodes.Node
 import scala.util.Random
-import ai.Ai
-import ai.aco.Aco
+import org.easymock.EasyMock._
 
 class CreateSeqNodeScalaTestSpec  extends WordSpec with EasyMockSugar {
   "create" should {
@@ -15,11 +14,12 @@ class CreateSeqNodeScalaTestSpec  extends WordSpec with EasyMockSugar {
       val s = strictMock[IScope]
       val n = strictMock[Node]
       val v = mock[CreateChildNodes]
+      val rng = mock[Random]
 
       expecting {
-        s.maxFuncsInObject.andReturn(1)
-        v.updateScope(s).andReturn(s)
-
+        s.maxFuncsInObject andReturn 1
+        v.updateScope(s) andReturn s
+        v.create(anyObject[IScope]()) andReturn n
       }
 
       whenExecuting(s) {
@@ -34,8 +34,8 @@ class CreateSeqNodeScalaTestSpec  extends WordSpec with EasyMockSugar {
       /*
 
 
-      v.create(any[Scope]) returns n
-      val rng = mock[Random]
+
+
       rng.nextBoolean() returns true
       val ai: Ai = Aco(rng)
       val cn = mock[CreateNode]
@@ -50,6 +50,7 @@ class CreateSeqNodeScalaTestSpec  extends WordSpec with EasyMockSugar {
       there was one(cn).create(Seq(v), s, ai)
       nodes.length must equalTo(1)
       */
-    }*/
+    }
+    */
   }
 }

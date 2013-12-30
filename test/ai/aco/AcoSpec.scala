@@ -15,11 +15,12 @@ import nodes.FunctionM
 import ai.helpers.TestAiModule
 import scala.util.Random
 import ai.randomWalk.RandomWalkModule
+import ai.IRandomNumberGenerator
 
 class AcoSpec extends Specification with Mockito {
   "Aco" should {
     "chooseChild returns expected instance given only one valid choice" in {
-      val rng = mock[Random]
+      val rng = mock[IRandomNumberGenerator]
       val sut = Aco(rng)
       val v = mock[CreateChildNodes]
       val possibleChildren = Seq(v)
