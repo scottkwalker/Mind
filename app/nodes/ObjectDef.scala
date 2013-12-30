@@ -55,6 +55,7 @@ case class ObjectDefFactory @Inject()(injector: Injector,
                                       creator: CreateSeqNodes,
                                       ai: IAi,
                                       rng: IRandomNumberGenerator,
+                                      memoizeLegalNeigbours: MemoizeDi[IScope, Seq[ICreateChildNodes]],
                                       memoizeCanTerminateInStepsRemaining: MemoizeDi[IScope, Boolean]) extends ICreateChildNodes with UpdateScopeIncrementObjects {
   val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
 

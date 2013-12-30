@@ -28,6 +28,7 @@ case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node
 case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
                                                   creator: ICreateNode,
                                                   ai: IAi,
+                                                  memoizeLegalNeigbours: MemoizeDi[IScope, Seq[ICreateChildNodes]],
                                                   memoizeCanTerminateInStepsRemaining: MemoizeDi[IScope, Boolean]) extends ICreateChildNodes with UpdateScopeIncrementVals {
   val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[IntegerMFactory]))
 

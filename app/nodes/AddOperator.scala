@@ -41,6 +41,7 @@ case class AddOperator(left: Node, right: Node) extends Node with UpdateScopeNoC
 case class AddOperatorFactory @Inject()(injector: Injector,
                                         creator: ICreateNode,
                                         ai: IAi,
+                                        memoizeLegalNeigbours: MemoizeDi[IScope, Seq[ICreateChildNodes]],
                                         memoizeCanTerminateInStepsRemaining: MemoizeDi[IScope, Boolean]) extends ICreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[ValueRefFactory]))
 

@@ -6,15 +6,12 @@ import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import ai.helpers.TestAiModule
 import com.tzavellas.sse.guice.ScalaModule
-import ai.{RandomNumberGenerator, IRandomNumberGenerator}
+import ai.{IRandomNumberGenerator}
 import nodes.helpers.CreateNode
-import nodes.Empty
+
 import ai.RandomNumberGenerator
-import nodes.ValDclInFunctionParamFactory
 import nodes.helpers.Scope
-import nodes.IntegerM
 import nodes.helpers.MemoizeDi
-import nodes.ValDclInFunctionParam
 
 class ValDclInFunctionParamSpec extends Specification with Mockito {
   "ValDclInFunctionParam" should {
