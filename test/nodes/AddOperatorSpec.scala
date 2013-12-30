@@ -6,6 +6,7 @@ import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import ai.helpers.TestAiModule
 import com.tzavellas.sse.guice.ScalaModule
+import ai.IRandomNumberGenerator
 
 class AddOperatorSpec extends Specification with Mockito {
   "AddOperator" should {
@@ -97,8 +98,10 @@ class AddOperatorSpec extends Specification with Mockito {
             val n: Node = mock[ValueRef]
             val f = mock[AddOperatorFactory]
             f.create(any[Scope]) returns n
+            val rng = mock[IRandomNumberGenerator]
             bind(classOf[AddOperatorFactory]).toInstance(f)
             bind(classOf[MemoizeDi]).toInstance(MemoizeDi())
+            bind(classOf[IRandomNumberGenerator]).toInstance(rng)
           }
         }
 

@@ -4,7 +4,6 @@ import org.specs2.mutable._
 import nodes._
 import org.specs2.mock.Mockito
 import ai.{IRandomNumberGenerator, AiCommon}
-import scala.util.Random
 import ai.aco.Aco
 
 class CreateSeqNodesSpec extends Specification with Mockito {

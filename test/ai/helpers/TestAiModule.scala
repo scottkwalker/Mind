@@ -1,7 +1,7 @@
 package ai.helpers
 
 import com.tzavellas.sse.guice.ScalaModule
-import ai.{IAi, AiCommon}
+import ai.IAi
 
 class TestAiModule extends ScalaModule {
   def configure() {

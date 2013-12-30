@@ -12,13 +12,12 @@ import nodes.IntegerM
 import nodes.ValDclInFunctionParam
 import nodes.NodeTree
 import nodes.FunctionM
-import ai.helpers.TestAiModule
-import scala.util.Random
+import ai.IRandomNumberGenerator
 
 class RandomWalkSpec extends Specification with Mockito {
   "RandomWalk" should {
     "chooseChild returns expected instance given only one valid choice" in {
-      val rng = mock[Random]
+      val rng = mock[IRandomNumberGenerator]
       val sut = RandomWalk(rng)
       val v = mock[ICreateChildNodes]
       val possibleChildren = Seq(v)

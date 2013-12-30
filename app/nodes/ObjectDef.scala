@@ -3,8 +3,7 @@ package nodes
 import nodes.helpers._
 import com.google.inject.Injector
 import com.google.inject.Inject
-import ai.IAi
-import scala.util.Random
+import ai.{IRandomNumberGenerator, IAi}
 import scala.annotation.tailrec
 
 case class ObjectDef(nodes: Seq[Node], name: String) extends Node with UpdateScopeIncrementObjects {
@@ -55,7 +54,7 @@ case class ObjectDef(nodes: Seq[Node], name: String) extends Node with UpdateSco
 case class ObjectDefFactory @Inject()(injector: Injector,
                                       creator: CreateSeqNodes,
                                       ai: IAi,
-                                      rng: Random,
+                                      rng: IRandomNumberGenerator,
                                       memoizeCanTerminateInStepsRemaining: MemoizeDi) extends ICreateChildNodes with UpdateScopeIncrementObjects {
   val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
 

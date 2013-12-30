@@ -2,10 +2,9 @@ package ai.helpers
 
 import ai.{IRandomNumberGenerator, AiCommon}
 import nodes.helpers._
-import scala.util.Random
 import com.google.inject.Inject
 
-case class TestAiCommon @Inject()(rng: Random) extends AiCommon {
+case class TestAiCommon @Inject()(rng: IRandomNumberGenerator) extends AiCommon {
   override def chooseChild(possibleChildren: Seq[ICreateChildNodes]): ICreateChildNodes = {
     require(possibleChildren.length > 0, "Sequence must not be empty otherwise we cannot pick an node from it")
     possibleChildren(0)

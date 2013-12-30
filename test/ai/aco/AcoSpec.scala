@@ -13,8 +13,6 @@ import nodes.ValDclInFunctionParam
 import nodes.NodeTree
 import nodes.FunctionM
 import ai.helpers.TestAiModule
-import scala.util.Random
-import ai.randomWalk.RandomWalkModule
 import ai.IRandomNumberGenerator
 
 class AcoSpec extends Specification with Mockito {

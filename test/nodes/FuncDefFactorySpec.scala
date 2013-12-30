@@ -6,12 +6,11 @@ import org.specs2.mock.Mockito
 import com.google.inject.Injector
 import com.google.inject.Guice
 import ai.helpers.TestAiModule
-import scala.util.Random
 import nodes.helpers.CreateNode
 import nodes.helpers.Scope
 import nodes.helpers.CreateSeqNodes
 import com.tzavellas.sse.guice.ScalaModule
-import ai.{RandomNumberGenerator, IRandomNumberGenerator}
+import ai.IRandomNumberGenerator
 
 class FuncDefFactorySpec extends Specification with Mockito {
   "FuncDefFactory" should {

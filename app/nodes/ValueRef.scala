@@ -2,8 +2,7 @@ package nodes
 
 import nodes.helpers._
 import com.google.inject.{Injector, Inject}
-import ai.IAi
-import scala.util.Random
+import ai.{IRandomNumberGenerator, IAi}
 
 case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
   override def toRawScala: String = name
@@ -16,7 +15,7 @@ case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
 }
 
 case class ValueRefFactory @Inject()(ai: IAi,
-                                     rng: Random,
+                                     rng: IRandomNumberGenerator,
                                      memoizeCanTerminateInStepsRemaining: MemoizeDi) extends ICreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[ICreateChildNodes] = Nil // No possible children
 
