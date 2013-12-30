@@ -109,7 +109,7 @@ class ScopeSpec extends Specification {
 
     "IoC creates a new instance with injected values" in {
       val injector: Injector = Guice.createInjector(new DevModule, new AcoModule)
-      val sut = injector.getInstance(classOf[Scope])
+      val sut = injector.getInstance(classOf[IScope])
 
       sut.maxFuncsInObject mustEqual 10
       sut.maxExpressionsInFunc mustEqual 2

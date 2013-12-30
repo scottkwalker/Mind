@@ -9,11 +9,11 @@ import scala.util.Random
 case class CreateSeqNodes @Inject()(createNode: CreateNode, rng: Random, ai: Ai) {
   @tailrec
   final def createSeq(possibleChildren: Seq[CreateChildNodes],
-                      scope: Scope,
-                      saveAccLengthInScope: Option[((Scope, Int) => Scope)] = None,
+                      scope: IScope,
+                      saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
                       acc: Seq[Node] = Seq[Node](),
                       factoryLimit: Int
-                       ): (Scope, Seq[Node]) = {
+                       ): (IScope, Seq[Node]) = {
     ai.canAddAnother(acc.length, factoryLimit, rng) match {
       case false => {
         val updatedScope = saveAccLengthInScope match {

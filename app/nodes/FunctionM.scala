@@ -15,7 +15,7 @@ case class FunctionM(params: Seq[Node],
     s"def $name${params.map(f => f.toRawScala).mkString("(", ", ", ")")} = ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
   }
 
-  override def validate(scope: Scope): Boolean = if (scope.hasDepthRemaining) {
+  override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) {
     !name.isEmpty &&
       nodes.forall {
         case n: AddOperator => n.validate(scope.incrementDepth)
@@ -26,25 +26,25 @@ case class FunctionM(params: Seq[Node],
   }
   else false
 
-  override def replaceEmpty(scope: Scope, injector: Injector): Node = {
+  override def replaceEmpty(scope: IScope, injector: Injector): Node = {
     val (updatedScope, p) = replaceEmptyInSeq(scope, injector, params, funcCreateParams)
     val (temp, n) = replaceEmptyInSeq(updatedScope, injector, nodes, funcCreateNodes)
 
     FunctionM(p, n, name)
   }
 
-  private def funcCreateParams(scope: Scope, injector: Injector, premade: Seq[Node]): (Scope, Seq[Node]) = {
+  private def funcCreateParams(scope: IScope, injector: Injector, premade: Seq[Node]): (IScope, Seq[Node]) = {
     val factory = injector.getInstance(classOf[FunctionMFactory])
     factory.createParams(scope = scope, acc = premade.init)
   }
 
-  private def funcCreateNodes(scope: Scope, injector: Injector, premade: Seq[Node]): (Scope, Seq[Node]) = {
+  private def funcCreateNodes(scope: IScope, injector: Injector, premade: Seq[Node]): (IScope, Seq[Node]) = {
     val factory = injector.getInstance(classOf[FunctionMFactory])
     factory.createNodes(scope = scope, acc = premade.init)
   }
 
   @tailrec
-  private def replaceEmptyInSeq(scope: Scope, injector: Injector, n: Seq[Node], f: ((Scope, Injector, Seq[Node]) => (Scope, Seq[Node])), acc: Seq[Node] = Seq[Node]()): (Scope, Seq[Node]) = {
+  private def replaceEmptyInSeq(scope: IScope, injector: Injector, n: Seq[Node], f: ((IScope, Injector, Seq[Node]) => (IScope, Seq[Node])), acc: Seq[Node] = Seq[Node]()): (IScope, Seq[Node]) = {
     n match {
       case x :: xs => {
         val (updatedScope, replaced) = x match {
@@ -82,7 +82,7 @@ case class FunctionMFactory @Inject()(injector: Injector,
     injector.getInstance(classOf[ValueRefFactory])
   )
 
-  override def create(scope: Scope): Node = {
+  override def create(scope: IScope): Node = {
     val (updatedScope, params) = createParams(scope)
 
     val (_, nodes) = createNodes(updatedScope)
@@ -92,15 +92,15 @@ case class FunctionMFactory @Inject()(injector: Injector,
       name = "f" + scope.numFuncs)
   }
 
-  def createParams(scope: Scope, acc: Seq[Node] = Seq[Node]()) = creator.createSeq(
+  def createParams(scope: IScope, acc: Seq[Node] = Seq[Node]()) = creator.createSeq(
     possibleChildren = paramsNeighbours,
     scope = scope,
-    saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumVals(accLength)),
+    saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumVals(accLength)),
     acc = acc,
     factoryLimit = scope.maxParamsInFunc
   )
 
-  def createNodes(scope: Scope, acc: Seq[Node] = Seq[Node]()) = creator.createSeq(
+  def createNodes(scope: IScope, acc: Seq[Node] = Seq[Node]()) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
     acc = acc,

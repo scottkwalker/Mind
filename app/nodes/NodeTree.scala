@@ -10,7 +10,7 @@ import scala.annotation.tailrec
 case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows {
   override def toRawScala: String = nodes.map(f => f.toRawScala).mkString(" ")
 
-  override def validate(scope: Scope): Boolean = if (scope.hasDepthRemaining) {
+  override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) {
     nodes.forall {
       case n: ObjectDef => n.validate(scope.incrementDepth)
       case _: Empty => false
@@ -19,18 +19,18 @@ case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows {
   }
   else false
 
-  override def replaceEmpty(scope: Scope, injector: Injector): Node = {
+  override def replaceEmpty(scope: IScope, injector: Injector): Node = {
     val (_, n) = replaceEmptyInSeq(scope, injector, nodes, funcCreateNodes)
     NodeTree(n)
   }
 
-  private def funcCreateNodes(scope: Scope, injector: Injector, premade: Seq[Node]): (Scope, Seq[Node]) = {
+  private def funcCreateNodes(scope: IScope, injector: Injector, premade: Seq[Node]): (IScope, Seq[Node]) = {
     val factory = injector.getInstance(classOf[NodeTreeFactory])
     factory.createNodes(scope = scope, acc = premade.init)
   }
 
   @tailrec
-  private def replaceEmptyInSeq(scope: Scope, injector: Injector, n: Seq[Node], f: ((Scope, Injector, Seq[Node]) => (Scope, Seq[Node])), acc: Seq[Node] = Seq[Node]()): (Scope, Seq[Node]) = {
+  private def replaceEmptyInSeq(scope: IScope, injector: Injector, n: Seq[Node], f: ((IScope, Injector, Seq[Node]) => (IScope, Seq[Node])), acc: Seq[Node] = Seq[Node]()): (IScope, Seq[Node]) = {
     n match {
       case x :: xs => {
         val (updatedScope, replaced) = x match {
@@ -59,7 +59,7 @@ case class NodeTreeFactory @Inject()(injector: Injector,
                                      memoizeCanTerminateInStepsRemaining: MemoizeDi) extends CreateChildNodes with UpdateScopeThrows {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[ObjectDefFactory]))
 
-  override def create(scope: Scope, premade: Option[Seq[CreateChildNodes]]): Node = {
+  override def create(scope: IScope, premade: Option[Seq[CreateChildNodes]]): Node = {
     val (_, generated) = createNodes(scope)
     val nodes: Seq[Node] = premade match {
       case Some(pm) => generated ++ pm.map(p => p.create(scope))
@@ -69,15 +69,15 @@ case class NodeTreeFactory @Inject()(injector: Injector,
     NodeTree(nodes)
   }
 
-  override def create(scope: Scope): Node = {
+  override def create(scope: IScope): Node = {
     val (_, nodes) = createNodes(scope)
     NodeTree(nodes)
   }
 
-  def createNodes(scope: Scope, acc: Seq[Node] = Seq()): (Scope, Seq[Node]) = creator.createSeq(
+  def createNodes(scope: IScope, acc: Seq[Node] = Seq()): (IScope, Seq[Node]) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
-    saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumFuncs(accLength)),
+    saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumFuncs(accLength)),
     acc = acc,
     factoryLimit = scope.maxObjectsInTree
   )

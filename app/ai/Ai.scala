@@ -6,7 +6,7 @@ import scala.util.Random
 trait Ai {
   def chooseChild(possibleChildren: Seq[CreateChildNodes]): CreateChildNodes
 
-  def chooseChild(possibleChildren: Seq[CreateChildNodes], scope: Scope): CreateChildNodes = {
+  def chooseChild(possibleChildren: Seq[CreateChildNodes], scope: IScope): CreateChildNodes = {
     require(!possibleChildren.isEmpty, "Sequence possibleChildren must not be empty otherwise we cannot pick an node from it")
     chooseChild(possibleChildren)
   }

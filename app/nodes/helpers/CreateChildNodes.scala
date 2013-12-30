@@ -7,22 +7,22 @@ trait CreateChildNodes {
 
   val memoizeCanTerminateInStepsRemaining: MemoizeDi
 
-  def create(scope: Scope): Node = Empty()
+  def create(scope: IScope): Node = Empty()
 
-  def create(scope: Scope, premade: Option[Seq[CreateChildNodes]]): Node = Empty()
+  def create(scope: IScope, premade: Option[Seq[CreateChildNodes]]): Node = Empty()
 
-  def updateScope(scope: Scope): Scope
+  def updateScope(scope: IScope): IScope
 
 
-  val legalNeighbours: Scope => Seq[CreateChildNodes] = {
-    def inner(f: Scope => Seq[CreateChildNodes])(scope: Scope): Seq[CreateChildNodes] = {
+  val legalNeighbours: IScope => Seq[CreateChildNodes] = {
+    def inner(f: IScope => Seq[CreateChildNodes])(scope: IScope): Seq[CreateChildNodes] = {
       neighbours.filter(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
     }
     Memoize.Y(inner)
   }
 /*
-  protected val canTerminateInStepsRemaining: Scope => Boolean = {
-    def inner(f: Scope => Boolean)(scope: Scope): Boolean = {
+  protected val canTerminateInStepsRemaining: IScope => Boolean = {
+    def inner(f: IScope => Boolean)(scope: IScope): Boolean = {
       scope.hasDepthRemaining match {
         case true => neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
         case false => false
@@ -32,7 +32,7 @@ trait CreateChildNodes {
   }
 */
 
-  protected def canTerminateInStepsRemaining(scope: Scope): Boolean = {
+  protected def canTerminateInStepsRemaining(scope: IScope): Boolean = {
     def result = scope.hasDepthRemaining match {
       case true => neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
       case false => false

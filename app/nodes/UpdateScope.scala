@@ -1,27 +1,27 @@
 package nodes
 
-import nodes.helpers.Scope
+import nodes.helpers.{IScope, Scope}
 
 trait UpdateScope {
-  def updateScope(scope: Scope): Scope
+  def updateScope(scope: IScope): IScope
 }
 
 trait UpdateScopeNoChange extends UpdateScope {
-  override def updateScope(scope: Scope): Scope = scope
+  override def updateScope(scope: IScope): IScope = scope
 }
 
 trait UpdateScopeIncrementVals extends UpdateScope {
-  override def updateScope(scope: Scope): Scope = scope.incrementVals
+  override def updateScope(scope: IScope): IScope = scope.incrementVals
 }
 
 trait UpdateScopeIncrementFuncs extends UpdateScope {
-  override def updateScope(scope: Scope): Scope = scope.incrementFuncs
+  override def updateScope(scope: IScope): IScope = scope.incrementFuncs
 }
 
 trait UpdateScopeIncrementObjects extends UpdateScope {
-  override def updateScope(scope: Scope): Scope = scope.incrementObjects
+  override def updateScope(scope: IScope): IScope = scope.incrementObjects
 }
 
 trait UpdateScopeThrows extends UpdateScope {
-  override def updateScope(scope: Scope): Scope = throw new scala.RuntimeException("Should not happen as you cannot have more than one NodeTree")
+  override def updateScope(scope: IScope): IScope = throw new scala.RuntimeException("Should not happen as you cannot have more than one NodeTree")
 }

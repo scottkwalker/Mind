@@ -1,16 +1,16 @@
 package nodes
 
-import nodes.helpers.Scope
+import nodes.helpers.{IScope, Scope}
 import com.google.inject.Injector
 
 trait Node {
   def toRawScala: String
 
-  def validate(scope: Scope): Boolean
+  def validate(scope: IScope): Boolean
 
-  def replaceEmpty(scope: Scope, injector: Injector): Node
+  def replaceEmpty(scope: IScope, injector: Injector): Node
 
   def getMaxDepth: Int = 0
 
-  def updateScope(scope: Scope): Scope
+  def updateScope(scope: IScope): IScope
 }

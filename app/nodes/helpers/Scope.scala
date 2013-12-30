@@ -1,6 +1,5 @@
 package nodes.helpers
 
-
 case class Scope(numVals: Int = 0,
                  numFuncs: Int = 0,
                  numObjects: Int = 0,
@@ -9,8 +8,8 @@ case class Scope(numVals: Int = 0,
                  maxFuncsInObject: Int = 0,
                  maxParamsInFunc: Int = 0,
                  maxDepth: Int = 0,
-                 maxObjectsInTree: Int = 0) {
-  def incrementVals: Scope = Scope(numVals = numVals + 1,
+                 maxObjectsInTree: Int = 0) extends IScope {
+  def incrementVals: IScope = Scope(numVals = numVals + 1,
     numFuncs = numFuncs,
     numObjects = numObjects,
     depth = depth,
@@ -20,7 +19,7 @@ case class Scope(numVals: Int = 0,
     maxDepth = maxDepth,
     maxObjectsInTree = maxObjectsInTree)
 
-  def incrementFuncs: Scope = Scope(numVals = numVals,
+  def incrementFuncs: IScope = Scope(numVals = numVals,
     numFuncs = numFuncs + 1,
     numObjects = numObjects,
     depth = depth,
@@ -30,7 +29,7 @@ case class Scope(numVals: Int = 0,
     maxDepth = maxDepth,
     maxObjectsInTree = maxObjectsInTree)
 
-  def incrementObjects: Scope = Scope(numVals = numVals,
+  def incrementObjects: IScope = Scope(numVals = numVals,
     numFuncs = numFuncs,
     numObjects = numObjects + 1,
     depth = depth,
@@ -40,7 +39,7 @@ case class Scope(numVals: Int = 0,
     maxDepth = maxDepth,
     maxObjectsInTree = maxObjectsInTree)
 
-  def incrementDepth: Scope = Scope(numVals = numVals,
+  def incrementDepth: IScope = Scope(numVals = numVals,
     numFuncs = numFuncs,
     numObjects = numObjects,
     depth = depth + 1,
@@ -50,7 +49,7 @@ case class Scope(numVals: Int = 0,
     maxDepth = maxDepth,
     maxObjectsInTree = maxObjectsInTree)
 
-  def setNumFuncs(newValue: Int): Scope = Scope(numVals = numVals,
+  def setNumFuncs(newValue: Int): IScope = Scope(numVals = numVals,
     numFuncs = newValue,
     numObjects = numObjects,
     depth = depth,
@@ -60,7 +59,7 @@ case class Scope(numVals: Int = 0,
     maxDepth = maxDepth,
     maxObjectsInTree = maxObjectsInTree)
 
-  def setNumVals(newValue: Int): Scope = Scope(numVals = newValue,
+  def setNumVals(newValue: Int): IScope = Scope(numVals = newValue,
     numFuncs = numFuncs,
     numObjects = numObjects,
     depth = depth,

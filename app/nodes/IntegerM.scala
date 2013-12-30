@@ -9,9 +9,9 @@ import nodes.helpers.Scope
 case class IntegerM() extends Node with UpdateScopeNoChange {
   override def toRawScala: String = "Int"
 
-  override def validate(scope: Scope): Boolean = true
+  override def validate(scope: IScope): Boolean = true
 
-  override def replaceEmpty(scope: Scope, injector: Injector): Node = this
+  override def replaceEmpty(scope: IScope, injector: Injector): Node = this
 
   override def getMaxDepth = 1
 }
@@ -22,16 +22,16 @@ case class IntegerMFactory @Inject()(creator: CreateSeqNodes,
   val neighbours: Seq[CreateChildNodes] = Nil // No possible children
 
   /*
-  override val canTerminateInStepsRemaining: Scope => Boolean = {
-    def inner(f: Scope => Boolean)(scope: Scope): Boolean = scope.hasDepthRemaining
+  override val canTerminateInStepsRemaining: IScope => Boolean = {
+    def inner(f: IScope => Boolean)(scope: IScope): Boolean = scope.hasDepthRemaining
     Memoize.Y(inner)
   }*/
-  override def canTerminateInStepsRemaining(scope: Scope): Boolean = {
+  override def canTerminateInStepsRemaining(scope: IScope): Boolean = {
     val result = scope.hasDepthRemaining
     memoizeCanTerminateInStepsRemaining.store getOrElseUpdate(scope, result)
   }
 
-  override def create(scope: Scope): Node = {
+  override def create(scope: IScope): Node = {
     IntegerM()
   }
 }

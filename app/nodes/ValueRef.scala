@@ -8,9 +8,9 @@ import scala.util.Random
 case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
   override def toRawScala: String = name
 
-  override def validate(scope: Scope): Boolean = if (scope.hasDepthRemaining) !name.isEmpty else false
+  override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) !name.isEmpty else false
 
-  override def replaceEmpty(scope: Scope, injector: Injector): Node = this
+  override def replaceEmpty(scope: IScope, injector: Injector): Node = this
 
   override def getMaxDepth = 1
 }
@@ -20,12 +20,12 @@ case class ValueRefFactory @Inject()(ai: Ai,
                                      memoizeCanTerminateInStepsRemaining: MemoizeDi) extends CreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[CreateChildNodes] = Nil // No possible children
 
-  override def canTerminateInStepsRemaining(scope: Scope): Boolean = {
+  override def canTerminateInStepsRemaining(scope: IScope): Boolean = {
     val result = scope.hasDepthRemaining
     memoizeCanTerminateInStepsRemaining.store getOrElseUpdate(scope, result)
   }
 
-  override def create(scope: Scope): Node = {
+  override def create(scope: IScope): Node = {
     val name = "v" + ai.chooseIndex(scope.numVals)
     ValueRef(name = name)
   }

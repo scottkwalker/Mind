@@ -5,7 +5,7 @@ import ai.Ai
 import nodes.Node
 
 case class CreateNode @Inject()() {
-  def create(possibleChildren: Seq[CreateChildNodes], scope: Scope, ai: Ai): (Scope, Node) = {
+  def create(possibleChildren: Seq[CreateChildNodes], scope: IScope, ai: Ai): (IScope, Node) = {
     val factory = ai.chooseChild(possibleChildren, scope)
     val child = factory.create(scope)
     val updatedScope = factory.updateScope(scope)

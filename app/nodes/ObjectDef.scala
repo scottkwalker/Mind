@@ -11,7 +11,7 @@ import scala.annotation.tailrec
 case class ObjectDef(nodes: Seq[Node], name: String) extends Node with UpdateScopeIncrementObjects {
   override def toRawScala: String = s"object $name ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
 
-  override def validate(scope: Scope): Boolean = if (scope.hasDepthRemaining) {
+  override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) {
     nodes.forall {
       case n: FunctionM => n.validate(scope.incrementDepth)
       case _: Empty => false
@@ -20,18 +20,18 @@ case class ObjectDef(nodes: Seq[Node], name: String) extends Node with UpdateSco
   }
   else false
 
-  override def replaceEmpty(scope: Scope, injector: Injector): Node = {
+  override def replaceEmpty(scope: IScope, injector: Injector): Node = {
     val (_, n) = replaceEmptyInSeq(scope, injector, nodes, funcCreateNodes)
     ObjectDef(n, name)
   }
 
-  private def funcCreateNodes(scope: Scope, injector: Injector, premade: Seq[Node]): (Scope, Seq[Node]) = {
+  private def funcCreateNodes(scope: IScope, injector: Injector, premade: Seq[Node]): (IScope, Seq[Node]) = {
     val factory = injector.getInstance(classOf[ObjectDefFactory])
     factory.createNodes(scope = scope, acc = premade.init)
   }
 
   @tailrec
-  private def replaceEmptyInSeq(scope: Scope, injector: Injector, n: Seq[Node], f: ((Scope, Injector, Seq[Node]) => (Scope, Seq[Node])), acc: Seq[Node] = Seq[Node]()): (Scope, Seq[Node]) = {
+  private def replaceEmptyInSeq(scope: IScope, injector: Injector, n: Seq[Node], f: ((IScope, Injector, Seq[Node]) => (IScope, Seq[Node])), acc: Seq[Node] = Seq[Node]()): (IScope, Seq[Node]) = {
     n match {
       case x :: xs => {
         val (updatedScope, replaced) = x match {
@@ -60,7 +60,7 @@ case class ObjectDefFactory @Inject()(injector: Injector,
                                     memoizeCanTerminateInStepsRemaining: MemoizeDi) extends CreateChildNodes with UpdateScopeIncrementObjects {
   val neighbours: Seq[CreateChildNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
 
-  override def create(scope: Scope): Node = {
+  override def create(scope: IScope): Node = {
     // TODO create object level val nodes?
 
     val (_, nodes) = createNodes(scope)
@@ -69,10 +69,10 @@ case class ObjectDefFactory @Inject()(injector: Injector,
       name = "o" + scope.numObjects)
   }
 
-  def createNodes(scope: Scope, acc: Seq[Node] = Seq()) = creator.createSeq(
+  def createNodes(scope: IScope, acc: Seq[Node] = Seq()) = creator.createSeq(
     possibleChildren = legalNeighbours(scope),
     scope = scope,
-    saveAccLengthInScope = Some((s: Scope, accLength: Int) => s.setNumFuncs(accLength)),
+    saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumFuncs(accLength)),
     acc = acc,
     factoryLimit = scope.maxFuncsInObject
   )

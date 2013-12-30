@@ -19,7 +19,8 @@ object ApplicationBuild extends Build {
     "org.scalacheck" %% "scalacheck" % "1.10.1" % "test",
     "com.google.inject" % "guice" % "4.0-beta",
     "com.tzavellas" % "sse-guice" % "0.7.1",
-    "org.scalatest" % "scalatest_2.10" % "2.0" % "test"
+    "org.scalatest" % "scalatest_2.10" % "2.0" % "test",
+    "org.easymock" % "easymock" % "3.1" withSources() withJavadoc()
   )
 
 
