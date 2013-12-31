@@ -3,12 +3,10 @@ package nodes
 import org.specs2.mutable._
 import nodes.helpers._
 import org.specs2.mock.Mockito
-import com.google.inject.{TypeLiteral, Guice, Injector}
+import com.google.inject.{Guice, Injector}
 import ai.helpers.TestAiModule
-import com.tzavellas.sse.guice.ScalaModule
-import ai.IRandomNumberGenerator
 import nodes.helpers.Scope
-import nodes.helpers.MemoizeDi
+import ai.IRandomNumberGenerator
 
 class AddOperatorSpec extends Specification with Mockito {
   "AddOperator" should {
@@ -95,16 +93,12 @@ class AddOperatorSpec extends Specification with Mockito {
       }
 
       "returns without empty nodes given there were empty nodes" in {
-        class TestDevModule extends ScalaModule {
-          def configure() {
+        class TestDevModule extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
+          override def bindAddOperatorFactory = {
             val n: Node = mock[ValueRef]
             val f = mock[AddOperatorFactory]
             f.create(any[Scope]) returns n
-            val rng = mock[IRandomNumberGenerator]
             bind(classOf[AddOperatorFactory]).toInstance(f)
-            bind(classOf[IRandomNumberGenerator]).toInstance(rng)
-            bind(new TypeLiteral [IMemoizeDi[IScope, Seq[ICreateChildNodes]]] () {}).to(classOf[MemoizeDi[IScope, Seq[ICreateChildNodes]]])
-            bind(new TypeLiteral [IMemoizeDi[IScope, Boolean]] () {}).to(classOf[MemoizeDi[IScope, Boolean]])
           }
         }
 

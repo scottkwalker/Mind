@@ -15,34 +15,16 @@ import ai.IRandomNumberGenerator
 
 class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTreeFactory" should {
-    class TestDevModule extends ScalaModule {
-      override def configure() {
-        bind(classOf[AddOperatorFactory]).asEagerSingleton()
-        bind(classOf[Empty]).asEagerSingleton()
-        bind(classOf[FunctionMFactory]).asEagerSingleton()
-        bind(classOf[NodeTreeFactory]).asEagerSingleton()
-        bind(classOf[ObjectDefFactory]).asEagerSingleton()
-        bind(classOf[ValueRefFactory]).asEagerSingleton()
-        bind(classOf[ValDclInFunctionParamFactory]).asEagerSingleton()
-        bind(classOf[Scope]).toInstance(Scope(maxDepth = 10, maxExpressionsInFunc = 2, maxFuncsInObject = 3, maxParamsInFunc = 2, maxObjectsInTree = 3))
-        bind(classOf[ICreateNode]).toInstance(CreateNode())
-        bind(classOf[ICreateSeqNodes]).to(classOf[CreateSeqNodes])
-        bind(classOf[IPopulateMemoizationMaps]).to(classOf[PopulateMemoizationMaps]).asEagerSingleton()
+    class TestDevModule(rng: IRandomNumberGenerator) extends DevModule(scope = Scope(maxDepth = 10, maxExpressionsInFunc = 2, maxFuncsInObject = 3, maxParamsInFunc = 2, maxObjectsInTree = 3),
+      randomNumberGenerator = rng) {}
 
-        val rng = mock[IRandomNumberGenerator]
-        rng.nextInt(any[Int]) returns 2
-        rng.nextBoolean() returns true
+    val rng = mock[IRandomNumberGenerator]
+    rng.nextInt(any[Int]) returns 2
+    rng.nextBoolean() returns true
 
-        bind(classOf[IRandomNumberGenerator]).toInstance(rng)
-
-        bind(new TypeLiteral [IMemoizeDi[IScope, Seq[ICreateChildNodes]]] () {}).to(classOf[MemoizeDi[IScope, Seq[ICreateChildNodes]]])
-        bind(new TypeLiteral [IMemoizeDi[IScope, Boolean]] () {}).to(classOf[MemoizeDi[IScope, Boolean]])
-      }
-    }
-
-    val injector: Injector = Guice.createInjector(new TestDevModule, new TestAiModule)
+    val injector: Injector = Guice.createInjector(new TestDevModule(rng), new TestAiModule)
     val factory = injector.getInstance(classOf[NodeTreeFactory])
-    val s = injector.getInstance(classOf[Scope])
+    val s = injector.getInstance(classOf[IScope])
 
     "create" in {
       "returns instance of this type" in {
@@ -62,7 +44,7 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
       "returns 4 children given 1 premade and scope with 3 maxFuncsInObject (and rng mocked)" in {
         val n = mock[Node]
         val c = mock[ICreateChildNodes]
-        c.create(any[Scope]) returns n
+        c.create(any[IScope]) returns n
 
         val instance = factory.create(scope = s, premade = Some(Seq(c)))
 
@@ -75,7 +57,7 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
       }
 
       "throw if you ask updateScope" in {
-        val s = mock[Scope]
+        val s = mock[IScope]
 
         factory.updateScope(s) must throwA[scala.RuntimeException]
       }

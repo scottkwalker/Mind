@@ -9,13 +9,13 @@ class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject
                 randomNumberGenerator: IRandomNumberGenerator = RandomNumberGenerator(),
                  createNode: ICreateNode = CreateNode()) extends ScalaModule {
   def configure() {
-    bind(classOf[AddOperatorFactory]).asEagerSingleton()
+    bindAddOperatorFactory
     bind(classOf[Empty]).asEagerSingleton()
     bind(classOf[FunctionMFactory]).asEagerSingleton()
     bind(classOf[NodeTreeFactory]).asEagerSingleton()
     bind(classOf[ObjectDefFactory]).asEagerSingleton()
     bind(classOf[ValueRefFactory]).asEagerSingleton()
-    bind(classOf[ValDclInFunctionParamFactory]).asEagerSingleton()
+    bindValDclInFunctionParamFactory
     bind(classOf[IScope]).toInstance(scope)
     bind(classOf[ICreateNode]).toInstance(createNode)
     bind(classOf[ICreateSeqNodes]).to(classOf[CreateSeqNodes])
@@ -25,4 +25,7 @@ class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject
     bind(classOf[IPopulateMemoizationMaps]).to(classOf[PopulateMemoizationMaps]).asEagerSingleton()
   }
 
+  def bindAddOperatorFactory = bind(classOf[AddOperatorFactory]).asEagerSingleton()
+
+  def bindValDclInFunctionParamFactory = bind(classOf[ValDclInFunctionParamFactory]).asEagerSingleton()
 }

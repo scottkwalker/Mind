@@ -95,18 +95,12 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
       }
 
       "returns without empty nodes given there were empty nodes" in {
-        class TestDevModule extends ScalaModule {
-          def configure() {
+        class TestDevModule extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
+          override def bindValDclInFunctionParamFactory = {
             val n: Node = mock[IntegerM]
             val f = mock[ValDclInFunctionParamFactory]
             f.create(any[Scope]) returns n
             bind(classOf[ValDclInFunctionParamFactory]).toInstance(f)
-            bind(classOf[IRandomNumberGenerator]).toInstance(RandomNumberGenerator())
-            bind(classOf[ICreateNode]).toInstance(CreateNode())
-            bind(classOf[ICreateSeqNodes]).to(classOf[CreateSeqNodes])
-            bind(new TypeLiteral [IMemoizeDi[IScope, Seq[ICreateChildNodes]]] () {}).to(classOf[MemoizeDi[IScope, Seq[ICreateChildNodes]]])
-            bind(new TypeLiteral [IMemoizeDi[IScope, Boolean]] () {}).to(classOf[MemoizeDi[IScope, Boolean]])
-            bind(classOf[IPopulateMemoizationMaps]).to(classOf[PopulateMemoizationMaps]).asEagerSingleton()
           }
         }
 

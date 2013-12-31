@@ -13,33 +13,20 @@ import ai.IRandomNumberGenerator
 
 class FuncDefFactorySpec extends Specification with Mockito {
   "FuncDefFactory" should {
-    class TestDevModule extends ScalaModule {
-      override def configure() {
-        bind(classOf[AddOperatorFactory]).asEagerSingleton()
-        bind(classOf[Empty]).asEagerSingleton()
-        bind(classOf[FunctionMFactory]).asEagerSingleton()
-        bind(classOf[NodeTreeFactory]).asEagerSingleton()
-        bind(classOf[ObjectDefFactory]).asEagerSingleton()
-        bind(classOf[ValueRefFactory]).asEagerSingleton()
-        bind(classOf[ValDclInFunctionParamFactory]).asEagerSingleton()
-        bind(classOf[Scope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1))
-        bind(classOf[ICreateNode]).toInstance(CreateNode())
-        bind(classOf[ICreateSeqNodes]).to(classOf[CreateSeqNodes])
-        bind(classOf[IPopulateMemoizationMaps]).to(classOf[PopulateMemoizationMaps]).asEagerSingleton()
-
-        val rng = mock[IRandomNumberGenerator]
-        rng.nextInt(any[Int]) returns 2
-        rng.nextBoolean() returns true
-
-        bind(classOf[IRandomNumberGenerator]).toInstance(rng)
-
-
-        bind(new TypeLiteral [IMemoizeDi[IScope, Seq[ICreateChildNodes]]] () {}).to(classOf[MemoizeDi[IScope, Seq[ICreateChildNodes]]])
-        bind(new TypeLiteral [IMemoizeDi[IScope, Boolean]] () {}).to(classOf[MemoizeDi[IScope, Boolean]])
+    class TestDevModule(rng: IRandomNumberGenerator) extends DevModule(randomNumberGenerator = rng) {
+      override def bindAddOperatorFactory = {
+        val n: Node = mock[ValueRef]
+        val f = mock[AddOperatorFactory]
+        f.create(any[Scope]) returns n
+        bind(classOf[AddOperatorFactory]).toInstance(f)
       }
     }
 
-    val injector: Injector = Guice.createInjector(new TestDevModule, new TestAiModule)
+    val rng = mock[IRandomNumberGenerator]
+    rng.nextInt(any[Int]) returns 2
+    rng.nextBoolean() returns true
+
+    val injector: Injector = Guice.createInjector(new TestDevModule(rng), new TestAiModule)
     val factory = injector.getInstance(classOf[FunctionMFactory])
 
     "create" in {
