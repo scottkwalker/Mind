@@ -22,10 +22,12 @@ class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject
     bind(classOf[IRandomNumberGenerator]).toInstance(randomNumberGenerator)
     bind(new TypeLiteral [IMemoizeDi[IScope, Seq[ICreateChildNodes]]] () {}).to(classOf[MemoizeDi[IScope, Seq[ICreateChildNodes]]])
     bind(new TypeLiteral [IMemoizeDi[IScope, Boolean]] () {}).to(classOf[MemoizeDi[IScope, Boolean]])
-    bind(classOf[IPopulateMemoizationMaps]).to(classOf[PopulateMemoizationMaps]).asEagerSingleton()
+    bindIPopulateMemoizationMaps
   }
 
   def bindAddOperatorFactory = bind(classOf[AddOperatorFactory]).asEagerSingleton()
 
   def bindValDclInFunctionParamFactory = bind(classOf[ValDclInFunctionParamFactory]).asEagerSingleton()
+
+  def bindIPopulateMemoizationMaps = bind(classOf[IPopulateMemoizationMaps]).to(classOf[PopulateMemoizationMaps]).asEagerSingleton()
 }

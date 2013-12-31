@@ -6,7 +6,7 @@ import org.scalatest.mock.EasyMockSugar
 import com.google.inject.{Guice, Injector}
 import ai.helpers.TestAiModule
 import org.scalatest.Matchers._
-import ai.{IAi}
+import ai.IRandomNumberGenerator
 import org.easymock.EasyMock._
 
 class IntegerMFactorySpec extends WordSpec with EasyMockSugar {
@@ -15,7 +15,7 @@ class IntegerMFactorySpec extends WordSpec with EasyMockSugar {
 
   "neighbours" should {
     "have no possible children" in {
-      factory.neighbours.length should equal (0)
+      factory.neighbours.length should equal(0)
     }
   }
 
@@ -23,14 +23,14 @@ class IntegerMFactorySpec extends WordSpec with EasyMockSugar {
     "return instance of this type" in {
       // Arrange
       val s = strictMock[IScope]
-      expecting{}
+      expecting {}
 
-      whenExecuting(s){
+      whenExecuting(s) {
         // Act
         val instance = factory.create(s)
 
         // Assert
-        instance shouldBe a [IntegerM]
+        instance shouldBe a[IntegerM]
       }
     }
   }
@@ -38,24 +38,23 @@ class IntegerMFactorySpec extends WordSpec with EasyMockSugar {
   "populateMemoizationMaps" should {
     "call memoizeCanTerminateInStepsRemaining on populateMemoizationMapsStrategy once" in {
       // Arrange
-      val csn = strictMock[ICreateSeqNodes]
-      val ai = strictMock[IAi]
       val pmm = strictMock[IPopulateMemoizationMaps]
-      val ctisr = strictMock[IMemoizeDi[IScope, Boolean]]
-      val ln = strictMock[IMemoizeDi[IScope, Seq[ICreateChildNodes]]]
 
-      val sut = IntegerMFactory(csn, ai, pmm, ctisr, ln)
+      class TestDevModule(pmm: IPopulateMemoizationMaps) extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
+        override def bindIPopulateMemoizationMaps = bind(classOf[IPopulateMemoizationMaps]).toInstance(pmm)
+      }
+
+      val injector: Injector = Guice.createInjector(new TestDevModule(pmm), new TestAiModule)
+      val sut = injector.getInstance(classOf[IntegerMFactory])
 
       expecting {
         pmm.memoizeCanTerminateInStepsRemaining(anyObject[IMemoizeDi[IScope, Boolean]]).once()
       }
 
-      whenExecuting(csn, ai, pmm, ctisr, ln) {
+      whenExecuting(pmm) {
         // Act & Assert
         sut.populateMemoizationMaps()
       }
     }
   }
-
-
 }
