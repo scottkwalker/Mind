@@ -33,9 +33,7 @@ case class IntegerMFactory @Inject()(creator: ICreateSeqNodes,
   }
 
   override def populateMemoizationMaps(): Unit = {
-    val scope = Scope() // TODO use loops within loops to build up
     populateMemoizationMapsStrategy.memoizeCanTerminateInStepsRemaining(mapOfCanTerminateInStepsRemaining,
-      this,
-      scope)
+      this)
   }
 }

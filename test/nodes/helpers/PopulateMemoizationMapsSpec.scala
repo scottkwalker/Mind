@@ -25,37 +25,43 @@ class PopulateMemoizationMapsSpec extends WordSpec with EasyMockSugar {
   "memoizeCanTerminateInStepsRemaining" should {
     "calls canTerminateInStepsRemaining in factory" in {
       // Arrange
-      val map = strictMock[IMemoizeDi[IScope, Boolean]]
+      val map = MemoizeDi[IScope, Boolean]
       val ccn = strictMock[ICreateChildNodes]
       val s = strictMock[IScope]
 
-      val pmm = new PopulateMemoizationMaps()
+      val pmm: IPopulateMemoizationMaps = new PopulateMemoizationMaps()
 
       expecting {
         ccn.canTerminateInStepsRemaining(anyObject[IScope]).andReturn(true)
       }
 
-      whenExecuting(map, ccn, s) {
+      whenExecuting(ccn, s) {
         // Act & assert
         pmm.memoizeCanTerminateInStepsRemaining(map, ccn, s)
       }
     }
-    /*
-        "update map with new entries for a Scope" in {
-          // Arrange
-          val map: IMemoizeDi[IScope, Boolean] = MemoizeDi[IScope, Boolean]
-          val pmm = new PopulateMemoizationMaps()
-          val ccn: ICreateChildNodes = strictMock[ICreateChildNodes]
-          val scope: IScope = strictMock[IScope]
 
-          expecting{
-            ccn.canTerminateInStepsRemaining(scope)
-          }
+    "update map with new entry for a Scope" in {
+      // Arrange
+      val expected = true
+      val map = MemoizeDi[IScope, Boolean]
+      val ccn = strictMock[ICreateChildNodes]
+      val s = strictMock[IScope]
 
-          whenExecuting(pmm, ccn, scope){
-            // Act & assert
-            pmm.memoizeCanTerminateInStepsRemaining(map, ccn)
-          }
-        }*/
+      val pmm: IPopulateMemoizationMaps = new PopulateMemoizationMaps()
+
+      expecting {
+        ccn.canTerminateInStepsRemaining(anyObject[IScope]).andReturn(expected)
+      }
+
+      whenExecuting(ccn, s) {
+        // Act
+        pmm.memoizeCanTerminateInStepsRemaining(map, ccn, s)
+
+        // Assert
+        assert(map.store.size == 1)
+        assert(map.store(s) == expected)
+      }
+    }
   }
 }

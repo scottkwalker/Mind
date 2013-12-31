@@ -50,8 +50,7 @@ class IntegerMFactorySpec extends WordSpec with EasyMockSugar {
 
       expecting {
         pmm.memoizeCanTerminateInStepsRemaining(anyObject[IMemoizeDi[IScope, Boolean]],
-          anyObject[IntegerMFactory],
-          anyObject[IScope]).once()
+          anyObject[IntegerMFactory]).once()
       }
 
       whenExecuting(pmm) {
