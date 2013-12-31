@@ -7,13 +7,15 @@ class PopulateMemoizationMaps @Inject()() extends IPopulateMemoizationMaps {
                                           that: ICreateChildNodes,
                                           numVals: Int,
                                           numFuncs: Int,
-                                          numObjects: Int): Unit = {
+                                          numObjects: Int,
+                                          maxExpressionsInFunc: Int): Unit = {
 
 
     for (numVals <- 0 to numVals;
          numFuncs <- 0 to numFuncs;
-         numObjects <- 0 to numObjects) {
-      val scope = Scope(numVals, numFuncs, numObjects)
+         numObjects <- 0 to numObjects;
+          maxExpressionsInFunc <- 0 to maxExpressionsInFunc) {
+      val scope = Scope(numVals, numFuncs, numObjects, maxExpressionsInFunc)
       memoizeCanTerminateInStepsRemaining(map, that, scope)
     }
 

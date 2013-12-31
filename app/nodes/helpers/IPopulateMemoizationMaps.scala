@@ -5,7 +5,8 @@ trait IPopulateMemoizationMaps {
                                           that: ICreateChildNodes,
                                           numVals: Int,
                                           numFuncs: Int,
-                                          numObjects: Int)
+                                          numObjects: Int,
+                                          maxExpressionsInFunc: Int)
 
   def memoizeCanTerminateInStepsRemaining(map: IMemoizeDi[IScope, Boolean],
                                           that: ICreateChildNodes,
