@@ -71,7 +71,8 @@ class PopulateMemoizationMapsSpec extends WordSpec with EasyMockSugar {
       val numObjects = 2
       val maxExpressionsInFunc = 2
       val maxFuncsInObject = 2
-      val expected = (numVals + 1) * (numFuncs + 1) * (numObjects + 1) * (maxExpressionsInFunc + 1) * (maxFuncsInObject + 1)
+      val maxParamsInFunc = 2
+      val expected = (numVals + 1) * (numFuncs + 1) * (numObjects + 1) * (maxExpressionsInFunc + 1) * (maxFuncsInObject + 1) * (maxParamsInFunc + 1)
       val map = MemoizeDi[IScope, Boolean]
       val ccn = strictMock[ICreateChildNodes]
 
@@ -83,7 +84,7 @@ class PopulateMemoizationMapsSpec extends WordSpec with EasyMockSugar {
 
       whenExecuting(ccn) {
         // Act
-        pmm.memoizeCanTerminateInStepsRemaining(map, ccn, numVals, numFuncs, numObjects, maxExpressionsInFunc, maxFuncsInObject)
+        pmm.memoizeCanTerminateInStepsRemaining(map, ccn, numVals, numFuncs, numObjects, maxExpressionsInFunc, maxFuncsInObject, maxParamsInFunc)
 
         // Assert
         assert(map.store.size == expected)
