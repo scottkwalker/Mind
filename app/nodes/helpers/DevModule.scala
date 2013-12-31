@@ -7,7 +7,7 @@ import com.google.inject.TypeLiteral
 
 class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1),
                 randomNumberGenerator: IRandomNumberGenerator = RandomNumberGenerator(),
-                 createNode: ICreateNode = CreateNode()) extends ScalaModule {
+                createNode: ICreateNode = CreateNode()) extends ScalaModule {
   def configure() {
     bindAddOperatorFactory
     bind(classOf[Empty]).asEagerSingleton()
@@ -20,8 +20,8 @@ class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject
     bind(classOf[ICreateNode]).toInstance(createNode)
     bind(classOf[ICreateSeqNodes]).to(classOf[CreateSeqNodes])
     bind(classOf[IRandomNumberGenerator]).toInstance(randomNumberGenerator)
-    bind(new TypeLiteral [IMemoizeDi[IScope, Seq[ICreateChildNodes]]] () {}).to(classOf[MemoizeDi[IScope, Seq[ICreateChildNodes]]])
-    bind(new TypeLiteral [IMemoizeDi[IScope, Boolean]] () {}).to(classOf[MemoizeDi[IScope, Boolean]])
+    bind(new TypeLiteral[IMemoizeDi[IScope, Seq[ICreateChildNodes]]]() {}).to(classOf[MemoizeDi[IScope, Seq[ICreateChildNodes]]])
+    bind(new TypeLiteral[IMemoizeDi[IScope, Boolean]]() {}).to(classOf[MemoizeDi[IScope, Boolean]])
     bindIPopulateMemoizationMaps
   }
 

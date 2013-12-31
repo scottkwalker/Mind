@@ -55,9 +55,9 @@ class IntegerMFactorySpec extends WordSpec with EasyMockSugar {
           anyInt(),
           anyInt(),
           anyInt(),
-        anyInt(),
-        anyInt(),
-        anyInt()).once()
+          anyInt(),
+          anyInt(),
+          anyInt()).once()
       }
 
       whenExecuting(pmm) {

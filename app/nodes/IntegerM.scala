@@ -3,7 +3,6 @@ package nodes
 import nodes.helpers._
 import com.google.inject.{Injector, Inject}
 import ai.IAi
-import nodes.helpers.CreateSeqNodes
 
 case class IntegerM() extends Node with UpdateScopeNoChange {
   override def toRawScala: String = "Int"
@@ -20,7 +19,7 @@ case class IntegerMFactory @Inject()(creator: ICreateSeqNodes,
                                      populateMemoizationMapsStrategy: IPopulateMemoizationMaps,
                                      mapOfCanTerminateInStepsRemaining: IMemoizeDi[IScope, Boolean],
                                      mapOfLegalNeigbours: IMemoizeDi[IScope, Seq[ICreateChildNodes]]
-                                     ) extends ICreateChildNodes with UpdateScopeNoChange {
+                                      ) extends ICreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[ICreateChildNodes] = Nil // No possible children
 
   override def canTerminateInStepsRemaining(scope: IScope): Boolean = {

@@ -25,7 +25,9 @@ object Application extends Controller {
 
     val result = populateMemoizationMap(factory, scope, mutable.Map.empty)
 
-    Ok(<p>Hello, World! ${result}</p>)
+    Ok(<p>Hello, World! $
+      {result}
+    </p>)
   }
 
   @tailrec

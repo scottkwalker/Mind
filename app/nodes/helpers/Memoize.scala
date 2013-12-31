@@ -4,7 +4,6 @@ import scala.collection.mutable
 import com.google.inject.Inject
 
 
-
 case class MemoizeDi[TInput, TResult] @Inject()() extends IMemoizeDi[TInput, TResult] {
   val store: mutable.Map[TInput, TResult] = mutable.Map.empty[TInput, TResult]
 }
@@ -33,30 +32,31 @@ object Memoize {
    * @param f the unary function to memoize
    */
   def memoize[TInput, TOutput](f: TInput => TOutput): (TInput => TOutput) = new Memoize1(f)
-/*
-  /**
-   * Memoize a binary (two-argument) function.
-   *
-   * @param f the binary function to memoize
-   *
-   *          This works by turning a function that takes two arguments of type
-   *          T1 and T2 into a function that takes a single argument of type
-   *          (T1, T2), memoizing that "tupled" function, then "untupling" the
-   *          memoized function.
-   */
-  def memoize[T1, T2, R](f: (T1, T2) => R): ((T1, T2) => R) =
-    Function.untupled(memoize(f.tupled))
 
-  /**
-   * Memoize a ternary (three-argument) function.
-   *
-   * @param f the ternary function to memoize
-   */
-  def memoize[T1, T2, T3, R](f: (T1, T2, T3) => R): ((T1, T2, T3) => R) =
-    Function.untupled(memoize(f.tupled))
+  /*
+    /**
+     * Memoize a binary (two-argument) function.
+     *
+     * @param f the binary function to memoize
+     *
+     *          This works by turning a function that takes two arguments of type
+     *          T1 and T2 into a function that takes a single argument of type
+     *          (T1, T2), memoizing that "tupled" function, then "untupling" the
+     *          memoized function.
+     */
+    def memoize[T1, T2, R](f: (T1, T2) => R): ((T1, T2) => R) =
+      Function.untupled(memoize(f.tupled))
 
-  // ... more memoize methods for higher-arity functions ...
-*/
+    /**
+     * Memoize a ternary (three-argument) function.
+     *
+     * @param f the ternary function to memoize
+     */
+    def memoize[T1, T2, T3, R](f: (T1, T2, T3) => R): ((T1, T2, T3) => R) =
+      Function.untupled(memoize(f.tupled))
+
+    // ... more memoize methods for higher-arity functions ...
+  */
   /**
    * Fixed-point combinator (for memoizing recursive functions).
    */

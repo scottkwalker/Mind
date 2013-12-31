@@ -4,13 +4,10 @@ import org.specs2.mutable.Specification
 import org.specs2.mock.Mockito
 import org.specs2.execute.PendingUntilFixed
 import nodes.helpers._
-import com.google.inject.{TypeLiteral, Injector, Guice}
+import com.google.inject.{Injector, Guice}
 import ai.helpers.TestAiModule
-import nodes.helpers.CreateNode
 import nodes.helpers.Scope
-import nodes.helpers.CreateSeqNodes
 import scala.Some
-import com.tzavellas.sse.guice.ScalaModule
 import ai.IRandomNumberGenerator
 
 class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFixed {

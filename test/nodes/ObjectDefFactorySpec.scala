@@ -3,12 +3,9 @@ package nodes
 import org.specs2.mutable._
 import nodes.helpers._
 import org.specs2.mock.Mockito
-import com.google.inject.{TypeLiteral, Injector, Guice}
+import com.google.inject.{Injector, Guice}
 import ai.helpers.TestAiModule
-import nodes.helpers.CreateNode
 import nodes.helpers.Scope
-import nodes.helpers.CreateSeqNodes
-import com.tzavellas.sse.guice.ScalaModule
 import ai.IRandomNumberGenerator
 
 class ObjectDefFactorySpec extends Specification with Mockito {

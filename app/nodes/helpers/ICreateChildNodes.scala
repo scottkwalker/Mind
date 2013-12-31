@@ -15,17 +15,17 @@ trait ICreateChildNodes {
 
   def updateScope(scope: IScope): IScope
 
-/*
-  val legalNeighbours: IScope => Seq[ICreateChildNodes] = {
-    def inner(f: IScope => Seq[ICreateChildNodes])(scope: IScope): Seq[ICreateChildNodes] = {
-      neighbours.filter(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
+  /*
+    val legalNeighbours: IScope => Seq[ICreateChildNodes] = {
+      def inner(f: IScope => Seq[ICreateChildNodes])(scope: IScope): Seq[ICreateChildNodes] = {
+        neighbours.filter(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
+      }
+      Memoize.Y(inner)
     }
-    Memoize.Y(inner)
-  }
-*/
+  */
   def legalNeighbours(scope: IScope): Seq[ICreateChildNodes] = {
     def calc = neighbours.filter(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
-    mapOfLegalNeigbours.store getOrElseUpdate (scope, calc)
+    mapOfLegalNeigbours.store getOrElseUpdate(scope, calc)
   }
 
   /*

@@ -18,11 +18,11 @@ class PopulateMemoizationMaps @Inject()() extends IPopulateMemoizationMaps {
     for (numVals <- 0 to numVals;
          numFuncs <- 0 to numFuncs;
          numObjects <- 0 to numObjects;
-          maxExpressionsInFunc <- 0 to maxExpressionsInFunc;
-          maxFuncsInObject <- 0 to maxFuncsInObject;
-          maxParamsInFunc <- 0 to maxParamsInFunc;
-          maxDepth <- 0 to maxDepth;
-          maxObjectsInTree <- 0 to maxObjectsInTree) {
+         maxExpressionsInFunc <- 0 to maxExpressionsInFunc;
+         maxFuncsInObject <- 0 to maxFuncsInObject;
+         maxParamsInFunc <- 0 to maxParamsInFunc;
+         maxDepth <- 0 to maxDepth;
+         maxObjectsInTree <- 0 to maxObjectsInTree) {
       val scope = Scope(numVals, numFuncs, numObjects, maxExpressionsInFunc, maxFuncsInObject, maxParamsInFunc, maxDepth, maxObjectsInTree)
       memoizeCanTerminateInStepsRemaining(map, that, scope)
     }
