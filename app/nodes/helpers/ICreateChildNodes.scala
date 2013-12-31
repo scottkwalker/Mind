@@ -51,5 +51,6 @@ trait ICreateChildNodes {
   def populateMemoizationMaps(maxVals: Int,
                               maxFuncs: Int,
                               numObjects: Int,
-                              maxExpressionsInFunc: Int): Unit = {}
+                              maxExpressionsInFunc: Int,
+                              maxFuncsInObject: Int): Unit = {}
 }
