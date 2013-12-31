@@ -1,5 +1,7 @@
 package nodes.helpers
 
 trait IPopulateMemoizationMaps {
-  def memoizeCanTerminateInStepsRemaining(memoizeCanTerminateInStepsRemaining: IMemoizeDi[IScope, Boolean]): Unit
+  def memoizeCanTerminateInStepsRemaining(map: IMemoizeDi[IScope, Boolean],
+                                          that: ICreateChildNodes,
+                                          scope: IScope): Unit
 }
