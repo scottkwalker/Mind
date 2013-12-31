@@ -56,12 +56,13 @@ class IntegerMFactorySpec extends WordSpec with EasyMockSugar {
           anyInt(),
           anyInt(),
         anyInt(),
+        anyInt(),
         anyInt()).once()
       }
 
       whenExecuting(pmm) {
         // Act & Assert
-        sut.populateMemoizationMaps(2, 2, 2, 2, 2, 2, 2)
+        sut.populateMemoizationMaps(2, 2, 2, 2, 2, 2, 2, 2)
       }
     }
   }

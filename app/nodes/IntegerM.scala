@@ -38,7 +38,8 @@ case class IntegerMFactory @Inject()(creator: ICreateSeqNodes,
                                        maxExpressionsInFunc: Int,
                                        maxFuncsInObject: Int,
                                        maxParamsInFunc: Int,
-                                       maxDepth: Int): Unit = {
+                                       maxDepth: Int,
+                                       maxObjectsInTree: Int): Unit = {
     populateMemoizationMapsStrategy.memoizeCanTerminateInStepsRemaining(mapOfCanTerminateInStepsRemaining,
       this,
       numVals,
@@ -47,6 +48,7 @@ case class IntegerMFactory @Inject()(creator: ICreateSeqNodes,
       maxExpressionsInFunc,
       maxFuncsInObject,
       maxParamsInFunc,
-      maxDepth)
+      maxDepth,
+      maxObjectsInTree)
   }
 }

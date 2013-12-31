@@ -54,5 +54,6 @@ trait ICreateChildNodes {
                               maxExpressionsInFunc: Int,
                               maxFuncsInObject: Int,
                               maxParamsInFunc: Int,
-                              maxDepth: Int): Unit = {}
+                              maxDepth: Int,
+                              maxObjectsInTree: Int): Unit = {}
 }

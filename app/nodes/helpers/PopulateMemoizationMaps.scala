@@ -11,7 +11,8 @@ class PopulateMemoizationMaps @Inject()() extends IPopulateMemoizationMaps {
                                           maxExpressionsInFunc: Int,
                                           maxFuncsInObject: Int,
                                           maxParamsInFunc: Int,
-                                          maxDepth: Int): Unit = {
+                                          maxDepth: Int,
+                                          maxObjectsInTree: Int): Unit = {
 
 
     for (numVals <- 0 to numVals;
@@ -20,8 +21,9 @@ class PopulateMemoizationMaps @Inject()() extends IPopulateMemoizationMaps {
           maxExpressionsInFunc <- 0 to maxExpressionsInFunc;
           maxFuncsInObject <- 0 to maxFuncsInObject;
           maxParamsInFunc <- 0 to maxParamsInFunc;
-          maxDepth <- 0 to maxDepth) {
-      val scope = Scope(numVals, numFuncs, numObjects, maxExpressionsInFunc, maxFuncsInObject, maxParamsInFunc, maxDepth)
+          maxDepth <- 0 to maxDepth;
+          maxObjectsInTree <- 0 to maxObjectsInTree) {
+      val scope = Scope(numVals, numFuncs, numObjects, maxExpressionsInFunc, maxFuncsInObject, maxParamsInFunc, maxDepth, maxObjectsInTree)
       memoizeCanTerminateInStepsRemaining(map, that, scope)
     }
 
