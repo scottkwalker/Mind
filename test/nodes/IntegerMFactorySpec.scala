@@ -39,7 +39,6 @@ class IntegerMFactorySpec extends WordSpec with EasyMockSugar {
     "call memoizeCanTerminateInStepsRemaining on populateMemoizationMapsStrategy once" in {
       // Arrange
       val pmm = strictMock[IPopulateMemoizationMaps]
-      val func = strictMock[IScope => Boolean]
 
       class TestDevModule(pmm: IPopulateMemoizationMaps) extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
         override def bindIPopulateMemoizationMaps = bind(classOf[IPopulateMemoizationMaps]).toInstance(pmm)
@@ -50,12 +49,15 @@ class IntegerMFactorySpec extends WordSpec with EasyMockSugar {
 
       expecting {
         pmm.memoizeCanTerminateInStepsRemaining(anyObject[IMemoizeDi[IScope, Boolean]],
-          anyObject[IntegerMFactory]).once()
+          anyObject[IntegerMFactory],
+          anyInt(),
+          anyInt(),
+        anyInt()).once()
       }
 
       whenExecuting(pmm) {
         // Act & Assert
-        sut.populateMemoizationMaps()
+        sut.populateMemoizationMaps(2, 2, 2)
       }
     }
   }

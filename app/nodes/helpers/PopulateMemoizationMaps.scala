@@ -4,9 +4,18 @@ import com.google.inject.Inject
 
 class PopulateMemoizationMaps @Inject()() extends IPopulateMemoizationMaps {
   def memoizeCanTerminateInStepsRemaining(map: IMemoizeDi[IScope, Boolean],
-                                          that: ICreateChildNodes): Unit = {
+                                          that: ICreateChildNodes,
+                                          numVals: Int,
+                                          numFuncs: Int,
+                                          numObjects: Int): Unit = {
 
-    //val scope = Scope() // TODO use loops within loops to build up
+
+    for (numVals <- 0 to numVals;
+         numFuncs <- 0 to numFuncs;
+         numObjects <- 0 to numObjects) {
+      val scope = Scope(numVals, numFuncs, numObjects)
+      memoizeCanTerminateInStepsRemaining(map, that, scope)
+    }
 
   }
 

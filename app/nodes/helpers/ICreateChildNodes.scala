@@ -48,5 +48,7 @@ trait ICreateChildNodes {
     mapOfCanTerminateInStepsRemaining.store getOrElseUpdate(scope, calc)
   }
 
-  def populateMemoizationMaps(): Unit = {}
+  def populateMemoizationMaps(maxVals: Int,
+                              maxFuncs: Int,
+                              numObjects: Int): Unit = {}
 }

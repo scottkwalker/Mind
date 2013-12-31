@@ -32,8 +32,13 @@ case class IntegerMFactory @Inject()(creator: ICreateSeqNodes,
     IntegerM()
   }
 
-  override def populateMemoizationMaps(): Unit = {
+  override def populateMemoizationMaps(numVals: Int,
+                                       numFuncs: Int,
+                                       numObjects: Int): Unit = {
     populateMemoizationMapsStrategy.memoizeCanTerminateInStepsRemaining(mapOfCanTerminateInStepsRemaining,
-      this)
+      this,
+      numVals,
+      numFuncs,
+      numObjects)
   }
 }
