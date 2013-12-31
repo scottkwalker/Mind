@@ -5,7 +5,7 @@ import scala.annotation.tailrec
 import nodes.Node
 import ai.{IAi, IRandomNumberGenerator}
 
-case class CreateSeqNodes @Inject()(createNode: ICreateNode, rng: IRandomNumberGenerator, ai: IAi) {
+case class CreateSeqNodes @Inject()(createNode: ICreateNode, rng: IRandomNumberGenerator, ai: IAi) extends ICreateSeqNodes {
   @tailrec
   final def createSeq(possibleChildren: Seq[ICreateChildNodes],
                       scope: IScope,

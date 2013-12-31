@@ -28,8 +28,8 @@ case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node
 case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
                                                   creator: ICreateNode,
                                                   ai: IAi,
-                                                  memoizeLegalNeigbours: MemoizeDi[IScope, Seq[ICreateChildNodes]],
-                                                  memoizeCanTerminateInStepsRemaining: MemoizeDi[IScope, Boolean]) extends ICreateChildNodes with UpdateScopeIncrementVals {
+                                                  mapOfLegalNeigbours: IMemoizeDi[IScope, Seq[ICreateChildNodes]],
+                                                  mapOfCanTerminateInStepsRemaining: IMemoizeDi[IScope, Boolean]) extends ICreateChildNodes with UpdateScopeIncrementVals {
   val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[IntegerMFactory]))
 
   /*  override val canTerminateInStepsRemaining: IScope => Boolean = {
@@ -38,7 +38,7 @@ case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
     }*/
   override def canTerminateInStepsRemaining(scope: IScope): Boolean = {
     val result = scope.hasDepthRemaining
-    memoizeCanTerminateInStepsRemaining.store getOrElseUpdate(scope, result)
+    mapOfCanTerminateInStepsRemaining.store getOrElseUpdate(scope, result)
   }
 
   override def create(scope: IScope): Node = {

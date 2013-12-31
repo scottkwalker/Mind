@@ -4,8 +4,7 @@ import org.specs2.mutable.Specification
 import org.specs2.mock.Mockito
 import org.specs2.execute.PendingUntilFixed
 import nodes.helpers._
-import com.google.inject.Injector
-import com.google.inject.Guice
+import com.google.inject.{TypeLiteral, Injector, Guice}
 import ai.helpers.TestAiModule
 import nodes.helpers.CreateNode
 import nodes.helpers.Scope
@@ -27,7 +26,8 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
         bind(classOf[ValDclInFunctionParamFactory]).asEagerSingleton()
         bind(classOf[Scope]).toInstance(Scope(maxDepth = 10, maxExpressionsInFunc = 2, maxFuncsInObject = 3, maxParamsInFunc = 2, maxObjectsInTree = 3))
         bind(classOf[ICreateNode]).toInstance(CreateNode())
-        bind(classOf[CreateSeqNodes]).asEagerSingleton()
+        bind(classOf[ICreateSeqNodes]).to(classOf[CreateSeqNodes])
+        bind(classOf[IPopulateMemoizationMaps]).to(classOf[PopulateMemoizationMaps]).asEagerSingleton()
 
         val rng = mock[IRandomNumberGenerator]
         rng.nextInt(any[Int]) returns 2
@@ -35,7 +35,8 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
 
         bind(classOf[IRandomNumberGenerator]).toInstance(rng)
 
-        bind(classOf[MemoizeDi[IScope, Boolean]]).toInstance(MemoizeDi[IScope, Boolean]())
+        bind(new TypeLiteral [IMemoizeDi[IScope, Seq[ICreateChildNodes]]] () {}).to(classOf[MemoizeDi[IScope, Seq[ICreateChildNodes]]])
+        bind(new TypeLiteral [IMemoizeDi[IScope, Boolean]] () {}).to(classOf[MemoizeDi[IScope, Boolean]])
       }
     }
 

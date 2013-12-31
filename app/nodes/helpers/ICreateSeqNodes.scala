@@ -1,10 +1,7 @@
 package nodes.helpers
 
-import scala._
+import nodes.Node
 
-/**
- * Created by valtechuk on 31/12/2013.
- */
 trait ICreateSeqNodes {
   def createSeq(possibleChildren: Seq[ICreateChildNodes],
                 scope: IScope,

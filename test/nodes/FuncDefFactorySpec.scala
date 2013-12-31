@@ -3,8 +3,7 @@ package nodes
 import org.specs2.mutable._
 import nodes.helpers._
 import org.specs2.mock.Mockito
-import com.google.inject.Injector
-import com.google.inject.Guice
+import com.google.inject.{TypeLiteral, Injector, Guice}
 import ai.helpers.TestAiModule
 import nodes.helpers.CreateNode
 import nodes.helpers.Scope
@@ -25,7 +24,8 @@ class FuncDefFactorySpec extends Specification with Mockito {
         bind(classOf[ValDclInFunctionParamFactory]).asEagerSingleton()
         bind(classOf[Scope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1))
         bind(classOf[ICreateNode]).toInstance(CreateNode())
-        bind(classOf[CreateSeqNodes]).asEagerSingleton()
+        bind(classOf[ICreateSeqNodes]).to(classOf[CreateSeqNodes])
+        bind(classOf[IPopulateMemoizationMaps]).to(classOf[PopulateMemoizationMaps]).asEagerSingleton()
 
         val rng = mock[IRandomNumberGenerator]
         rng.nextInt(any[Int]) returns 2
@@ -33,7 +33,9 @@ class FuncDefFactorySpec extends Specification with Mockito {
 
         bind(classOf[IRandomNumberGenerator]).toInstance(rng)
 
-        bind(classOf[MemoizeDi[IScope, Boolean]]).toInstance(MemoizeDi[IScope, Boolean]())
+
+        bind(new TypeLiteral [IMemoizeDi[IScope, Seq[ICreateChildNodes]]] () {}).to(classOf[MemoizeDi[IScope, Seq[ICreateChildNodes]]])
+        bind(new TypeLiteral [IMemoizeDi[IScope, Boolean]] () {}).to(classOf[MemoizeDi[IScope, Boolean]])
       }
     }
 

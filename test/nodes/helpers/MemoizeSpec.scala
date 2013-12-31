@@ -42,7 +42,7 @@ class MemoizeSpec extends WordSpec with EasyMockSugar {
       }
     }
 
-    "IoC two different instances of the canTerminateInStepsRemaining map when two node factories are created" in {
+    "IoC two different factory instances of the canTerminateInStepsRemaining map when two node factories are created" in {
       val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
       val factory1 = injector.getInstance(classOf[IntegerMFactory])
       val factory2 = injector.getInstance(classOf[AddOperatorFactory])
@@ -50,10 +50,10 @@ class MemoizeSpec extends WordSpec with EasyMockSugar {
 
       factory1.canTerminateInStepsRemaining(scope)
 
-      assert(factory1.memoizeCanTerminateInStepsRemaining.store != factory2.memoizeCanTerminateInStepsRemaining.store)
+      assert(factory1.mapOfCanTerminateInStepsRemaining.store != factory2.mapOfCanTerminateInStepsRemaining.store)
     }
 
-    "IoC two different instances of the legalNeighbours map when two node factories are created" in {
+    "IoC two different factory instances of the legalNeighbours map when two node factories are created" in {
       val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
       val factory1 = injector.getInstance(classOf[IntegerMFactory])
       val factory2 = injector.getInstance(classOf[AddOperatorFactory])
@@ -61,8 +61,7 @@ class MemoizeSpec extends WordSpec with EasyMockSugar {
 
       factory1.legalNeighbours(scope)
 
-      assert(factory1.memoizeLegalNeigbours.store != factory2.memoizeLegalNeigbours.store)
+      assert(factory1.mapOfLegalNeigbours.store != factory2.mapOfLegalNeigbours.store)
     }
-
   }
 }

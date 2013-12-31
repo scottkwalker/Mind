@@ -1,12 +1,14 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.{IScope, MemoizeDi, Scope}
+import nodes.helpers._
 import org.specs2.mock.Mockito
-import com.google.inject.{Guice, Injector}
+import com.google.inject.{TypeLiteral, Guice, Injector}
 import ai.helpers.TestAiModule
 import com.tzavellas.sse.guice.ScalaModule
 import ai.IRandomNumberGenerator
+import nodes.helpers.Scope
+import nodes.helpers.MemoizeDi
 
 class AddOperatorSpec extends Specification with Mockito {
   "AddOperator" should {
@@ -100,8 +102,9 @@ class AddOperatorSpec extends Specification with Mockito {
             f.create(any[Scope]) returns n
             val rng = mock[IRandomNumberGenerator]
             bind(classOf[AddOperatorFactory]).toInstance(f)
-            bind(classOf[MemoizeDi[IScope, Boolean]]).toInstance(MemoizeDi[IScope, Boolean]())
             bind(classOf[IRandomNumberGenerator]).toInstance(rng)
+            bind(new TypeLiteral [IMemoizeDi[IScope, Seq[ICreateChildNodes]]] () {}).to(classOf[MemoizeDi[IScope, Seq[ICreateChildNodes]]])
+            bind(new TypeLiteral [IMemoizeDi[IScope, Boolean]] () {}).to(classOf[MemoizeDi[IScope, Boolean]])
           }
         }
 

@@ -1,28 +1,61 @@
 package nodes
 
-import nodes.helpers.{DevModule, Scope}
-import org.specs2.mutable._
-import org.specs2.mock.Mockito
+import nodes.helpers._
+import org.scalatest.WordSpec
+import org.scalatest.mock.EasyMockSugar
 import com.google.inject.{Guice, Injector}
 import ai.helpers.TestAiModule
+import org.scalatest.Matchers._
+import ai.{IAi}
+import org.easymock.EasyMock._
 
-class IntegerMFactorySpec extends Specification with Mockito {
-  "IntegerMFactory" should {
-    val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
-    val factory = injector.getInstance(classOf[IntegerMFactory])
+class IntegerMFactorySpec extends WordSpec with EasyMockSugar {
+  val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
+  val factory = injector.getInstance(classOf[IntegerMFactory])
 
-    "has no possible children" in {
-      factory.neighbours.length mustEqual 0
+  "neighbours" should {
+    "have no possible children" in {
+      factory.neighbours.length should equal (0)
     }
+  }
 
-    "create" in {
-      "returns instance of this type" in {
-        val s = mock[Scope]
+  "create" should {
+    "return instance of this type" in {
+      // Arrange
+      val s = strictMock[IScope]
+      expecting{}
 
-        val instance = factory.create(scope = s)
+      whenExecuting(s){
+        // Act
+        val instance = factory.create(s)
 
-        instance must beAnInstanceOf[IntegerM]
+        // Assert
+        instance shouldBe a [IntegerM]
       }
     }
   }
+
+  "populateMemoizationMaps" should {
+    "call memoizeCanTerminateInStepsRemaining on populateMemoizationMapsStrategy once" in {
+      // Arrange
+      val csn = strictMock[ICreateSeqNodes]
+      val ai = strictMock[IAi]
+      val pmm = strictMock[IPopulateMemoizationMaps]
+      val ctisr = strictMock[IMemoizeDi[IScope, Boolean]]
+      val ln = strictMock[IMemoizeDi[IScope, Seq[ICreateChildNodes]]]
+
+      val sut = IntegerMFactory(csn, ai, pmm, ctisr, ln)
+
+      expecting {
+        pmm.memoizeCanTerminateInStepsRemaining(anyObject[IMemoizeDi[IScope, Boolean]]).once()
+      }
+
+      whenExecuting(csn, ai, pmm, ctisr, ln) {
+        // Act & Assert
+        sut.populateMemoizationMaps()
+      }
+    }
+  }
+
+
 }

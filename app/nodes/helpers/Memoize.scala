@@ -4,7 +4,8 @@ import scala.collection.mutable
 import com.google.inject.Inject
 
 
-case class MemoizeDi[TInput, TResult] @Inject()() {
+
+case class MemoizeDi[TInput, TResult] @Inject()() extends IMemoizeDi[TInput, TResult] {
   val store: mutable.Map[TInput, TResult] = mutable.Map.empty[TInput, TResult]
 }
 

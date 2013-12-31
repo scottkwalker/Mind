@@ -15,23 +15,24 @@ case class IntegerM() extends Node with UpdateScopeNoChange {
   override def getMaxDepth = 1
 }
 
-case class IntegerMFactory @Inject()(creator: CreateSeqNodes,
+case class IntegerMFactory @Inject()(creator: ICreateSeqNodes,
                                      ai: IAi,
-                                     memoizeLegalNeigbours: MemoizeDi[IScope, Seq[ICreateChildNodes]],
-                                     memoizeCanTerminateInStepsRemaining: MemoizeDi[IScope, Boolean]) extends ICreateChildNodes with UpdateScopeNoChange {
+                                     populateMemoizationMapsStrategy: IPopulateMemoizationMaps,
+                                     mapOfCanTerminateInStepsRemaining: IMemoizeDi[IScope, Boolean],
+                                     mapOfLegalNeigbours: IMemoizeDi[IScope, Seq[ICreateChildNodes]]
+                                     ) extends ICreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[ICreateChildNodes] = Nil // No possible children
 
-  /*
-  override val canTerminateInStepsRemaining: IScope => Boolean = {
-    def inner(f: IScope => Boolean)(scope: IScope): Boolean = scope.hasDepthRemaining
-    Memoize.Y(inner)
-  }*/
   override def canTerminateInStepsRemaining(scope: IScope): Boolean = {
     val result = scope.hasDepthRemaining
-    memoizeCanTerminateInStepsRemaining.store getOrElseUpdate(scope, result)
+    mapOfCanTerminateInStepsRemaining.store getOrElseUpdate(scope, result)
   }
 
   override def create(scope: IScope): Node = {
     IntegerM()
+  }
+
+  override def populateMemoizationMaps(): Unit = {
+    populateMemoizationMapsStrategy.memoizeCanTerminateInStepsRemaining(mapOfCanTerminateInStepsRemaining)
   }
 }

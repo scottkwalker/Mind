@@ -1,8 +1,9 @@
 package nodes.helpers
 
-/**
- * Created by valtechuk on 31/12/2013.
- */
-class PopulateMemoizationMaps {
+import com.google.inject.Inject
 
+class PopulateMemoizationMaps @Inject()() extends IPopulateMemoizationMaps {
+  def memoizeCanTerminateInStepsRemaining(memoizeCanTerminateInStepsRemaining: IMemoizeDi[IScope, Boolean]): Unit = {
+
+  }
 }

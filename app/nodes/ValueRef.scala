@@ -16,13 +16,13 @@ case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
 
 case class ValueRefFactory @Inject()(ai: IAi,
                                      rng: IRandomNumberGenerator,
-                                     memoizeLegalNeigbours: MemoizeDi[IScope, Seq[ICreateChildNodes]],
-                                     memoizeCanTerminateInStepsRemaining: MemoizeDi[IScope, Boolean]) extends ICreateChildNodes with UpdateScopeNoChange {
+                                     mapOfLegalNeigbours: IMemoizeDi[IScope, Seq[ICreateChildNodes]],
+                                     mapOfCanTerminateInStepsRemaining: IMemoizeDi[IScope, Boolean]) extends ICreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[ICreateChildNodes] = Nil // No possible children
 
   override def canTerminateInStepsRemaining(scope: IScope): Boolean = {
     val result = scope.hasDepthRemaining
-    memoizeCanTerminateInStepsRemaining.store getOrElseUpdate(scope, result)
+    mapOfCanTerminateInStepsRemaining.store getOrElseUpdate(scope, result)
   }
 
   override def create(scope: IScope): Node = {

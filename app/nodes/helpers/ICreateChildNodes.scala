@@ -5,9 +5,9 @@ import nodes.{Empty, Node}
 trait ICreateChildNodes {
   val neighbours: Seq[ICreateChildNodes]
 
-  val memoizeCanTerminateInStepsRemaining: MemoizeDi[IScope, Boolean]
+  val mapOfCanTerminateInStepsRemaining: IMemoizeDi[IScope, Boolean]
 
-  val memoizeLegalNeigbours: MemoizeDi[IScope, Seq[ICreateChildNodes]]
+  val mapOfLegalNeigbours: IMemoizeDi[IScope, Seq[ICreateChildNodes]]
 
   def create(scope: IScope): Node = Empty()
 
@@ -25,7 +25,7 @@ trait ICreateChildNodes {
 */
   def legalNeighbours(scope: IScope): Seq[ICreateChildNodes] = {
     def calc = neighbours.filter(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
-    memoizeLegalNeigbours.store getOrElseUpdate (scope, calc)
+    mapOfLegalNeigbours.store getOrElseUpdate (scope, calc)
   }
 
   /*
@@ -45,6 +45,8 @@ trait ICreateChildNodes {
       case true => neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
       case false => false
     }
-    memoizeCanTerminateInStepsRemaining.store getOrElseUpdate(scope, calc)
+    mapOfCanTerminateInStepsRemaining.store getOrElseUpdate(scope, calc)
   }
+
+  def populateMemoizationMaps(): Unit = {}
 }

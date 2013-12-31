@@ -3,7 +3,7 @@ package nodes
 import org.specs2.mutable._
 import nodes.helpers._
 import org.specs2.mock.Mockito
-import com.google.inject.{Guice, Injector}
+import com.google.inject.{TypeLiteral, Guice, Injector}
 import ai.helpers.TestAiModule
 import com.tzavellas.sse.guice.ScalaModule
 import ai.{IRandomNumberGenerator}
@@ -101,9 +101,12 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
             val f = mock[ValDclInFunctionParamFactory]
             f.create(any[Scope]) returns n
             bind(classOf[ValDclInFunctionParamFactory]).toInstance(f)
-            bind(classOf[MemoizeDi[IScope, Boolean]]).toInstance(MemoizeDi[IScope, Boolean]())
             bind(classOf[IRandomNumberGenerator]).toInstance(RandomNumberGenerator())
             bind(classOf[ICreateNode]).toInstance(CreateNode())
+            bind(classOf[ICreateSeqNodes]).to(classOf[CreateSeqNodes])
+            bind(new TypeLiteral [IMemoizeDi[IScope, Seq[ICreateChildNodes]]] () {}).to(classOf[MemoizeDi[IScope, Seq[ICreateChildNodes]]])
+            bind(new TypeLiteral [IMemoizeDi[IScope, Boolean]] () {}).to(classOf[MemoizeDi[IScope, Boolean]])
+            bind(classOf[IPopulateMemoizationMaps]).to(classOf[PopulateMemoizationMaps]).asEagerSingleton()
           }
         }
 
