@@ -47,13 +47,4 @@ trait ICreateChildNodes {
     }
     mapOfCanTerminateInStepsRemaining.store getOrElseUpdate(scope, calc)
   }
-
-  def populateMemoizationMaps(maxVals: Int,
-                              maxFuncs: Int,
-                              numObjects: Int,
-                              maxExpressionsInFunc: Int,
-                              maxFuncsInObject: Int,
-                              maxParamsInFunc: Int,
-                              maxDepth: Int,
-                              maxObjectsInTree: Int): Unit = {}
 }

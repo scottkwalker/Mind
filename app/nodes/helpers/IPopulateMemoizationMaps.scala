@@ -1,18 +1,20 @@
 package nodes.helpers
 
 trait IPopulateMemoizationMaps {
-  def memoizeCanTerminateInStepsRemaining(map: IMemoizeDi[IScope, Boolean],
-                                          that: ICreateChildNodes,
-                                          numVals: Int,
-                                          numFuncs: Int,
-                                          numObjects: Int,
+  def memoizeCanTerminateInStepsRemaining(that: ICreateChildNodes,
+                                          scope: IScope): Unit
+
+  def memoizeCanTerminateInStepsRemaining(that: ICreateChildNodes,
                                           maxExpressionsInFunc: Int,
                                           maxFuncsInObject: Int,
                                           maxParamsInFunc: Int,
                                           maxDepth: Int,
                                           maxObjectsInTree: Int)
 
-  def memoizeCanTerminateInStepsRemaining(map: IMemoizeDi[IScope, Boolean],
-                                          that: ICreateChildNodes,
-                                          scope: IScope): Unit
+  def run(
+          maxExpressionsInFunc: Int,
+          maxFuncsInObject: Int,
+          maxParamsInFunc: Int,
+          maxDepth: Int,
+          maxObjectsInTree: Int): Unit
 }

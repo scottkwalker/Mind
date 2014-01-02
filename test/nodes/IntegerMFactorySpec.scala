@@ -34,36 +34,4 @@ class IntegerMFactorySpec extends WordSpec with EasyMockSugar {
       }
     }
   }
-
-  "populateMemoizationMaps" should {
-    "call memoizeCanTerminateInStepsRemaining on populateMemoizationMapsStrategy once" in {
-      // Arrange
-      val pmm = strictMock[IPopulateMemoizationMaps]
-
-      class TestDevModule(pmm: IPopulateMemoizationMaps) extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
-        override def bindIPopulateMemoizationMaps = bind(classOf[IPopulateMemoizationMaps]).toInstance(pmm)
-      }
-
-      val injector: Injector = Guice.createInjector(new TestDevModule(pmm), new TestAiModule)
-      val sut = injector.getInstance(classOf[IntegerMFactory])
-
-      expecting {
-        pmm.memoizeCanTerminateInStepsRemaining(anyObject[IMemoizeDi[IScope, Boolean]],
-          anyObject[IntegerMFactory],
-          anyInt(),
-          anyInt(),
-          anyInt(),
-          anyInt(),
-          anyInt(),
-          anyInt(),
-          anyInt(),
-          anyInt()).once()
-      }
-
-      whenExecuting(pmm) {
-        // Act & Assert
-        sut.populateMemoizationMaps(2, 2, 2, 2, 2, 2, 2, 2)
-      }
-    }
-  }
 }

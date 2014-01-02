@@ -30,24 +30,4 @@ case class IntegerMFactory @Inject()(creator: ICreateSeqNodes,
   override def create(scope: IScope): Node = {
     IntegerM()
   }
-
-  override def populateMemoizationMaps(numVals: Int,
-                                       numFuncs: Int,
-                                       numObjects: Int,
-                                       maxExpressionsInFunc: Int,
-                                       maxFuncsInObject: Int,
-                                       maxParamsInFunc: Int,
-                                       maxDepth: Int,
-                                       maxObjectsInTree: Int): Unit = {
-    populateMemoizationMapsStrategy.memoizeCanTerminateInStepsRemaining(mapOfCanTerminateInStepsRemaining,
-      this,
-      numVals,
-      numFuncs,
-      numObjects,
-      maxExpressionsInFunc,
-      maxFuncsInObject,
-      maxParamsInFunc,
-      maxDepth,
-      maxObjectsInTree)
-  }
 }
