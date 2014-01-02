@@ -27,5 +27,16 @@ class AddTwoIntsSpec extends Specification with Mockito {
       val f = new AddTwoInts(nodeTree)
       f.fitness mustEqual maxFitness
     }
+
+    "return score less than max fitness for a non-optimal solution" in {
+      // Arrange
+      val nodeTree = new NodeTree(List(ObjectDef(List(FunctionM(List(ValDclInFunctionParam("v0",IntegerM()), ValDclInFunctionParam("v1",IntegerM())),List(ValueRef("v0")),"f0")),"o0")))
+
+      // Act
+      val f = new AddTwoInts(nodeTree)
+
+      // Assert
+      f.fitness mustNotEqual maxFitness
+    }
   }
 }

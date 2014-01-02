@@ -55,6 +55,7 @@ class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFactory,
       memoizeCanTerminateInStepsRemaining(
         factory,
         maxExpressionsInFunc, maxFuncsInObject, maxParamsInFunc, maxDepth, maxObjectsInTree)
+      // TODO Save map to file
     }
   }
 }
