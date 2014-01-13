@@ -1,11 +1,11 @@
 package ai.randomWalk
 
-import ai.{IRandomNumberGenerator, AiCommon}
+import ai.{SelectionStrategy, IRandomNumberGenerator}
 import nodes.helpers._
 import com.google.inject.Inject
 
 
-case class RandomWalk @Inject()(rng: IRandomNumberGenerator) extends AiCommon {
+case class RandomWalk @Inject()(rng: IRandomNumberGenerator) extends SelectionStrategy {
   override def chooseChild(possibleChildren: Seq[ICreateChildNodes]): ICreateChildNodes = {
     require(possibleChildren.length > 0, "Sequence must not be empty otherwise we cannot pick an node from it")
     val index = rng.nextInt(possibleChildren.length)

@@ -5,6 +5,6 @@ import ai.IAi
 
 class TestAiModule extends ScalaModule {
   def configure() {
-    bind(classOf[IAi]).to(classOf[TestAiCommon]).asEagerSingleton()
+    bind(classOf[IAi]).to(classOf[TestSelectionStrategy]).asEagerSingleton()
   }
 }

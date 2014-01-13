@@ -3,7 +3,7 @@ package nodes.helpers
 import org.specs2.mutable._
 import nodes._
 import org.specs2.mock.Mockito
-import ai.{IRandomNumberGenerator, AiCommon}
+import ai.{IRandomNumberGenerator, SelectionStrategy}
 import ai.aco.Aco
 
 class CreateSeqNodesSpec extends Specification with Mockito {
@@ -18,9 +18,9 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         v.create(any[Scope]) returns n
         val rng = mock[IRandomNumberGenerator]
         rng.nextBoolean() returns true
-        val ai: AiCommon = Aco(rng)
+        val ai: SelectionStrategy = Aco(rng)
         val cn = mock[CreateNode]
-        cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[AiCommon]) returns ((s, n))
+        cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[SelectionStrategy]) returns ((s, n))
         val sut = CreateSeqNodes(cn, rng, ai)
 
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
@@ -40,11 +40,11 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         v.updateScope(s) returns s
         v.create(any[Scope]) returns n
         val cn = mock[CreateNode]
-        cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[AiCommon]) returns ((s, n))
+        cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[SelectionStrategy]) returns ((s, n))
         val rng = mock[IRandomNumberGenerator]
         rng.nextInt(any[Int]) returns 2
         rng.nextBoolean() returns true
-        val ai: AiCommon = Aco(rng)
+        val ai: SelectionStrategy = Aco(rng)
         val sut = CreateSeqNodes(cn, rng, ai)
 
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
@@ -64,11 +64,11 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         v.updateScope(s) returns s
         v.create(any[Scope]) returns n
         val cn = mock[CreateNode]
-        cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[AiCommon]) returns ((s, n))
+        cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[SelectionStrategy]) returns ((s, n))
         val rng = mock[IRandomNumberGenerator]
         rng.nextInt(any[Int]) returns 1
         rng.nextBoolean() returns true
-        val ai: AiCommon = Aco(rng)
+        val ai: SelectionStrategy = Aco(rng)
         val sut = CreateSeqNodes(cn, rng, ai)
 
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
@@ -88,11 +88,11 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         v.updateScope(s) returns s
         v.create(any[Scope]) returns n
         val cn = mock[CreateNode]
-        cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[AiCommon]) returns ((s, n))
+        cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[SelectionStrategy]) returns ((s, n))
         val rng = mock[IRandomNumberGenerator]
         rng.nextInt(any[Int]) returns 2
         rng.nextBoolean() returns true
-        val ai: AiCommon = Aco(rng)
+        val ai: SelectionStrategy = Aco(rng)
         val sut = CreateSeqNodes(cn, rng, ai)
 
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
