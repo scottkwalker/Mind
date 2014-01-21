@@ -20,7 +20,8 @@ object ApplicationBuild extends Build {
     "com.google.inject" % "guice" % "4.0-beta",
     "com.tzavellas" % "sse-guice" % "0.7.1",
     "org.scalatest" % "scalatest_2.10" % "2.0" % "test",
-    "org.easymock" % "easymock" % "3.1" withSources() withJavadoc()
+    "org.easymock" % "easymock" % "3.1" withSources() withJavadoc(),
+    "org.scala-lang" %% "scala-pickling" % "0.8.0-SNAPSHOT"
   )
 
 
