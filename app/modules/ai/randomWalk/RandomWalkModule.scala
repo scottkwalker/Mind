@@ -5,7 +5,7 @@ import ai.IAi
 import ai.randomWalk.RandomGamer
 
 class RandomWalkModule extends ScalaModule {
-  def configure() {
+  def configure(): Unit = {
     bind(classOf[IAi]).to(classOf[RandomGamer]).asEagerSingleton()
   }
 }

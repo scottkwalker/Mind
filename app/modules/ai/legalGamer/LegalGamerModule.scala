@@ -5,7 +5,7 @@ import ai.IAi
 import ai.legalGamer.LegalGamer
 
 class LegalGamerModule extends ScalaModule {
-  def configure() {
+  def configure(): Unit = {
     bind(classOf[IAi]).to(classOf[LegalGamer]).asEagerSingleton()
   }
 }

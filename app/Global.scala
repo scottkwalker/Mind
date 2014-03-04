@@ -32,11 +32,11 @@ object Global extends GlobalSettings {
    */
   override def getControllerInstance[A](controllerClass: Class[A]): A = injector.getInstance(controllerClass)
 
-  override def onStart(app: Application) {
+  override def onStart(app: Application): Unit = {
     super.onStart(app)
   }
 
-  override def onStop(app: Application) {
+  override def onStop(app: Application): Unit = {
     super.onStop(app)
   }
 }

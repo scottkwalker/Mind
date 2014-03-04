@@ -14,14 +14,13 @@ case class CreateSeqNodes @Inject()(createNode: ICreateNode, rng: IRandomNumberG
                       factoryLimit: Int
                        ): (IScope, Seq[Node]) = {
     ai.canAddAnother(acc.length, factoryLimit, rng) match {
-      case false => {
+      case false =>
         val updatedScope = saveAccLengthInScope match {
           case Some(f) => f(scope, acc.length)
           case None => scope
         }
         (updatedScope, acc)
-      }
-      case true => {
+      case true =>
         val (updatedScope, child) = createNode.create(possibleChildren, scope, ai)
 
         createSeq(possibleChildren,
@@ -30,7 +29,6 @@ case class CreateSeqNodes @Inject()(createNode: ICreateNode, rng: IRandomNumberG
           acc ++ Seq(child),
           factoryLimit
         )
-      }
     }
   }
 }

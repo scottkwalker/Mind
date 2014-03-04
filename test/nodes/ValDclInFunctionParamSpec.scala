@@ -92,7 +92,7 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
 
       "returns without empty nodes given there were empty nodes" in {
         class TestDevModule extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
-          override def bindValDclInFunctionParamFactory = {
+          override def bindValDclInFunctionParamFactory(): Unit = {
             val n: Node = mock[IntegerM]
             val f = mock[ValDclInFunctionParamFactory]
             f.create(any[Scope]) returns n
@@ -109,10 +109,9 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
         val result = instance.replaceEmpty(s, injector)
 
         result must beLike {
-          case ValDclInFunctionParam(name2, primitiveType) => {
+          case ValDclInFunctionParam(name2, primitiveType) =>
             name2 mustEqual "a"
             primitiveType must beAnInstanceOf[IntegerM]
-          }
         }
       }
     }

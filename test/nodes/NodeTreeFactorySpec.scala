@@ -47,10 +47,9 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
         val instance = factory.create(scope = s, premade = Some(Seq(c)))
 
         instance must beLike {
-          case NodeTree(child) => {
+          case NodeTree(child) =>
             child.length mustEqual 4 // 3 generated and 1 premade
             child(3) mustEqual n
-          }
         }
       }
 

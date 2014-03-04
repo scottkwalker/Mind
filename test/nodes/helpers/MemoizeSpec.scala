@@ -28,7 +28,7 @@ class MemoizeSpec extends WordSpec with EasyMockSugar {
       val scope = strictMock[IScope]
 
       trait ICalc {
-        def doCalc: Boolean
+        def doCalc(): Boolean
       }
       val calc = strictMock[ICalc]
       val memoizeDi = MemoizeDi[IScope, Boolean]()
@@ -38,8 +38,8 @@ class MemoizeSpec extends WordSpec with EasyMockSugar {
       }
 
       whenExecuting(scope, calc) {
-        memoizeDi.store getOrElseUpdate(scope, calc.doCalc)
-        memoizeDi.store getOrElseUpdate(scope, calc.doCalc)
+        memoizeDi.store getOrElseUpdate(scope, calc.doCalc())
+        memoizeDi.store getOrElseUpdate(scope, calc.doCalc())
       }
     }
 

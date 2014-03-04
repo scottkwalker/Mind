@@ -108,12 +108,11 @@ class ObjectDefSpec extends Specification with Mockito {
         val result = instance.replaceEmpty(s, injector)
 
         result must beLike {
-          case ObjectDef(n2, name2) => {
+          case ObjectDef(n2, name2) =>
             n2 must beLike {
               case Seq(nSeq) => nSeq must beAnInstanceOf[FunctionM]
             }
             name2 mustEqual name
-          }
         }
       }
 

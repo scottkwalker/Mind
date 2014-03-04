@@ -11,7 +11,7 @@ import modules.DevModule
 class FuncDefFactorySpec extends Specification with Mockito {
   "FuncDefFactory" should {
     class TestDevModule(rng: IRandomNumberGenerator) extends DevModule(randomNumberGenerator = rng) {
-      override def bindAddOperatorFactory = {
+      override def bindAddOperatorFactory(): Unit = {
         val n: Node = mock[ValueRef]
         val f = mock[AddOperatorFactory]
         f.create(any[Scope]) returns n

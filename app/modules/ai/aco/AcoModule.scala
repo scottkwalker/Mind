@@ -5,7 +5,7 @@ import ai.IAi
 import ai.aco.Aco
 
 class AcoModule extends ScalaModule {
-  def configure() {
+  def configure(): Unit = {
     bind(classOf[IAi]).to(classOf[Aco]).asEagerSingleton()
   }
 }

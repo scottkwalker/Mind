@@ -94,7 +94,7 @@ class AddOperatorSpec extends Specification with Mockito {
 
       "returns without empty nodes given there were empty nodes" in {
         class TestDevModule extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
-          override def bindAddOperatorFactory = {
+          override def bindAddOperatorFactory(): Unit = {
             val n: Node = mock[ValueRef]
             val f = mock[AddOperatorFactory]
             f.create(any[Scope]) returns n
@@ -111,10 +111,9 @@ class AddOperatorSpec extends Specification with Mockito {
         val result = instance.replaceEmpty(s, injector)
 
         result must beLike {
-          case AddOperator(l, r) => {
+          case AddOperator(l, r) =>
             l must beAnInstanceOf[ValueRef]
             r must beAnInstanceOf[ValueRef]
-          }
         }
       }
 

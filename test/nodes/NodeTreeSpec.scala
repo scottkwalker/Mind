@@ -81,11 +81,10 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
         val result = instance.replaceEmpty(s, injector)
 
         result must beLike {
-          case NodeTree(nodes) => {
+          case NodeTree(nodes) =>
             nodes must beLike {
               case Seq(n2) => n2 must beAnInstanceOf[ObjectDef]
             }
-          }
         }
       }
     }

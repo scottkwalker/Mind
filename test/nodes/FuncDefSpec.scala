@@ -142,7 +142,7 @@ class FuncDefSpec extends Specification with Mockito {
         val result = instance.replaceEmpty(s, injector)
 
         result must beLike {
-          case FunctionM(p2, n2, n) => {
+          case FunctionM(p2, n2, n) =>
             p2 must beLike {
               case Seq(pSeq) => pSeq must beAnInstanceOf[ValDclInFunctionParam]
             }
@@ -150,7 +150,6 @@ class FuncDefSpec extends Specification with Mockito {
               case Seq(nSeq) => nSeq must beAnInstanceOf[AddOperator]
             }
             n mustEqual name
-          }
         }
       }
 
