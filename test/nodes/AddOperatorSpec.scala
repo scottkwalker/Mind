@@ -4,9 +4,10 @@ import org.specs2.mutable._
 import nodes.helpers._
 import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
-import ai.helpers.TestAiModule
 import nodes.helpers.Scope
 import ai.IRandomNumberGenerator
+import modules.ai.legalGamer.LegalGamerModule
+import modules.DevModule
 
 class AddOperatorSpec extends Specification with Mockito {
   "AddOperator" should {
@@ -105,7 +106,7 @@ class AddOperatorSpec extends Specification with Mockito {
         val s = mock[Scope]
         s.numVals returns 1
         val v = mock[Empty]
-        val injector: Injector = Guice.createInjector(new TestDevModule, new TestAiModule)
+        val injector: Injector = Guice.createInjector(new TestDevModule, new LegalGamerModule)
         val instance = AddOperator(v, v)
 
         val result = instance.replaceEmpty(s, injector)

@@ -3,8 +3,9 @@ package nodes.helpers
 import org.scalatest.WordSpec
 import org.scalatest.mock.EasyMockSugar
 import com.google.inject.{Guice, Injector}
-import ai.helpers.TestAiModule
 import nodes.{AddOperatorFactory, IntegerMFactory}
+import modules.ai.legalGamer.LegalGamerModule
+import modules.DevModule
 
 class MemoizeSpec extends WordSpec with EasyMockSugar {
   "Memoize" should {
@@ -43,7 +44,7 @@ class MemoizeSpec extends WordSpec with EasyMockSugar {
     }
 
     "IoC two different factory instances of the canTerminateInStepsRemaining map when two node factories are created" in {
-      val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
+      val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
       val factory1 = injector.getInstance(classOf[IntegerMFactory])
       val factory2 = injector.getInstance(classOf[AddOperatorFactory])
       val scope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1)
@@ -54,7 +55,7 @@ class MemoizeSpec extends WordSpec with EasyMockSugar {
     }
 
     "IoC two different factory instances of the legalNeighbours map when two node factories are created" in {
-      val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
+      val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
       val factory1 = injector.getInstance(classOf[IntegerMFactory])
       val factory2 = injector.getInstance(classOf[AddOperatorFactory])
       val scope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1)

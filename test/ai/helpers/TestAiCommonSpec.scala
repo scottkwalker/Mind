@@ -6,11 +6,13 @@ import org.specs2.mock.Mockito
 import com.google.inject.Guice
 import fitness.AddTwoInts
 import nodes._
+import modules.ai.legalGamer.LegalGamerModule
+import modules.DevModule
 
 class TestAiCommonSpec extends Specification with Mockito {
   "TestAiCommon" should {
     "create and test an individual does not throw" in {
-      val injector = Guice.createInjector(new DevModule, new TestAiModule)
+      val injector = Guice.createInjector(new DevModule, new LegalGamerModule)
       val premade = new NodeTree(
         Seq(
           ObjectDef(Seq(

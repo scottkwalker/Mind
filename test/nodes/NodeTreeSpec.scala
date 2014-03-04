@@ -3,9 +3,10 @@ package nodes
 import org.specs2.mutable.Specification
 import org.specs2.mock.Mockito
 import org.specs2.execute.PendingUntilFixed
-import nodes.helpers.{DevModule, Scope}
+import nodes.helpers.Scope
 import com.google.inject.{Guice, Injector}
-import ai.helpers.TestAiModule
+import modules.ai.legalGamer.LegalGamerModule
+import modules.DevModule
 
 class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTree" should {
@@ -74,7 +75,7 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
           maxDepth = 5,
           maxObjectsInTree = 1)
         val n = mock[Empty]
-        val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
+        val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
         val instance = NodeTree(nodes = Seq(n))
 
         val result = instance.replaceEmpty(s, injector)

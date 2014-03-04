@@ -3,7 +3,8 @@ package nodes.helpers
 import org.specs2.mutable._
 import com.google.inject.Injector
 import com.google.inject.Guice
-import ai.aco.AcoModule
+import modules.ai.aco.AcoModule
+import modules.DevModule
 
 class ScopeSpec extends Specification {
   "Scope" should {

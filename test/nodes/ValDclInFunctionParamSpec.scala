@@ -4,10 +4,11 @@ import org.specs2.mutable._
 import nodes.helpers._
 import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
-import ai.helpers.TestAiModule
 import ai.IRandomNumberGenerator
 
 import nodes.helpers.Scope
+import modules.ai.legalGamer.LegalGamerModule
+import modules.DevModule
 
 class ValDclInFunctionParamSpec extends Specification with Mockito {
   "ValDclInFunctionParam" should {
@@ -103,7 +104,7 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
         val s = mock[Scope]
         val name = "a"
         val p = mock[Empty]
-        val injector: Injector = Guice.createInjector(new TestDevModule, new TestAiModule)
+        val injector: Injector = Guice.createInjector(new TestDevModule, new LegalGamerModule)
         val instance = ValDclInFunctionParam(name, p)
 
         val result = instance.replaceEmpty(s, injector)

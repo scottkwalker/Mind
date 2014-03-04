@@ -93,7 +93,7 @@ class PicklingSpec extends WordSpec with EasyMockSugar with Matchers {
 
   "Map of Scope" should {
     import scala.pickling._
-    
+
     val input0 = Scope(numVals = 1,
       numFuncs = 2,
       numObjects = 3,

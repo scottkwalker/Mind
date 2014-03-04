@@ -5,10 +5,11 @@ import org.specs2.mock.Mockito
 import org.specs2.execute.PendingUntilFixed
 import nodes.helpers._
 import com.google.inject.{Injector, Guice}
-import ai.helpers.TestAiModule
 import nodes.helpers.Scope
 import scala.Some
 import ai.IRandomNumberGenerator
+import modules.ai.legalGamer.LegalGamerModule
+import modules.DevModule
 
 class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTreeFactory" should {
@@ -19,7 +20,7 @@ class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFi
     rng.nextInt(any[Int]) returns 2
     rng.nextBoolean() returns true
 
-    val injector: Injector = Guice.createInjector(new TestDevModule(rng), new TestAiModule)
+    val injector: Injector = Guice.createInjector(new TestDevModule(rng), new LegalGamerModule)
     val factory = injector.getInstance(classOf[NodeTreeFactory])
     val s = injector.getInstance(classOf[IScope])
 

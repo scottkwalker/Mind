@@ -5,12 +5,12 @@ import nodes.helpers.Scope
 import org.specs2.mock.Mockito
 import com.google.inject.Injector
 import com.google.inject.Guice
-import nodes.helpers.DevModule
-import ai.helpers.TestAiModule
+import modules.DevModule
+import modules.ai.legalGamer.LegalGamerModule
 
 class ValDclInFunctionParamFactorySpec extends Specification with Mockito {
   "ValDclInFunctionParamFactory" should {
-    val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
+    val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
     val factory = injector.getInstance(classOf[ValDclInFunctionParamFactory])
 
     "create" in {

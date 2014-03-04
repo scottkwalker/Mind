@@ -1,9 +1,20 @@
-package nodes.helpers
+package modules
 
+import _root_.ai.{RandomNumberGenerator, IRandomNumberGenerator}
 import com.tzavellas.sse.guice.ScalaModule
-import nodes._
-import ai.{RandomNumberGenerator, IRandomNumberGenerator}
 import com.google.inject.TypeLiteral
+import nodes.helpers._
+import nodes.helpers.CreateNode
+import nodes.FunctionMFactory
+import nodes.ObjectDefFactory
+import nodes.AddOperatorFactory
+import nodes.Empty
+import nodes.ValDclInFunctionParamFactory
+import nodes.helpers.Scope
+import nodes.ValueRefFactory
+import nodes.helpers.CreateSeqNodes
+import nodes.helpers.MemoizeDi
+import nodes.NodeTreeFactory
 
 class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1),
                 randomNumberGenerator: IRandomNumberGenerator = RandomNumberGenerator(),

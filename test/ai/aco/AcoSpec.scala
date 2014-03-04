@@ -7,6 +7,8 @@ import com.google.inject.Guice
 import fitness.AddTwoInts
 import nodes._
 import ai.IRandomNumberGenerator
+import modules.ai.aco.AcoModule
+import modules.DevModule
 
 class AcoSpec extends Specification with Mockito {
   "Aco" should {

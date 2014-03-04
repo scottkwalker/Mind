@@ -4,9 +4,10 @@ import org.specs2.mutable._
 import nodes.helpers._
 import org.specs2.mock.Mockito
 import com.google.inject.{Injector, Guice}
-import ai.helpers.TestAiModule
 import nodes.helpers.Scope
 import ai.IRandomNumberGenerator
+import modules.ai.legalGamer.LegalGamerModule
+import modules.DevModule
 
 class FuncDefFactorySpec extends Specification with Mockito {
   "FuncDefFactory" should {
@@ -23,7 +24,7 @@ class FuncDefFactorySpec extends Specification with Mockito {
     rng.nextInt(any[Int]) returns 2
     rng.nextBoolean() returns true
 
-    val injector: Injector = Guice.createInjector(new TestDevModule(rng), new TestAiModule)
+    val injector: Injector = Guice.createInjector(new TestDevModule(rng), new LegalGamerModule)
     val factory = injector.getInstance(classOf[FunctionMFactory])
 
     "create" in {

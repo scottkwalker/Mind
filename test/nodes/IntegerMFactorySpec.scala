@@ -4,13 +4,14 @@ import nodes.helpers._
 import org.scalatest.WordSpec
 import org.scalatest.mock.EasyMockSugar
 import com.google.inject.{Guice, Injector}
-import ai.helpers.TestAiModule
 import org.scalatest.Matchers._
 import ai.IRandomNumberGenerator
 import org.easymock.EasyMock._
+import modules.ai.legalGamer.LegalGamerModule
+import modules.DevModule
 
 class IntegerMFactorySpec extends WordSpec with EasyMockSugar {
-  val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
+  val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
   val factory = injector.getInstance(classOf[IntegerMFactory])
 
   "neighbours" should {

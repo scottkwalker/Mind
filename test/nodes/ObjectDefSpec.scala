@@ -1,10 +1,11 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.{DevModule, Scope}
+import nodes.helpers.Scope
 import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
-import ai.helpers.TestAiModule
+import modules.ai.legalGamer.LegalGamerModule
+import modules.DevModule
 
 class ObjectDefSpec extends Specification with Mockito {
   "ObjectDef" should {
@@ -100,7 +101,7 @@ class ObjectDefSpec extends Specification with Mockito {
           maxDepth = 5,
           maxObjectsInTree = 1)
         val n = mock[Empty]
-        val injector: Injector = Guice.createInjector(new DevModule, new TestAiModule)
+        val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
         val instance = ObjectDef(nodes = Seq(n),
           name = name)
 
