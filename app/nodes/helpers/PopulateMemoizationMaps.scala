@@ -3,6 +3,16 @@ package nodes.helpers
 import com.google.inject.Inject
 import nodes._
 
+/* Plan
+We have a distinct array of factories allFactories
+We have a mutable Map of type [Scope, Future[Seq[Int]]].
+The Int represents a factory number.
+Each Future is a lambda of def populate(scope) = Future { allThoseThatCanTerminate(scope) } ).
+A parallel loop starts from the lowest numbers and adds all scope -> populate(scope) to the Map. Call Map(scope).map to
+make it start calculating an answer.
+Json serializer runs over the Map
+*/
+
 class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFactory,
                                         functionMFactory: FunctionMFactory,
                                         integerMFactory: IntegerMFactory,
