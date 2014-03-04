@@ -5,8 +5,6 @@ import org.scalatest.WordSpec
 import org.scalatest.mock.EasyMockSugar
 import com.google.inject.{Guice, Injector}
 import org.scalatest.Matchers._
-import ai.IRandomNumberGenerator
-import org.easymock.EasyMock._
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 

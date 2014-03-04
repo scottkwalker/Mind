@@ -1,7 +1,6 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers._
 import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import ai.IRandomNumberGenerator
