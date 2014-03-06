@@ -32,16 +32,16 @@ class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFactory,
                                           maxDepth: Int,
                                           maxObjectsInTree: Int): Unit = {
 
-    for (maxDepth <- 0 to maxDepth;
-         maxExpressionsInFunc <- 0 to maxExpressionsInFunc;
-         maxFuncsInObject <- 0 to maxFuncsInObject;
-         maxParamsInFunc <- 0 to maxParamsInFunc;
-         maxObjectsInTree <- 0 to maxObjectsInTree) {
-      val scope = Scope(maxExpressionsInFunc = maxExpressionsInFunc,
-        maxFuncsInObject = maxFuncsInObject,
-        maxParamsInFunc = maxParamsInFunc,
-        maxDepth = maxDepth,
-        maxObjectsInTree = maxObjectsInTree)
+    for (depth <- 0 to maxDepth;
+         expressionsInFunc <- 0 to maxExpressionsInFunc;
+         funcsInObject <- 0 to maxFuncsInObject;
+         paramsInFunc <- 0 to maxParamsInFunc;
+         objectsInTree <- 0 to maxObjectsInTree) {
+      val scope = Scope(maxExpressionsInFunc = expressionsInFunc,
+        maxFuncsInObject = funcsInObject,
+        maxParamsInFunc = paramsInFunc,
+        maxDepth = depth,
+        maxObjectsInTree = objectsInTree)
       memoizeCanTerminateInStepsRemaining(that, scope)
     }
   }

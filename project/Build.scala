@@ -2,7 +2,7 @@ import sbt._
 import sbt.Keys._
 import play.Project._
 
-object ApplicationBuild extends Build {
+object Build extends sbt.Build {
 
   val appName         = "Mind"
   val appVersion      = "1.0-SNAPSHOT"
