@@ -1,13 +1,11 @@
 package ai
 
-import java.util.concurrent.{TimeUnit, CountDownLatch}
+import java.util.concurrent.CountDownLatch
 import java.util.concurrent.atomic.AtomicInteger
 import scala.annotation.tailrec
 import org.scalatest.{WordSpec, Matchers}
 import org.mockito.Mockito._
-import com.twitter.util._
-import com.twitter.conversions.time._
-import com.twitter.util.Throw
+import org.scalatest.concurrent.ScalaFutures
 
 // The code below is originally based on com.twitter.util.Memoize. I changed it from an object to a class.
 class MemoizeTwitter[A, B](f: A => B) {
@@ -114,7 +112,7 @@ class MemoizeTwitter[A, B](f: A => B) {
     }
 }
 
-class MemoizeTwitterSpec extends WordSpec with Matchers {
+class MemoizeTwitterSpec extends WordSpec with Matchers with ScalaFutures {
   "getOpt" should {
     "return Some value already calculated" in {
       // mockito can't spy anonymous classes,
@@ -152,6 +150,10 @@ class MemoizeTwitterSpec extends WordSpec with Matchers {
   }
 
   "getOrElseUpdate" should {
+    import com.twitter.util._
+    import com.twitter.util.CountDownLatch
+    import com.twitter.conversions.time._
+
     "only runs the function once for the same input" in {
       // mockito can't spy anonymous classes,
       // and this was the simplest approach i could come up with.
@@ -222,7 +224,7 @@ class MemoizeTwitterSpec extends WordSpec with Matchers {
       class FailFirstTime extends (Int => Int) {
         override def apply(i: Int) = {
           // Ensure that all of the callers have been started
-          startUpLatch.await(200, TimeUnit.MILLISECONDS)
+          startUpLatch.await(200.milliseconds)
           // This effect should happen once per exception plus once for
           // all successes
           val n = callCount.incrementAndGet()
@@ -246,6 +248,7 @@ class MemoizeTwitterSpec extends WordSpec with Matchers {
         })
 
       startUpLatch.countDown()
+
       val (successes, failures) =
         Await.result(computation, 200.milliseconds).toList partition {
           _.isReturn
