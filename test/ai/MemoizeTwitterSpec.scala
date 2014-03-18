@@ -1,7 +1,6 @@
 package ai
 
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.{TimeUnit, CountDownLatch}
 import scala.annotation.tailrec
 import org.scalatest.{WordSpec, Matchers}
 import org.mockito.Mockito._
@@ -36,7 +35,6 @@ class MemoizeTwitter[A, B](f: A => B) {
    * overhead, and will be called repeatedly.
    */
   private var memo = Map.empty[A, Either[CountDownLatch, B]]
-
 
   /**
    * What to do if we do not find the value already in the memo
@@ -151,10 +149,60 @@ class MemoizeTwitterSpec extends WordSpec with Matchers with ScalaFutures {
 
   "getOrElseUpdate" should {
     import com.twitter.util._
-    import com.twitter.util.CountDownLatch
     import com.twitter.conversions.time._
+    import java.util.concurrent.CountDownLatch
+    import java.util.concurrent.atomic.AtomicInteger
 
-    "only runs the function once for the same input" in {
+    "only runs the function once for the same input (fibonacci recursive)" in {
+      class Fib {
+        def apply(i: Int): Int = fib(i)
+
+        private def fib(i: Int): Int = i match {
+          case 0 => 0
+          case 1 => 1
+          case _ => fib(i - 1) + fib(i - 2)
+        }
+      }
+
+      val adder = spy(new Fib)
+      val memoizer = new MemoizeTwitter(f = adder(_: Int))
+
+      assert(1 === memoizer.getOrElseUpdate(1))
+      assert(1 === memoizer.getOrElseUpdate(1))
+      assert(1 === memoizer.getOrElseUpdate(2))
+      assert(2 === memoizer.getOrElseUpdate(3))
+      assert(2 === memoizer.getOrElseUpdate(3))
+
+      verify(adder, times(1))(1)
+      verify(adder, times(1))(2)
+      verify(adder, times(1))(3)
+    }
+
+    "only runs the function once for the same input (fibonacci tail recursive)" in {
+      class Fib {
+        def apply(i: Int): Int = fib(i)
+
+        @tailrec private def fib(i: Int, a: Int = 1, b: Int = 0): Int = i match {
+          case 0 => b
+          case _ => fib(i - 1, b, a + b)
+        }
+      }
+
+      val adder = spy(new Fib)
+      val memoizer = new MemoizeTwitter(f = adder(_: Int))
+
+      assert(1 === memoizer.getOrElseUpdate(1))
+      assert(1 === memoizer.getOrElseUpdate(1))
+      assert(1 === memoizer.getOrElseUpdate(2))
+      assert(2 === memoizer.getOrElseUpdate(3))
+      assert(2 === memoizer.getOrElseUpdate(3))
+
+      verify(adder, times(1))(1)
+      verify(adder, times(1))(2)
+      verify(adder, times(1))(3)
+    }
+
+    "only runs the function once for the same input (adder)" in {
       // mockito can't spy anonymous classes,
       // and this was the simplest approach i could come up with.
       class Adder extends (Int => Int) {
@@ -224,7 +272,7 @@ class MemoizeTwitterSpec extends WordSpec with Matchers with ScalaFutures {
       class FailFirstTime extends (Int => Int) {
         override def apply(i: Int) = {
           // Ensure that all of the callers have been started
-          startUpLatch.await(200.milliseconds)
+          startUpLatch.await(200, TimeUnit.MILLISECONDS)
           // This effect should happen once per exception plus once for
           // all successes
           val n = callCount.incrementAndGet()
