@@ -3,7 +3,7 @@ package ai
 import java.util.concurrent.{TimeUnit, CountDownLatch}
 import java.util.concurrent.atomic.AtomicInteger
 import scala.annotation.tailrec
-import org.scalatest.FunSuite
+import org.scalatest.{Matchers, FunSuite}
 import org.mockito.Mockito._
 import com.twitter.util._
 import com.twitter.conversions.time._
@@ -49,20 +49,17 @@ class MemoizeTwitter[A, B](f: A => B) {
       // With the lock, check to see what state the value is in.
       memo.get(a) match {
         case None =>
-          // If it's missing, then claim the slot by putting in a
-          // CountDownLatch that will be completed when the value is
+          // If it's missing, then claim the slot by putting in a CountDownLatch that will be completed when the value is
           // available.
           val latch = new CountDownLatch(1)
           memo = memo + (a -> Left(latch))
 
-          // The latch wrapped in Left indicates that the value
-          // needs to be computed in this thread, and then the
+          // The latch wrapped in Left indicates that the value needs to be computed in this thread, and then the
           // latch counted down.
           Left(latch)
 
         case Some(other) =>
-          // This is either the latch that will indicate that the
-          // work has been done, or the computed value.
+          // This is either the latch that will indicate that the work has been done, or the computed value.
           Right(other)
       }
     } match {
@@ -71,8 +68,7 @@ class MemoizeTwitter[A, B](f: A => B) {
         // Someone else is doing the computation.
         latch.await()
 
-        // This recursive call will happen when there is an
-        // exception computing the value, or if the value is
+        // This recursive call will happen when there is an exception computing the value, or if the value is
         // currently being computed.
         missing(a)
 
@@ -83,10 +79,8 @@ class MemoizeTwitter[A, B](f: A => B) {
             f(a)
           } catch {
             case t: Throwable =>
-              // If there was an exception running the
-              // computation, then we need to make sure we do not
-              // starve any waiters before propagating the
-              // exception.
+              // If there was an exception running the computation, then we need to make sure we do not
+              // starve any waiters before propagating the exception.
               synchronized {
                 memo = memo - a
               }
@@ -94,8 +88,7 @@ class MemoizeTwitter[A, B](f: A => B) {
               throw t
           }
 
-        // Update the memo table to indicate that the work has
-        // been done, and signal to any waiting threads that the
+        // Update the memo table to indicate that the work has been done, and signal to any waiting threads that the
         // work is complete.
         synchronized {
           memo = memo + (a -> Right(b))
@@ -105,17 +98,59 @@ class MemoizeTwitter[A, B](f: A => B) {
     }
 
   def getOrElseUpdate(a: A): B =
-  // Look in the (possibly stale) memo table. If the value is
-  // present, then it is guaranteed to be the final value. If it
-  // is absent, call missing() to determine what to do.
+    // Look in the (possibly stale) memo table. If the value is present, then it is guaranteed to be the final value. If it
+    // is absent, call missing() to determine what to do.
     memo.get(a) match {
       case Some(Right(b)) => b
       case _ => missing(a)
     }
+
+  // TODO test
+  def getOpt(a: A): Option[B] =
+    // If the value is present, then return the calculated value.
+    // Else it is not yet calculated.
+    memo.get(a) match {
+      case Some(Right(b)) => Some(b)
+      case _ => None
+    }
 }
 
-class MemoizeTwitterSpec extends FunSuite {
-  test("Memoize.apply: only runs the function once for the same input") {
+class MemoizeTwitterSpec extends FunSuite with Matchers {
+  test("getOpt: return Some value already calculated") {
+    // mockito can't spy anonymous classes,
+    // and this was the simplest approach i could come up with.
+    class Adder extends (Int => Int) {
+      override def apply(i: Int) = i + 1
+    }
+
+    val adder = spy(new Adder)
+    val memoizer = new MemoizeTwitter(f = adder(_: Int))
+
+    assert(2 === memoizer.getOrElseUpdate(1))
+    memoizer.getOpt(1) match {
+      case Some(n) => n should equal(2)
+      case _ => fail("Should return calculated value")
+    }
+  }
+
+  test("getOpt: return None when value not calculated") {
+    // mockito can't spy anonymous classes,
+    // and this was the simplest approach i could come up with.
+    class Adder extends (Int => Int) {
+      override def apply(i: Int) = i + 1
+    }
+
+    val adder = spy(new Adder)
+    val memoizer = new MemoizeTwitter(f = adder(_: Int))
+
+    assert(2 === memoizer.getOrElseUpdate(1))
+    memoizer.getOpt(1) match {
+      case Some(n) => n should equal(2)
+      case _ => fail("Should return calculated value")
+    }
+  }
+
+  test("getOrElseUpdate: only runs the function once for the same input") {
     // mockito can't spy anonymous classes,
     // and this was the simplest approach i could come up with.
     class Adder extends (Int => Int) {
@@ -133,7 +168,7 @@ class MemoizeTwitterSpec extends FunSuite {
     verify(adder, times(1))(2)
   }
 
-  test("Memoize.apply: only executes the memoized computation once per input") {
+  test("getOrElseUpdate: only executes the memoized computation once per input") {
     val callCount = new AtomicInteger(0)
     val startUpLatch = new CountDownLatch(1)
 
@@ -177,7 +212,7 @@ class MemoizeTwitterSpec extends FunSuite {
     assert(callCount.get() === 1)
   }
 
-  test("Memoize.apply: handles exceptions during computations") {
+  test("getOrElseUpdate: handles exceptions during computations") {
     val TheException = new RuntimeException
     val startUpLatch = new CountDownLatch(1)
     val callCount = new AtomicInteger(0)
