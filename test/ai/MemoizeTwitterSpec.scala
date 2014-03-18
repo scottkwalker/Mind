@@ -3,7 +3,7 @@ package ai
 import java.util.concurrent.{TimeUnit, CountDownLatch}
 import java.util.concurrent.atomic.AtomicInteger
 import scala.annotation.tailrec
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{WordSpec, Matchers}
 import org.mockito.Mockito._
 import com.twitter.util._
 import com.twitter.conversions.time._
@@ -98,166 +98,169 @@ class MemoizeTwitter[A, B](f: A => B) {
     }
 
   def getOrElseUpdate(a: A): B =
-    // Look in the (possibly stale) memo table. If the value is present, then it is guaranteed to be the final value. If it
-    // is absent, call missing() to determine what to do.
+  // Look in the (possibly stale) memo table. If the value is present, then it is guaranteed to be the final value. If it
+  // is absent, call missing() to determine what to do.
     memo.get(a) match {
       case Some(Right(b)) => b
       case _ => missing(a)
     }
 
-  // TODO test
   def getOpt(a: A): Option[B] =
-    // If the value is present, then return the calculated value.
-    // Else it is not yet calculated.
+  // If the value is present, then return the calculated value.
+  // Else it is not yet calculated.
     memo.get(a) match {
       case Some(Right(b)) => Some(b)
       case _ => None
     }
 }
 
-class MemoizeTwitterSpec extends FunSuite with Matchers {
-  test("getOpt: return Some value already calculated") {
-    // mockito can't spy anonymous classes,
-    // and this was the simplest approach i could come up with.
-    class Adder extends (Int => Int) {
-      override def apply(i: Int) = i + 1
-    }
+class MemoizeTwitterSpec extends WordSpec with Matchers {
+  "getOpt" should {
+    "return Some value already calculated" in {
+      // mockito can't spy anonymous classes,
+      // and this was the simplest approach i could come up with.
+      class Adder extends (Int => Int) {
+        override def apply(i: Int) = i + 1
+      }
 
-    val adder = spy(new Adder)
-    val memoizer = new MemoizeTwitter(f = adder(_: Int))
+      val adder = spy(new Adder)
+      val memoizer = new MemoizeTwitter(f = adder(_: Int))
 
-    assert(2 === memoizer.getOrElseUpdate(1))
-    memoizer.getOpt(1) match {
-      case Some(n) => n should equal(2)
-      case _ => fail("Should return calculated value")
-    }
-  }
-
-  test("getOpt: return None when value not calculated") {
-    // mockito can't spy anonymous classes,
-    // and this was the simplest approach i could come up with.
-    class Adder extends (Int => Int) {
-      override def apply(i: Int) = i + 1
-    }
-
-    val adder = spy(new Adder)
-    val memoizer = new MemoizeTwitter(f = adder(_: Int))
-
-    assert(2 === memoizer.getOrElseUpdate(1))
-    memoizer.getOpt(1) match {
-      case Some(n) => n should equal(2)
-      case _ => fail("Should return calculated value")
-    }
-  }
-
-  test("getOrElseUpdate: only runs the function once for the same input") {
-    // mockito can't spy anonymous classes,
-    // and this was the simplest approach i could come up with.
-    class Adder extends (Int => Int) {
-      override def apply(i: Int) = i + 1
-    }
-
-    val adder = spy(new Adder)
-    val memoizer = new MemoizeTwitter(f = adder(_: Int))
-
-    assert(2 === memoizer.getOrElseUpdate(1))
-    assert(2 === memoizer.getOrElseUpdate(1))
-    assert(3 === memoizer.getOrElseUpdate(2))
-
-    verify(adder, times(1))(1)
-    verify(adder, times(1))(2)
-  }
-
-  test("getOrElseUpdate: only executes the memoized computation once per input") {
-    val callCount = new AtomicInteger(0)
-    val startUpLatch = new CountDownLatch(1)
-
-    class Incrementer extends (Int => String) {
-      override def apply(i: Int) = {
-        // Wait for all of the threads to be started before
-        // continuing. This gives races a chance to happen.
-        startUpLatch.await()
-
-        // Perform the effect of incrementing the counter, so that we
-        // can detect whether this code is executed more than once.
-        callCount.incrementAndGet()
-
-        // Return a new object so that object equality will not pass
-        // if two different result values are used.
-        "." * i
+      assert(2 === memoizer.getOrElseUpdate(1))
+      memoizer.getOpt(1) match {
+        case Some(n) => n should equal(2)
+        case _ => fail("Should return calculated value")
       }
     }
 
-    val incrementer = spy(new Incrementer)
-    val memoizer = new MemoizeTwitter[Int, String](f = incrementer(_))
+    "return None when value not calculated" in {
+      // mockito can't spy anonymous classes,
+      // and this was the simplest approach i could come up with.
+      class Adder extends (Int => Int) {
+        override def apply(i: Int) = i + 1
+      }
 
-    val ConcurrencyLevel = 5
-    val computations =
-      Future.collect(1 to ConcurrencyLevel map {
-        _ =>
-          FuturePool.unboundedPool(memoizer.getOrElseUpdate(5))
-      })
+      val adder = spy(new Adder)
+      val memoizer = new MemoizeTwitter(f = adder(_: Int))
 
-    startUpLatch.countDown()
-    val results = Await.result(computations)
-
-    // All of the items are equal, up to reference equality
-    results foreach {
-      item =>
-        assert(item === results(0))
-        assert(item eq results(0))
+      assert(2 === memoizer.getOrElseUpdate(1))
+      memoizer.getOpt(1) match {
+        case Some(n) => n should equal(2)
+        case _ => fail("Should return calculated value")
+      }
     }
-
-    // The effects happen exactly once
-    assert(callCount.get() === 1)
   }
 
-  test("getOrElseUpdate: handles exceptions during computations") {
-    val TheException = new RuntimeException
-    val startUpLatch = new CountDownLatch(1)
-    val callCount = new AtomicInteger(0)
-
-    class FailFirstTime extends (Int => Int) {
-      override def apply(i: Int) = {
-        // Ensure that all of the callers have been started
-        startUpLatch.await(200, TimeUnit.MILLISECONDS)
-        // This effect should happen once per exception plus once for
-        // all successes
-        val n = callCount.incrementAndGet()
-        if (n == 1) throw TheException else i + 1
+  "getOrElseUpdate" should {
+    "only runs the function once for the same input" in {
+      // mockito can't spy anonymous classes,
+      // and this was the simplest approach i could come up with.
+      class Adder extends (Int => Int) {
+        override def apply(i: Int) = i + 1
       }
+
+      val adder = spy(new Adder)
+      val memoizer = new MemoizeTwitter(f = adder(_: Int))
+
+      assert(2 === memoizer.getOrElseUpdate(1))
+      assert(2 === memoizer.getOrElseUpdate(1))
+      assert(3 === memoizer.getOrElseUpdate(2))
+
+      verify(adder, times(1))(1)
+      verify(adder, times(1))(2)
     }
 
-    // A computation that should fail the first time, and then
-    // succeed for all subsequent attempts.
-    val failFirstTime = spy(new FailFirstTime)
-    val memo = new MemoizeTwitter[Int, Int](f = failFirstTime(_))
+    "only executes the memoized computation once per input" in {
+      val callCount = new AtomicInteger(0)
+      val startUpLatch = new CountDownLatch(1)
 
+      class Incrementer extends (Int => String) {
+        override def apply(i: Int) = {
+          // Wait for all of the threads to be started before
+          // continuing. This gives races a chance to happen.
+          startUpLatch.await()
 
-    val ConcurrencyLevel = 5
-    val computation =
-      Future.collect(1 to ConcurrencyLevel map {
-        _ =>
-          FuturePool.unboundedPool(memo.getOrElseUpdate(5)) transform {
-            Future.value
-          }
-      })
+          // Perform the effect of incrementing the counter, so that we
+          // can detect whether this code is executed more than once.
+          callCount.incrementAndGet()
 
-    startUpLatch.countDown()
-    val (successes, failures) =
-      Await.result(computation, 200.milliseconds).toList partition {
-        _.isReturn
+          // Return a new object so that object equality will not pass
+          // if two different result values are used.
+          "." * i
+        }
       }
 
-    // One of the times, the computation must have failed.
-    assert(failures === List(Throw(TheException)))
+      val incrementer = spy(new Incrementer)
+      val memoizer = new MemoizeTwitter[Int, String](f = incrementer(_))
 
-    // Another time, it must have succeeded, and then the stored
-    // result will be reused for the other calls.
-    assert(successes === List.fill(ConcurrencyLevel - 1)(Return(6)))
+      val ConcurrencyLevel = 5
+      val computations =
+        Future.collect(1 to ConcurrencyLevel map {
+          _ =>
+            FuturePool.unboundedPool(memoizer.getOrElseUpdate(5))
+        })
 
-    // The exception plus another successful call:
-    assert(callCount.get() === 2)
+      startUpLatch.countDown()
+      val results = Await.result(computations)
+
+      // All of the items are equal, up to reference equality
+      results foreach {
+        item =>
+          assert(item === results(0))
+          assert(item eq results(0))
+      }
+
+      // The effects happen exactly once
+      assert(callCount.get() === 1)
+    }
+
+    "handles exceptions during computations" in {
+      val TheException = new RuntimeException
+      val startUpLatch = new CountDownLatch(1)
+      val callCount = new AtomicInteger(0)
+
+      class FailFirstTime extends (Int => Int) {
+        override def apply(i: Int) = {
+          // Ensure that all of the callers have been started
+          startUpLatch.await(200, TimeUnit.MILLISECONDS)
+          // This effect should happen once per exception plus once for
+          // all successes
+          val n = callCount.incrementAndGet()
+          if (n == 1) throw TheException else i + 1
+        }
+      }
+
+      // A computation that should fail the first time, and then
+      // succeed for all subsequent attempts.
+      val failFirstTime = spy(new FailFirstTime)
+      val memo = new MemoizeTwitter[Int, Int](f = failFirstTime(_))
+
+
+      val ConcurrencyLevel = 5
+      val computation =
+        Future.collect(1 to ConcurrencyLevel map {
+          _ =>
+            FuturePool.unboundedPool(memo.getOrElseUpdate(5)) transform {
+              Future.value
+            }
+        })
+
+      startUpLatch.countDown()
+      val (successes, failures) =
+        Await.result(computation, 200.milliseconds).toList partition {
+          _.isReturn
+        }
+
+      // One of the times, the computation must have failed.
+      assert(failures === List(Throw(TheException)))
+
+      // Another time, it must have succeeded, and then the stored
+      // result will be reused for the other calls.
+      assert(successes === List.fill(ConcurrencyLevel - 1)(Return(6)))
+
+      // The exception plus another successful call:
+      assert(callCount.get() === 2)
+    }
   }
 }
 
