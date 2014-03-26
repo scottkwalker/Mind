@@ -36,6 +36,10 @@ class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject
     bindIPopulateMemoizationMaps()
   }
 
+  def bindFunctionMFactory(): Unit = {
+    bind(classOf[FunctionMFactory]).asEagerSingleton()
+  }
+
   def bindAddOperatorFactory(): Unit = {
     bind(classOf[AddOperatorFactory]).asEagerSingleton()
   }

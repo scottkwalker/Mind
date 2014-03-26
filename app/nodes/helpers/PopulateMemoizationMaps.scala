@@ -22,7 +22,7 @@ class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFactory,
                                         valueRefFactory: ValueRefFactory) extends IPopulateMemoizationMaps {
   def memoizeCanTerminateInStepsRemaining(that: ICreateChildNodes,
                                           scope: IScope): Unit = {
-    that.mapOfCanTerminateInStepsRemaining.store getOrElseUpdate(scope, that.canTerminateInStepsRemaining(scope))
+    //that.mapOfCanTerminateInStepsRemaining getOrElseUpdate(scope, that.canTerminateInStepsRemaining(scope))
   }
 
   def memoizeCanTerminateInStepsRemaining(that: ICreateChildNodes,

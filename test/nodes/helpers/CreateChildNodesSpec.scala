@@ -11,13 +11,9 @@ class CreateChildNodesSpec extends Specification with Mockito {
     }
     case class mockFactoryNotTerminates1(mapOfLegalNeigbours: IMemoizeDi[IScope, Seq[ICreateChildNodes]] = MemoizeDi[IScope, Seq[ICreateChildNodes]](),
                                          mapOfCanTerminateInStepsRemaining: IMemoizeDi[IScope, Boolean] = MemoizeDi[IScope, Boolean]()) extends ICreateChildNodes with MockUpdateScope {
-      /*override val canTerminateInStepsRemaining: Scope => Boolean = {
-        def inner(f: Scope => Boolean)(scope: IScope): Boolean = false
+      override val canTerminateInStepsRemaining: IScope => Boolean = {
+        def inner(f: IScope => Boolean)(scope: IScope): Boolean = false
         Memoize.Y(inner)
-      }*/
-      override def canTerminateInStepsRemaining(scope: IScope): Boolean = {
-        def result = false
-        mapOfCanTerminateInStepsRemaining.store getOrElseUpdate(scope, result)
       }
 
       override def create(scope: IScope) = null
@@ -27,13 +23,9 @@ class CreateChildNodesSpec extends Specification with Mockito {
 
     case class mockFactoryTerminates1(mapOfLegalNeigbours: IMemoizeDi[IScope, Seq[ICreateChildNodes]] = MemoizeDi[IScope, Seq[ICreateChildNodes]](),
                                       mapOfCanTerminateInStepsRemaining: IMemoizeDi[IScope, Boolean] = MemoizeDi[IScope, Boolean]()) extends ICreateChildNodes with MockUpdateScope {
-      /*override val canTerminateInStepsRemaining: Scope => Boolean = {
-        def inner(f: Scope => Boolean)(scope: IScope): Boolean = true
+      override val canTerminateInStepsRemaining: IScope => Boolean = {
+        def inner(f: IScope => Boolean)(scope: IScope): Boolean = true
         Memoize.Y(inner)
-      }*/
-      override def canTerminateInStepsRemaining(scope: IScope): Boolean = {
-        def result = true
-        mapOfCanTerminateInStepsRemaining.store getOrElseUpdate(scope, result)
       }
 
       override def create(scope: IScope) = null
@@ -43,13 +35,9 @@ class CreateChildNodesSpec extends Specification with Mockito {
 
     case class mockFactoryTerminates2(mapOfLegalNeigbours: IMemoizeDi[IScope, Seq[ICreateChildNodes]] = MemoizeDi[IScope, Seq[ICreateChildNodes]](),
                                       mapOfCanTerminateInStepsRemaining: IMemoizeDi[IScope, Boolean] = MemoizeDi[IScope, Boolean]()) extends ICreateChildNodes with MockUpdateScope {
-      /*override val canTerminateInStepsRemaining: Scope => Boolean = {
-        def inner(f: Scope => Boolean)(scope: IScope): Boolean = true
+      override val canTerminateInStepsRemaining: IScope => Boolean = {
+        def inner(f: IScope => Boolean)(scope: IScope): Boolean = true
         Memoize.Y(inner)
-      }*/
-      override def canTerminateInStepsRemaining(scope: IScope): Boolean = {
-        def result = true
-        mapOfCanTerminateInStepsRemaining.store getOrElseUpdate(scope, result)
       }
 
       override def create(scope: IScope) = null

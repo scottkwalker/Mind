@@ -22,9 +22,9 @@ case class IntegerMFactory @Inject()(creator: ICreateSeqNodes,
                                       ) extends ICreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[ICreateChildNodes] = Nil // No possible children
 
-  override def canTerminateInStepsRemaining(scope: IScope): Boolean = {
-    val result = scope.hasDepthRemaining
-    mapOfCanTerminateInStepsRemaining.store getOrElseUpdate(scope, result)
+  override val canTerminateInStepsRemaining: IScope => Boolean = {
+    def inner(f: IScope => Boolean)(scope: IScope): Boolean = scope.hasDepthRemaining
+    Memoize.Y(inner)
   }
 
   override def create(scope: IScope): Node = {

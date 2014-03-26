@@ -8,14 +8,14 @@ import ai.IRandomNumberGenerator
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 
-class FuncDefFactorySpec extends Specification with Mockito {
-  "FuncDefFactory" should {
+class FunctionMFactorySpec extends Specification with Mockito {
+  "FunctionMFactory" should {
     class TestDevModule(rng: IRandomNumberGenerator) extends DevModule(randomNumberGenerator = rng) {
-      override def bindAddOperatorFactory(): Unit = {
+      override def bindFunctionMFactory(): Unit = {
         val n: Node = mock[ValueRef]
-        val f = mock[AddOperatorFactory]
+        val f = mock[FunctionMFactory]
         f.create(any[Scope]) returns n
-        bind(classOf[AddOperatorFactory]).toInstance(f)
+        bind(classOf[FunctionMFactory]).toInstance(f)
       }
     }
 

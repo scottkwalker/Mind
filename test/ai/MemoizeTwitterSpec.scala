@@ -7,7 +7,7 @@ import org.mockito.Mockito._
 import org.scalatest.concurrent.ScalaFutures
 
 // The code below is originally based on com.twitter.util.Memoize. I changed it from an object to a class.
-class MemoizeTwitter[A, B](f: A => B) {
+class MemoizeTwitter[TKey, TValue](f: TKey => TValue) {
   /**
    * Thread-safe memoization for a function.
    *
@@ -34,13 +34,13 @@ class MemoizeTwitter[A, B](f: A => B) {
    * inputs, are expensive compared to a hash lookup and the memory
    * overhead, and will be called repeatedly.
    */
-  private var memo = Map.empty[A, Either[CountDownLatch, B]]
+  private var memo = Map.empty[TKey, Either[CountDownLatch, TValue]]
 
   /**
    * What to do if we do not find the value already in the memo
    * table.
    */
-  @tailrec private[this] def missing(a: A): B =
+  @tailrec private[this] def missing(a: TKey): TValue =
     synchronized {
       // With the lock, check to see what state the value is in.
       memo.get(a) match {
@@ -93,7 +93,7 @@ class MemoizeTwitter[A, B](f: A => B) {
         b
     }
 
-  def getOrElseUpdate(a: A): B =
+  def getOrElseUpdate(a: TKey): TValue =
   // Look in the (possibly stale) memo table. If the value is present, then it is guaranteed to be the final value. If it
   // is absent, call missing() to determine what to do.
     memo.get(a) match {
@@ -101,7 +101,7 @@ class MemoizeTwitter[A, B](f: A => B) {
       case _ => missing(a)
     }
 
-  def getOpt(a: A): Option[B] =
+  def getOpt(a: TKey): Option[TValue] =
   // If the value is present, then return the calculated value.
   // Else it is not yet calculated.
     memo.get(a) match {
