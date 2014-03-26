@@ -7,7 +7,7 @@ import org.mockito.Mockito._
 import org.scalatest.concurrent.ScalaFutures
 
 // The code below is originally based on com.twitter.util.Memoize. I changed it from an object to a class.
-class MemoizeTwitter[TKey, TValue](f: TKey => TValue) {
+class MemoizeTwitter[TInput, TOutput](f: TInput => TOutput) {
   /**
    * Thread-safe memoization for a function.
    *
@@ -34,21 +34,21 @@ class MemoizeTwitter[TKey, TValue](f: TKey => TValue) {
    * inputs, are expensive compared to a hash lookup and the memory
    * overhead, and will be called repeatedly.
    */
-  private var memo = Map.empty[TKey, Either[CountDownLatch, TValue]]
+  private var vals = Map.empty[TInput, Either[CountDownLatch, TOutput]]
 
   /**
    * What to do if we do not find the value already in the memo
    * table.
    */
-  @tailrec private[this] def missing(a: TKey): TValue =
+  @tailrec private[this] def missing(a: TInput): TOutput =
     synchronized {
       // With the lock, check to see what state the value is in.
-      memo.get(a) match {
+      vals.get(a) match {
         case None =>
           // If it's missing, then claim the slot by putting in a CountDownLatch that will be completed when the value is
           // available.
           val latch = new CountDownLatch(1)
-          memo = memo + (a -> Left(latch))
+          vals = vals + (a -> Left(latch))
 
           // The latch wrapped in Left indicates that the value needs to be computed in this thread, and then the
           // latch counted down.
@@ -78,7 +78,7 @@ class MemoizeTwitter[TKey, TValue](f: TKey => TValue) {
               // If there was an exception running the computation, then we need to make sure we do not
               // starve any waiters before propagating the exception.
               synchronized {
-                memo = memo - a
+                vals = vals - a
               }
               latch.countDown()
               throw t
@@ -87,24 +87,24 @@ class MemoizeTwitter[TKey, TValue](f: TKey => TValue) {
         // Update the memo table to indicate that the work has been done, and signal to any waiting threads that the
         // work is complete.
         synchronized {
-          memo = memo + (a -> Right(b))
+          vals = vals + (a -> Right(b))
         }
         latch.countDown()
         b
     }
 
-  def getOrElseUpdate(a: TKey): TValue =
+  def getOrElseUpdate(a: TInput): TOutput =
   // Look in the (possibly stale) memo table. If the value is present, then it is guaranteed to be the final value. If it
   // is absent, call missing() to determine what to do.
-    memo.get(a) match {
+    vals.get(a) match {
       case Some(Right(b)) => b
       case _ => missing(a)
     }
 
-  def getOpt(a: TKey): Option[TValue] =
+  def getOpt(a: TInput): Option[TOutput] =
   // If the value is present, then return the calculated value.
   // Else it is not yet calculated.
-    memo.get(a) match {
+    vals.get(a) match {
       case Some(Right(b)) => Some(b)
       case _ => None
     }

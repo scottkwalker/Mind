@@ -10,20 +10,11 @@ import modules.DevModule
 
 class FunctionMFactorySpec extends Specification with Mockito {
   "FunctionMFactory" should {
-    class TestDevModule(rng: IRandomNumberGenerator) extends DevModule(randomNumberGenerator = rng) {
-      override def bindFunctionMFactory(): Unit = {
-        val n: Node = mock[ValueRef]
-        val f = mock[FunctionMFactory]
-        f.create(any[Scope]) returns n
-        bind(classOf[FunctionMFactory]).toInstance(f)
-      }
-    }
-
     val rng = mock[IRandomNumberGenerator]
     rng.nextInt(any[Int]) returns 2
     rng.nextBoolean() returns true
 
-    val injector: Injector = Guice.createInjector(new TestDevModule(rng), new LegalGamerModule)
+    val injector: Injector = Guice.createInjector(new DevModule(randomNumberGenerator = rng), new LegalGamerModule)
     val factory = injector.getInstance(classOf[FunctionMFactory])
 
     "create" in {
