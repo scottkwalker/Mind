@@ -2,7 +2,7 @@ package pickling
 
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatest.mock.EasyMockSugar
-import nodes.helpers.{IScope, MemoizeDi, Scope}
+import nodes.helpers.{IScope, Scope}
 import scala.collection.mutable
 
 

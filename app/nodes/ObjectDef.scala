@@ -51,9 +51,8 @@ case class ObjectDef(nodes: Seq[Node], name: String) extends Node with UpdateSco
 case class ObjectDefFactory @Inject()(injector: Injector,
                                       creator: ICreateSeqNodes,
                                       ai: IAi,
-                                      rng: IRandomNumberGenerator,
-                                      mapOfLegalNeigbours: IMemoizeDi[IScope, Seq[ICreateChildNodes]],
-                                      mapOfCanTerminateInStepsRemaining: IMemoizeDi[IScope, Boolean]) extends ICreateChildNodes with UpdateScopeIncrementObjects {
+                                      rng: IRandomNumberGenerator
+                                       ) extends ICreateChildNodes with UpdateScopeIncrementObjects {
   val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
 
   override def create(scope: IScope): Node = {

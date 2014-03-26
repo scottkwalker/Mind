@@ -51,9 +51,8 @@ case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows {
 case class NodeTreeFactory @Inject()(injector: Injector,
                                      creator: ICreateSeqNodes,
                                      ai: IAi,
-                                     rng: IRandomNumberGenerator,
-                                     mapOfLegalNeigbours: IMemoizeDi[IScope, Seq[ICreateChildNodes]],
-                                     mapOfCanTerminateInStepsRemaining: IMemoizeDi[IScope, Boolean]) extends ICreateChildNodes with UpdateScopeThrows {
+                                     rng: IRandomNumberGenerator
+                                      ) extends ICreateChildNodes with UpdateScopeThrows {
   val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[ObjectDefFactory]))
 
   override def create(scope: IScope, premade: Option[Seq[ICreateChildNodes]]): Node = {

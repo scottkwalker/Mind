@@ -4,14 +4,6 @@ import scala.collection.mutable
 import com.google.inject.Inject
 
 
-case class MemoizeDi[TKey, TValue] @Inject()() extends IMemoizeDi[TKey, TValue] {
-  private val store: mutable.Map[TKey, TValue] = mutable.Map.empty[TKey, TValue]
-
-  def getOrElseUpdate(key: TKey, op: TValue): TValue = store.getOrElseUpdate(key, op)
-
-  def size = store.size
-}
-
 /**
  * A memoized unary function.
  *

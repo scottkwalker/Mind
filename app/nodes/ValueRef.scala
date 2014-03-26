@@ -15,9 +15,8 @@ case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
 }
 
 case class ValueRefFactory @Inject()(ai: IAi,
-                                     rng: IRandomNumberGenerator,
-                                     mapOfLegalNeigbours: IMemoizeDi[IScope, Seq[ICreateChildNodes]],
-                                     mapOfCanTerminateInStepsRemaining: IMemoizeDi[IScope, Boolean]) extends ICreateChildNodes with UpdateScopeNoChange {
+                                     rng: IRandomNumberGenerator
+                                      ) extends ICreateChildNodes with UpdateScopeNoChange {
   val neighbours: Seq[ICreateChildNodes] = Nil // No possible children
 
   override val canTerminateInStepsRemaining: IScope => Boolean = {

@@ -2,7 +2,6 @@ package modules
 
 import _root_.ai.{RandomNumberGenerator, IRandomNumberGenerator}
 import com.tzavellas.sse.guice.ScalaModule
-import com.google.inject.TypeLiteral
 import nodes.helpers._
 import nodes.helpers.CreateNode
 import nodes.FunctionMFactory
@@ -13,7 +12,6 @@ import nodes.ValDclInFunctionParamFactory
 import nodes.helpers.Scope
 import nodes.ValueRefFactory
 import nodes.helpers.CreateSeqNodes
-import nodes.helpers.MemoizeDi
 import nodes.NodeTreeFactory
 
 class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1),
@@ -22,7 +20,7 @@ class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject
   def configure(): Unit = {
     bindAddOperatorFactory()
     bind(classOf[Empty]).asEagerSingleton()
-    bind(classOf[FunctionMFactory]).asEagerSingleton()
+    bindFunctionMFactory()
     bind(classOf[NodeTreeFactory]).asEagerSingleton()
     bind(classOf[ObjectDefFactory]).asEagerSingleton()
     bind(classOf[ValueRefFactory]).asEagerSingleton()
@@ -31,8 +29,6 @@ class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject
     bind(classOf[ICreateNode]).toInstance(createNode)
     bind(classOf[ICreateSeqNodes]).to(classOf[CreateSeqNodes])
     bind(classOf[IRandomNumberGenerator]).toInstance(randomNumberGenerator)
-    bind(new TypeLiteral[IMemoizeDi[IScope, Seq[ICreateChildNodes]]]() {}).to(classOf[MemoizeDi[IScope, Seq[ICreateChildNodes]]])
-    bind(new TypeLiteral[IMemoizeDi[IScope, Boolean]]() {}).to(classOf[MemoizeDi[IScope, Boolean]])
     bindIPopulateMemoizationMaps()
   }
 

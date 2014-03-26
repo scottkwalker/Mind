@@ -67,9 +67,8 @@ case class FunctionM(params: Seq[Node],
 case class FunctionMFactory @Inject()(injector: Injector,
                                       creator: ICreateSeqNodes,
                                       ai: IAi,
-                                      rng: IRandomNumberGenerator,
-                                      mapOfLegalNeigbours: IMemoizeDi[IScope, Seq[ICreateChildNodes]],
-                                      mapOfCanTerminateInStepsRemaining: IMemoizeDi[IScope, Boolean]) extends ICreateChildNodes with UpdateScopeIncrementFuncs {
+                                      rng: IRandomNumberGenerator
+                                       ) extends ICreateChildNodes with UpdateScopeIncrementFuncs {
   val paramsNeighbours: Seq[ICreateChildNodes] = Seq(
     injector.getInstance(classOf[ValDclInFunctionParamFactory])
   )
