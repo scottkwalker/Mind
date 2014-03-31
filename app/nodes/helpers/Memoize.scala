@@ -5,7 +5,8 @@ import com.google.inject.Inject
 import java.util.concurrent.CountDownLatch
 import scala.annotation.tailrec
 
-
+// The code below is a mashup between an example from stackoverflow and code originally based on com.twitter.util.Memoize.
+// I changed it from an object to a class.
 /**
  * A memoized unary function.
  *
@@ -117,6 +118,7 @@ class Memoize1[-TInput, +TOutput](f: TInput => TOutput) extends (TInput => TOutp
     }
 
   def apply(x: TInput): TOutput = getOrElseUpdate(x)
+  def apply(x: Some[TInput]): Option[TOutput] = getOpt(x.get)
 }
 
 object Memoize {
