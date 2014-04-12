@@ -6,5 +6,7 @@ resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/release
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
+resolvers += "Boundary Public Repo" at "http://maven.boundary.com/artifactory/repo"
+
 // Use the Play sbt plugin for Play projects
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.2.2")
