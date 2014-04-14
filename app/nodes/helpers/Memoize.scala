@@ -1,7 +1,5 @@
 package nodes.helpers
 
-import scala.collection.mutable
-import com.google.inject.Inject
 import java.util.concurrent.CountDownLatch
 import scala.annotation.tailrec
 
@@ -41,8 +39,7 @@ class Memoize1[-TInput, +TOutput](f: TInput => TOutput) extends (TInput => TOutp
    * inputs, are expensive compared to a hash lookup and the memory
    * overhead, and will be called repeatedly.
    */
-  private [this] var vals = Map.empty[TInput, Either[CountDownLatch, TOutput]]
-  //private[this] val vals = mutable.Map.empty[TInput, TOutput]
+  private[this] var vals = Map.empty[TInput, Either[CountDownLatch, TOutput]]
 
   /**
    * What to do if we do not find the value already in the memo
@@ -118,6 +115,7 @@ class Memoize1[-TInput, +TOutput](f: TInput => TOutput) extends (TInput => TOutp
     }
 
   def apply(x: TInput): TOutput = getOrElseUpdate(x)
+
   def apply(x: Some[TInput]): Option[TOutput] = getOpt(x.get)
 }
 

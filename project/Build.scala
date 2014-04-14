@@ -21,9 +21,7 @@ object Build extends sbt.Build {
     "com.tzavellas" % "sse-guice" % "0.7.1",
     "org.scalatest" % "scalatest_2.10" % "2.0" % "test",
     "org.easymock" % "easymock" % "3.1" withSources() withJavadoc(),
-    "org.scala-lang" %% "scala-pickling" % "0.8.0-SNAPSHOT",
-    "com.twitter" % "util-core_2.10" % "6.12.1",
-    "com.github.stephenc.high-scale-lib" % "high-scale-lib" % "1.1.4"
+    "com.twitter" % "util-core_2.10" % "6.12.1"
   )
 
 
