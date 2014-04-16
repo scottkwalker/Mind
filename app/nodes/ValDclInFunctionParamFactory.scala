@@ -12,19 +12,12 @@ case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
                                                    ) extends ICreateChildNodes with UpdateScopeIncrementVals {
   val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[IntegerMFactory]))
 
-  override val canTerminateInStepsRemaining: IScope => Boolean = {
-    def inner(f: IScope => Boolean)(scope: IScope): Boolean = scope.hasDepthRemaining
-    Memoize.Y(inner)
-  }
-  /*override def canTerminateInStepsRemaining(scope: IScope): Boolean = {
-    val result = scope.hasDepthRemaining
-    mapOfCanTerminateInStepsRemaining getOrElseUpdate(scope, result)
-  }*/
+  override def canTerminateInStepsRemaining(scope: IScope): Boolean = scope.hasDepthRemaining
 
   override def create(scope: IScope): Node = {
     val name = "v" + scope.numVals
 
-    val (_, primitiveType) = creator.create(legalNeighbours(scope), scope, ai)
+    val (_, primitiveType) = creator.create(legalNeighbours(scope, neighbours), scope, ai)
 
     ValDclInFunctionParam(name = name,
       primitiveType = primitiveType) // TODO need to make more types.

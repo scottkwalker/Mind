@@ -40,7 +40,7 @@ case class FunctionMFactory @Inject()(injector: Injector,
   )
 
   def createNodes(scope: IScope, acc: Seq[Node] = Seq[Node]()) = creator.createSeq(
-    possibleChildren = legalNeighbours(scope),
+    possibleChildren = legalNeighbours(scope, neighbours),
     scope = scope,
     acc = acc,
     factoryLimit = scope.maxExpressionsInFunc

@@ -2,6 +2,7 @@ package nodes.helpers
 
 import nodes.Node
 import models.domain.scala.Empty
+import scala.annotation.tailrec
 
 trait ICreateChildNodes {
   val neighbours: Seq[ICreateChildNodes]
@@ -12,31 +13,19 @@ trait ICreateChildNodes {
 
   def updateScope(scope: IScope): IScope
 
-  val legalNeighbours: IScope => Seq[ICreateChildNodes] = {
-    def inner(f: IScope => Seq[ICreateChildNodes])(scope: IScope): Seq[ICreateChildNodes] = {
-      neighbours.filter(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
+  def legalNeighbours(scope: IScope, neighbours: Seq[ICreateChildNodes]): Seq[ICreateChildNodes]  = {
+    val legalNeighboursMemo: IScope => Seq[ICreateChildNodes] = {
+      def inner(f: IScope => Seq[ICreateChildNodes])(scope: IScope): Seq[ICreateChildNodes] = {
+        neighbours.filter(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
+      }
+      Memoize.Y(inner)
     }
-    Memoize.Y(inner)
-  }
-  /*
-  def legalNeighbours(scope: IScope): Seq[ICreateChildNodes] = {
-    def calc = neighbours.filter(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
-    mapOfLegalNeigbours getOrElseUpdate(scope, calc)
-  }*/
 
-  val canTerminateInStepsRemaining: IScope => Boolean = {
-    def inner(f: IScope => Boolean)(scope: IScope): Boolean = {
-      if (scope.hasDepthRemaining) neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
-      else false
-    }
-    Memoize.Y(inner)
+    legalNeighboursMemo(scope.incrementDepth).intersect(neighbours) // Only return legal moves that are neighbours
   }
 
-  /*def canTerminateInStepsRemaining(scope: IScope): Boolean = {
-    def calc = scope.hasDepthRemaining match {
-      case true => neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
-      case false => false
-    }
-    mapOfCanTerminateInStepsRemaining getOrElseUpdate(scope, calc)
-  }*/
+  def canTerminateInStepsRemaining(scope: IScope): Boolean = {
+    if (scope.hasDepthRemaining) neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
+    else false
+  }
 }

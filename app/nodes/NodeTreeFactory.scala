@@ -29,7 +29,7 @@ case class NodeTreeFactory @Inject()(injector: Injector,
   }
 
   def createNodes(scope: IScope, acc: Seq[Node] = Seq()): (IScope, Seq[Node]) = creator.createSeq(
-    possibleChildren = legalNeighbours(scope),
+    possibleChildren = legalNeighbours(scope, neighbours),
     scope = scope,
     saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumFuncs(accLength)),
     acc = acc,
