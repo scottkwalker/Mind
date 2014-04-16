@@ -6,6 +6,7 @@ import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
+import models.domain.scala.{FunctionM, ObjectDef}
 
 class ObjectDefSpec extends Specification with Mockito {
   "ObjectDef" should {

@@ -2,8 +2,8 @@ package nodes.helpers
 
 import org.scalatest.WordSpec
 import org.scalatest.mock.EasyMockSugar
-import com.google.inject.{Guice, Injector}
-import nodes.{AddOperatorFactory, IntegerMFactory}
+import com.google.inject.Guice
+import nodes.IntegerMFactory
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 

@@ -25,10 +25,8 @@ trait ICreateChildNodes {
 
   val canTerminateInStepsRemaining: IScope => Boolean = {
     def inner(f: IScope => Boolean)(scope: IScope): Boolean = {
-      scope.hasDepthRemaining match {
-        case true => neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
-        case false => false
-      }
+      if(scope.hasDepthRemaining )  neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
+      else false
     }
     Memoize.Y(inner)
   }

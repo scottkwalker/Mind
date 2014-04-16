@@ -3,7 +3,11 @@ package fitness
 import org.specs2.mutable.Specification
 import fitness.Fitness.maxFitness
 import org.specs2.mock.Mockito
-import nodes._
+import models.domain.scala._
+import models.domain.scala.AddOperator
+import models.domain.scala.ObjectDef
+import models.domain.scala.FunctionM
+import models.domain.scala.IntegerM
 
 class AddTwoIntsSpec extends Specification with Mockito {
   "Addition" should {
@@ -30,7 +34,7 @@ class AddTwoIntsSpec extends Specification with Mockito {
 
     "return score less than max fitness for a non-optimal solution" in {
       // Arrange
-      val nodeTree = new NodeTree(List(ObjectDef(List(FunctionM(List(ValDclInFunctionParam("v0",IntegerM()), ValDclInFunctionParam("v1",IntegerM())),List(ValueRef("v0")),"f0")),"o0")))
+      val nodeTree = new NodeTree(List(ObjectDef(List(FunctionM(List(ValDclInFunctionParam("v0", IntegerM()), ValDclInFunctionParam("v1", IntegerM())), List(ValueRef("v0")), "f0")), "o0")))
 
       // Act
       val f = new AddTwoInts(nodeTree)

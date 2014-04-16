@@ -1,12 +1,17 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.Scope
 import org.specs2.mock.Mockito
 import java.lang.IllegalArgumentException
 import com.google.inject.{Guice, Injector}
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
+import models.domain.scala._
+import nodes.helpers.Scope
+import models.domain.scala.ValDclInFunctionParam
+import models.domain.scala.AddOperator
+import models.domain.scala.IntegerM
+import models.domain.scala.FunctionM
 
 class FuncDefSpec extends Specification with Mockito {
   "FuncDef" should {

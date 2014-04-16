@@ -7,6 +7,7 @@ import com.google.inject.Injector
 import com.google.inject.Guice
 import modules.DevModule
 import modules.ai.legalGamer.LegalGamerModule
+import models.domain.scala.ValueRef
 
 class ValueRefFactorySpec extends Specification with Mockito {
   "ValueRefFactory" should {

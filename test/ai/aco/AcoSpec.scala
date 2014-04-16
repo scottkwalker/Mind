@@ -5,10 +5,16 @@ import nodes.helpers._
 import org.specs2.mock.Mockito
 import com.google.inject.Guice
 import fitness.AddTwoInts
-import nodes._
 import ai.IRandomNumberGenerator
 import modules.ai.aco.AcoModule
 import modules.DevModule
+import models.domain.scala._
+import nodes.Empty
+import nodes.helpers.Scope
+import models.domain.scala.IntegerM
+import models.domain.scala.ObjectDef
+import models.domain.scala.NodeTree
+import models.domain.scala.FunctionM
 
 class AcoSpec extends Specification with Mockito {
   "Aco" should {

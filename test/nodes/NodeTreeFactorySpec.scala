@@ -10,6 +10,7 @@ import scala.Some
 import ai.IRandomNumberGenerator
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
+import models.domain.scala.NodeTree
 
 class NodeTreeFactorySpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTreeFactory" should {

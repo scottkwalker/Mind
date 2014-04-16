@@ -3,10 +3,15 @@ package nodes
 import org.specs2.mutable.Specification
 import org.specs2.mock.Mockito
 import org.specs2.execute.PendingUntilFixed
-import nodes.helpers.Scope
 import com.google.inject.{Guice, Injector}
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
+import models.domain.scala._
+import models.domain.scala.AddOperator
+import nodes.helpers.Scope
+import models.domain.scala.IntegerM
+import models.domain.scala.ObjectDef
+import models.domain.scala.FunctionM
 
 class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
   "NodeTree" should {

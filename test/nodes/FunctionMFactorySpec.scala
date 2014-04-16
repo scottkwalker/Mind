@@ -7,6 +7,7 @@ import nodes.helpers.Scope
 import ai.IRandomNumberGenerator
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
+import models.domain.scala.FunctionM
 
 class FunctionMFactorySpec extends Specification with Mockito {
   "FunctionMFactory" should {

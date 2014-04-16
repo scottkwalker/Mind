@@ -3,16 +3,8 @@ package nodes
 import nodes.helpers._
 import com.google.inject.{Injector, Inject}
 import ai.IAi
+import models.domain.scala.IntegerM
 
-case class IntegerM() extends Node with UpdateScopeNoChange {
-  override def toRawScala: String = "Int"
-
-  override def validate(scope: IScope): Boolean = true
-
-  override def replaceEmpty(scope: IScope, injector: Injector): Node = this
-
-  override def getMaxDepth = 1
-}
 
 case class IntegerMFactory @Inject()(creator: ICreateSeqNodes,
                                      ai: IAi,

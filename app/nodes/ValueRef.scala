@@ -3,16 +3,8 @@ package nodes
 import nodes.helpers._
 import com.google.inject.{Injector, Inject}
 import ai.{IRandomNumberGenerator, IAi}
+import models.domain.scala.ValueRef
 
-case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
-  override def toRawScala: String = name
-
-  override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) !name.isEmpty else false
-
-  override def replaceEmpty(scope: IScope, injector: Injector): Node = this
-
-  override def getMaxDepth = 1
-}
 
 case class ValueRefFactory @Inject()(ai: IAi,
                                      rng: IRandomNumberGenerator

@@ -4,6 +4,7 @@ import org.specs2.mutable._
 import nodes.helpers.Scope
 import org.specs2.mock.Mockito
 import com.google.inject.Injector
+import models.domain.scala.ValueRef
 
 class ValueRefSpec extends Specification with Mockito {
   "ValueRef" should {

@@ -1,7 +1,7 @@
 package fitness
 
 import com.twitter.util.Eval
-import nodes.NodeTree
+import models.domain.scala.NodeTree
 
 class AddTwoInts(val nodeTree: NodeTree) extends Fitness {
   def fitness: Double = {

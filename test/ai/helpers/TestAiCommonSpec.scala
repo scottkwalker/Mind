@@ -1,13 +1,18 @@
 package ai.helpers
 
 import org.specs2.mutable._
-import nodes.helpers._
 import org.specs2.mock.Mockito
 import com.google.inject.Guice
 import fitness.AddTwoInts
-import nodes._
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
+import models.domain.scala._
+import nodes.Empty
+import nodes.helpers.Scope
+import models.domain.scala.IntegerM
+import models.domain.scala.ObjectDef
+import models.domain.scala.NodeTree
+import models.domain.scala.FunctionM
 
 class TestAiCommonSpec extends Specification with Mockito {
   "TestAiCommon" should {

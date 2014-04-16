@@ -3,18 +3,18 @@ package ai.randomWalk
 import org.specs2.mutable._
 import nodes.helpers._
 import org.specs2.mock.Mockito
-import nodes._
 import com.google.inject.Guice
 import fitness.AddTwoInts
-import nodes.ObjectDef
-import nodes.helpers.Scope
-import nodes.IntegerM
-import nodes.ValDclInFunctionParam
-import nodes.NodeTree
-import nodes.FunctionM
 import ai.IRandomNumberGenerator
 import modules.ai.randomWalk.RandomWalkModule
 import modules.DevModule
+import models.domain.scala._
+import nodes.Empty
+import nodes.helpers.Scope
+import models.domain.scala.IntegerM
+import models.domain.scala.ObjectDef
+import models.domain.scala.NodeTree
+import models.domain.scala.FunctionM
 
 class RandomWalkSpec extends Specification with Mockito {
   "RandomWalk" should {

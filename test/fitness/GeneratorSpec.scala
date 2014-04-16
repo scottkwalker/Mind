@@ -2,9 +2,7 @@ package fitness
 
 import org.scalatest.WordSpec
 import org.scalatest.mock.EasyMockSugar
-import nodes.Node
-import org.easymock.EasyMock._
-import ai.{IAi, IRandomNumberGenerator}
+import ai.IAi
 
 
 class GeneratorSpec extends WordSpec with EasyMockSugar {

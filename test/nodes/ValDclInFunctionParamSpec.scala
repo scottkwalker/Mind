@@ -8,6 +8,7 @@ import ai.IRandomNumberGenerator
 import nodes.helpers.Scope
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
+import models.domain.scala.{ValDclInFunctionParam, IntegerM}
 
 class ValDclInFunctionParamSpec extends Specification with Mockito {
   "ValDclInFunctionParam" should {

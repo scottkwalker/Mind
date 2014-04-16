@@ -7,6 +7,7 @@ import com.google.inject.Injector
 import com.google.inject.Guice
 import modules.DevModule
 import modules.ai.legalGamer.LegalGamerModule
+import models.domain.scala.AddOperator
 
 class AddOperatorFactorySpec extends Specification with Mockito {
   "AddOperatorFactory" should {

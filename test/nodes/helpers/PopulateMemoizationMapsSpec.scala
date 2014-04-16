@@ -3,10 +3,7 @@ package nodes.helpers
 import org.scalatest.WordSpec
 import org.scalatest.mock.EasyMockSugar
 import com.google.inject.{Guice, Injector}
-import org.scalatest.Matchers._
-import org.easymock.EasyMock._
 import nodes._
-import scala.collection.mutable
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 

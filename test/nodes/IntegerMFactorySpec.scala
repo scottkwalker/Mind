@@ -7,6 +7,7 @@ import com.google.inject.{Guice, Injector}
 import org.scalatest.Matchers._
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
+import models.domain.scala.IntegerM
 
 class IntegerMFactorySpec extends WordSpec with EasyMockSugar {
   val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)

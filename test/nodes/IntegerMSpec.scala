@@ -4,6 +4,7 @@ import org.specs2.mutable._
 import nodes.helpers.Scope
 import org.specs2.mock.Mockito
 import com.google.inject.Injector
+import models.domain.scala.IntegerM
 
 class IntegerMSpec extends Specification with Mockito {
   "IntegerM" should {
