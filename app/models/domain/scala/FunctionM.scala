@@ -27,7 +27,7 @@ case class FunctionM(params: Seq[Node],
 
   override def replaceEmpty(scope: IScope, injector: Injector): Node = {
     val (updatedScope, p) = replaceEmptyInSeq(scope, injector, params, funcCreateParams)
-    val (temp, n) = replaceEmptyInSeq(updatedScope, injector, nodes, funcCreateNodes)
+    val (_, n) = replaceEmptyInSeq(updatedScope, injector, nodes, funcCreateNodes)
 
     FunctionM(p, n, name)
   }
