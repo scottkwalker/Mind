@@ -10,7 +10,7 @@ case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
                                                   creator: ICreateNode,
                                                   ai: IAi
                                                    ) extends ICreateChildNodes with UpdateScopeIncrementVals {
-  val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[IntegerMFactory]))
+  override val neighbours = Seq(injector.getInstance(classOf[IntegerMFactory]))
 
   override def canTerminateInStepsRemaining(scope: IScope): Boolean = scope.hasDepthRemaining
 

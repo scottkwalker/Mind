@@ -16,7 +16,7 @@ case class FunctionMFactory @Inject()(injector: Injector,
     injector.getInstance(classOf[ValDclInFunctionParamFactory])
   )
 
-  val neighbours: Seq[ICreateChildNodes] = Seq(
+  override val neighbours = Seq(
     injector.getInstance(classOf[AddOperatorFactory]),
     injector.getInstance(classOf[ValueRefFactory])
   )

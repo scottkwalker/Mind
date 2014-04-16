@@ -10,7 +10,7 @@ case class IntegerMFactory @Inject()(creator: ICreateSeqNodes,
                                      ai: IAi,
                                      populateMemoizationMapsStrategy: IPopulateMemoizationMaps
                                       ) extends ICreateChildNodes with UpdateScopeNoChange {
-  val neighbours: Seq[ICreateChildNodes] = Nil // No possible children
+  override val neighbours = Nil // No possible children
 
   override def canTerminateInStepsRemaining(scope: IScope): Boolean = scope.hasDepthRemaining
 

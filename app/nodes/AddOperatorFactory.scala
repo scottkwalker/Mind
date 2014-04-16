@@ -11,11 +11,12 @@ case class AddOperatorFactory @Inject()(injector: Injector,
                                         creator: ICreateNode,
                                         ai: IAi
                                          ) extends ICreateChildNodes with UpdateScopeNoChange {
-  val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[ValueRefFactory]))
+  override val neighbours = Seq(injector.getInstance(classOf[ValueRefFactory]))
 
   override def create(scope: IScope): Node = {
-    val (updatedScope, leftChild) = creator.create(legalNeighbours(scope, neighbours), scope, ai)
-    val (_, rightChild) = creator.create(legalNeighbours(scope, neighbours), updatedScope, ai)
+    val ln = legalNeighbours(scope, neighbours)
+    val (updatedScope, leftChild) = creator.create(ln, scope, ai)
+    val (_, rightChild) = creator.create(ln, updatedScope, ai)
     AddOperator(left = leftChild,
       right = rightChild)
   }
