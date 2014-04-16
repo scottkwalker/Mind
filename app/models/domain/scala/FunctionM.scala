@@ -4,14 +4,13 @@ import nodes._
 import nodes.helpers.IScope
 import com.google.inject.Injector
 import scala.annotation.tailrec
-import nodes.Empty
 
 case class FunctionM(params: Seq[Node],
                      nodes: Seq[Node],
                      name: String) extends Node with UpdateScopeIncrementFuncs {
-  override def toRawScala: String = {
+  override def toRaw: String = {
     require(!name.isEmpty)
-    s"def $name${params.map(f => f.toRawScala).mkString("(", ", ", ")")} = ${nodes.map(f => f.toRawScala).mkString("{ ", " ", " }")}"
+    s"def $name${params.map(f => f.toRaw).mkString("(", ", ", ")")} = ${nodes.map(f => f.toRaw).mkString("{ ", " ", " }")}"
   }
 
   override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) {

@@ -5,7 +5,7 @@ import nodes.helpers.IScope
 import com.google.inject.Injector
 
 case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
-  override def toRawScala: String = name
+  override def toRaw: String = name
 
   override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) !name.isEmpty else false
 

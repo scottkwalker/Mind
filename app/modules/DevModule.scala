@@ -7,12 +7,12 @@ import nodes.helpers.CreateNode
 import nodes.FunctionMFactory
 import nodes.ObjectDefFactory
 import nodes.AddOperatorFactory
-import nodes.Empty
 import nodes.ValDclInFunctionParamFactory
 import nodes.helpers.Scope
 import nodes.ValueRefFactory
 import nodes.helpers.CreateSeqNodes
 import nodes.NodeTreeFactory
+import models.domain.scala.Empty
 
 class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1),
                 randomNumberGenerator: IRandomNumberGenerator = RandomNumberGenerator(),

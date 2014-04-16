@@ -11,7 +11,7 @@ class ValueRefSpec extends Specification with Mockito {
     "toRawScala" in {
       val name = "a"
 
-      ValueRef(name).toRawScala mustEqual name
+      ValueRef(name).toRaw mustEqual name
     }
 
     "validate" in {

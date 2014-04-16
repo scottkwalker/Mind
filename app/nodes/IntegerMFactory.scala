@@ -1,7 +1,7 @@
 package nodes
 
 import nodes.helpers._
-import com.google.inject.{Injector, Inject}
+import com.google.inject.Inject
 import ai.IAi
 import models.domain.scala.IntegerM
 

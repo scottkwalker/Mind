@@ -1,6 +1,7 @@
 package nodes.helpers
 
-import nodes.{Empty, Node}
+import nodes.Node
+import models.domain.scala.Empty
 
 trait ICreateChildNodes {
   val neighbours: Seq[ICreateChildNodes]
@@ -25,7 +26,7 @@ trait ICreateChildNodes {
 
   val canTerminateInStepsRemaining: IScope => Boolean = {
     def inner(f: IScope => Boolean)(scope: IScope): Boolean = {
-      if(scope.hasDepthRemaining )  neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
+      if (scope.hasDepthRemaining) neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
       else false
     }
     Memoize.Y(inner)

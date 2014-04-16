@@ -9,7 +9,6 @@ import ai.IRandomNumberGenerator
 import modules.ai.aco.AcoModule
 import modules.DevModule
 import models.domain.scala._
-import nodes.Empty
 import nodes.helpers.Scope
 import models.domain.scala.IntegerM
 import models.domain.scala.ObjectDef

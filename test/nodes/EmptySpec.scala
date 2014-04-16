@@ -4,11 +4,12 @@ import org.specs2.mutable._
 import nodes.helpers.Scope
 import org.specs2.mock.Mockito
 import com.google.inject.Injector
+import models.domain.scala.Empty
 
 class EmptySpec extends Specification with Mockito {
   "Empty" should {
     "throw if you ask toRawScala" in {
-      Empty().toRawScala must throwA[scala.RuntimeException]
+      Empty().toRaw must throwA[scala.RuntimeException]
     }
 
     "validate false" in {

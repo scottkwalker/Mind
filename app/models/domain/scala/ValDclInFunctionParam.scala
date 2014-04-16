@@ -1,11 +1,11 @@
 package models.domain.scala
 
-import nodes.{IntegerMFactory, Empty, UpdateScopeIncrementVals, Node}
+import nodes.{IntegerMFactory, UpdateScopeIncrementVals, Node}
 import nodes.helpers.IScope
 import com.google.inject.Injector
 
 case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node with UpdateScopeIncrementVals {
-  override def toRawScala: String = s"$name: ${primitiveType.toRawScala}"
+  override def toRaw: String = s"$name: ${primitiveType.toRaw}"
 
   override def validate(scope: IScope): Boolean = scope.hasDepthRemaining && !name.isEmpty && {
     primitiveType match {

@@ -7,17 +7,17 @@ import nodes.helpers.Scope
 import ai.IRandomNumberGenerator
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
-import models.domain.scala.{ValueRef, AddOperator, ObjectDef}
+import models.domain.scala.{Empty, ValueRef, AddOperator, ObjectDef}
 
 class AddOperatorSpec extends Specification with Mockito {
   "AddOperator" should {
     "toRawScala" in {
       val a = mock[ValueRef]
-      a.toRawScala returns "STUB_A"
+      a.toRaw returns "STUB_A"
       val b = mock[ValueRef]
-      b.toRawScala returns "STUB_B"
+      b.toRaw returns "STUB_B"
 
-      AddOperator(a, b).toRawScala mustEqual "STUB_A + STUB_B"
+      AddOperator(a, b).toRaw mustEqual "STUB_A + STUB_B"
     }
 
     "validate" in {

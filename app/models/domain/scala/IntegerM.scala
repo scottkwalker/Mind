@@ -5,7 +5,7 @@ import nodes.helpers.IScope
 import com.google.inject.Injector
 
 case class IntegerM() extends Node with UpdateScopeNoChange {
-  override def toRawScala: String = "Int"
+  override def toRaw: String = "Int"
 
   override def validate(scope: IScope): Boolean = true
 

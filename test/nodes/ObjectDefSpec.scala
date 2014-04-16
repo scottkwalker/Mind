@@ -6,7 +6,7 @@ import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
-import models.domain.scala.{FunctionM, ObjectDef}
+import models.domain.scala.{Empty, FunctionM, ObjectDef}
 
 class ObjectDefSpec extends Specification with Mockito {
   "ObjectDef" should {
@@ -66,10 +66,10 @@ class ObjectDefSpec extends Specification with Mockito {
 
     "toRawScala" in {
       val f = mock[FunctionM]
-      f.toRawScala returns "STUB"
+      f.toRaw returns "STUB"
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.toRawScala mustEqual "object o0 { STUB }"
+      objectM.toRaw mustEqual "object o0 { STUB }"
     }
 
     "replaceEmpty" in {

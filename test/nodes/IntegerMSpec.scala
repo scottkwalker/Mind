@@ -9,7 +9,7 @@ import models.domain.scala.IntegerM
 class IntegerMSpec extends Specification with Mockito {
   "IntegerM" should {
     "toRawScala" in {
-      IntegerM().toRawScala mustEqual "Int"
+      IntegerM().toRaw mustEqual "Int"
     }
 
     "validate returns true" in {

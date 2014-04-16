@@ -1,12 +1,12 @@
 package models.domain.scala
 
-import nodes.{NodeTreeFactory, Empty, UpdateScopeThrows, Node}
+import nodes.{NodeTreeFactory, UpdateScopeThrows, Node}
 import nodes.helpers.IScope
 import com.google.inject.Injector
 import scala.annotation.tailrec
 
 case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows {
-  override def toRawScala: String = nodes.map(f => f.toRawScala).mkString(" ")
+  override def toRaw: String = nodes.map(f => f.toRaw).mkString(" ")
 
   override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) {
     nodes.forall {

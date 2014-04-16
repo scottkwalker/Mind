@@ -8,16 +8,16 @@ import ai.IRandomNumberGenerator
 import nodes.helpers.Scope
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
-import models.domain.scala.{ValDclInFunctionParam, IntegerM}
+import models.domain.scala.{Empty, ValDclInFunctionParam, IntegerM}
 
 class ValDclInFunctionParamSpec extends Specification with Mockito {
   "ValDclInFunctionParam" should {
     "toRawScala" in {
       val p = mock[IntegerM]
-      p.toRawScala returns "Int"
+      p.toRaw returns "Int"
       val name = "a"
 
-      ValDclInFunctionParam(name, p).toRawScala mustEqual "a: Int"
+      ValDclInFunctionParam(name, p).toRaw mustEqual "a: Int"
     }
 
     "validate" in {

@@ -2,13 +2,12 @@ package fitness
 
 import org.scalatest.WordSpec
 import org.scalatest.mock.EasyMockSugar
-import ai.IAi
 
 
 class GeneratorSpec extends WordSpec with EasyMockSugar {
   "run" should {
     "get ai instance" in {
-//true shouldEqual false
+      //true shouldEqual false
     }
 
     "return best solution and its fitnss" in {

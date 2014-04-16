@@ -7,7 +7,6 @@ import fitness.AddTwoInts
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 import models.domain.scala._
-import nodes.Empty
 import nodes.helpers.Scope
 import models.domain.scala.IntegerM
 import models.domain.scala.ObjectDef

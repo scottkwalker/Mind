@@ -82,20 +82,20 @@ class FuncDefSpec extends Specification with Mockito {
     "toRawScala" in {
       "returns expected" in {
         val a = mock[ValueRef]
-        a.toRawScala returns "STUB"
+        a.toRaw returns "STUB"
 
         FunctionM(params = params,
           nodes = Seq(a),
-          name = name).toRawScala mustEqual "def f0(a: Int, b: Int) = { STUB }"
+          name = name).toRaw mustEqual "def f0(a: Int, b: Int) = { STUB }"
       }
 
       "throws if has no name" in {
         val a = mock[ValueRef]
-        a.toRawScala returns "STUB"
+        a.toRaw returns "STUB"
 
         FunctionM(params = params,
           nodes = Seq(a),
-          name = "").toRawScala must throwA[IllegalArgumentException]
+          name = "").toRaw must throwA[IllegalArgumentException]
       }
     }
 

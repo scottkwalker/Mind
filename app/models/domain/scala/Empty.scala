@@ -1,10 +1,11 @@
-package nodes
+package models.domain.scala
 
 import com.google.inject.{Injector, Inject}
 import nodes.helpers.IScope
+import nodes.{UpdateScopeThrows, Node}
 
 case class Empty @Inject()() extends Node with UpdateScopeThrows {
-  override def toRawScala: String = throw new scala.RuntimeException
+  override def toRaw: String = throw new scala.RuntimeException
 
   override def validate(scope: IScope): Boolean = false
 

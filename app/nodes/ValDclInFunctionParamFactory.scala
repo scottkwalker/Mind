@@ -3,8 +3,7 @@ package nodes
 import nodes.helpers._
 import com.google.inject.{Injector, Inject}
 import ai.IAi
-import models.domain.scala.{ValDclInFunctionParam, IntegerM}
-
+import models.domain.scala.ValDclInFunctionParam
 
 
 case class ValDclInFunctionParamFactory @Inject()(injector: Injector,

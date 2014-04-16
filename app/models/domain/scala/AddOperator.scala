@@ -3,10 +3,9 @@ package models.domain.scala
 import nodes._
 import nodes.helpers.IScope
 import com.google.inject.Injector
-import nodes.Empty
 
 case class AddOperator(left: Node, right: Node) extends Node with UpdateScopeNoChange {
-  override def toRawScala: String = s"${left.toRawScala} + ${right.toRawScala}"
+  override def toRaw: String = s"${left.toRaw} + ${right.toRaw}"
 
   override def validate(scope: IScope): Boolean = {
     if (scope.hasDepthRemaining) validate(left, scope) && validate(right, scope)
