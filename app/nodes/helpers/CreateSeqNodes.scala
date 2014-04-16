@@ -7,10 +7,10 @@ import ai.{IAi, IRandomNumberGenerator}
 
 case class CreateSeqNodes @Inject()(createNode: ICreateNode, rng: IRandomNumberGenerator, ai: IAi) extends ICreateSeqNodes {
   @tailrec
-  final def createSeq(possibleChildren: Seq[ICreateChildNodes],
+  final def createSeq(possibleChildren: => Seq[ICreateChildNodes],
                       scope: IScope,
                       saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
-                      acc: Seq[Node] = Seq[Node](),
+                      acc: Seq[Node] = Seq[Node](), // Default the accumulator to empty.
                       factoryLimit: Int
                        ): (IScope, Seq[Node]) = {
     if (ai.canAddAnother(acc.length, factoryLimit, rng)) {
