@@ -10,28 +10,20 @@ class CreateChildNodesSpec extends Specification with Mockito {
     trait MockUpdateScope extends UpdateScope {
       override def updateScope(scope: IScope): IScope = scope
     }
+
     case class mockFactoryNotTerminates1() extends ICreateChildNodes with MockUpdateScope {
       override def canTerminateInStepsRemaining(scope: IScope): Boolean = false
-
-      override def create(scope: IScope) = null
-
-      val neighbours: Seq[ICreateChildNodes] = null
+      val neighbours: Seq[ICreateChildNodes] = Seq.empty
     }
 
     case class mockFactoryTerminates1() extends ICreateChildNodes with MockUpdateScope {
       override def canTerminateInStepsRemaining(scope: IScope): Boolean = true
-
-      override def create(scope: IScope) = null
-
-      val neighbours: Seq[ICreateChildNodes] = null
+      val neighbours: Seq[ICreateChildNodes] = Seq.empty
     }
 
     case class mockFactoryTerminates2() extends ICreateChildNodes with MockUpdateScope {
       override def canTerminateInStepsRemaining(scope: IScope): Boolean = true
-
-      override def create(scope: IScope) = null
-
-      val neighbours: Seq[ICreateChildNodes] = null
+      val neighbours: Seq[ICreateChildNodes] = Seq.empty
     }
 
     val nNot = mockFactoryNotTerminates1()
@@ -49,7 +41,6 @@ class CreateChildNodesSpec extends Specification with Mockito {
 
     case class TestCreateChildNodesNoValidChildren() extends ICreateChildNodes with MockUpdateScope {
       val neighbours: Seq[ICreateChildNodes] = Seq(mockFactoryNotTerminates1())
-
       override def create(scope: IScope): Node = Empty()
     }
 
