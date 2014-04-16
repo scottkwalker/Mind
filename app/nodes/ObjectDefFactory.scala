@@ -15,8 +15,6 @@ case class ObjectDefFactory @Inject()(injector: Injector,
   val neighbours: Seq[ICreateChildNodes] = Seq(injector.getInstance(classOf[FunctionMFactory]))
 
   override def create(scope: IScope): Node = {
-    // TODO create object level val nodes?
-
     val (_, nodes) = createNodes(scope)
 
     ObjectDef(nodes = nodes,
