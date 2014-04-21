@@ -1,13 +1,14 @@
 import sbt._
 import sbt.Keys._
 import play.Project._
+import de.johoop.jacoco4sbt.JacocoPlugin._
 
 object Build extends sbt.Build {
 
   val appName         = "Mind"
   val appVersion      = "1.0-SNAPSHOT"
 
-
+  jacoco.settings
 
   val appDependencies = Seq(
     // Add your project dependencies here,
@@ -24,8 +25,11 @@ object Build extends sbt.Build {
     "com.twitter" % "util-core_2.10" % "6.12.1"
   )
 
+  val jcoco = Seq(parallelExecution in jacoco.Config := false)
 
-  val main = play.Project(appName, appVersion, appDependencies).settings(
+  val appSettings: Seq[Def.Setting[_]] = jcoco
+
+  val main = play.Project(appName, appVersion, appDependencies, settings = play.Project.playScalaSettings ++ jacoco.settings).settings(
     // Add your own project settings here
     resolvers ++= Seq(
       "snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
