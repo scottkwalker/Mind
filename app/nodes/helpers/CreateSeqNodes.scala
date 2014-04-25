@@ -18,7 +18,7 @@ case class CreateSeqNodes @Inject()(createNode: ICreateNode, rng: IRandomNumberG
       createSeq(possibleChildren,
         updatedScope,
         saveAccLengthInScope,
-        acc ++ Seq(child),
+        acc :+ child,
         factoryLimit
       )
     }
