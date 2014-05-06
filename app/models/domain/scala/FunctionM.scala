@@ -25,20 +25,20 @@ case class FunctionM(params: Seq[Node],
   else false
 
   override def replaceEmpty(scope: IScope, injector: Injector): Node = {
+    def funcCreateParams(scope: IScope, injector: Injector, premade: Seq[Node]): (IScope, Seq[Node]) = {
+      val factory = injector.getInstance(classOf[FunctionMFactory])
+      factory.createParams(scope = scope, acc = premade.init)
+    }
+
+    def funcCreateNodes(scope: IScope, injector: Injector, premade: Seq[Node]): (IScope, Seq[Node]) = {
+      val factory = injector.getInstance(classOf[FunctionMFactory])
+      factory.createNodes(scope = scope, acc = premade.init)
+    }
+
     val (updatedScope, p) = replaceEmptyInSeq(scope, injector, params, funcCreateParams)
     val (_, n) = replaceEmptyInSeq(updatedScope, injector, nodes, funcCreateNodes)
 
     FunctionM(p, n, name)
-  }
-
-  private def funcCreateParams(scope: IScope, injector: Injector, premade: Seq[Node]): (IScope, Seq[Node]) = {
-    val factory = injector.getInstance(classOf[FunctionMFactory])
-    factory.createParams(scope = scope, acc = premade.init)
-  }
-
-  private def funcCreateNodes(scope: IScope, injector: Injector, premade: Seq[Node]): (IScope, Seq[Node]) = {
-    val factory = injector.getInstance(classOf[FunctionMFactory])
-    factory.createNodes(scope = scope, acc = premade.init)
   }
 
   @tailrec
@@ -58,7 +58,8 @@ case class FunctionM(params: Seq[Node],
     }
   }
 
-  override def getMaxDepth: Int = 1 + math.max(getMaxDepth(params), getMaxDepth(nodes))
-
-  private def getMaxDepth(n: Seq[Node]): Int = n.map(_.getMaxDepth).reduceLeft(math.max)
+  override def getMaxDepth: Int = {
+    def getMaxDepth(n: Seq[Node]): Int = n.map(_.getMaxDepth).reduceLeft(math.max)
+    1 + math.max(getMaxDepth(params), getMaxDepth(nodes))
+  }
 }
