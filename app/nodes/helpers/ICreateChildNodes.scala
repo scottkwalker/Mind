@@ -9,7 +9,7 @@ trait ICreateChildNodes {
 
   def create(scope: IScope): Node = Empty()
 
-  def create(scope: IScope, premade: Option[Seq[ICreateChildNodes]]): Node = Empty()
+  def create(scope: IScope, premadeChildren: Seq[ICreateChildNodes]): Node = Empty()
 
   def updateScope(scope: IScope): IScope
 
