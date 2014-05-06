@@ -19,7 +19,7 @@ case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows {
 
   override def replaceEmpty(scope: IScope, injector: Injector): Node = {
     @tailrec
-    def replaceEmptyInSeq(scope: IScope, injector: Injector, n: Seq[Node], f: ((IScope, Injector, Seq[Node]) => (IScope, Seq[Node])), acc: Seq[Node] = Seq[Node]()): (IScope, Seq[Node]) = {
+    def replaceEmptyInSeq(scope: IScope, injector: Injector, n: Seq[Node], f: ((IScope, Injector, Seq[Node]) => (IScope, Seq[Node])), acc: Seq[Node] = Seq.empty): (IScope, Seq[Node]) = {
       n match {
         case x :: xs =>
           val (updatedScope, replaced) = x match {

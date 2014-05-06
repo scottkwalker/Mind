@@ -31,7 +31,7 @@ case class FunctionMFactory @Inject()(injector: Injector,
       name = "f" + scope.numFuncs)
   }
 
-  def createParams(scope: IScope, acc: Seq[Node] = Seq[Node]()) = creator.createSeq(
+  def createParams(scope: IScope, acc: Seq[Node] = Seq.empty) = creator.createSeq(
     possibleChildren = paramsNeighbours,
     scope = scope,
     saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumVals(accLength)),
@@ -39,7 +39,7 @@ case class FunctionMFactory @Inject()(injector: Injector,
     factoryLimit = scope.maxParamsInFunc
   )
 
-  def createNodes(scope: IScope, acc: Seq[Node] = Seq[Node]()) = creator.createSeq(
+  def createNodes(scope: IScope, acc: Seq[Node] = Seq.empty) = creator.createSeq(
     possibleChildren = legalNeighbours(scope, neighbours),
     scope = scope,
     acc = acc,

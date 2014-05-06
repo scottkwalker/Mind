@@ -10,7 +10,7 @@ case class CreateSeqNodes @Inject()(createNode: ICreateNode, rng: IRandomNumberG
   final def createSeq(possibleChildren: => Seq[ICreateChildNodes],
                       scope: IScope,
                       saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
-                      acc: Seq[Node] = Seq[Node](), // Default the accumulator to empty.
+                      acc: Seq[Node] = Seq.empty, // Default the accumulator to empty.
                       factoryLimit: Int
                        ): (IScope, Seq[Node]) = {
     if (ai.canAddAnother(acc.length, factoryLimit, rng)) {
