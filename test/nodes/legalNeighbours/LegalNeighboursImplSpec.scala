@@ -28,11 +28,15 @@ class LegalNeighboursImplSpec extends WordSpec with Matchers {
       val n1 = mockFactoryTerminates1()
       val n2 = mockFactoryTerminates2()
       val scope = Scope(maxDepth = 10)
-      val sut = new LegalNeighboursImpl(neighbours = Seq(nNot,
-        n1,
-        nNot,
-        n2))
-      sut.fetchLegalNeighbours(scope) should equal(Seq(n1, n2))
+      val sut = new LegalNeighboursImpl()
+
+      val result = sut.fetch(scope = scope,
+        neighbours = Seq(nNot,
+          n1,
+          nNot,
+          n2))
+
+      result should equal(Seq(n1, n2))
     }
   }
 }

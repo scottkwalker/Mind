@@ -13,6 +13,7 @@ import nodes.ValueRefFactory
 import nodes.helpers.CreateSeqNodes
 import nodes.NodeTreeFactory
 import models.domain.scala.Empty
+import nodes.legalNeighbours.{LegalNeighboursImpl, LegalNeighbours}
 
 class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1),
                 randomNumberGenerator: IRandomNumberGenerator = RandomNumberGenerator(),
@@ -30,6 +31,7 @@ class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject
     bind(classOf[ICreateSeqNodes]).to(classOf[CreateSeqNodes])
     bind(classOf[IRandomNumberGenerator]).toInstance(randomNumberGenerator)
     bindIPopulateMemoizationMaps()
+    bind(classOf[LegalNeighbours]).to(classOf[LegalNeighboursImpl]).asEagerSingleton()
   }
 
   def bindFunctionMFactory(): Unit = {

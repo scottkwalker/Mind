@@ -45,13 +45,6 @@ class CreateChildNodesImplSpec extends Specification with Mockito {
       override def create(scope: IScope): Node = Empty()
     }
 
-    "validChildren returns filtered seq" in {
-      val scope = Scope(maxDepth = 10)
-      val sut = TestCreateChildNodes()
-
-      sut.legalNeighbours(scope, sut.neighbours) mustEqual Seq(n1, n2)
-    }
-
     "updateScope returns unchanged by default" in {
       val scope = Scope(maxDepth = 10)
       val sut = TestCreateChildNodes()

@@ -6,12 +6,14 @@ import com.google.inject.Inject
 import ai.{IRandomNumberGenerator, IAi}
 import models.domain.scala.FunctionM
 import models.domain.common.Node
+import nodes.legalNeighbours.LegalNeighbours
 
 
 case class FunctionMFactory @Inject()(injector: Injector,
                                       creator: ICreateSeqNodes,
                                       ai: IAi,
-                                      rng: IRandomNumberGenerator
+                                      rng: IRandomNumberGenerator,
+                                      legalNeighbours: LegalNeighbours
                                        ) extends CreateChildNodesImpl with UpdateScopeIncrementFuncs {
   val paramsNeighbours: Seq[ICreateChildNodes] = Seq(
     injector.getInstance(classOf[ValDclInFunctionParamFactory])
@@ -41,7 +43,7 @@ case class FunctionMFactory @Inject()(injector: Injector,
   )
 
   def createNodes(scope: IScope, acc: Seq[Node] = Seq.empty) = creator.createSeq(
-    possibleChildren = legalNeighbours(scope, neighbours),
+    possibleChildren = legalNeighbours.fetch(scope, neighbours),
     scope = scope,
     acc = acc,
     factoryLimit = scope.maxExpressionsInFunc

@@ -13,8 +13,6 @@ trait ICreateChildNodes {
 
   def updateScope(scope: IScope): IScope
 
-  def legalNeighbours(scope: IScope, neighbours: Seq[ICreateChildNodes]): Seq[ICreateChildNodes]
-
   def canTerminateInStepsRemaining(scope: IScope): Boolean = {
     if (scope.hasDepthRemaining) neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
     else false

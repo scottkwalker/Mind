@@ -6,12 +6,14 @@ import com.google.inject.Inject
 import ai.{IRandomNumberGenerator, IAi}
 import models.domain.scala.ObjectDef
 import models.domain.common.Node
+import nodes.legalNeighbours.LegalNeighbours
 
 
 case class ObjectDefFactory @Inject()(injector: Injector,
                                       creator: ICreateSeqNodes,
                                       ai: IAi,
-                                      rng: IRandomNumberGenerator
+                                      rng: IRandomNumberGenerator,
+                                      legalNeighbours: LegalNeighbours
                                        ) extends CreateChildNodesImpl with UpdateScopeIncrementObjects {
   override val neighbours = Seq(injector.getInstance(classOf[FunctionMFactory]))
 
@@ -23,7 +25,7 @@ case class ObjectDefFactory @Inject()(injector: Injector,
   }
 
   def createNodes(scope: IScope, acc: Seq[Node] = Seq()) = creator.createSeq(
-    possibleChildren = legalNeighbours(scope, neighbours),
+    possibleChildren = legalNeighbours.fetch(scope, neighbours),
     scope = scope,
     saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumFuncs(accLength)),
     acc = acc,
