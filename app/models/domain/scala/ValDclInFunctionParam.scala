@@ -1,8 +1,9 @@
 package models.domain.scala
 
-import nodes.{IntegerMFactory, UpdateScopeIncrementVals, Node}
-import nodes.helpers.IScope
+import nodes.IntegerMFactory
+import nodes.helpers.{UpdateScopeIncrementVals, IScope}
 import com.google.inject.Injector
+import models.domain.common.Node
 
 case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node with UpdateScopeIncrementVals {
   override def toRaw: String = s"$name: ${primitiveType.toRaw}"

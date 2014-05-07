@@ -5,6 +5,7 @@ import com.google.inject.Injector
 import com.google.inject.Inject
 import ai.IAi
 import models.domain.scala.AddOperator
+import models.domain.common.Node
 
 
 case class AddOperatorFactory @Inject()(injector: Injector,

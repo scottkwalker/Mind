@@ -4,6 +4,7 @@ import nodes.helpers._
 import com.google.inject.Inject
 import ai.IAi
 import models.domain.scala.IntegerM
+import models.domain.common.Node
 
 
 case class IntegerMFactory @Inject()(creator: ICreateSeqNodes,

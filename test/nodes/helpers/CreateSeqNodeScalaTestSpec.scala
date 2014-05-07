@@ -2,9 +2,9 @@ package nodes.helpers
 
 import org.scalatest.WordSpec
 import org.scalatest.mock.EasyMockSugar
-import nodes.Node
 import org.easymock.EasyMock._
 import ai.{IAi, IRandomNumberGenerator}
+import models.domain.common.Node
 
 class CreateSeqNodeScalaTestSpec extends WordSpec with EasyMockSugar {
   "create" should {

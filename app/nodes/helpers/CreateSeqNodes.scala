@@ -2,8 +2,8 @@ package nodes.helpers
 
 import com.google.inject.Inject
 import scala.annotation.tailrec
-import nodes.Node
 import ai.{IAi, IRandomNumberGenerator}
+import models.domain.common.Node
 
 case class CreateSeqNodes @Inject()(createNode: ICreateNode, rng: IRandomNumberGenerator, ai: IAi) extends ICreateSeqNodes {
   @tailrec

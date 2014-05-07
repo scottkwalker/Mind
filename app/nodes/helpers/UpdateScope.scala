@@ -1,6 +1,4 @@
-package nodes
-
-import nodes.helpers.IScope
+package nodes.helpers
 
 trait UpdateScope {
   def updateScope(scope: IScope): IScope

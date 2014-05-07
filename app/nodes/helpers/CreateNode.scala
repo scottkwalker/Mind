@@ -2,7 +2,7 @@ package nodes.helpers
 
 import com.google.inject.Inject
 import ai.IAi
-import nodes.Node
+import models.domain.common.Node
 
 case class CreateNode @Inject()() extends ICreateNode {
   def create(possibleChildren: Seq[ICreateChildNodes], scope: IScope, ai: IAi): (IScope, Node) = {

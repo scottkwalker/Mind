@@ -1,6 +1,6 @@
 package nodes.helpers
 
-import nodes.Node
+import models.domain.common.Node
 
 trait ICreateSeqNodes {
   def createSeq(possibleChildren: => Seq[ICreateChildNodes],

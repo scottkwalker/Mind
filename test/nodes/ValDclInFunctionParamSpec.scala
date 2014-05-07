@@ -9,6 +9,7 @@ import nodes.helpers.Scope
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 import models.domain.scala.{Empty, ValDclInFunctionParam, IntegerM}
+import models.domain.common.Node
 
 class ValDclInFunctionParamSpec extends Specification with Mockito {
   "ValDclInFunctionParam" should {

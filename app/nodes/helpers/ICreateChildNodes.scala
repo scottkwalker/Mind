@@ -1,15 +1,15 @@
 package nodes.helpers
 
-import nodes.Node
 import models.domain.scala.Empty
 import scala.annotation.tailrec
+import models.domain.common.Node
 
 trait ICreateChildNodes {
   val neighbours: Seq[ICreateChildNodes]
 
   def create(scope: IScope): Node = Empty()
 
-  def create(scope: IScope, premadeChildren: Seq[ICreateChildNodes]): Node = Empty()
+  def create(scope: IScope, premadeChildren: Seq[ICreateChildNodes]): Node = Empty() // TODO need param for params!
 
   def updateScope(scope: IScope): IScope
 

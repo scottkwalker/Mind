@@ -1,4 +1,4 @@
-package nodes
+package models.domain.common
 
 import nodes.helpers.IScope
 import com.google.inject.Injector

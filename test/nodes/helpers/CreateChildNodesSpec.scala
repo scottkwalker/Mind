@@ -4,6 +4,7 @@ import org.specs2.mutable._
 import nodes._
 import org.specs2.mock.Mockito
 import models.domain.scala.Empty
+import models.domain.common.Node
 
 class CreateChildNodesSpec extends Specification with Mockito {
   "CreateChildNodes" should {

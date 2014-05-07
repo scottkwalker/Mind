@@ -5,6 +5,7 @@ import nodes._
 import org.specs2.mock.Mockito
 import ai.{IRandomNumberGenerator, SelectionStrategy}
 import ai.aco.Aco
+import models.domain.common.Node
 
 class CreateSeqNodesSpec extends Specification with Mockito {
   "CreateSeqNodes" should {

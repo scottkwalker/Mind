@@ -4,6 +4,7 @@ import nodes.helpers._
 import com.google.inject.Inject
 import ai.{IRandomNumberGenerator, IAi}
 import models.domain.scala.ValueRef
+import models.domain.common.Node
 
 
 case class ValueRefFactory @Inject()(ai: IAi,

@@ -4,6 +4,7 @@ import nodes.helpers._
 import com.google.inject.{Injector, Inject}
 import ai.IAi
 import models.domain.scala.ValDclInFunctionParam
+import models.domain.common.Node
 
 
 case class ValDclInFunctionParamFactory @Inject()(injector: Injector,

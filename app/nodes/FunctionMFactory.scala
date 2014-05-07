@@ -5,6 +5,7 @@ import com.google.inject.Injector
 import com.google.inject.Inject
 import ai.{IRandomNumberGenerator, IAi}
 import models.domain.scala.FunctionM
+import models.domain.common.Node
 
 
 case class FunctionMFactory @Inject()(injector: Injector,

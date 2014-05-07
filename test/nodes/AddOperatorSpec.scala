@@ -8,6 +8,7 @@ import ai.IRandomNumberGenerator
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 import models.domain.scala.{Empty, ValueRef, AddOperator, ObjectDef}
+import models.domain.common.Node
 
 class AddOperatorSpec extends Specification with Mockito {
   "AddOperator" should {
