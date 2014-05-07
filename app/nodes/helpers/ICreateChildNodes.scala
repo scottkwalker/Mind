@@ -9,12 +9,7 @@ trait ICreateChildNodes {
 
   def create(scope: IScope): Node = Empty()
 
-  def create(scope: IScope, premadeChildren: Seq[ICreateChildNodes]): Node = Empty() // TODO need param for params!
-
   def updateScope(scope: IScope): IScope
 
-  def canTerminateInStepsRemaining(scope: IScope): Boolean = {
-    if (scope.hasDepthRemaining) neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
-    else false
-  }
+  def canTerminateInStepsRemaining(scope: IScope): Boolean
 }

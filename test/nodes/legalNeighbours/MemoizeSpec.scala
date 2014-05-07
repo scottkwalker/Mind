@@ -62,8 +62,8 @@ class MemoizeSpec extends WordSpec with Matchers with ScalaFutures {
         }
       }
 
-      val adder = spy(new Fib)
-      val memoizer = Memoize.memoize(adder(_: Int))
+      val fib = spy(new Fib)
+      val memoizer = Memoize.memoize(fib(_: Int))
 
       memoizer(1) should equal(1)
       memoizer(1) should equal(1)
@@ -72,9 +72,9 @@ class MemoizeSpec extends WordSpec with Matchers with ScalaFutures {
       memoizer(3) should equal(2)
       memoizer(3) should equal(2)
 
-      verify(adder, times(1))(1)
-      verify(adder, times(1))(2)
-      verify(adder, times(1))(3)
+      verify(fib, times(1))(1)
+      verify(fib, times(1))(2)
+      verify(fib, times(1))(3)
     }
 
     "only runs the function once for the same input (adder)" in {

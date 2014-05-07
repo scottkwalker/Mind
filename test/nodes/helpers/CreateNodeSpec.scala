@@ -5,46 +5,44 @@ import org.specs2.mock.Mockito
 import ai.SelectionStrategy
 
 class CreateNodeSpec extends Specification with Mockito {
-  "CreateNode" should {
-    "create" in {
-      "calls chooseChild on ai" in {
-        val scope = Scope(maxDepth = 10)
-        val v = mock[ICreateChildNodes]
-        v.updateScope(scope) returns scope
-        val ai = mock[SelectionStrategy]
-        ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope]) returns v
-        val sut = CreateNode()
+  "create" should {
+    "calls chooseChild on ai" in {
+      val scope = Scope(maxDepth = 10)
+      val v = mock[ICreateChildNodes]
+      v.updateScope(scope) returns scope
+      val ai = mock[SelectionStrategy]
+      ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope]) returns v
+      val sut = CreateNode()
 
-        val (_, _) = sut.create(Seq(v), scope, ai)
+      val (_, _) = sut.create(Seq(v), scope, ai)
 
-        there was one(ai).chooseChild(Seq(v), scope)
-      }
+      there was one(ai).chooseChild(Seq(v), scope)
+    }
 
-      "calls updateScope" in {
-        val scope = Scope(maxDepth = 10)
-        val v = mock[ICreateChildNodes]
-        v.updateScope(scope) returns scope
-        val ai = mock[SelectionStrategy]
-        ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope]) returns v
-        val sut = CreateNode()
+    "calls updateScope" in {
+      val scope = Scope(maxDepth = 10)
+      val v = mock[ICreateChildNodes]
+      v.updateScope(scope) returns scope
+      val ai = mock[SelectionStrategy]
+      ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope]) returns v
+      val sut = CreateNode()
 
-        val (_, _) = sut.create(Seq(v), scope, ai)
+      val (_, _) = sut.create(Seq(v), scope, ai)
 
-        there was one(v).updateScope(scope)
-      }
+      there was one(v).updateScope(scope)
+    }
 
-      "calls create on factory" in {
-        val scope = Scope(maxDepth = 10)
-        val v = mock[ICreateChildNodes]
-        v.updateScope(scope) returns scope
-        val ai = mock[SelectionStrategy]
-        ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope]) returns v
-        val sut = CreateNode()
+    "calls create on factory" in {
+      val scope = Scope(maxDepth = 10)
+      val v = mock[ICreateChildNodes]
+      v.updateScope(scope) returns scope
+      val ai = mock[SelectionStrategy]
+      ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope]) returns v
+      val sut = CreateNode()
 
-        val (_, _) = sut.create(Seq(v), scope, ai)
+      val (_, _) = sut.create(Seq(v), scope, ai)
 
-        there was one(v).create(scope)
-      }
+      there was one(v).create(scope)
     }
   }
 }
