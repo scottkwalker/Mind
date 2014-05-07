@@ -32,7 +32,7 @@ class LegalNeighboursImplSpec extends WordSpec with Matchers {
         n1,
         nNot,
         n2))
-      sut.fetchLegalNeighbours(scope, sut.neighbours) should equal(Seq(n1, n2))
+      sut.fetchLegalNeighbours(scope) should equal(Seq(n1, n2))
     }
   }
 }
