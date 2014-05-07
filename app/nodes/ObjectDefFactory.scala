@@ -12,7 +12,7 @@ case class ObjectDefFactory @Inject()(injector: Injector,
                                       creator: ICreateSeqNodes,
                                       ai: IAi,
                                       rng: IRandomNumberGenerator
-                                       ) extends ICreateChildNodes with UpdateScopeIncrementObjects {
+                                       ) extends CreateChildNodesImpl with UpdateScopeIncrementObjects {
   override val neighbours = Seq(injector.getInstance(classOf[FunctionMFactory]))
 
   override def create(scope: IScope): Node = {

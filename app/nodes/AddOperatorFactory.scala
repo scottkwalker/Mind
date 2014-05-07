@@ -11,7 +11,7 @@ import models.domain.common.Node
 case class AddOperatorFactory @Inject()(injector: Injector,
                                         creator: ICreateNode,
                                         ai: IAi
-                                         ) extends ICreateChildNodes with UpdateScopeNoChange {
+                                         ) extends CreateChildNodesImpl with UpdateScopeNoChange {
   override val neighbours = Seq(injector.getInstance(classOf[ValueRefFactory]))
 
   override def create(scope: IScope): Node = {

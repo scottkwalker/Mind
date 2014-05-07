@@ -10,7 +10,7 @@ import models.domain.common.Node
 case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
                                                   creator: ICreateNode,
                                                   ai: IAi
-                                                   ) extends ICreateChildNodes with UpdateScopeIncrementVals {
+                                                   ) extends CreateChildNodesImpl with UpdateScopeIncrementVals {
   override val neighbours = Seq(injector.getInstance(classOf[IntegerMFactory]))
 
   override def canTerminateInStepsRemaining(scope: IScope): Boolean = scope.hasDepthRemaining

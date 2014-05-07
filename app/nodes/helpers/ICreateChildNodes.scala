@@ -13,16 +13,7 @@ trait ICreateChildNodes {
 
   def updateScope(scope: IScope): IScope
 
-  def legalNeighbours(scope: IScope, neighbours: Seq[ICreateChildNodes]): Seq[ICreateChildNodes]  = {
-    val legalNeighboursMemo: IScope => Seq[ICreateChildNodes] = {
-      def inner(f: IScope => Seq[ICreateChildNodes])(scope: IScope): Seq[ICreateChildNodes] = {
-        neighbours.filter(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
-      }
-      Memoize.Y(inner)
-    }
-
-    legalNeighboursMemo(scope.incrementDepth).intersect(neighbours) // Only return legal moves that are neighbours
-  }
+  def legalNeighbours(scope: IScope, neighbours: Seq[ICreateChildNodes]): Seq[ICreateChildNodes]
 
   def canTerminateInStepsRemaining(scope: IScope): Boolean = {
     if (scope.hasDepthRemaining) neighbours.exists(n => n.canTerminateInStepsRemaining(scope.incrementDepth))

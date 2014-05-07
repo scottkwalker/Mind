@@ -9,7 +9,7 @@ import models.domain.common.Node
 
 case class ValueRefFactory @Inject()(ai: IAi,
                                      rng: IRandomNumberGenerator
-                                      ) extends ICreateChildNodes with UpdateScopeNoChange {
+                                      ) extends CreateChildNodesImpl with UpdateScopeNoChange {
   override val neighbours = Nil // No possible children
 
   override def canTerminateInStepsRemaining(scope: IScope): Boolean = scope.hasDepthRemaining
