@@ -5,10 +5,12 @@ import com.google.inject.Inject
 import ai.{IRandomNumberGenerator, IAi}
 import models.domain.scala.ValueRef
 import models.domain.common.Node
+import nodes.legalNeighbours.LegalNeighbours
 
 
 case class ValueRefFactory @Inject()(ai: IAi,
-                                     rng: IRandomNumberGenerator
+                                     rng: IRandomNumberGenerator,
+                                     legalNeighbours: LegalNeighbours
                                       ) extends CreateChildNodesImpl with UpdateScopeNoChange {
   override val neighbours = Nil // No possible children
 
