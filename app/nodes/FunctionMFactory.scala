@@ -14,7 +14,7 @@ case class FunctionMFactory @Inject()(injector: Injector,
                                       ai: IAi,
                                       rng: IRandomNumberGenerator,
                                       legalNeighbours: LegalNeighbours
-                                       ) extends CreateChildNodesImpl with UpdateScopeIncrementFuncs {
+                                       ) extends ICreateChildNodes with UpdateScopeIncrementFuncs {
   val paramsNeighbours: Seq[ICreateChildNodes] = Seq(
     injector.getInstance(classOf[ValDclInFunctionParamFactory])
   )

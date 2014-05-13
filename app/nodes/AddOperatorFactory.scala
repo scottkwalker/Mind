@@ -13,7 +13,7 @@ case class AddOperatorFactory @Inject()(injector: Injector,
                                         creator: ICreateNode,
                                         ai: IAi,
                                         legalNeighbours: LegalNeighbours
-                                         ) extends CreateChildNodesImpl with UpdateScopeNoChange {
+                                         ) extends ICreateChildNodes with UpdateScopeNoChange {
   override val neighbours = Seq(injector.getInstance(classOf[ValueRefFactory]))
 
   override def create(scope: IScope): Node = {

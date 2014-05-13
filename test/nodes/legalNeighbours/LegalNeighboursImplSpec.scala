@@ -3,31 +3,32 @@ package nodes.legalNeighbours
 import org.scalatest.{Matchers, WordSpec}
 import nodes.helpers._
 import org.specs2.mock.Mockito
+import models.domain.common.Node
 
 class LegalNeighboursImplSpec extends WordSpec with Matchers with Mockito {
   "fetchLegalNeighbours" should {
     val legalNeighboursImpl = new LegalNeighboursImpl
 
-    case class FakeFactoryDoesNotTerminate() extends CreateChildNodesImpl with UpdateScopeNoChange {
+    case class FakeFactoryDoesNotTerminate() extends ICreateChildNodes with UpdateScopeNoChange {
       val nodeFactoryDoesNotTerminate = mock[ICreateChildNodes]
       nodeFactoryDoesNotTerminate.neighbours returns Seq(nodeFactoryDoesNotTerminate)
       nodeFactoryDoesNotTerminate.legalNeighbours returns legalNeighboursImpl
 
       val legalNeighbours: LegalNeighbours = legalNeighboursImpl
-
       val neighbours: Seq[ICreateChildNodes] = Seq(nodeFactoryDoesNotTerminate)
+      override def create(scope: IScope): Node = ???
     }
 
-    case class FakeFactoryTerminates1() extends CreateChildNodesImpl with UpdateScopeNoChange {
+    case class FakeFactoryTerminates1() extends ICreateChildNodes with UpdateScopeNoChange {
       val legalNeighbours: LegalNeighbours = legalNeighboursImpl
-
       val neighbours: Seq[ICreateChildNodes] = Seq.empty
+      override def create(scope: IScope): Node = ???
     }
 
-    case class FakeFactoryTerminates2() extends CreateChildNodesImpl with UpdateScopeNoChange {
+    case class FakeFactoryTerminates2() extends ICreateChildNodes with UpdateScopeNoChange {
       val legalNeighbours: LegalNeighbours = legalNeighboursImpl
-
       val neighbours: Seq[ICreateChildNodes] = Seq.empty
+      override def create(scope: IScope): Node = ???
     }
 
     "returns only the neighbours that can terminate" in {

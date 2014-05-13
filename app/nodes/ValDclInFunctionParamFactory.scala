@@ -12,7 +12,7 @@ case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
                                                   creator: ICreateNode,
                                                   ai: IAi,
                                                   legalNeighbours: LegalNeighbours
-                                                   ) extends CreateChildNodesImpl with UpdateScopeIncrementVals {
+                                                   ) extends ICreateChildNodes with UpdateScopeIncrementVals {
   override val neighbours = Seq(injector.getInstance(classOf[IntegerMFactory]))
 
   override def create(scope: IScope): Node = {

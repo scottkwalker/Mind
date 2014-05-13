@@ -11,7 +11,7 @@ import nodes.legalNeighbours.LegalNeighbours
 case class ValueRefFactory @Inject()(ai: IAi,
                                      rng: IRandomNumberGenerator,
                                      legalNeighbours: LegalNeighbours
-                                      ) extends CreateChildNodesImpl with UpdateScopeNoChange {
+                                      ) extends ICreateChildNodes with UpdateScopeNoChange {
   override val neighbours = Seq.empty // No possible children
 
   override def create(scope: IScope): Node = {
