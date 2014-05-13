@@ -47,8 +47,7 @@ case class FunctionM(params: Seq[Node],
     n match {
       case x :: xs =>
         val (updatedScope, replaced) = x match {
-          case _: Empty =>
-            f(scope, injector, n)
+          case _: Empty => f(scope, injector, n)
           case n: Node =>
             val r = n.replaceEmpty(scope, injector)
             val u = r.updateScope(scope)
