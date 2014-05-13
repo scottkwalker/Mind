@@ -48,10 +48,6 @@ class AcoSpec extends Specification with Mockito {
         try {
           for (i <- 1 to 10) {
             val nodeTree: NodeTree = premade.replaceEmpty(scope, injector).asInstanceOf[NodeTree]
-
-            //println(nodeTree)
-            //println("validate: " + nodeTree.validate(scope))
-            //println("toRawScala: " + nodeTree.toRawScala)
             val f = new AddTwoInts(nodeTree)
             f.fitness
           }

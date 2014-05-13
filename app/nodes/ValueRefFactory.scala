@@ -12,9 +12,7 @@ case class ValueRefFactory @Inject()(ai: IAi,
                                      rng: IRandomNumberGenerator,
                                      legalNeighbours: LegalNeighbours
                                       ) extends CreateChildNodesImpl with UpdateScopeNoChange {
-  override val neighbours = Nil // No possible children
-
-  override def canTerminateInStepsRemaining(scope: IScope): Boolean = scope.hasDepthRemaining
+  override val neighbours = Seq.empty // No possible children
 
   override def create(scope: IScope): Node = {
     val name = "v" + ai.chooseIndex(scope.numVals)

@@ -15,8 +15,6 @@ case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
                                                    ) extends CreateChildNodesImpl with UpdateScopeIncrementVals {
   override val neighbours = Seq(injector.getInstance(classOf[IntegerMFactory]))
 
-  override def canTerminateInStepsRemaining(scope: IScope): Boolean = scope.hasDepthRemaining
-
   override def create(scope: IScope): Node = {
     val name = "v" + scope.numVals
     val ln = legalNeighbours.fetch(scope, neighbours)

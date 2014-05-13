@@ -6,7 +6,10 @@ class LegalNeighboursImpl extends LegalNeighbours {
   override def fetch(scope: IScope, neighbours: Seq[ICreateChildNodes]): Seq[ICreateChildNodes] ={
     val memo: IScope => Seq[ICreateChildNodes] = {
       def calculate(f: IScope => Seq[ICreateChildNodes])(scope: IScope): Seq[ICreateChildNodes] = {
-        neighbours.filter(n => n.canTerminateInStepsRemaining(scope.incrementDepth))
+        if (scope.hasDepthRemaining) neighbours.filter {
+          n => n.neighbours.isEmpty || n.legalNeighbours.fetch(scope.incrementDepth, n.neighbours).length > 0
+        }
+        else Seq.empty
       }
       Memoize.Y(calculate)
     }

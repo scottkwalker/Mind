@@ -2,40 +2,39 @@ package nodes.legalNeighbours
 
 import org.scalatest.{Matchers, WordSpec}
 import nodes.helpers._
+import org.specs2.mock.Mockito
 
-class LegalNeighboursImplSpec extends WordSpec with Matchers {
+class LegalNeighboursImplSpec extends WordSpec with Matchers with Mockito {
   "fetchLegalNeighbours" should {
     val legalNeighboursImpl = new LegalNeighboursImpl
 
-    case class mockFactoryDoesNotTerminate() extends CreateChildNodesImpl with UpdateScopeNoChange {
+    case class FakeFactoryDoesNotTerminate() extends CreateChildNodesImpl with UpdateScopeNoChange {
+      val nodeFactoryDoesNotTerminate = mock[ICreateChildNodes]
+      nodeFactoryDoesNotTerminate.neighbours returns Seq(nodeFactoryDoesNotTerminate)
+      nodeFactoryDoesNotTerminate.legalNeighbours returns legalNeighboursImpl
+
       val legalNeighbours: LegalNeighbours = legalNeighboursImpl
 
-      override def canTerminateInStepsRemaining(scope: IScope): Boolean = false
+      val neighbours: Seq[ICreateChildNodes] = Seq(nodeFactoryDoesNotTerminate)
+    }
+
+    case class FakeFactoryTerminates1() extends CreateChildNodesImpl with UpdateScopeNoChange {
+      val legalNeighbours: LegalNeighbours = legalNeighboursImpl
 
       val neighbours: Seq[ICreateChildNodes] = Seq.empty
     }
 
-    case class mockFactoryTerminates1() extends CreateChildNodesImpl with UpdateScopeNoChange {
+    case class FakeFactoryTerminates2() extends CreateChildNodesImpl with UpdateScopeNoChange {
       val legalNeighbours: LegalNeighbours = legalNeighboursImpl
-
-      override def canTerminateInStepsRemaining(scope: IScope): Boolean = true
-
-      val neighbours: Seq[ICreateChildNodes] = Seq.empty
-    }
-
-    case class mockFactoryTerminates2() extends CreateChildNodesImpl with UpdateScopeNoChange {
-      val legalNeighbours: LegalNeighbours = legalNeighboursImpl
-
-      override def canTerminateInStepsRemaining(scope: IScope): Boolean = true
 
       val neighbours: Seq[ICreateChildNodes] = Seq.empty
     }
 
     "returns only the neighbours that can terminate" in {
-      val nNot = mockFactoryDoesNotTerminate()
-      val n1 = mockFactoryTerminates1()
-      val n2 = mockFactoryTerminates2()
-      val scope = Scope(maxDepth = 10)
+      val nNot = FakeFactoryDoesNotTerminate()
+      val n1 = FakeFactoryTerminates1()
+      val n2 = FakeFactoryTerminates2()
+      val scope = Scope(maxDepth = 3)
       val sut = new LegalNeighboursImpl()
 
       val result = sut.fetch(scope = scope,

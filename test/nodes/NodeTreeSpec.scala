@@ -77,7 +77,7 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
         val s = Scope(maxExpressionsInFunc = 1,
           maxFuncsInObject = 1,
           maxParamsInFunc = 1,
-          maxDepth = 5,
+          maxDepth = 10,
           maxObjectsInTree = 1)
         val n = mock[Empty]
         val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
