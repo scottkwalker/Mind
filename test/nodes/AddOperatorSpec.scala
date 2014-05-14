@@ -11,8 +11,8 @@ import models.domain.scala.{Empty, ValueRef, AddOperator, ObjectDef}
 import models.domain.common.Node
 
 class AddOperatorSpec extends Specification with Mockito {
-  "AddOperator" should {
-    "toRawScala" in {
+  "toRawScala" should {
+    "return expected" in {
       val a = mock[ValueRef]
       a.toRaw returns "STUB_A"
       val b = mock[ValueRef]
@@ -20,111 +20,111 @@ class AddOperatorSpec extends Specification with Mockito {
 
       AddOperator(a, b).toRaw mustEqual "STUB_A + STUB_B"
     }
+  }
 
-    "validate" in {
-      "true given child nodes can terminate in under N steps" in {
-        val s = Scope(maxDepth = 2)
-        val v = mock[ValueRef]
-        v.validate(any[Scope]) returns true
+  "validate" should {
+    "true given child nodes can terminate in under N steps" in {
+      val s = Scope(maxDepth = 2)
+      val v = mock[ValueRef]
+      v.validate(any[Scope]) returns true
 
-        AddOperator(v, v).validate(s) mustEqual true
+      AddOperator(v, v).validate(s) mustEqual true
+    }
+
+    "false given it cannot terminate in 0 steps" in {
+      val s = Scope(maxDepth = 0)
+      val v = mock[ValueRef]
+      v.validate(any[Scope]) throws new RuntimeException
+
+      AddOperator(v, v).validate(s) mustEqual false
+    }
+
+    "false given child nodes cannot terminate in under N steps" in {
+      val s = Scope(maxDepth = 10)
+      val v = mock[ValueRef]
+      v.validate(any[Scope]) returns false
+
+      AddOperator(v, v).validate(s) mustEqual false
+    }
+
+    "true given none empty" in {
+      val s = Scope(maxDepth = 10)
+      val v = mock[ValueRef]
+      v.validate(any[Scope]) returns true
+
+      AddOperator(v, v).validate(s) mustEqual true
+    }
+
+    "false given contains an empty node" in {
+      val s = Scope(maxDepth = 10)
+      val v = mock[ValueRef]
+      v.validate(any[Scope]) returns true
+
+      AddOperator(v, Empty()).validate(s) mustEqual false
+    }
+
+    "false given contains a node that is not valid for this level" in {
+      val s = Scope(maxDepth = 10)
+      val v = mock[ValueRef]
+      v.validate(any[Scope]) returns true
+
+      AddOperator(v, ObjectDef(Nil, "ObjectM0")).validate(s) mustEqual false
+    }
+  }
+
+  "replaceEmpty" should {
+    "calls replaceEmpty on non-empty child nodes" in {
+      val s = mock[Scope]
+      val v = mock[ValueRef]
+      v.replaceEmpty(any[Scope], any[Injector]) returns v
+      val i = mock[Injector]
+      val instance = AddOperator(v, v)
+
+      instance.replaceEmpty(s, i)
+
+      there was two(v).replaceEmpty(any[Scope], any[Injector])
+    }
+
+    "returns same when no empty nodes" in {
+      val s = mock[Scope]
+      val v = mock[ValueRef]
+      v.replaceEmpty(any[Scope], any[Injector]) returns v
+      val i = mock[Injector]
+      val instance = AddOperator(v, v)
+
+      instance.replaceEmpty(s, i) mustEqual instance
+    }
+
+    "returns without empty nodes given there were empty nodes" in {
+      class TestDevModule extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
+        override def bindAddOperatorFactory(): Unit = {
+          val n: Node = mock[ValueRef]
+          val f = mock[AddOperatorFactory]
+          f.create(any[Scope]) returns n
+          bind(classOf[AddOperatorFactory]).toInstance(f)
+        }
       }
 
-      "false given it cannot terminate in 0 steps" in {
-        val s = Scope(maxDepth = 0)
-        val v = mock[ValueRef]
-        v.validate(any[Scope]) throws new RuntimeException
+      val s = mock[Scope]
+      s.numVals returns 1
+      val v = mock[Empty]
+      val injector: Injector = Guice.createInjector(new TestDevModule, new LegalGamerModule)
+      val instance = AddOperator(v, v)
 
-        AddOperator(v, v).validate(s) mustEqual false
-      }
+      val result = instance.replaceEmpty(s, injector)
 
-      "false given child nodes cannot terminate in under N steps" in {
-        val s = Scope(maxDepth = 10)
-        val v = mock[ValueRef]
-        v.validate(any[Scope]) returns false
-
-        AddOperator(v, v).validate(s) mustEqual false
-      }
-
-      "true given none empty" in {
-        val s = Scope(maxDepth = 10)
-        val v = mock[ValueRef]
-        v.validate(any[Scope]) returns true
-
-        AddOperator(v, v).validate(s) mustEqual true
-      }
-
-      "false given contains an empty node" in {
-        val s = Scope(maxDepth = 10)
-        val v = mock[ValueRef]
-        v.validate(any[Scope]) returns true
-
-        AddOperator(v, Empty()).validate(s) mustEqual false
-      }
-
-      "false given contains a node that is not valid for this level" in {
-        val s = Scope(maxDepth = 10)
-        val v = mock[ValueRef]
-        v.validate(any[Scope]) returns true
-
-        AddOperator(v, ObjectDef(Nil, "ObjectM0")).validate(s) mustEqual false
+      result must beLike {
+        case AddOperator(l, r) =>
+          l must beAnInstanceOf[ValueRef]
+          r must beAnInstanceOf[ValueRef]
       }
     }
 
-    "replaceEmpty" in {
-      "calls replaceEmpty on non-empty child nodes" in {
-        val s = mock[Scope]
-        val v = mock[ValueRef]
-        v.replaceEmpty(any[Scope], any[Injector]) returns v
-        val i = mock[Injector]
-        val instance = AddOperator(v, v)
+    "getMaxDepth returns 1 + child getMaxDepth" in {
+      val v = mock[ValueRef]
+      v.getMaxDepth returns 1
 
-        instance.replaceEmpty(s, i)
-
-        there was two(v).replaceEmpty(any[Scope], any[Injector])
-      }
-
-      "returns same when no empty nodes" in {
-        val s = mock[Scope]
-        val v = mock[ValueRef]
-        v.replaceEmpty(any[Scope], any[Injector]) returns v
-        val i = mock[Injector]
-        val instance = AddOperator(v, v)
-
-        instance.replaceEmpty(s, i) mustEqual instance
-      }
-
-      "returns without empty nodes given there were empty nodes" in {
-        class TestDevModule extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
-          override def bindAddOperatorFactory(): Unit = {
-            val n: Node = mock[ValueRef]
-            val f = mock[AddOperatorFactory]
-            f.create(any[Scope]) returns n
-            bind(classOf[AddOperatorFactory]).toInstance(f)
-          }
-        }
-
-        val s = mock[Scope]
-        s.numVals returns 1
-        val v = mock[Empty]
-        val injector: Injector = Guice.createInjector(new TestDevModule, new LegalGamerModule)
-        val instance = AddOperator(v, v)
-
-        val result = instance.replaceEmpty(s, injector)
-
-        result must beLike {
-          case AddOperator(l, r) =>
-            l must beAnInstanceOf[ValueRef]
-            r must beAnInstanceOf[ValueRef]
-        }
-      }
-
-      "getMaxDepth returns 1 + child getMaxDepth" in {
-        val v = mock[ValueRef]
-        v.getMaxDepth returns 1
-
-        AddOperator(v, v).getMaxDepth mustEqual 2
-      }
+      AddOperator(v, v).getMaxDepth mustEqual 2
     }
   }
 }

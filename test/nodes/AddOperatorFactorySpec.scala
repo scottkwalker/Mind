@@ -10,8 +10,8 @@ import modules.ai.legalGamer.LegalGamerModule
 import models.domain.scala.AddOperator
 
 class AddOperatorFactorySpec extends Specification with Mockito {
-  "AddOperatorFactory" should {
-    "create returns instance of this type" in {
+  "create" should {
+    "return instance of this type" in {
       val s = Scope(maxDepth = 10, numVals = 1)
       val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
       val factory = injector.getInstance(classOf[AddOperatorFactory])
