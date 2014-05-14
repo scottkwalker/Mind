@@ -17,7 +17,6 @@ class CreateNodeSpec extends UnitSpec {
 
       val (_, _) = sut.create(Seq(v), scope, ai)
 
-      //there was one(ai).chooseChild(Seq(v), scope)
       verify(ai, times(1)).chooseChild(Seq(v), scope)
     }
 
