@@ -10,48 +10,50 @@ import modules.ai.legalGamer.LegalGamerModule
 import models.domain.scala.ValueRef
 
 class ValueRefFactorySpec extends Specification with Mockito {
-  "ValueRefFactory" should {
-    val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
-    val factory = injector.getInstance(classOf[ValueRefFactory])
+  val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
+  val factory = injector.getInstance(classOf[ValueRefFactory])
 
-    "create" in {
-      "returns instance of this type" in {
-        val s = mock[Scope]
-        s.numVals returns 1
+  "create" should {
+    "returns instance of this type" in {
+      val s = mock[Scope]
+      s.numVals returns 1
 
-        val instance = factory.create(scope = s)
+      val instance = factory.create(scope = s)
 
-        instance must beAnInstanceOf[ValueRef]
-      }
+      instance must beAnInstanceOf[ValueRef]
+    }
 
-      "returns expected given scope with 0 vals" in {
-        val s = mock[Scope]
-        s.numVals returns 1
+    "returns expected given scope with 0 vals" in {
+      val s = mock[Scope]
+      s.numVals returns 1
 
-        val instance = factory.create(scope = s)
+      val instance = factory.create(scope = s)
 
-        instance must beLike {
-          case ValueRef(name) => name mustEqual "v0"
-        }
-      }
-
-      "returns expected given scope with 1 val" in {
-        val s = mock[Scope]
-        s.numVals returns 1
-
-        val instance = factory.create(scope = s)
-
-        instance must beLike {
-          case ValueRef(name) => name mustEqual "v0"
-        }
+      instance must beLike {
+        case ValueRef(name) => name mustEqual "v0"
       }
     }
 
-    "has no possible children" in {
+    "returns expected given scope with 1 val" in {
+      val s = mock[Scope]
+      s.numVals returns 1
+
+      val instance = factory.create(scope = s)
+
+      instance must beLike {
+        case ValueRef(name) => name mustEqual "v0"
+      }
+    }
+  }
+
+  "neighbours" should {
+    "be empty" in {
       factory.neighbours.length mustEqual 0
     }
+  }
 
-    "updateScope returns same" in {
+  "updateScope" should {
+    "returns same" in {
       val s = mock[Scope]
 
       val s2 = factory.updateScope(s)
