@@ -7,7 +7,7 @@ class LegalNeighboursImpl extends LegalNeighbours {
     val memo: IScope => Seq[ICreateChildNodes] = {
       def calculate(f: IScope => Seq[ICreateChildNodes])(scope: IScope): Seq[ICreateChildNodes] = {
         if (scope.hasDepthRemaining) neighbours.filter {
-          n => n.neighbours.isEmpty || n.legalNeighbours.fetch(scope.incrementDepth, n.neighbours).length > 0
+          n => n.neighbours.isEmpty || fetch(scope.incrementDepth, n.neighbours).length > 0
         }
         else Seq.empty
       }
@@ -16,4 +16,6 @@ class LegalNeighboursImpl extends LegalNeighbours {
 
     memo(scope.incrementDepth).intersect(neighbours) // Only return legal moves that are neighbours
   }
+
+  // TODO write to disk
 }
