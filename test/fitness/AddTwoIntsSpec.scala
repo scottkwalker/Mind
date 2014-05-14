@@ -1,21 +1,21 @@
 package fitness
 
-import org.specs2.mutable.Specification
 import fitness.Fitness.maxFitness
-import org.specs2.mock.Mockito
 import models.domain.scala._
 import models.domain.scala.AddOperator
 import models.domain.scala.ObjectDef
 import models.domain.scala.FunctionM
 import models.domain.scala.IntegerM
+import utils.helpers.UnitSpec
+import org.mockito.Mockito._
 
-class AddTwoIntsSpec extends Specification with Mockito {
+class AddTwoIntsSpec extends UnitSpec {
   "Addition" should {
     "1 add 1 equals 2 with NodeTree that returns hard coded raw Scala" in {
       val nodeTree = mock[NodeTree]
-      nodeTree.toRaw returns "object o0 { def f0(a: Int, b: Int) = a + b }"
+      when(nodeTree.toRaw).thenReturn("object o0 { def f0(a: Int, b: Int) = a + b }")
       val f = new AddTwoInts(nodeTree)
-      f.fitness mustEqual maxFitness
+      f.fitness should equal(maxFitness)
     }
 
     "1 add 1 equals 2 with NodeTree that converts nodes to raw Scala" in {
@@ -29,7 +29,7 @@ class AddTwoIntsSpec extends Specification with Mockito {
               ), name = "f0")),
             name = "o0")))
       val f = new AddTwoInts(nodeTree)
-      f.fitness mustEqual maxFitness
+      f.fitness should equal(maxFitness)
     }
 
     "return score less than max fitness for a non-optimal solution" in {
@@ -40,7 +40,7 @@ class AddTwoIntsSpec extends Specification with Mockito {
       val f = new AddTwoInts(nodeTree)
 
       // Assert
-      f.fitness mustNotEqual maxFitness
+      f.fitness should not equal maxFitness
     }
   }
 }
