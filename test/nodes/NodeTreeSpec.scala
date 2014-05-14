@@ -14,7 +14,7 @@ import models.domain.scala.ObjectDef
 import models.domain.scala.FunctionM
 
 class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
-  "validate" in {
+  "validate" should {
     "true given it can terminates in under N steps" in {
       val s = Scope(maxDepth = 10)
       val f = mock[ObjectDef]
@@ -49,7 +49,7 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
     }
   }
 
-  "replaceEmpty" in {
+  "replaceEmpty" should {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[Scope]
       val f = mock[ObjectDef]
@@ -93,7 +93,7 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
     }
   }
 
-  "getMaxDepth" in {
+  "getMaxDepth" should {
     "returns 1 + child getMaxDepth" in {
       val f = mock[ObjectDef]
       f.getMaxDepth returns 2
