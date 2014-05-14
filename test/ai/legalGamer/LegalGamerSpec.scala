@@ -1,7 +1,5 @@
-package ai.helpers
+package ai.legalGamer
 
-import org.specs2.mutable._
-import org.specs2.mock.Mockito
 import com.google.inject.Guice
 import fitness.AddTwoInts
 import modules.ai.legalGamer.LegalGamerModule
@@ -12,10 +10,11 @@ import models.domain.scala.IntegerM
 import models.domain.scala.ObjectDef
 import models.domain.scala.NodeTree
 import models.domain.scala.FunctionM
+import utils.helpers.UnitSpec
 
-class TestAiCommonSpec extends Specification with Mockito {
-  "TestAiCommon" should {
-    "create and test an individual does not throw" in {
+class LegalGamerSpec extends UnitSpec {
+  "chooseChild" should {
+    "return code that can be compiled and evaluated" in {
       val injector = Guice.createInjector(new DevModule, new LegalGamerModule)
       val premade = new NodeTree(
         Seq(
@@ -37,11 +36,9 @@ class TestAiCommonSpec extends Specification with Mockito {
         val nodeTree: NodeTree = premade.replaceEmpty(scope, injector).asInstanceOf[NodeTree]
         val f = new AddTwoInts(nodeTree)
         f.fitness
-
-        success
       }
       catch {
-        case e: Throwable => failure("Should not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
+        case e: Throwable => fail("Should not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
       }
     }
   }

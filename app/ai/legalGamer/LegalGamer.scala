@@ -11,7 +11,6 @@ case class LegalGamer @Inject()(rng: IRandomNumberGenerator) extends SelectionSt
     possibleChildren(0)
   }
 
-  // TODO doesn't need IRandomNumberGenerator as it will be on the constructor.
   override def canAddAnother(accLength: Int,
                              factoryLimit: Int): Boolean = accLength < factoryLimit
 
