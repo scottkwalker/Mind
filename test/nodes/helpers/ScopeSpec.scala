@@ -1,113 +1,137 @@
 package nodes.helpers
 
-import org.specs2.mutable._
 import com.google.inject.Injector
 import com.google.inject.Guice
 import modules.ai.aco.AcoModule
 import modules.DevModule
+import helpers.UnitSpec
 
-class ScopeSpec extends Specification {
-  "Scope" should {
-    "defauls values to zero" in {
-      Scope() must beLike {
+class ScopeSpec extends UnitSpec {
+  "constructor" should {
+    "set default values to zero" in {
+      Scope() match {
         case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth, maxObjectsInTree) =>
-          numVals mustEqual 0
-          numFuncs mustEqual 0
-          numObjects mustEqual 0
-          depth mustEqual 0
-          maxExpressionsInFunc mustEqual 0
-          maxFuncs mustEqual 0
-          maxParamsInFunc mustEqual 0
-          maxDepth mustEqual 0
-          maxObjectsInTree mustEqual 0
+          numVals should equal(0)
+          numFuncs should equal(0)
+          numObjects should equal(0)
+          depth should equal(0)
+          maxExpressionsInFunc should equal(0)
+          maxFuncs should equal(0)
+          maxParamsInFunc should equal(0)
+          maxDepth should equal(0)
+          maxObjectsInTree should equal(0)
+        case _ => fail("should have matched")
       }
     }
+  }
 
-    "incrementVals returns expected" in {
-      Scope().incrementVals must beLike {
+  "incrementVals" should {
+    "return expected" in {
+      Scope().incrementVals match {
         case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth, maxObjectsInTree) =>
-          numVals mustEqual 1
-          numFuncs mustEqual 0
-          numObjects mustEqual 0
-          depth mustEqual 0
-          maxExpressionsInFunc mustEqual 0
-          maxFuncs mustEqual 0
-          maxParamsInFunc mustEqual 0
-          maxDepth mustEqual 0
-          maxObjectsInTree mustEqual 0
+          numVals should equal(1)
+          numFuncs should equal(0)
+          numObjects should equal(0)
+          depth should equal(0)
+          maxExpressionsInFunc should equal(0)
+          maxFuncs should equal(0)
+          maxParamsInFunc should equal(0)
+          maxDepth should equal(0)
+          maxObjectsInTree should equal(0)
+        case _ => fail("should have matched")
       }
     }
+  }
 
-    "incrementFuncs returns expected" in {
-      Scope().incrementFuncs must beLike {
+  "incrementFuncs" should {
+    "return expected" in {
+      Scope().incrementFuncs match {
         case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth, maxObjectsInTree) =>
-          numVals mustEqual 0
-          numFuncs mustEqual 1
-          numObjects mustEqual 0
-          depth mustEqual 0
-          maxExpressionsInFunc mustEqual 0
-          maxFuncs mustEqual 0
-          maxParamsInFunc mustEqual 0
-          maxDepth mustEqual 0
-          maxObjectsInTree mustEqual 0
+          numVals should equal(0)
+          numFuncs should equal(1)
+          numObjects should equal(0)
+          depth should equal(0)
+          maxExpressionsInFunc should equal(0)
+          maxFuncs should equal(0)
+          maxParamsInFunc should equal(0)
+          maxDepth should equal(0)
+          maxObjectsInTree should equal(0)
+        case _ => fail("should have matched")
       }
     }
+  }
 
-    "incrementObjects returns expected" in {
-      Scope().incrementObjects must beLike {
+  "incrementObjects" should {
+    "return expected" in {
+      Scope().incrementObjects match {
         case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth, maxObjectsInTree) =>
-          numVals mustEqual 0
-          numFuncs mustEqual 0
-          numObjects mustEqual 1
-          depth mustEqual 0
-          maxExpressionsInFunc mustEqual 0
-          maxFuncs mustEqual 0
-          maxParamsInFunc mustEqual 0
-          maxDepth mustEqual 0
-          maxObjectsInTree mustEqual 0
+          numVals should equal(0)
+          numFuncs should equal(0)
+          numObjects should equal(1)
+          depth should equal(0)
+          maxExpressionsInFunc should equal(0)
+          maxFuncs should equal(0)
+          maxParamsInFunc should equal(0)
+          maxDepth should equal(0)
+          maxObjectsInTree should equal(0)
+        case _ => fail("should have matched")
       }
     }
+  }
 
-    "decrementStepsRemaining returns expected" in {
-      Scope(depth = 0).incrementDepth must beLike {
+  "decrementStepsRemaining" should {
+    "return expected" in {
+      Scope(depth = 0).incrementDepth match {
         case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth, maxObjectsInTree) =>
-          numVals mustEqual 0
-          numFuncs mustEqual 0
-          numObjects mustEqual 0
-          depth mustEqual 1
-          maxExpressionsInFunc mustEqual 0
-          maxFuncs mustEqual 0
-          maxParamsInFunc mustEqual 0
-          maxDepth mustEqual 0
-          maxObjectsInTree mustEqual 0
+          numVals should equal(0)
+          numFuncs should equal(0)
+          numObjects should equal(0)
+          depth should equal(1)
+          maxExpressionsInFunc should equal(0)
+          maxFuncs should equal(0)
+          maxParamsInFunc should equal(0)
+          maxDepth should equal(0)
+          maxObjectsInTree should equal(0)
+        case _ => fail("should have matched")
       }
     }
+  }
 
-    "fluent interface returns expected" in {
+  "fluent interface" should {
+    "return expected" in {
       Scope(depth = 0).
         incrementVals.
         incrementFuncs.
         incrementObjects.
-        incrementDepth must beLike {
+        incrementDepth match {
         case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxDepth, maxObjectsInTree) =>
-          numVals mustEqual 1
-          numFuncs mustEqual 1
-          numObjects mustEqual 1
-          depth mustEqual 1
-          maxExpressionsInFunc mustEqual 0
-          maxFuncs mustEqual 0
-          maxParamsInFunc mustEqual 0
-          maxDepth mustEqual 0
-          maxObjectsInTree mustEqual 0
+          numVals should equal(1)
+          numFuncs should equal(1)
+          numObjects should equal(1)
+          depth should equal(1)
+          maxExpressionsInFunc should equal(0)
+          maxFuncs should equal(0)
+          maxParamsInFunc should equal(0)
+          maxDepth should equal(0)
+          maxObjectsInTree should equal(0)
+        case _ => fail("should have matched")
       }
     }
+  }
 
-    "IoC creates a new instance with injected values" in {
+  "IoC create" should {
+    "return a new instance with injected values" in {
       val injector: Injector = Guice.createInjector(new DevModule, new AcoModule)
       val sut = injector.getInstance(classOf[IScope])
 
-      sut.maxFuncsInObject mustEqual 10
-      sut.maxExpressionsInFunc mustEqual 2
+      sut.maxFuncsInObject should equal(10)
+      sut.maxExpressionsInFunc should equal(2)
+    }
+  }
+
+  "serialize" should {
+    "return expected json" in {
+      Scope().serialize.toString should equal( """{"numVals":0,"numFuncs":0,"numObjects":0,"depth":0,"maxExpressionsInFunc":0,"maxFuncsInObject":0,"maxParamsInFunc":0,"maxDepth":0,"maxObjectsInTree":0}""")
     }
   }
 }
