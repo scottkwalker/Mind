@@ -5,15 +5,25 @@ import fitness.AddTwoInts
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 import models.domain.scala._
-import nodes.helpers.Scope
+import nodes.helpers.{ICreateChildNodes, Scope}
 import models.domain.scala.IntegerM
 import models.domain.scala.ObjectDef
 import models.domain.scala.NodeTree
 import models.domain.scala.FunctionM
 import utils.helpers.UnitSpec
+import ai.IRandomNumberGenerator
 
 class LegalGamerSpec extends UnitSpec {
   "chooseChild" should {
+    "return expected type given only one valid choice" in {
+      val rng = mock[IRandomNumberGenerator]
+      val sut = LegalGamer(rng)
+      val v = mock[ICreateChildNodes]
+      val possibleChildren = Seq(v)
+
+      sut.chooseChild(possibleChildren) shouldBe a[ICreateChildNodes]
+    }
+
     "return code that can be compiled and evaluated" in {
       val injector = Guice.createInjector(new DevModule, new LegalGamerModule)
       val premade = new NodeTree(
