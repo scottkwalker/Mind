@@ -1,18 +1,18 @@
 package nodes.legalNeighbours
 
-import org.scalatest.{Matchers, WordSpec}
 import nodes.helpers._
-import org.specs2.mock.Mockito
 import models.domain.common.Node
+import utils.helpers.UnitSpec
+import org.mockito.Mockito._
 
-class LegalNeighboursImplSpec extends WordSpec with Matchers with Mockito {
+class LegalNeighboursImplSpec extends UnitSpec {
   "fetchLegalNeighbours" should {
     val legalNeighboursImpl = new LegalNeighboursImpl
 
     case class FakeFactoryDoesNotTerminate() extends ICreateChildNodes with UpdateScopeNoChange {
       val nodeFactoryDoesNotTerminate = mock[ICreateChildNodes]
-      nodeFactoryDoesNotTerminate.neighbours returns Seq(nodeFactoryDoesNotTerminate)
-      nodeFactoryDoesNotTerminate.legalNeighbours returns legalNeighboursImpl
+      when(nodeFactoryDoesNotTerminate.neighbours).thenReturn(Seq(nodeFactoryDoesNotTerminate))
+      when(nodeFactoryDoesNotTerminate.legalNeighbours).thenReturn(legalNeighboursImpl)
 
       val legalNeighbours: LegalNeighbours = legalNeighboursImpl
       val neighbours: Seq[ICreateChildNodes] = Seq(nodeFactoryDoesNotTerminate)

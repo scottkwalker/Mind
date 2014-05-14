@@ -1,14 +1,13 @@
 package nodes.helpers
 
-import org.scalatest.WordSpec
-import org.scalatest.mock.EasyMockSugar
+import utils.helpers.UnitSpec
 import com.google.inject.{Guice, Injector}
 import nodes._
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 
 
-class PopulateMemoizationMapsSpec extends WordSpec with EasyMockSugar {
+class PopulateMemoizationMapsSpec extends UnitSpec {
   val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
   val addOperatorFactory = injector.getInstance(classOf[AddOperatorFactory])
   val functionMFactory = injector.getInstance(classOf[FunctionMFactory])

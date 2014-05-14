@@ -1,10 +1,9 @@
 package fitness
 
-import org.scalatest.WordSpec
-import org.scalatest.mock.EasyMockSugar
+import utils.helpers.UnitSpec
 
 
-class GeneratorSpec extends WordSpec with EasyMockSugar {
+class GeneratorSpec extends UnitSpec {
   "run" should {
     "get ai instance" in {
       //true shouldEqual false

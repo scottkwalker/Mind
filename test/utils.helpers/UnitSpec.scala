@@ -1,4 +1,4 @@
-package helpers
+package utils.helpers
 
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatest.mock.MockitoSugar

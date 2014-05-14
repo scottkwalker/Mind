@@ -4,7 +4,7 @@ import com.google.inject.Injector
 import com.google.inject.Guice
 import modules.ai.aco.AcoModule
 import modules.DevModule
-import helpers.UnitSpec
+import utils.helpers.UnitSpec
 
 class ScopeSpec extends UnitSpec {
   "constructor" should {
