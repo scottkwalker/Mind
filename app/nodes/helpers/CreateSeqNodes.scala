@@ -5,7 +5,7 @@ import scala.annotation.tailrec
 import ai.{IAi, IRandomNumberGenerator}
 import models.domain.common.Node
 
-case class CreateSeqNodes @Inject()(createNode: ICreateNode, rng: IRandomNumberGenerator, ai: IAi) extends ICreateSeqNodes {
+case class CreateSeqNodes @Inject()(createNode: ICreateNode, ai: IAi) extends ICreateSeqNodes {
   @tailrec
   final def createSeq(possibleChildren: => Seq[ICreateChildNodes],
                       scope: IScope,
@@ -13,7 +13,7 @@ case class CreateSeqNodes @Inject()(createNode: ICreateNode, rng: IRandomNumberG
                       acc: Seq[Node] = Seq.empty, // Default the accumulator to empty.
                       factoryLimit: Int
                        ): (IScope, Seq[Node]) = {
-    if (ai.canAddAnother(acc.length, factoryLimit, rng)) {
+    if (ai.canAddAnother(acc.length, factoryLimit)) {
       val (updatedScope, child) = createNode.create(possibleChildren, scope, ai)
       createSeq(possibleChildren,
         updatedScope,

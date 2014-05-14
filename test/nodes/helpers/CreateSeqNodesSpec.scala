@@ -22,7 +22,7 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         val ai: SelectionStrategy = Aco(rng)
         val cn = mock[CreateNode]
         cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[SelectionStrategy]) returns ((s, n))
-        val sut = CreateSeqNodes(cn, rng, ai)
+        val sut = CreateSeqNodes(cn, ai)
 
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
           scope = s,
@@ -46,7 +46,7 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         rng.nextInt(any[Int]) returns 2
         rng.nextBoolean() returns true
         val ai: SelectionStrategy = Aco(rng)
-        val sut = CreateSeqNodes(cn, rng, ai)
+        val sut = CreateSeqNodes(cn, ai)
 
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
           scope = s,
@@ -70,7 +70,7 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         rng.nextInt(any[Int]) returns 1
         rng.nextBoolean() returns true
         val ai: SelectionStrategy = Aco(rng)
-        val sut = CreateSeqNodes(cn, rng, ai)
+        val sut = CreateSeqNodes(cn, ai)
 
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
           scope = s,
@@ -94,7 +94,7 @@ class CreateSeqNodesSpec extends Specification with Mockito {
         rng.nextInt(any[Int]) returns 2
         rng.nextBoolean() returns true
         val ai: SelectionStrategy = Aco(rng)
-        val sut = CreateSeqNodes(cn, rng, ai)
+        val sut = CreateSeqNodes(cn, ai)
 
         val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
           scope = s,
