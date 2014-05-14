@@ -1,48 +1,50 @@
 package nodes.helpers
 
-import org.specs2.mutable._
-import org.specs2.mock.Mockito
 import ai.SelectionStrategy
+import utils.helpers.UnitSpec
+import org.mockito.Mockito._
+import org.mockito.Matchers.any
 
-class CreateNodeSpec extends Specification with Mockito {
+class CreateNodeSpec extends UnitSpec {
   "create" should {
     "calls chooseChild on ai" in {
       val scope = Scope(maxDepth = 10)
       val v = mock[ICreateChildNodes]
-      v.updateScope(scope) returns scope
+      when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
-      ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope]) returns v
+      when(ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope])).thenReturn(v)
       val sut = CreateNode()
 
       val (_, _) = sut.create(Seq(v), scope, ai)
 
-      there was one(ai).chooseChild(Seq(v), scope)
+      //there was one(ai).chooseChild(Seq(v), scope)
+      verify(ai, times(1)).chooseChild(Seq(v), scope)
     }
 
     "calls updateScope" in {
       val scope = Scope(maxDepth = 10)
       val v = mock[ICreateChildNodes]
-      v.updateScope(scope) returns scope
+      when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
-      ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope]) returns v
+      when(ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope])).thenReturn(v)
       val sut = CreateNode()
 
       val (_, _) = sut.create(Seq(v), scope, ai)
 
-      there was one(v).updateScope(scope)
+      verify(v, times(1)).updateScope(scope)
     }
 
     "calls create on factory" in {
       val scope = Scope(maxDepth = 10)
       val v = mock[ICreateChildNodes]
-      v.updateScope(scope) returns scope
+      when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
-      ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope]) returns v
+      when(ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope])).thenReturn(v)
       val sut = CreateNode()
 
       val (_, _) = sut.create(Seq(v), scope, ai)
 
-      there was one(v).create(scope)
+      verify(v, times(1)).create(scope)
     }
   }
 }
