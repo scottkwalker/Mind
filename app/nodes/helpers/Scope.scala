@@ -1,6 +1,6 @@
 package nodes.helpers
 
-import play.api.libs.json.{Writes, Json}
+import play.api.libs.json.{Format, Writes, Json}
 
 case class Scope(numVals: Int = 0,
                  numFuncs: Int = 0,
@@ -72,12 +72,15 @@ case class Scope(numVals: Int = 0,
     maxObjectsInTree = maxObjectsInTree)
 
   def hasDepthRemaining = depth < maxDepth
-
-  def serialize()(implicit tjs: Writes[Scope]) = {
-    Json.toJson(this)
-  }
 }
 
 object Scope {
-  implicit val format = Json.format[Scope]
+  implicit val jsonFormat = Json.format[Scope]
+}
+
+
+object Serialiser {
+  def toJson[A: Writes](model: A) = {
+    Json.toJson(model)
+  }
 }
