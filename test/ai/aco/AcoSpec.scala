@@ -24,9 +24,7 @@ class AcoSpec extends UnitSpec {
 
       sut.chooseChild(possibleChildren) shouldBe a[ICreateChildNodes]
     }
-  }
 
-  "chooseChild" should {
     "return code that can be compiled and evaluated" in {
       val injector = Guice.createInjector(new DevModule, new AcoModule)
       val premade = new NodeTree(
