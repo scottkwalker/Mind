@@ -158,4 +158,6 @@ object Memoize {
     lazy val yf: (TInput => TOutput) = memoize(f(yf)(_))
     yf
   }
+
+  // TODO Memoize needs play json serialization after changing the value to type of BitSet
 }
