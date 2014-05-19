@@ -1,5 +1,6 @@
 package nodes.legalNeighbours
 
+import _root_.common.JsonValidationException
 import java.util.concurrent.TimeUnit
 import scala.annotation.tailrec
 import org.scalatest.{WordSpec, Matchers}
@@ -13,6 +14,7 @@ import nodes.helpers.Serialiser
 import com.twitter.util.Throw
 import scala.collection.immutable.BitSet
 import play.api.libs.json._
+import models.domain.common.JsonValidationException
 
 
 class MemoizeSpec extends WordSpec with Matchers with ScalaFutures {
@@ -214,7 +216,7 @@ class MemoizeSpec extends WordSpec with Matchers with ScalaFutures {
       val parsed = Json.parse( """{"bitMask":[24,206158430208]}""")
       val fromJson = Json.fromJson[BitSet](parsed)
       val deserialized = fromJson.asEither match {
-        case Left(errors) => ???
+        case Left(errors) => throw JsonValidationException(errors)
         case Right(model) => model
       }
 
