@@ -9,8 +9,11 @@ import com.twitter.util._
 import com.twitter.conversions.time._
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.atomic.AtomicInteger
-import nodes.helpers.{Serialiser, Scope}
+import nodes.helpers.Serialiser
 import com.twitter.util.Throw
+import scala.collection.immutable.BitSet
+import play.api.libs.json._
+
 
 class MemoizeSpec extends WordSpec with Matchers with ScalaFutures {
   "apply" should {
@@ -193,11 +196,9 @@ class MemoizeSpec extends WordSpec with Matchers with ScalaFutures {
   }
 
   "bitset" should {
-    "serialize to json" in {
-      import scala.collection.immutable.BitSet
-      import play.api.libs.json._
+    val data = BitSet.empty + 3 + 4 + 4 + 100 + 101
 
-      implicit val bistsetJsonReader: Reads[BitSet] = (__ \ "bitMask").read[Array[Long]].map(BitSet.fromBitMask(_))
+    "serialize to json" in {
 
       implicit val writesDPA = new Writes[BitSet] {
         def writes(data: BitSet): JsValue = Json.obj(
@@ -205,13 +206,21 @@ class MemoizeSpec extends WordSpec with Matchers with ScalaFutures {
         )
       }
 
-      val data = BitSet.empty + 3 + 4 + 4 + 100 + 101
-
-      val asJson = Json.toJson(data)
-      println("*** asJson: " + asJson)
-
-      Serialiser.toJson(data).toString should equal("""{"bitMask":[24,206158430208]}""")
+      Serialiser.toJson(data).toString should equal( """{"bitMask":[24,206158430208]}""")
     }
+    "deserialize from json" in {
+      implicit val bistsetJsonReader: Reads[BitSet] = (__ \ "bitMask").read[Array[Long]].map(BitSet.fromBitMask(_))
+
+      val parsed = Json.parse( """{"bitMask":[24,206158430208]}""")
+      val fromJson = Json.fromJson[BitSet](parsed)
+      val deserialized = fromJson.asEither match {
+        case Left(errors) => ???
+        case Right(model) => model
+      }
+
+      deserialized should equal(data)
+    }
+
     "serialize to binary" in {
       object BinarySerialize {
         def write[A](o: A): Array[Byte] = {
@@ -221,10 +230,12 @@ class MemoizeSpec extends WordSpec with Matchers with ScalaFutures {
           out.close()
           ba.toByteArray()
         }
+
         def read[A](buffer: Array[Byte]): A = {
           val in = new java.io.ObjectInputStream(new java.io.ByteArrayInputStream(buffer))
           in.readObject().asInstanceOf[A]
         }
+
         def check[A, B](x: A, y: B) = assert((x equals y) && (y equals x))
       }
       import BinarySerialize._
