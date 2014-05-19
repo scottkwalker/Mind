@@ -1,6 +1,5 @@
 package nodes.legalNeighbours
 
-import _root_.common.JsonValidationException
 import java.util.concurrent.TimeUnit
 import scala.annotation.tailrec
 import org.scalatest.{WordSpec, Matchers}
@@ -10,11 +9,10 @@ import com.twitter.util._
 import com.twitter.conversions.time._
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.atomic.AtomicInteger
-import nodes.helpers.Serialiser
+import nodes.helpers.JsonSerialiser
 import com.twitter.util.Throw
 import scala.collection.immutable.BitSet
 import play.api.libs.json._
-import models.domain.common.JsonValidationException
 
 
 class MemoizeSpec extends WordSpec with Matchers with ScalaFutures {
@@ -199,26 +197,22 @@ class MemoizeSpec extends WordSpec with Matchers with ScalaFutures {
 
   "bitset" should {
     val data = BitSet.empty + 3 + 4 + 4 + 100 + 101
+    val jsonSerialiser = new JsonSerialiser
 
     "serialize to json" in {
-
       implicit val writesDPA = new Writes[BitSet] {
         def writes(data: BitSet): JsValue = Json.obj(
           "bitMask" -> data.toBitMask
         )
       }
 
-      Serialiser.toJson(data).toString should equal( """{"bitMask":[24,206158430208]}""")
+      jsonSerialiser.serialize(data).toString should equal( """{"bitMask":[24,206158430208]}""")
     }
     "deserialize from json" in {
       implicit val bistsetJsonReader: Reads[BitSet] = (__ \ "bitMask").read[Array[Long]].map(BitSet.fromBitMask(_))
 
-      val parsed = Json.parse( """{"bitMask":[24,206158430208]}""")
-      val fromJson = Json.fromJson[BitSet](parsed)
-      val deserialized = fromJson.asEither match {
-        case Left(errors) => throw JsonValidationException(errors)
-        case Right(model) => model
-      }
+
+      val deserialized = jsonSerialiser.deserialize("""{"bitMask":[24,206158430208]}""")
 
       deserialized should equal(data)
     }

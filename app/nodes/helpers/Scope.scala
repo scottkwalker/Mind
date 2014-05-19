@@ -1,6 +1,8 @@
 package nodes.helpers
 
-import play.api.libs.json.{Format, Writes, Json}
+import play.api.libs.json.{Reads, Format, Writes, Json}
+import scala.collection.immutable.BitSet
+import models.domain.common.JsonValidationException
 
 case class Scope(numVals: Int = 0,
                  numFuncs: Int = 0,
@@ -31,8 +33,18 @@ object Scope {
 }
 
 
-object Serialiser {
-  def toJson[A: Writes](model: A) = {
+
+class JsonSerialiser {
+  def serialize[A: Writes](model: A) = {
     Json.toJson(model)
+  }
+  
+  def deserialize[A: Reads](data: String) = {
+    val parsed = Json.parse(data)
+    val fromJson = Json.fromJson[A](parsed)
+    fromJson.asEither match {
+      case Left(errors) => throw JsonValidationException(errors)
+      case Right(model) => model
+    }
   }
 }

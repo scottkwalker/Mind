@@ -131,7 +131,8 @@ class ScopeSpec extends UnitSpec {
 
   "serialize" should {
     "return expected json" in {
-      Serialiser.toJson(Scope()).toString should equal( """{"numVals":0,"numFuncs":0,"numObjects":0,"depth":0,"maxExpressionsInFunc":0,"maxFuncsInObject":0,"maxParamsInFunc":0,"maxDepth":0,"maxObjectsInTree":0}""")
+      val jsonSerialiser = new JsonSerialiser
+      jsonSerialiser.serialize(Scope()).toString should equal( """{"numVals":0,"numFuncs":0,"numObjects":0,"depth":0,"maxExpressionsInFunc":0,"maxFuncsInObject":0,"maxParamsInFunc":0,"maxDepth":0,"maxObjectsInTree":0}""")
     }
   }
 }
