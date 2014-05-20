@@ -25,14 +25,12 @@ case class Scope(numVals: Int = 0,
 
   def setNumVals(newValue: Int): IScope = copy(numVals = newValue)
 
-  def hasDepthRemaining = depth < maxDepth
+  def hasDepthRemaining: Boolean = depth < maxDepth
 }
 
 object Scope {
   implicit val jsonFormat = Json.format[Scope]
 }
-
-
 
 class JsonSerialiser {
   def serialize[A: Writes](model: A) = {

@@ -11,5 +11,5 @@ case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
 
   override def replaceEmpty(scope: IScope, injector: Injector): Node = this
 
-  override def getMaxDepth = 1
+  override def getMaxDepth: Int = 1
 }

@@ -21,7 +21,7 @@ object Global extends GlobalSettings {
    * To override and stipulate a particular "conf" e.g.
    * play -Dconfig.file=conf/application.test.conf run
    */
-  def module = if (Play.isTest) new DevModule else new DevModule // TODO we are not using fakes yet.
+  def module: DevModule = if (Play.isTest) new DevModule else new DevModule // TODO we are not using fakes yet.
 
   lazy val injector = Guice.createInjector(module)
 
