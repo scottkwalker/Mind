@@ -2,6 +2,7 @@ import sbt._
 import sbt.Keys._
 import play.Project._
 import de.johoop.jacoco4sbt.JacocoPlugin._
+import org.scalastyle.sbt.ScalastylePlugin
 
 object Build extends sbt.Build {
 
@@ -29,7 +30,7 @@ object Build extends sbt.Build {
 
   val appSettings: Seq[Def.Setting[_]] = jcoco
 
-  val main = play.Project(appName, appVersion, appDependencies, settings = play.Project.playScalaSettings ++ jacoco.settings).settings(
+  val main = play.Project(appName, appVersion, appDependencies, settings = play.Project.playScalaSettings ++ jacoco.settings ++ ScalastylePlugin.Settings).settings(
     // Add your own project settings here
     resolvers ++= Seq(
       "snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
