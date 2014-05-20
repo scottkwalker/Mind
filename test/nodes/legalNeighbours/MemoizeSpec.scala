@@ -2,17 +2,12 @@ package nodes.legalNeighbours
 
 import java.util.concurrent.TimeUnit
 import scala.annotation.tailrec
-import org.scalatest.{WordSpec, Matchers}
 import org.mockito.Mockito._
-import org.scalatest.concurrent.ScalaFutures
 import com.twitter.util._
 import com.twitter.conversions.time._
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.atomic.AtomicInteger
-import nodes.helpers.JsonSerialiser
 import com.twitter.util.Throw
-import scala.collection.immutable.BitSet
-import play.api.libs.json._
 import utils.helpers.UnitSpec
 
 class MemoizeSpec extends UnitSpec {

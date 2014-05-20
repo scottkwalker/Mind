@@ -8,8 +8,9 @@ import com.google.inject.Guice
 import modules.DevModule
 import modules.ai.legalGamer.LegalGamerModule
 import models.domain.scala.AddOperator
+import utils.helpers.UnitSpec
 
-class AddOperatorFactorySpec extends Specification with Mockito {
+class AddOperatorFactorySpec extends UnitSpec {
   "create" should {
     "return instance of this type" in {
       val s = Scope(maxDepth = 10, numVals = 1)
@@ -18,7 +19,7 @@ class AddOperatorFactorySpec extends Specification with Mockito {
 
       val instance = factory.create(scope = s)
 
-      instance must beAnInstanceOf[AddOperator]
+      instance shouldBe a[AddOperator]
     }
   }
 }

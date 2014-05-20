@@ -1,24 +1,28 @@
 package nodes
 
-import org.specs2.mutable._
-import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import nodes.helpers.{IScope, Scope}
 import ai.IRandomNumberGenerator
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
-import models.domain.scala.{Empty, ValueRef, AddOperator, ObjectDef}
 import models.domain.common.Node
+import utils.helpers.UnitSpec
+import org.mockito.Mockito._
+import org.mockito.Matchers._
+import models.domain.scala.AddOperator
+import models.domain.scala.Empty
+import models.domain.scala.ObjectDef
+import models.domain.scala.ValueRef
 
-class AddOperatorSpec extends Specification with Mockito {
+class AddOperatorSpec extends UnitSpec {
   "toRawScala" should {
     "return expected" in {
       val a = mock[ValueRef]
-      a.toRaw returns "STUB_A"
+      when(a.toRaw).thenReturn("STUB_A")
       val b = mock[ValueRef]
-      b.toRaw returns "STUB_B"
+      when(b.toRaw).thenReturn("STUB_B")
 
-      AddOperator(a, b).toRaw mustEqual "STUB_A + STUB_B"
+      AddOperator(a, b).toRaw should equal("STUB_A + STUB_B")
     }
   }
 
@@ -26,49 +30,49 @@ class AddOperatorSpec extends Specification with Mockito {
     "true given child nodes can terminate in under N steps" in {
       val s = Scope(maxDepth = 2)
       val v = mock[ValueRef]
-      v.validate(any[Scope]) returns true
+      when(v.validate(any[Scope])).thenReturn(true)
 
-      AddOperator(v, v).validate(s) mustEqual true
+      AddOperator(v, v).validate(s) should equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
       val s = Scope(maxDepth = 0)
       val v = mock[ValueRef]
-      v.validate(any[Scope]) throws new RuntimeException
+      when(v.validate(any[Scope])).thenThrow(new RuntimeException)
 
-      AddOperator(v, v).validate(s) mustEqual false
+      AddOperator(v, v).validate(s) should equal(false)
     }
 
     "false given child nodes cannot terminate in under N steps" in {
       val s = Scope(maxDepth = 10)
       val v = mock[ValueRef]
-      v.validate(any[Scope]) returns false
+      when(v.validate(any[Scope])).thenReturn(false)
 
-      AddOperator(v, v).validate(s) mustEqual false
+      AddOperator(v, v).validate(s) should equal(false)
     }
 
     "true given none empty" in {
       val s = Scope(maxDepth = 10)
       val v = mock[ValueRef]
-      v.validate(any[Scope]) returns true
+      when(v.validate(any[Scope])).thenReturn(true)
 
-      AddOperator(v, v).validate(s) mustEqual true
+      AddOperator(v, v).validate(s) should equal(true)
     }
 
     "false given contains an empty node" in {
       val s = Scope(maxDepth = 10)
       val v = mock[ValueRef]
-      v.validate(any[Scope]) returns true
+      when(v.validate(any[Scope])).thenReturn(true)
 
-      AddOperator(v, Empty()).validate(s) mustEqual false
+      AddOperator(v, Empty()).validate(s) should equal(false)
     }
 
     "false given contains a node that is not valid for this level" in {
       val s = Scope(maxDepth = 10)
       val v = mock[ValueRef]
-      v.validate(any[Scope]) returns true
+      when(v.validate(any[Scope])).thenReturn(true)
 
-      AddOperator(v, ObjectDef(Nil, "ObjectM0")).validate(s) mustEqual false
+      AddOperator(v, ObjectDef(Nil, "ObjectM0")).validate(s) should equal(false)
     }
   }
 
@@ -76,23 +80,23 @@ class AddOperatorSpec extends Specification with Mockito {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
       val v = mock[ValueRef]
-      v.replaceEmpty(any[Scope], any[Injector]) returns v
+      when(v.replaceEmpty(any[Scope], any[Injector])).thenReturn(v)
       val i = mock[Injector]
       val instance = AddOperator(v, v)
 
       instance.replaceEmpty(s, i)
 
-      there was two(v).replaceEmpty(any[Scope], any[Injector])
+      verify(v, times(2)).replaceEmpty(any[Scope], any[Injector])
     }
 
     "returns same when no empty nodes" in {
       val s = mock[IScope]
       val v = mock[ValueRef]
-      v.replaceEmpty(any[Scope], any[Injector]) returns v
+      when(v.replaceEmpty(any[Scope], any[Injector])).thenReturn(v)
       val i = mock[Injector]
       val instance = AddOperator(v, v)
 
-      instance.replaceEmpty(s, i) mustEqual instance
+      instance.replaceEmpty(s, i) should equal(instance)
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -100,31 +104,31 @@ class AddOperatorSpec extends Specification with Mockito {
         override def bindAddOperatorFactory(): Unit = {
           val n: Node = mock[ValueRef]
           val f = mock[AddOperatorFactory]
-          f.create(any[Scope]) returns n
+          when(f.create(any[Scope])).thenReturn(n)
           bind(classOf[AddOperatorFactory]).toInstance(f)
         }
       }
 
       val s = mock[IScope]
-      s.numVals returns 1
+      when(s.numVals).thenReturn(1)
       val v = mock[Empty]
       val injector: Injector = Guice.createInjector(new TestDevModule, new LegalGamerModule)
       val instance = AddOperator(v, v)
 
       val result = instance.replaceEmpty(s, injector)
 
-      result must beLike {
-        case AddOperator(l, r) =>
-          l must beAnInstanceOf[ValueRef]
-          r must beAnInstanceOf[ValueRef]
+      result match {
+        case AddOperator(left, right) =>
+          left shouldBe a[ValueRef]
+          right shouldBe a[ValueRef]
       }
     }
 
     "getMaxDepth returns 1 + child getMaxDepth" in {
       val v = mock[ValueRef]
-      v.getMaxDepth returns 1
+      when(v.getMaxDepth).thenReturn(1)
 
-      AddOperator(v, v).getMaxDepth mustEqual 2
+      AddOperator(v, v).getMaxDepth should equal(2)
     }
   }
 }
