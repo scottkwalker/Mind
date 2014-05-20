@@ -7,7 +7,7 @@ import com.google.inject.{Guice, Injector}
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 import models.domain.scala._
-import nodes.helpers.Scope
+import nodes.helpers.{IScope, Scope}
 import models.domain.scala.ValDclInFunctionParam
 import models.domain.scala.AddOperator
 import models.domain.scala.IntegerM
@@ -101,7 +101,7 @@ class FuncDefSpec extends Specification with Mockito {
 
     "replaceEmpty" in {
       "calls replaceEmpty on non-empty child nodes" in {
-        val s = mock[Scope]
+        val s = mock[IScope]
         val p = mock[ValDclInFunctionParam]
         p.replaceEmpty(any[Scope], any[Injector]) returns p
         val v = mock[ValueRef]
@@ -118,7 +118,7 @@ class FuncDefSpec extends Specification with Mockito {
       }
 
       "returns same when no empty nodes" in {
-        val s = mock[Scope]
+        val s = mock[IScope]
         val p = mock[ValDclInFunctionParam]
         p.replaceEmpty(any[Scope], any[Injector]) returns p
         val v = mock[ValueRef]

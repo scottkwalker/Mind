@@ -1,7 +1,7 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.Scope
+import nodes.helpers.{IScope, Scope}
 import org.specs2.mock.Mockito
 import com.google.inject.Injector
 import com.google.inject.Guice
@@ -49,7 +49,7 @@ class ValDclInFunctionParamFactorySpec extends Specification with Mockito {
     }
 
     "updateScope increments vals" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
 
       factory.updateScope(s)
 

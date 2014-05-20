@@ -5,7 +5,7 @@ import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import ai.IRandomNumberGenerator
 
-import nodes.helpers.Scope
+import nodes.helpers.{IScope, Scope}
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 import models.domain.scala.{Empty, ValDclInFunctionParam, IntegerM}
@@ -24,7 +24,7 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
 
   "validate" should {
     "false given it cannot terminate in under N steps" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       s.hasDepthRemaining returns false
       val name = "a"
       val p = mock[IntegerM]
@@ -33,7 +33,7 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
     }
 
     "false given an empty name" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       s.hasDepthRemaining returns true
       val name = ""
       val p = mock[IntegerM]
@@ -42,7 +42,7 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
     }
 
     "false given an invalid child" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       s.hasDepthRemaining returns true
       val name = "a"
       val p = mock[IntegerM]
@@ -52,7 +52,7 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
     }
 
     "true given it can terminate, has a non-empty name and valid child" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       s.hasDepthRemaining returns true
       val name = "a"
       val p = mock[IntegerM]
@@ -64,7 +64,7 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
 
   "replaceEmpty" should {
     "calls replaceEmpty on non-empty child nodes" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       s.incrementVals returns s
       s.incrementDepth returns s
       val name = "a"
@@ -79,7 +79,7 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
     }
 
     "returns same when no empty nodes" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       s.incrementVals returns s
       s.incrementDepth returns s
       val name = "a"
@@ -103,7 +103,7 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
         }
       }
 
-      val s = mock[Scope]
+      val s = mock[IScope]
       val name = "a"
       val p = mock[Empty]
       val injector: Injector = Guice.createInjector(new TestDevModule, new LegalGamerModule)

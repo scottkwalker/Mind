@@ -1,6 +1,6 @@
 package nodes
 
-import nodes.helpers.Scope
+import nodes.helpers.{IScope, Scope}
 import com.google.inject.Injector
 import models.domain.scala.Empty
 import utils.helpers.UnitSpec
@@ -21,7 +21,7 @@ class EmptySpec extends UnitSpec {
 
   "replaceEmpty" should {
     "throws" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       val i = mock[Injector]
 
       val instance = Empty()

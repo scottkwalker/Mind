@@ -10,8 +10,8 @@ import org.mockito.Matchers.any
 class CreateSeqNodesSpec extends UnitSpec {
   "createSeq" should {
     "calls create on factory once given only space for 1 func in obj and mocked rng the same" in {
-      val s = mock[Scope]
-      when(s.maxFuncsInObject).thenReturn( 1)
+      val s = mock[IScope]
+      when(s.maxFuncsInObject).thenReturn(1)
       val n = mock[Node]
       val v = mock[ICreateChildNodes]
       when(v.updateScope(s) ).thenReturn( s)
@@ -33,7 +33,7 @@ class CreateSeqNodesSpec extends UnitSpec {
     }
 
     "calls create on factory twice given space for 2 func in obj and mocked rng the same" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       when(s.maxFuncsInObject ).thenReturn( 2)
       val n = mock[Node]
       val v = mock[ICreateChildNodes]
@@ -57,7 +57,7 @@ class CreateSeqNodesSpec extends UnitSpec {
     }
 
     "calls create on factory once given space for 2 func in obj but rng mocked to 1" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       when(s.maxFuncsInObject).thenReturn( 2)
       val n = mock[Node]
       val v = mock[ICreateChildNodes]
@@ -81,7 +81,7 @@ class CreateSeqNodesSpec extends UnitSpec {
     }
 
     "calls create on factory once given space for 2 func in obj and a rng mocked to 2 but 1 pre-made node already added" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       when(s.maxFuncsInObject ).thenReturn( 2)
       val n = mock[Node]
       val v = mock[ICreateChildNodes]

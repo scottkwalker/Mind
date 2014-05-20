@@ -1,7 +1,7 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.Scope
+import nodes.helpers.{IScope, Scope}
 import org.specs2.mock.Mockito
 import com.google.inject.Injector
 import models.domain.scala.ValueRef
@@ -39,7 +39,7 @@ class ValueRefSpec extends Specification with Mockito {
 
     "replaceEmpty" in {
       "returns same when no empty nodes" in {
-        val s = mock[Scope]
+        val s = mock[IScope]
         val name = "a"
         val injector = mock[Injector]
         val instance = ValueRef(name)

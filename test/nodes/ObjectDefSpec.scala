@@ -1,7 +1,7 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.Scope
+import nodes.helpers.{IScope, Scope}
 import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import modules.ai.legalGamer.LegalGamerModule
@@ -75,7 +75,7 @@ class ObjectDefSpec extends Specification with Mockito {
 
   "replaceEmpty" should {
     "calls replaceEmpty on non-empty child nodes" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       val f = mock[FunctionM]
       f.replaceEmpty(any[Scope], any[Injector]) returns f
       val i = mock[Injector]
@@ -87,7 +87,7 @@ class ObjectDefSpec extends Specification with Mockito {
     }
 
     "returns same when no empty nodes" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       val f = mock[FunctionM]
       f.replaceEmpty(any[Scope], any[Injector]) returns f
       val i = mock[Injector]

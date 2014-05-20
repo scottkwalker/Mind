@@ -1,7 +1,7 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.Scope
+import nodes.helpers.{IScope, Scope}
 import org.specs2.mock.Mockito
 import com.google.inject.Injector
 import com.google.inject.Guice
@@ -15,7 +15,7 @@ class ValueRefFactorySpec extends Specification with Mockito {
 
   "create" should {
     "returns instance of this type" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       s.numVals returns 1
 
       val instance = factory.create(scope = s)
@@ -24,7 +24,7 @@ class ValueRefFactorySpec extends Specification with Mockito {
     }
 
     "returns expected given scope with 0 vals" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       s.numVals returns 1
 
       val instance = factory.create(scope = s)
@@ -35,7 +35,7 @@ class ValueRefFactorySpec extends Specification with Mockito {
     }
 
     "returns expected given scope with 1 val" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       s.numVals returns 1
 
       val instance = factory.create(scope = s)
@@ -54,7 +54,7 @@ class ValueRefFactorySpec extends Specification with Mockito {
 
   "updateScope" should {
     "returns same" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
 
       val s2 = factory.updateScope(s)
 

@@ -3,7 +3,7 @@ package nodes
 import org.specs2.mutable._
 import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
-import nodes.helpers.Scope
+import nodes.helpers.{IScope, Scope}
 import ai.IRandomNumberGenerator
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
@@ -74,7 +74,7 @@ class AddOperatorSpec extends Specification with Mockito {
 
   "replaceEmpty" should {
     "calls replaceEmpty on non-empty child nodes" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       val v = mock[ValueRef]
       v.replaceEmpty(any[Scope], any[Injector]) returns v
       val i = mock[Injector]
@@ -86,7 +86,7 @@ class AddOperatorSpec extends Specification with Mockito {
     }
 
     "returns same when no empty nodes" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       val v = mock[ValueRef]
       v.replaceEmpty(any[Scope], any[Injector]) returns v
       val i = mock[Injector]
@@ -105,7 +105,7 @@ class AddOperatorSpec extends Specification with Mockito {
         }
       }
 
-      val s = mock[Scope]
+      val s = mock[IScope]
       s.numVals returns 1
       val v = mock[Empty]
       val injector: Injector = Guice.createInjector(new TestDevModule, new LegalGamerModule)

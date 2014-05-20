@@ -3,7 +3,7 @@ package nodes
 import org.specs2.mutable._
 import org.specs2.mock.Mockito
 import com.google.inject.{Injector, Guice}
-import nodes.helpers.Scope
+import nodes.helpers.{IScope, Scope}
 import ai.IRandomNumberGenerator
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
@@ -47,7 +47,7 @@ class ObjectDefFactorySpec extends Specification with Mockito {
     }
 
     "update scope calls increment objects" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
 
       factory.updateScope(s)
 

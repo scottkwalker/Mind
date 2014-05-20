@@ -1,7 +1,7 @@
 package nodes
 
 import org.specs2.mutable._
-import nodes.helpers.Scope
+import nodes.helpers.{IScope, Scope}
 import org.specs2.mock.Mockito
 import com.google.inject.Injector
 import models.domain.scala.IntegerM
@@ -15,14 +15,14 @@ class IntegerMSpec extends Specification with Mockito {
 
   "validate" should {
     "returns true" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       IntegerM().validate(s) mustEqual true
     }
   }
 
   "replaceEmpty" should {
     "return same when no empty nodes" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       val i = mock[Injector]
       val instance = IntegerM()
 
