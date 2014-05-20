@@ -4,7 +4,7 @@ import play.api.libs.json.{Reads, Format, Writes, Json}
 import scala.collection.immutable.BitSet
 import models.domain.common.JsonValidationException
 
-case class Scope(numVals: Int = 0,
+final case class Scope(numVals: Int = 0,
                  numFuncs: Int = 0,
                  numObjects: Int = 0,
                  depth: Int = 0,
@@ -32,7 +32,7 @@ object Scope {
   implicit val jsonFormat = Json.format[Scope]
 }
 
-class JsonSerialiser {
+final class JsonSerialiser {
   def serialize[A: Writes](model: A) = {
     Json.toJson(model)
   }

@@ -8,7 +8,7 @@ import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 import models.domain.scala._
 import models.domain.scala.AddOperator
-import nodes.helpers.Scope
+import nodes.helpers.{IScope, Scope}
 import models.domain.scala.IntegerM
 import models.domain.scala.ObjectDef
 import models.domain.scala.FunctionM
@@ -51,7 +51,7 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
 
   "replaceEmpty" should {
     "calls replaceEmpty on non-empty child nodes" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       val f = mock[ObjectDef]
       f.replaceEmpty(any[Scope], any[Injector]) returns f
       val i = mock[Injector]
@@ -63,7 +63,7 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
     }
 
     "returns same when no empty nodes" in {
-      val s = mock[Scope]
+      val s = mock[IScope]
       val f = mock[ObjectDef]
       f.replaceEmpty(any[Scope], any[Injector]) returns f
       val i = mock[Injector]
