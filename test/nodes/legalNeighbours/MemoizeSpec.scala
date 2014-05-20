@@ -13,9 +13,9 @@ import nodes.helpers.JsonSerialiser
 import com.twitter.util.Throw
 import scala.collection.immutable.BitSet
 import play.api.libs.json._
+import utils.helpers.UnitSpec
 
-
-class MemoizeSpec extends WordSpec with Matchers with ScalaFutures {
+class MemoizeSpec extends UnitSpec {
   "apply" should {
     "return the same result when called twice" in {
       // mockito can't spy anonymous classes,
@@ -192,56 +192,6 @@ class MemoizeSpec extends WordSpec with Matchers with ScalaFutures {
 
       // The exception plus another successful call:
       callCount.get() should equal(2)
-    }
-  }
-
-  "bitset" should {
-    val data = BitSet.empty + 3 + 4 + 4 + 100 + 101
-    val jsonSerialiser = new JsonSerialiser
-
-    "serialize to json" in {
-      implicit val writesDPA = new Writes[BitSet] {
-        def writes(data: BitSet): JsValue = Json.obj(
-          "bitMask" -> data.toBitMask
-        )
-      }
-
-      jsonSerialiser.serialize(data).toString should equal( """{"bitMask":[24,206158430208]}""")
-    }
-    "deserialize from json" in {
-      implicit val bistsetJsonReader: Reads[BitSet] = (__ \ "bitMask").read[Array[Long]].map(BitSet.fromBitMask(_))
-
-
-      val deserialized = jsonSerialiser.deserialize("""{"bitMask":[24,206158430208]}""")
-
-      deserialized should equal(data)
-    }
-
-    "serialize to binary" in {
-      object BinarySerialize {
-        def write[A](o: A): Array[Byte] = {
-          val ba = new java.io.ByteArrayOutputStream(512)
-          val out = new java.io.ObjectOutputStream(ba)
-          out.writeObject(o)
-          out.close()
-          ba.toByteArray()
-        }
-
-        def read[A](buffer: Array[Byte]): A = {
-          val in = new java.io.ObjectInputStream(new java.io.ByteArrayInputStream(buffer))
-          in.readObject().asInstanceOf[A]
-        }
-
-        def check[A, B](x: A, y: B) = assert((x equals y) && (y equals x))
-      }
-      import BinarySerialize._
-      import scala.collection.immutable.BitSet
-
-      val data = BitSet.empty + 3 + 4 + 4 + 100 + 101
-
-      val asBinary = write(data)
-      val readFromBinary: BitSet = read(asBinary)
-      check(data, readFromBinary)
     }
   }
 }
