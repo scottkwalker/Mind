@@ -5,9 +5,9 @@ import scala.annotation.tailrec
 import ai.{IAi, IRandomNumberGenerator}
 import models.domain.common.Node
 
-case class CreateSeqNodes @Inject()(createNode: ICreateNode, ai: IAi) extends ICreateSeqNodes {
+final case class CreateSeqNodes @Inject()(createNode: ICreateNode, ai: IAi) extends ICreateSeqNodes {
   @tailrec
-  final def createSeq(possibleChildren: => Seq[ICreateChildNodes],
+  def createSeq(possibleChildren: => Seq[ICreateChildNodes],
                       scope: IScope,
                       saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
                       acc: Seq[Node] = Seq.empty, // Default the accumulator to empty.

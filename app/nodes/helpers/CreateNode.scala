@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import ai.IAi
 import models.domain.common.Node
 
-case class CreateNode @Inject()() extends ICreateNode {
+final case class CreateNode @Inject()() extends ICreateNode {
   def create(possibleChildren: Seq[ICreateChildNodes], scope: IScope, ai: IAi): (IScope, Node) = {
     val factory = ai.chooseChild(possibleChildren, scope)
     val child = factory.create(scope)

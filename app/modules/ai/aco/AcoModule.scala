@@ -4,7 +4,7 @@ import com.tzavellas.sse.guice.ScalaModule
 import ai.IAi
 import ai.aco.Aco
 
-class AcoModule extends ScalaModule {
+final class AcoModule extends ScalaModule {
   def configure(): Unit = {
     bind(classOf[IAi]).to(classOf[Aco]).asEagerSingleton()
   }

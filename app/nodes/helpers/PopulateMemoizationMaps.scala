@@ -13,7 +13,7 @@ make it start calculating an answer.
 Json serializer runs over the Map
 */
 
-class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFactory,
+final class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFactory,
                                         functionMFactory: FunctionMFactory,
                                         integerMFactory: IntegerMFactory,
                                         nodeTreeFactory: NodeTreeFactory,

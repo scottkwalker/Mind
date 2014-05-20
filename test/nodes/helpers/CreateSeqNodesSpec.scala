@@ -19,7 +19,7 @@ class CreateSeqNodesSpec extends UnitSpec {
       val rng = mock[IRandomNumberGenerator]
       when(rng.nextBoolean() ).thenReturn( true)
       val ai: SelectionStrategy = Aco(rng)
-      val cn = mock[CreateNode]
+      val cn = mock[ICreateNode]
       when(cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[SelectionStrategy]) ).thenReturn ((s, n))
       val sut = CreateSeqNodes(cn, ai)
 
@@ -39,7 +39,7 @@ class CreateSeqNodesSpec extends UnitSpec {
       val v = mock[ICreateChildNodes]
       when(v.updateScope(s) ).thenReturn( s)
       when(v.create(any[Scope]) ).thenReturn( n)
-      val cn = mock[CreateNode]
+      val cn = mock[ICreateNode]
       when(cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[SelectionStrategy]) ).thenReturn ((s, n))
       val rng = mock[IRandomNumberGenerator]
       when(rng.nextInt(any[Int]) ).thenReturn( 2)
@@ -63,7 +63,7 @@ class CreateSeqNodesSpec extends UnitSpec {
       val v = mock[ICreateChildNodes]
       when(v.updateScope(s) ).thenReturn( s)
       when(v.create(any[Scope]) ).thenReturn( n)
-      val cn = mock[CreateNode]
+      val cn = mock[ICreateNode]
       when(cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[SelectionStrategy]) ).thenReturn ((s, n))
       val rng = mock[IRandomNumberGenerator]
       when(rng.nextInt(any[Int]) ).thenReturn( 1)
@@ -87,7 +87,7 @@ class CreateSeqNodesSpec extends UnitSpec {
       val v = mock[ICreateChildNodes]
       when(v.updateScope(s) ).thenReturn( s)
       when(v.create(any[Scope]) ).thenReturn( n)
-      val cn = mock[CreateNode]
+      val cn = mock[ICreateNode]
       when(cn.create(any[Seq[ICreateChildNodes]], any[Scope], any[SelectionStrategy]) ).thenReturn ((s, n))
       val rng = mock[IRandomNumberGenerator]
       when(rng.nextInt(any[Int]) ).thenReturn( 2)
