@@ -12,7 +12,7 @@ import scala.annotation.tailrec
  *          T the argument type
  *          R the return type
  */
-class Memoize1[-TInput, +TOutput](f: TInput => TOutput) extends (TInput => TOutput) {
+final class Memoize1[-TInput, +TOutput](f: TInput => TOutput) extends (TInput => TOutput) {
   /**
    * Thread-safe memoization for a function.
    *

@@ -2,7 +2,7 @@ package nodes.legalNeighbours
 
 import nodes.helpers.{ICreateChildNodes, IScope}
 
-class LegalNeighboursImpl extends LegalNeighbours {
+final class LegalNeighboursImpl extends LegalNeighbours {
   override def fetch(scope: IScope, neighbours: Seq[ICreateChildNodes]): Seq[ICreateChildNodes] ={
     val memo: IScope => Seq[ICreateChildNodes] = {
       def calculate(f: IScope => Seq[ICreateChildNodes])(scope: IScope): Seq[ICreateChildNodes] = {
