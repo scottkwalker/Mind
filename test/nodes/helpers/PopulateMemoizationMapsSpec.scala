@@ -8,14 +8,14 @@ import modules.DevModule
 
 
 class PopulateMemoizationMapsSpec extends UnitSpec {
-  val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
-  val addOperatorFactory = injector.getInstance(classOf[AddOperatorFactory])
-  val functionMFactory = injector.getInstance(classOf[FunctionMFactory])
-  val integerMFactory = injector.getInstance(classOf[IntegerMFactory])
-  val nodeTreeFactory = injector.getInstance(classOf[NodeTreeFactory])
-  val objectDefFactory = injector.getInstance(classOf[ObjectDefFactory])
-  val valDclInFunctionParamFactory = injector.getInstance(classOf[ValDclInFunctionParamFactory])
-  val valueRefFactory = injector.getInstance(classOf[ValueRefFactory])
+  private val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
+  private val addOperatorFactory = injector.getInstance(classOf[AddOperatorFactory])
+  private val functionMFactory = injector.getInstance(classOf[FunctionMFactory])
+  private val integerMFactory = injector.getInstance(classOf[IntegerMFactory])
+  private val nodeTreeFactory = injector.getInstance(classOf[NodeTreeFactory])
+  private val objectDefFactory = injector.getInstance(classOf[ObjectDefFactory])
+  private val valDclInFunctionParamFactory = injector.getInstance(classOf[ValDclInFunctionParamFactory])
+  private val valueRefFactory = injector.getInstance(classOf[ValueRefFactory])
   /*
     "IoC" should {
       "init an instance of PopulateMemoizationMaps" in {

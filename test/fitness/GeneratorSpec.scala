@@ -9,7 +9,7 @@ class GeneratorSpec extends UnitSpec {
       //true shouldEqual false
     }
 
-    "return best solution and its fitnss" in {
+    "return best solution and its fitness" in {
 
     }
 

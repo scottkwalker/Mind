@@ -11,13 +11,6 @@ import org.mockito.Matchers._
 import utils.helpers.UnitSpec
 
 class ObjectDefFactorySpec extends UnitSpec {
-  val rng = mock[IRandomNumberGenerator]
-  when(rng.nextInt(any[Int])).thenReturn(2)
-  when(rng.nextBoolean()).thenReturn(true)
-
-  val injector: Injector = Guice.createInjector(new DevModule(randomNumberGenerator = rng), new LegalGamerModule)
-  val factory = injector.getInstance(classOf[ObjectDefFactory])
-
   "create" should {
     "returns instance of this type" in {
       val s = Scope(maxDepth = 10)
@@ -70,4 +63,11 @@ class ObjectDefFactorySpec extends UnitSpec {
       verify(s, times(1)).incrementObjects
     }
   }
+
+  private val rng = mock[IRandomNumberGenerator]
+  when(rng.nextInt(any[Int])).thenReturn(2)
+  when(rng.nextBoolean()).thenReturn(true)
+
+  private val injector: Injector = Guice.createInjector(new DevModule(randomNumberGenerator = rng), new LegalGamerModule)
+  private val factory = injector.getInstance(classOf[ObjectDefFactory])
 }

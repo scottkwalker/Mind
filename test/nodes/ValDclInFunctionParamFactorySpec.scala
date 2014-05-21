@@ -10,9 +10,6 @@ import org.mockito.Mockito._
 import utils.helpers.UnitSpec
 
 class ValDclInFunctionParamFactorySpec extends UnitSpec {
-  val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
-  val factory = injector.getInstance(classOf[ValDclInFunctionParamFactory])
-
   "create" should {
     "returns instance of this type" in {
       val s = Scope(maxDepth = 10, maxParamsInFunc = 1)
@@ -58,4 +55,7 @@ class ValDclInFunctionParamFactorySpec extends UnitSpec {
       verify(s, times(1)).incrementVals
     }
   }
+
+  private val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
+  private val factory = injector.getInstance(classOf[ValDclInFunctionParamFactory])
 }

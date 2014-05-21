@@ -10,11 +10,6 @@ import org.mockito.Mockito._
 import utils.helpers.UnitSpec
 
 class ValueRefFactorySpec extends UnitSpec {
-  val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
-  val factory = injector.getInstance(classOf[ValueRefFactory])
-  val scope = mock[IScope]
-  when(scope.numVals).thenReturn(1)
-
   "create" should {
     "return instance of this type" in {
       val instance = factory.create(scope = scope)
@@ -53,4 +48,9 @@ class ValueRefFactorySpec extends UnitSpec {
       result should equal(scope)
     }
   }
+
+  private val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
+  private val factory = injector.getInstance(classOf[ValueRefFactory])
+  private val scope = mock[IScope]
+  when(scope.numVals).thenReturn(1)
 }

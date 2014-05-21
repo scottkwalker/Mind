@@ -15,9 +15,6 @@ import org.mockito.Mockito._
 import org.mockito.Matchers._
 
 class FuncDefSpec extends UnitSpec {
-  val name = "f0"
-  val params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM()))
-
   "validate" should {
     "false given an empty name" in {
       val s = Scope(maxDepth = 10)
@@ -181,4 +178,7 @@ class FuncDefSpec extends UnitSpec {
       }
     }
   }
+
+  private final val name = "f0"
+  private val params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM()))
 }
