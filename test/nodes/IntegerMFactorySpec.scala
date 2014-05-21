@@ -8,8 +8,9 @@ import org.scalatest.Matchers._
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 import models.domain.scala.IntegerM
+import utils.helpers.UnitSpec
 
-class IntegerMFactorySpec extends WordSpec with EasyMockSugar {
+class IntegerMFactorySpec extends UnitSpec {
   val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
   val factory = injector.getInstance(classOf[IntegerMFactory])
 
@@ -22,16 +23,13 @@ class IntegerMFactorySpec extends WordSpec with EasyMockSugar {
   "create" should {
     "return instance of this type" in {
       // Arrange
-      val s = strictMock[IScope]
-      expecting {}
+      val s = mock[IScope]
 
-      whenExecuting(s) {
         // Act
         val instance = factory.create(s)
 
         // Assert
         instance shouldBe a[IntegerM]
-      }
     }
   }
 }

@@ -62,7 +62,7 @@ class FunctionMFactorySpec extends UnitSpec {
   }
 
   "updateScope" should {
-    "update scope calls increment functions" in {
+    "call increment functions" in {
       val s = mock[IScope]
 
       factory.updateScope(s)

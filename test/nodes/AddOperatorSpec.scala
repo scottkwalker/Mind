@@ -123,8 +123,10 @@ class AddOperatorSpec extends UnitSpec {
           right shouldBe a[ValueRef]
       }
     }
+  }
 
-    "getMaxDepth returns 1 + child getMaxDepth" in {
+  "getMaxDepth" should {
+    "return 1 + child getMaxDepth" in {
       val v = mock[ValueRef]
       when(v.getMaxDepth).thenReturn(1)
 
