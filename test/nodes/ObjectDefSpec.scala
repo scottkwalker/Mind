@@ -11,7 +11,7 @@ import utils.helpers.UnitSpec
 
 class ObjectDefSpec extends UnitSpec {
   val name = "o0"
-  
+
   "validate" should {
     "true given it can terminates in under N steps" in {
       val s = Scope(maxDepth = 4)

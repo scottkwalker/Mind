@@ -1,59 +1,61 @@
 package nodes
 
-import org.specs2.mutable._
 import nodes.helpers.{IScope, Scope}
-import org.specs2.mock.Mockito
 import com.google.inject.Injector
 import com.google.inject.Guice
 import modules.DevModule
 import modules.ai.legalGamer.LegalGamerModule
 import models.domain.scala.{ValDclInFunctionParam, IntegerM}
+import org.mockito.Mockito._
+import utils.helpers.UnitSpec
 
-class ValDclInFunctionParamFactorySpec extends Specification with Mockito {
-  "ValDclInFunctionParamFactory" should {
-    val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
-    val factory = injector.getInstance(classOf[ValDclInFunctionParamFactory])
+class ValDclInFunctionParamFactorySpec extends UnitSpec {
+  val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
+  val factory = injector.getInstance(classOf[ValDclInFunctionParamFactory])
 
-    "create" in {
-      "returns instance of this type" in {
-        val s = Scope(maxDepth = 10, maxParamsInFunc = 1)
+  "create" should {
+    "returns instance of this type" in {
+      val s = Scope(maxDepth = 10, maxParamsInFunc = 1)
 
-        val instance = factory.create(scope = s)
+      val instance = factory.create(scope = s)
 
-        instance must beAnInstanceOf[ValDclInFunctionParam]
-      }
+      instance shouldBe a[ValDclInFunctionParam]
+    }
 
-      "returns expected given scope with 0 vals" in {
-        val s = Scope(numVals = 0, maxParamsInFunc = 1, maxDepth = 10)
+    "returns expected given scope with 0 vals" in {
+      val s = Scope(numVals = 0, maxParamsInFunc = 1, maxDepth = 10)
 
-        val instance = factory.create(scope = s)
+      val instance = factory.create(scope = s)
 
-        instance must beLike {
-          case ValDclInFunctionParam(name, primitiveType) =>
-            name mustEqual "v0"
-            primitiveType must beAnInstanceOf[IntegerM]
-        }
-      }
-
-      "returns expected given scope with 1 val" in {
-        val s = Scope(numVals = 1, maxParamsInFunc = 2, maxDepth = 10)
-
-        val instance = factory.create(scope = s)
-
-        instance must beLike {
-          case ValDclInFunctionParam(name, primitiveType) =>
-            name mustEqual "v1"
-            primitiveType must beAnInstanceOf[IntegerM]
-        }
+      instance match {
+        case ValDclInFunctionParam(name, primitiveType) =>
+          name should equal("v0")
+          primitiveType shouldBe a[IntegerM]
+        case _ => fail("wrong type")
       }
     }
 
-    "updateScope increments vals" in {
+    "returns expected given scope with 1 val" in {
+      val s = Scope(numVals = 1, maxParamsInFunc = 2, maxDepth = 10)
+
+      val instance = factory.create(scope = s)
+
+      instance match {
+        case ValDclInFunctionParam(name, primitiveType) =>
+          name should equal("v1")
+          primitiveType shouldBe a[IntegerM]
+        case _ => fail("wrong type")
+      }
+    }
+  }
+
+  "updateScope" should {
+    "calls increments vals once" in {
       val s = mock[IScope]
 
       factory.updateScope(s)
 
-      there was one(s).incrementVals
+      verify(s, times(1)).incrementVals
     }
   }
 }
