@@ -49,7 +49,7 @@ final class ValueRefSpec extends UnitSpec {
   }
 
   "getMaxDepth" should {
-    "getMaxDepth returns 1" in {
+    "returns 1" in {
       val name = "a"
 
       ValueRef(name).getMaxDepth should equal(1)
