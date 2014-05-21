@@ -6,8 +6,8 @@ import org.scalastyle.sbt.ScalastylePlugin
 
 object Build extends sbt.Build {
 
-  val appName         = "Mind"
-  val appVersion      = "1.0-SNAPSHOT"
+  val appName = "Mind"
+  val appVersion = "1.0-SNAPSHOT"
 
   jacoco.settings
 
@@ -28,12 +28,17 @@ object Build extends sbt.Build {
 
   val appSettings: Seq[Def.Setting[_]] = jcoco
 
-  val main = play.Project(appName, appVersion, appDependencies, settings = play.Project.playScalaSettings ++ jacoco.settings ++ ScalastylePlugin.Settings).settings(
-    // Add your own project settings here
-    resolvers ++= Seq(
-      "snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
-      "releases" at "http://oss.sonatype.org/content/repositories/releases"
+  val main = play.Project(name = appName,
+    applicationVersion = appVersion,
+    dependencies = appDependencies,
+    settings = play.Project.playScalaSettings ++
+      jacoco.settings ++
+      ScalastylePlugin.Settings).settings(
+      // Add your own project settings here
+      resolvers ++= Seq(
+        "snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
+        "releases" at "http://oss.sonatype.org/content/repositories/releases"
+      )
     )
-  )
 
 }
