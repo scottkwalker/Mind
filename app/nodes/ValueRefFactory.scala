@@ -7,8 +7,7 @@ import models.domain.scala.ValueRef
 import models.domain.common.Node
 import nodes.legalNeighbours.LegalNeighbours
 
-
-case class ValueRefFactory @Inject()(ai: IAi,
+final case class ValueRefFactory @Inject()(ai: IAi,
                                      rng: IRandomNumberGenerator,
                                      legalNeighbours: LegalNeighbours
                                       ) extends ICreateChildNodes with UpdateScopeNoChange {

@@ -5,7 +5,7 @@ import nodes.helpers.{UpdateScopeNoChange, IScope}
 import com.google.inject.Injector
 import models.domain.common.Node
 
-case class AddOperator(left: Node, right: Node) extends Node with UpdateScopeNoChange {
+final case class AddOperator(left: Node, right: Node) extends Node with UpdateScopeNoChange {
   override def toRaw: String = s"${left.toRaw} + ${right.toRaw}"
 
   override def validate(scope: IScope): Boolean = {
