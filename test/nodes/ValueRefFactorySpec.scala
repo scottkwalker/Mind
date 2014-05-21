@@ -1,64 +1,56 @@
 package nodes
 
-import org.specs2.mutable._
-import nodes.helpers.{IScope, Scope}
-import org.specs2.mock.Mockito
+import nodes.helpers.IScope
 import com.google.inject.Injector
 import com.google.inject.Guice
 import modules.DevModule
 import modules.ai.legalGamer.LegalGamerModule
 import models.domain.scala.ValueRef
+import org.mockito.Mockito._
+import utils.helpers.UnitSpec
 
-class ValueRefFactorySpec extends Specification with Mockito {
+class ValueRefFactorySpec extends UnitSpec {
   val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
   val factory = injector.getInstance(classOf[ValueRefFactory])
+  val scope = mock[IScope]
+  when(scope.numVals).thenReturn(1)
 
   "create" should {
-    "returns instance of this type" in {
-      val s = mock[IScope]
-      s.numVals returns 1
+    "return instance of this type" in {
+      val instance = factory.create(scope = scope)
 
-      val instance = factory.create(scope = s)
-
-      instance must beAnInstanceOf[ValueRef]
+      instance shouldBe a[ValueRef]
     }
 
-    "returns expected given scope with 0 vals" in {
-      val s = mock[IScope]
-      s.numVals returns 1
+    "return expected given scope with 0 vals" in {
+      val instance = factory.create(scope = scope)
 
-      val instance = factory.create(scope = s)
-
-      instance must beLike {
-        case ValueRef(name) => name mustEqual "v0"
+      instance match {
+        case ValueRef(name) => name should equal("v0")
       }
     }
 
-    "returns expected given scope with 1 val" in {
-      val s = mock[IScope]
-      s.numVals returns 1
+    "return expected given scope with 1 val" in {
+      val instance = factory.create(scope = scope)
 
-      val instance = factory.create(scope = s)
-
-      instance must beLike {
-        case ValueRef(name) => name mustEqual "v0"
+      instance match {
+        case ValueRef(name) => name should equal("v0")
+        case _ => fail("wrong type")
       }
     }
   }
 
   "neighbours" should {
     "be empty" in {
-      factory.neighbours.length mustEqual 0
+      factory.neighbours.length should equal(0)
     }
   }
 
   "updateScope" should {
-    "returns same" in {
-      val s = mock[IScope]
+    "return unchanged" in {
+      val result = factory.updateScope(scope)
 
-      val s2 = factory.updateScope(s)
-
-      s2 mustEqual s
+      result should equal(scope)
     }
   }
 }

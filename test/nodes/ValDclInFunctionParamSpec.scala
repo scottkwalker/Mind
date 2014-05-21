@@ -1,7 +1,5 @@
 package nodes
 
-import org.specs2.mutable._
-import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import ai.IRandomNumberGenerator
 
@@ -10,87 +8,90 @@ import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 import models.domain.scala.{Empty, ValDclInFunctionParam, IntegerM}
 import models.domain.common.Node
+import org.mockito.Mockito._
+import org.mockito.Matchers._
+import utils.helpers.UnitSpec
 
-class ValDclInFunctionParamSpec extends Specification with Mockito {
+class ValDclInFunctionParamSpec extends UnitSpec {
   "toRawScala" should {
     "return expected" in {
       val p = mock[IntegerM]
-      p.toRaw returns "Int"
+      when(p.toRaw).thenReturn("Int")
       val name = "a"
 
-      ValDclInFunctionParam(name, p).toRaw mustEqual "a: Int"
+      ValDclInFunctionParam(name, p).toRaw should equal("a: Int")
     }
   }
 
   "validate" should {
     "false given it cannot terminate in under N steps" in {
       val s = mock[IScope]
-      s.hasDepthRemaining returns false
+      when(s.hasDepthRemaining).thenReturn(false)
       val name = "a"
       val p = mock[IntegerM]
 
-      ValDclInFunctionParam(name, p).validate(s) mustEqual false
+      ValDclInFunctionParam(name, p).validate(s) should equal(false)
     }
 
     "false given an empty name" in {
       val s = mock[IScope]
-      s.hasDepthRemaining returns true
+      when(s.hasDepthRemaining).thenReturn(true)
       val name = ""
       val p = mock[IntegerM]
 
-      ValDclInFunctionParam(name, p).validate(s) mustEqual false
+      ValDclInFunctionParam(name, p).validate(s) should equal(false)
     }
 
     "false given an invalid child" in {
       val s = mock[IScope]
-      s.hasDepthRemaining returns true
+      when(s.hasDepthRemaining).thenReturn(true)
       val name = "a"
       val p = mock[IntegerM]
-      p.validate(any[Scope]) returns false
+      when(p.validate(any[Scope])).thenReturn(false)
 
-      ValDclInFunctionParam(name, p).validate(s) mustEqual false
+      ValDclInFunctionParam(name, p).validate(s) should equal(false)
     }
 
     "true given it can terminate, has a non-empty name and valid child" in {
       val s = mock[IScope]
-      s.hasDepthRemaining returns true
+      when(s.hasDepthRemaining).thenReturn(true)
       val name = "a"
       val p = mock[IntegerM]
-      p.validate(any[Scope]) returns true
+      when(p.validate(any[Scope])).thenReturn(true)
 
-      ValDclInFunctionParam(name, p).validate(s) mustEqual true
+      ValDclInFunctionParam(name, p).validate(s) should equal(true)
     }
   }
 
   "replaceEmpty" should {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
-      s.incrementVals returns s
-      s.incrementDepth returns s
+      when(s.incrementVals).thenReturn(s)
+      when(s.incrementDepth).thenReturn(s)
       val name = "a"
       val p = mock[IntegerM]
-      p.replaceEmpty(any[Scope], any[Injector]) returns p
+      when(p.replaceEmpty(any[Scope], any[Injector])).thenReturn(p)
       val i = mock[Injector]
       val instance = ValDclInFunctionParam(name, p)
 
       instance.replaceEmpty(s, i)
 
-      there was one(p).replaceEmpty(any[Scope], any[Injector])
+      verify(p, times(1)).replaceEmpty(any[Scope], any[Injector])
     }
 
     "returns same when no empty nodes" in {
       val s = mock[IScope]
-      s.incrementVals returns s
-      s.incrementDepth returns s
+      when(s.incrementVals).thenReturn(s)
+      when(s.incrementDepth).thenReturn(s)
       val name = "a"
       val p = mock[IntegerM]
-      p.replaceEmpty(any[Scope], any[Injector]) returns p
+      when(p.replaceEmpty(any[Scope], any[Injector])).thenReturn(p)
       val i = mock[Injector]
       val instance = ValDclInFunctionParam(name, p)
 
       val result = instance.replaceEmpty(s, i)
 
-      result mustEqual instance
+      result should equal(instance)
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -98,7 +99,7 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
         override def bindValDclInFunctionParamFactory(): Unit = {
           val n: Node = mock[IntegerM]
           val f = mock[ValDclInFunctionParamFactory]
-          f.create(any[Scope]) returns n
+          when(f.create(any[Scope])).thenReturn(n)
           bind(classOf[ValDclInFunctionParamFactory]).toInstance(f)
         }
       }
@@ -111,10 +112,11 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
 
       val result = instance.replaceEmpty(s, injector)
 
-      result must beLike {
+      result match {
         case ValDclInFunctionParam(name2, primitiveType) =>
-          name2 mustEqual "a"
-          primitiveType must beAnInstanceOf[IntegerM]
+          name2 should equal("a")
+          primitiveType shouldBe an[IntegerM]
+        case _ => fail("wrong type")
       }
     }
   }
@@ -123,9 +125,9 @@ class ValDclInFunctionParamSpec extends Specification with Mockito {
     "returns 1 + child getMaxDepth" in {
       val name = "a"
       val p = mock[IntegerM]
-      p.getMaxDepth returns 1
+      when(p.getMaxDepth).thenReturn(1)
 
-      ValDclInFunctionParam(name, p).getMaxDepth mustEqual 2
+      ValDclInFunctionParam(name, p).getMaxDepth should equal(2)
     }
   }
 }
