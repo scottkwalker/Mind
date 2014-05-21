@@ -1,22 +1,21 @@
 package nodes
 
-import org.specs2.mutable._
-import nodes.helpers.{IScope, Scope}
-import org.specs2.mock.Mockito
+import nodes.helpers.IScope
 import com.google.inject.Injector
 import models.domain.scala.IntegerM
+import utils.helpers.UnitSpec
 
-class IntegerMSpec extends Specification with Mockito {
+class IntegerMSpec extends UnitSpec {
   "toRawScala" should {
     "return expected" in {
-      IntegerM().toRaw mustEqual "Int"
+      IntegerM().toRaw should equal("Int")
     }
   }
 
   "validate" should {
     "returns true" in {
       val s = mock[IScope]
-      IntegerM().validate(s) mustEqual true
+      IntegerM().validate(s) should equal(true)
     }
   }
 
@@ -26,13 +25,13 @@ class IntegerMSpec extends Specification with Mockito {
       val i = mock[Injector]
       val instance = IntegerM()
 
-      instance.replaceEmpty(s, i) mustEqual instance
+      instance.replaceEmpty(s, i) should equal(instance)
     }
   }
 
   "getMaxDepth" should {
     "return 1" in {
-      IntegerM().getMaxDepth mustEqual 1
+      IntegerM().getMaxDepth should equal(1)
     }
   }
 }

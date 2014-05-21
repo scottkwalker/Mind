@@ -25,11 +25,11 @@ class IntegerMFactorySpec extends UnitSpec {
       // Arrange
       val s = mock[IScope]
 
-        // Act
-        val instance = factory.create(s)
+      // Act
+      val instance = factory.create(s)
 
-        // Assert
-        instance shouldBe a[IntegerM]
+      // Assert
+      instance shouldBe a[IntegerM]
     }
   }
 }

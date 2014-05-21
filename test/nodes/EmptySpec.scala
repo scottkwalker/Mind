@@ -26,7 +26,7 @@ class EmptySpec extends UnitSpec {
 
       val instance = Empty()
 
-      an[RuntimeException] should be thrownBy instance.replaceEmpty(s, i)
+      a[RuntimeException] should be thrownBy instance.replaceEmpty(s, i)
     }
   }
 

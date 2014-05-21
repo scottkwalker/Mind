@@ -44,7 +44,7 @@ class FunctionMFactorySpec extends UnitSpec {
       val instance = factory.create(scope = s)
 
       instance match {
-        case FunctionM(_, _, name) => name should equal( "f1")
+        case FunctionM(_, _, name) => name should equal("f1")
         case _ => fail("wrong type")
       }
     }
