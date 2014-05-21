@@ -1,8 +1,5 @@
 package nodes
 
-import org.specs2.mutable.Specification
-import org.specs2.mock.Mockito
-import org.specs2.execute.PendingUntilFixed
 import com.google.inject.{Guice, Injector}
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
@@ -12,40 +9,43 @@ import nodes.helpers.{IScope, Scope}
 import models.domain.scala.IntegerM
 import models.domain.scala.ObjectDef
 import models.domain.scala.FunctionM
+import org.mockito.Mockito._
+import org.mockito.Matchers._
+import utils.helpers.UnitSpec
 
-class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
+class NodeTreeSpec extends UnitSpec {
   "validate" should {
     "true given it can terminates in under N steps" in {
       val s = Scope(maxDepth = 10)
       val f = mock[ObjectDef]
-      f.validate(any[Scope]) returns true
+      when(f.validate(any[Scope])).thenReturn(true)
       val nodeTree = new NodeTree(Seq(f))
 
-      nodeTree.validate(s) mustEqual true
+      nodeTree.validate(s) should equal(true)
     }
 
     "false given it cannot terminate in under N steps" in {
       val s = Scope(maxDepth = 10)
       val f = mock[ObjectDef]
-      f.validate(any[Scope]) returns false
+      when(f.validate(any[Scope])).thenReturn(false)
       val nodeTree = new NodeTree(Seq(f))
 
-      nodeTree.validate(s) mustEqual false
+      nodeTree.validate(s) should equal(false)
     }
 
     "true given none empty" in {
       val s = Scope(maxDepth = 10)
       val f = mock[ObjectDef]
-      f.validate(any[Scope]) returns true
+      when(f.validate(any[Scope])).thenReturn(true)
       val nodeTree = new NodeTree(Seq(f))
 
-      nodeTree.validate(s) mustEqual true
+      nodeTree.validate(s) should equal(true)
     }
 
     "false given empty root node" in {
       val s = Scope(maxDepth = 10)
       val nodeTree = new NodeTree(Seq(Empty()))
-      nodeTree.validate(s) mustEqual false
+      nodeTree.validate(s) should equal(false)
     }
   }
 
@@ -53,23 +53,23 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
       val f = mock[ObjectDef]
-      f.replaceEmpty(any[Scope], any[Injector]) returns f
+      when(f.replaceEmpty(any[Scope], any[Injector])).thenReturn(f)
       val i = mock[Injector]
       val instance = NodeTree(Seq(f))
 
       instance.replaceEmpty(s, i)
 
-      there was one(f).replaceEmpty(any[Scope], any[Injector])
+      verify(f, times(1)).replaceEmpty(any[Scope], any[Injector])
     }
 
     "returns same when no empty nodes" in {
       val s = mock[IScope]
       val f = mock[ObjectDef]
-      f.replaceEmpty(any[Scope], any[Injector]) returns f
+      when(f.replaceEmpty(any[Scope], any[Injector])).thenReturn(f)
       val i = mock[Injector]
       val instance = new NodeTree(Seq(f))
 
-      instance.replaceEmpty(s, i) mustEqual instance
+      instance.replaceEmpty(s, i) should equal(instance)
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -84,32 +84,34 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
 
       val result = instance.replaceEmpty(s, injector)
 
-      result must beLike {
+      result match {
         case NodeTree(nodes) =>
-          nodes must beLike {
-            case Seq(n2) => n2 must beAnInstanceOf[ObjectDef]
+          nodes match {
+            case Seq(n2) => n2 shouldBe an[ObjectDef]
+            case _ => fail("not a seq")
           }
+        case _ => fail("wrong type")
       }
     }
   }
 
   "getMaxDepth" should {
-    "returns 1 + child getMaxDepth" in {
+    "returns 1 + child getMaxDepth when has one child" in {
       val f = mock[ObjectDef]
-      f.getMaxDepth returns 2
+      when(f.getMaxDepth).thenReturn(2)
       val nodeTree = new NodeTree(Seq(f))
 
-      nodeTree.getMaxDepth mustEqual 3
+      nodeTree.getMaxDepth should equal(3)
     }
 
-    "returns 1 + child getMaxDepth" in {
+    "returns 1 + child getMaxDepth when has two children" in {
       val f = mock[ObjectDef]
-      f.getMaxDepth returns 1
+      when(f.getMaxDepth).thenReturn(1)
       val f2 = mock[ObjectDef]
-      f2.getMaxDepth returns 2
+      when(f2.getMaxDepth).thenReturn(2)
       val nodeTree = new NodeTree(Seq(f, f2))
 
-      nodeTree.getMaxDepth mustEqual 3
+      nodeTree.getMaxDepth should equal(3)
     }
 
     "returns correct value for realistic tree" in {
@@ -123,7 +125,7 @@ class NodeTreeSpec extends Specification with Mockito with PendingUntilFixed {
               ), name = "f0")),
             name = "o0")))
 
-      nodeTree.getMaxDepth mustEqual 5
+      nodeTree.getMaxDepth should equal(5)
     }
   }
 }
