@@ -5,7 +5,7 @@ import utils.helpers.UnitSpec
 import org.mockito.Mockito._
 import org.mockito.Matchers.any
 
-class CreateNodeSpec extends UnitSpec {
+final class CreateNodeSpec extends UnitSpec {
   "create" should {
     "calls chooseChild on ai" in {
       val scope = Scope(maxDepth = 10)

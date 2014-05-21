@@ -9,7 +9,7 @@ import models.domain.scala.ValueRef
 import org.mockito.Mockito._
 import utils.helpers.UnitSpec
 
-class ValueRefFactorySpec extends UnitSpec {
+final class ValueRefFactorySpec extends UnitSpec {
   "create" should {
     "return instance of this type" in {
       val instance = factory.create(scope = scope)

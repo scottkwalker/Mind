@@ -5,7 +5,7 @@ import com.google.inject.Injector
 import models.domain.scala.Empty
 import utils.helpers.UnitSpec
 
-class EmptySpec extends UnitSpec {
+final class EmptySpec extends UnitSpec {
   "toRaw" should {
     "throw if you ask toRawScala" in {
       an[RuntimeException] should be thrownBy Empty().toRaw

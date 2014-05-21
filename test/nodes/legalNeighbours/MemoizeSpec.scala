@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import com.twitter.util.Throw
 import utils.helpers.UnitSpec
 
-class MemoizeSpec extends UnitSpec {
+final class MemoizeSpec extends UnitSpec {
   "apply" should {
     "return the same result when called twice" in {
       // mockito can't spy anonymous classes,

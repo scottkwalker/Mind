@@ -12,7 +12,7 @@ import org.mockito.Mockito._
 import org.mockito.Matchers._
 import utils.helpers.UnitSpec
 
-class ValDclInFunctionParamSpec extends UnitSpec {
+final class ValDclInFunctionParamSpec extends UnitSpec {
   "toRawScala" should {
     "return expected" in {
       val p = mock[IntegerM]

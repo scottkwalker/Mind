@@ -14,7 +14,7 @@ import models.domain.scala.NodeTree
 import models.domain.scala.FunctionM
 import utils.helpers.UnitSpec
 
-class AcoSpec extends UnitSpec {
+final class AcoSpec extends UnitSpec {
   "chooseChild" should {
     "returns expected instance given only one valid choice" in {
       val rng = mock[IRandomNumberGenerator]

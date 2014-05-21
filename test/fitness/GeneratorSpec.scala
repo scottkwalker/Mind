@@ -2,8 +2,7 @@ package fitness
 
 import utils.helpers.UnitSpec
 
-
-class GeneratorSpec extends UnitSpec {
+final class GeneratorSpec extends UnitSpec {
   "run" should {
     "get ai instance" in {
       //true shouldEqual false

@@ -7,7 +7,7 @@ import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 
 
-class PopulateMemoizationMapsSpec extends UnitSpec {
+final class PopulateMemoizationMapsSpec extends UnitSpec {
   private val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
   private val addOperatorFactory = injector.getInstance(classOf[AddOperatorFactory])
   private val functionMFactory = injector.getInstance(classOf[FunctionMFactory])

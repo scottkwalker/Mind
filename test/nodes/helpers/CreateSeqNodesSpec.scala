@@ -7,7 +7,7 @@ import utils.helpers.UnitSpec
 import org.mockito.Mockito._
 import org.mockito.Matchers.any
 
-class CreateSeqNodesSpec extends UnitSpec {
+final class CreateSeqNodesSpec extends UnitSpec {
   "createSeq" should {
     "calls create on factory once given only space for 1 func in obj and mocked rng the same" in {
       val s = mock[IScope]

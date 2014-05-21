@@ -7,7 +7,7 @@ import modules.DevModule
 import models.domain.scala.IntegerM
 import utils.helpers.UnitSpec
 
-class IntegerMFactorySpec extends UnitSpec {
+final class IntegerMFactorySpec extends UnitSpec {
   "neighbours" should {
     "have no possible children" in {
       factory.neighbours.length should equal(0)

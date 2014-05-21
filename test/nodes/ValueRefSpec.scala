@@ -5,7 +5,7 @@ import com.google.inject.Injector
 import models.domain.scala.ValueRef
 import utils.helpers.UnitSpec
 
-class ValueRefSpec extends UnitSpec {
+final class ValueRefSpec extends UnitSpec {
   "toRawScala" should {
     "return name" in {
       val name = "a"

@@ -10,7 +10,7 @@ import modules.ai.legalGamer.LegalGamerModule
 import models.domain.scala.AddOperator
 import utils.helpers.UnitSpec
 
-class AddOperatorFactorySpec extends UnitSpec {
+final class AddOperatorFactorySpec extends UnitSpec {
   "create" should {
     "return instance of this type" in {
       val s = Scope(maxDepth = 10, numVals = 1)

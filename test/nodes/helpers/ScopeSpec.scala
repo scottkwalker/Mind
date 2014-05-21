@@ -6,7 +6,7 @@ import modules.ai.aco.AcoModule
 import modules.DevModule
 import utils.helpers.UnitSpec
 
-class ScopeSpec extends UnitSpec {
+final class ScopeSpec extends UnitSpec {
   "constructor" should {
     "set default values to zero" in {
       Scope() match {

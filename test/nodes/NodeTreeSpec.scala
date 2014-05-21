@@ -13,7 +13,7 @@ import org.mockito.Mockito._
 import org.mockito.Matchers._
 import utils.helpers.UnitSpec
 
-class NodeTreeSpec extends UnitSpec {
+final class NodeTreeSpec extends UnitSpec {
   "validate" should {
     "true given it can terminates in under N steps" in {
       val s = Scope(maxDepth = 10)

@@ -14,7 +14,7 @@ import utils.helpers.UnitSpec
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 
-class FuncDefSpec extends UnitSpec {
+final class FuncDefSpec extends UnitSpec {
   "validate" should {
     "false given an empty name" in {
       val s = Scope(maxDepth = 10)

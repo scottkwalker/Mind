@@ -14,7 +14,7 @@ import models.domain.scala.Empty
 import models.domain.scala.ObjectDef
 import models.domain.scala.ValueRef
 
-class AddOperatorSpec extends UnitSpec {
+final class AddOperatorSpec extends UnitSpec {
   "toRawScala" should {
     "return expected" in {
       val a = mock[ValueRef]

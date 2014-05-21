@@ -5,7 +5,7 @@ import com.google.inject.Injector
 import models.domain.scala.IntegerM
 import utils.helpers.UnitSpec
 
-class IntegerMSpec extends UnitSpec {
+final class IntegerMSpec extends UnitSpec {
   "toRawScala" should {
     "return expected" in {
       IntegerM().toRaw should equal("Int")

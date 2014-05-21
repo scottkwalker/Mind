@@ -6,7 +6,7 @@ import org.easymock.EasyMock._
 import ai.IAi
 import models.domain.common.Node
 
-class CreateSeqNodeScalaTestSpec extends WordSpec with EasyMockSugar {
+final class CreateSeqNodeScalaTestSpec extends WordSpec with EasyMockSugar {
   "create" should {
     "call a factory once given only space for 1 func in obj and mocked rng the same" in {
       val expected = 1

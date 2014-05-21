@@ -10,7 +10,7 @@ import utils.helpers.UnitSpec
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 
-class FunctionMFactorySpec extends UnitSpec {
+final class FunctionMFactorySpec extends UnitSpec {
   "create" should {
     "return instance of this type" in {
       val s = Scope(maxDepth = 10)

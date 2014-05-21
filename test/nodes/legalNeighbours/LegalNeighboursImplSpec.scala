@@ -5,7 +5,7 @@ import models.domain.common.Node
 import utils.helpers.UnitSpec
 import org.mockito.Mockito._
 
-class LegalNeighboursImplSpec extends UnitSpec {
+final class LegalNeighboursImplSpec extends UnitSpec {
   "fetchLegalNeighbours" should {
     val legalNeighboursImpl = new LegalNeighboursImpl
 

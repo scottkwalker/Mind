@@ -9,7 +9,7 @@ import models.domain.scala.IntegerM
 import utils.helpers.UnitSpec
 import org.mockito.Mockito._
 
-class AddTwoIntsSpec extends UnitSpec {
+final class AddTwoIntsSpec extends UnitSpec {
   "Addition" should {
     "1 add 1 equals 2 with NodeTree that returns hard coded raw Scala" in {
       val nodeTree = mock[NodeTree]

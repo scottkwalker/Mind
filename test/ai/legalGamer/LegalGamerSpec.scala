@@ -13,7 +13,7 @@ import models.domain.scala.FunctionM
 import utils.helpers.UnitSpec
 import ai.IRandomNumberGenerator
 
-class LegalGamerSpec extends UnitSpec {
+final class LegalGamerSpec extends UnitSpec {
   "chooseChild" should {
     "return expected type given only one valid choice" in {
       val rng = mock[IRandomNumberGenerator]

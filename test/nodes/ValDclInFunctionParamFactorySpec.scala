@@ -9,7 +9,7 @@ import models.domain.scala.{ValDclInFunctionParam, IntegerM}
 import org.mockito.Mockito._
 import utils.helpers.UnitSpec
 
-class ValDclInFunctionParamFactorySpec extends UnitSpec {
+final class ValDclInFunctionParamFactorySpec extends UnitSpec {
   "create" should {
     "returns instance of this type" in {
       val s = Scope(maxDepth = 10, maxParamsInFunc = 1)

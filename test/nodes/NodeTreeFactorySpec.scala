@@ -12,7 +12,7 @@ import utils.helpers.UnitSpec
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 
-class NodeTreeFactorySpec extends UnitSpec {
+final class NodeTreeFactorySpec extends UnitSpec {
   "create" should {
     "returns instance of this type" in {
       val instance = factory.create(s)

@@ -14,7 +14,7 @@ import models.domain.scala.NodeTree
 import models.domain.scala.FunctionM
 import utils.helpers.UnitSpec
 
-class RandomWalkSpec extends UnitSpec {
+final class RandomWalkSpec extends UnitSpec {
   "chooseChild" should {
     "return expected type given only one valid choice" in {
       val rng = mock[IRandomNumberGenerator]
