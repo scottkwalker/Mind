@@ -11,7 +11,7 @@ resolvers += "sonatype-releases" at "https://oss.sonatype.org/content/repositori
 resolvers += "Boundary Public Repo" at "http://maven.boundary.com/artifactory/repo"
 
 // Use the Play sbt plugin for Play projects
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.2.2")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.2.3")
 
 addSbtPlugin("de.johoop" % "jacoco4sbt" % "2.1.5")
 
