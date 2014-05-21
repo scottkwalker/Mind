@@ -6,7 +6,7 @@ import nodes.legalNeighbours.LegalNeighbours
 trait ICreateChildNodes {
   val legalNeighbours: LegalNeighbours
 
-  val neighbours: Seq[ICreateChildNodes]
+  val neighbours: Seq[ICreateChildNodes] // TODO should the collection type be Array?
 
   def create(scope: IScope): Node
 
