@@ -8,11 +8,14 @@ import ai.IRandomNumberGenerator
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 import models.domain.scala.ObjectDef
+import org.mockito.Mockito._
+import org.mockito.Matchers._
+import utils.helpers.UnitSpec
 
-class ObjectDefFactorySpec extends Specification with Mockito {
+class ObjectDefFactorySpec extends UnitSpec {
   val rng = mock[IRandomNumberGenerator]
-  rng.nextInt(any[Int]) returns 2
-  rng.nextBoolean() returns true
+  when(rng.nextInt(any[Int]) ).thenReturn( 2)
+  when(rng.nextBoolean() ).thenReturn( true)
 
   val injector: Injector = Guice.createInjector(new DevModule(randomNumberGenerator = rng), new LegalGamerModule)
   val factory = injector.getInstance(classOf[ObjectDefFactory])
@@ -23,7 +26,7 @@ class ObjectDefFactorySpec extends Specification with Mockito {
 
       val instance = factory.create(scope = s)
 
-      instance must beAnInstanceOf[ObjectDef]
+      instance shouldBe an[ObjectDef]
     }
 
     "returns expected given scope with 0 functions" in {
@@ -31,8 +34,9 @@ class ObjectDefFactorySpec extends Specification with Mockito {
 
       val instance = factory.create(scope = s)
 
-      instance must beLike {
-        case ObjectDef(_, name) => name mustEqual "o0"
+      instance match {
+        case ObjectDef(_, name) => name should equal( "o0")
+        case _ => fail("wrong type")
       }
     }
 
@@ -41,8 +45,9 @@ class ObjectDefFactorySpec extends Specification with Mockito {
 
       val instance = factory.create(scope = s)
 
-      instance must beLike {
-        case ObjectDef(_, name) => name mustEqual "o1"
+      instance match {
+        case ObjectDef(_, name) => name should equal( "o1")
+        case _ => fail("wrong type")
       }
     }
 
@@ -51,7 +56,7 @@ class ObjectDefFactorySpec extends Specification with Mockito {
 
       factory.updateScope(s)
 
-      there was one(s).incrementObjects
+      verify(s, times(1)).incrementObjects
     }
 
     "returns 3 children given scope with 3 maxExpressionsInFunc (and rng mocked)" in {
@@ -59,8 +64,9 @@ class ObjectDefFactorySpec extends Specification with Mockito {
 
       val instance = factory.create(scope = s)
 
-      instance must beLike {
-        case ObjectDef(child, _) => child.length mustEqual 3
+      instance match {
+        case ObjectDef(child, _) => child.length should equal( 3)
+        case _ => fail("wrong type")
       }
     }
   }
