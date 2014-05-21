@@ -1,75 +1,77 @@
 package nodes
 
-import org.specs2.mutable._
 import nodes.helpers.{IScope, Scope}
-import org.specs2.mock.Mockito
 import com.google.inject.{Guice, Injector}
 import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
 import models.domain.scala.{Empty, FunctionM, ObjectDef}
+import org.mockito.Mockito._
+import org.mockito.Matchers._
+import utils.helpers.UnitSpec
 
-class ObjectDefSpec extends Specification with Mockito {
+class ObjectDefSpec extends UnitSpec {
   val name = "o0"
+  
   "validate" should {
     "true given it can terminates in under N steps" in {
       val s = Scope(maxDepth = 4)
       val f = mock[FunctionM]
-      f.validate(any[Scope]) returns true
+      when(f.validate(any[Scope])).thenReturn(true)
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.validate(s) mustEqual true
+      objectM.validate(s) should equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
       val s = Scope(depth = 0)
       val f = mock[FunctionM]
-      f.validate(any[Scope]) throws new RuntimeException
+      when(f.validate(any[Scope])).thenThrow(new RuntimeException)
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.validate(s) mustEqual false
+      objectM.validate(s) should equal(false)
     }
 
     "false given it cannot terminate in under N steps" in {
       val s = Scope(depth = 3)
       val f = mock[FunctionM]
-      f.validate(any[Scope]) returns false
+      when(f.validate(any[Scope])).thenReturn(false)
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.validate(s) mustEqual false
+      objectM.validate(s) should equal(false)
     }
 
     "true given no empty nodes" in {
       val s = Scope(maxDepth = 10)
       val f = mock[FunctionM]
-      f.validate(any[Scope]) returns true
+      when(f.validate(any[Scope])).thenReturn(true)
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.validate(s) mustEqual true
+      objectM.validate(s) should equal(true)
     }
 
     "false given single empty method node" in {
       val s = Scope(maxDepth = 10)
       val objectM = ObjectDef(Seq(Empty()), name)
-      objectM.validate(s) mustEqual false
+      objectM.validate(s) should equal(false)
     }
 
     "false given empty method node in a sequence" in {
       val s = Scope(maxDepth = 10)
       val f = mock[FunctionM]
-      f.validate(any[Scope]) returns true
+      when(f.validate(any[Scope])).thenReturn(true)
       val objectM = ObjectDef(Seq(f, Empty()), name)
 
-      objectM.validate(s) mustEqual false
+      objectM.validate(s) should equal(false)
     }
   }
 
   "toRawScala" should {
     "return expected" in {
       val f = mock[FunctionM]
-      f.toRaw returns "STUB"
+      when(f.toRaw).thenReturn("STUB")
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.toRaw mustEqual "object o0 { STUB }"
+      objectM.toRaw should equal("object o0 { STUB }")
     }
   }
 
@@ -77,23 +79,23 @@ class ObjectDefSpec extends Specification with Mockito {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
       val f = mock[FunctionM]
-      f.replaceEmpty(any[Scope], any[Injector]) returns f
+      when(f.replaceEmpty(any[Scope], any[Injector])).thenReturn(f)
       val i = mock[Injector]
       val instance = ObjectDef(Seq(f), name = name)
 
       instance.replaceEmpty(s, i)
 
-      there was one(f).replaceEmpty(any[Scope], any[Injector])
+      verify(f, times(1)).replaceEmpty(any[Scope], any[Injector])
     }
 
     "returns same when no empty nodes" in {
       val s = mock[IScope]
       val f = mock[FunctionM]
-      f.replaceEmpty(any[Scope], any[Injector]) returns f
+      when(f.replaceEmpty(any[Scope], any[Injector])).thenReturn(f)
       val i = mock[Injector]
       val instance = ObjectDef(Seq(f), name)
 
-      instance.replaceEmpty(s, i) mustEqual instance
+      instance.replaceEmpty(s, i) should equal(instance)
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -109,33 +111,35 @@ class ObjectDefSpec extends Specification with Mockito {
 
       val result = instance.replaceEmpty(s, injector)
 
-      result must beLike {
+      result match {
         case ObjectDef(n2, name2) =>
-          n2 must beLike {
-            case Seq(nSeq) => nSeq must beAnInstanceOf[FunctionM]
+          n2 match {
+            case Seq(nSeq) => nSeq shouldBe a[FunctionM]
+            case _ => fail("not a Seq")
           }
-          name2 mustEqual name
+          name2 should equal(name)
+        case _ => fail("wrong type")
       }
     }
   }
 
   "getMaxDepth" should {
-    "getMaxDepth returns 1 + child getMaxDepth" in {
+    "getMaxDepth returns 1 + child getMaxDepth when has 1 child" in {
       val f = mock[FunctionM]
-      f.getMaxDepth returns 2
+      when(f.getMaxDepth).thenReturn(2)
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.getMaxDepth mustEqual 3
+      objectM.getMaxDepth should equal(3)
     }
 
-    "getMaxDepth returns 1 + child getMaxDepth" in {
+    "getMaxDepth returns 1 + child getMaxDepth when has 2 children" in {
       val f = mock[FunctionM]
-      f.getMaxDepth returns 1
+      when(f.getMaxDepth).thenReturn(1)
       val f2 = mock[FunctionM]
-      f2.getMaxDepth returns 2
+      when(f2.getMaxDepth).thenReturn(2)
       val objectM = ObjectDef(Seq(f, f2), name)
 
-      objectM.getMaxDepth mustEqual 3
+      objectM.getMaxDepth should equal(3)
     }
   }
 }
