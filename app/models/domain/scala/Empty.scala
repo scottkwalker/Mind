@@ -4,7 +4,7 @@ import com.google.inject.{Injector, Inject}
 import nodes.helpers.{UpdateScopeThrows, IScope}
 import models.domain.common.Node
 
-case class Empty @Inject()() extends Node with UpdateScopeThrows {
+final case class Empty @Inject()() extends Node with UpdateScopeThrows {
   override def toRaw: String = throw new scala.RuntimeException
 
   override def validate(scope: IScope): Boolean = false

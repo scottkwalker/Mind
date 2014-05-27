@@ -102,9 +102,9 @@ final class ObjectDefSpec extends UnitSpec {
         maxParamsInFunc = 1,
         maxDepth = 5,
         maxObjectsInTree = 1)
-      val n = mock[Empty]
+      val empty = Empty()
       val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
-      val instance = ObjectDef(nodes = Seq(n),
+      val instance = ObjectDef(nodes = Seq(empty),
         name = name)
 
       val result = instance.replaceEmpty(s, injector)

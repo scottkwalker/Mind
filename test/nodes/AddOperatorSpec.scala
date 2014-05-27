@@ -111,9 +111,9 @@ final class AddOperatorSpec extends UnitSpec {
 
       val s = mock[IScope]
       when(s.numVals).thenReturn(1)
-      val v = mock[Empty]
+      val empty: Node = Empty()
       val injector: Injector = Guice.createInjector(new TestDevModule, new LegalGamerModule)
-      val instance = AddOperator(v, v)
+      val instance = AddOperator(empty, empty)
 
       val result = instance.replaceEmpty(s, injector)
 

@@ -106,9 +106,9 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
 
       val s = mock[IScope]
       val name = "a"
-      val p = mock[Empty]
+      val primitiveType = Empty()
       val injector: Injector = Guice.createInjector(new TestDevModule, new LegalGamerModule)
-      val instance = ValDclInFunctionParam(name, p)
+      val instance = ValDclInFunctionParam(name, primitiveType)
 
       val result = instance.replaceEmpty(s, injector)
 
