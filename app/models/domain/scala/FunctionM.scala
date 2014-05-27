@@ -14,15 +14,8 @@ case class FunctionM(params: Seq[Node],
     s"def $name${params.map(f => f.toRaw).mkString("(", ", ", ")")} = ${nodes.map(f => f.toRaw).mkString("{ ", " ", " }")}"
   }
 
-  override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) {
-    !name.isEmpty &&
-      nodes.forall {
-        case n: AddOperator => n.validate(scope.incrementDepth)
-        case n: ValueRef => n.validate(scope.incrementDepth)
-        case _: Empty => false
-        case _ => false
-      }
-  }
+  override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) !name.isEmpty &&
+    nodes.forall(n => n.validate(scope.incrementDepth))
   else false
 
   override def replaceEmpty(scope: IScope, injector: Injector): Node = {

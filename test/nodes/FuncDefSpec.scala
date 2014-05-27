@@ -13,12 +13,13 @@ import models.domain.scala.FunctionM
 import utils.helpers.UnitSpec
 import org.mockito.Mockito._
 import org.mockito.Matchers._
+import models.domain.common.Node
 
 final class FuncDefSpec extends UnitSpec {
   "validate" should {
     "false given an empty name" in {
       val s = Scope(maxDepth = 10)
-      val v = mock[ValueRef]
+      val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
       FunctionM(params = params,
         nodes = Seq(v, v),
@@ -27,7 +28,7 @@ final class FuncDefSpec extends UnitSpec {
 
     "true given it can terminate in under N steps" in {
       val s = Scope(maxDepth = 3)
-      val v = mock[ValueRef]
+      val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
 
       FunctionM(params = params,
@@ -37,7 +38,7 @@ final class FuncDefSpec extends UnitSpec {
 
     "false given it cannot terminate in 0 steps" in {
       val s = Scope(depth = 0)
-      val v = mock[ValueRef]
+      val v = mock[Node]
       when(v.validate(any[Scope])).thenThrow(new RuntimeException)
 
       FunctionM(params = params,
@@ -47,7 +48,7 @@ final class FuncDefSpec extends UnitSpec {
 
     "false given it cannot terminate in under N steps" in {
       val s = Scope(depth = 2)
-      val v = mock[ValueRef]
+      val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(false)
 
       FunctionM(params = params,
@@ -57,7 +58,7 @@ final class FuncDefSpec extends UnitSpec {
 
     "true given no empty nodes" in {
       val s = Scope(maxDepth = 10)
-      val v = mock[ValueRef]
+      val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
 
       FunctionM(params = params,
@@ -67,7 +68,7 @@ final class FuncDefSpec extends UnitSpec {
 
     "false given an empty node" in {
       val s = Scope(maxDepth = 10)
-      val v = mock[ValueRef]
+      val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
 
       FunctionM(params = params,
@@ -78,7 +79,7 @@ final class FuncDefSpec extends UnitSpec {
 
   "toRawScala" should {
     "returns expected" in {
-      val a = mock[ValueRef]
+      val a = mock[Node]
       when(a.toRaw).thenReturn("STUB")
 
       FunctionM(params = params,
@@ -87,7 +88,7 @@ final class FuncDefSpec extends UnitSpec {
     }
 
     "throws if has no name" in {
-      val a = mock[ValueRef]
+      val a = mock[Node]
       when(a.toRaw).thenReturn("STUB")
       val sut = FunctionM(params = params,
         nodes = Seq(a),
@@ -102,7 +103,7 @@ final class FuncDefSpec extends UnitSpec {
       val s = mock[IScope]
       val p = mock[ValDclInFunctionParam]
       when(p.replaceEmpty(any[Scope], any[Injector])).thenReturn(p)
-      val v = mock[ValueRef]
+      val v = mock[Node]
       when(v.replaceEmpty(any[Scope], any[Injector])) thenReturn v
       val i = mock[Injector]
       val instance = FunctionM(params = Seq(p),
@@ -119,7 +120,7 @@ final class FuncDefSpec extends UnitSpec {
       val s = mock[IScope]
       val p = mock[ValDclInFunctionParam]
       when(p.replaceEmpty(any[Scope], any[Injector])) thenReturn p
-      val v = mock[ValueRef]
+      val v = mock[Node]
       when(v.replaceEmpty(any[Scope], any[Injector])) thenReturn v
       val i = mock[Injector]
       val instance = FunctionM(params = Seq(p),
@@ -157,7 +158,7 @@ final class FuncDefSpec extends UnitSpec {
 
     "getMaxDepth" should {
       "returns 1 + child getMaxDepth" in {
-        val v = mock[ValueRef]
+        val v = mock[Node]
         when(v.getMaxDepth) thenReturn 2
 
         FunctionM(params = params,
@@ -166,9 +167,9 @@ final class FuncDefSpec extends UnitSpec {
       }
 
       "returns 1 + child getMaxDepth when children have different depths" in {
-        val v = mock[ValueRef]
+        val v = mock[Node]
         when(v.getMaxDepth) thenReturn 1
-        val v2 = mock[ValueRef]
+        val v2 = mock[Node]
         when(v2.getMaxDepth) thenReturn 2
 
         FunctionM(params = params,

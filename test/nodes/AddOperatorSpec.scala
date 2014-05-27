@@ -17,9 +17,9 @@ import models.domain.scala.ValueRef
 final class AddOperatorSpec extends UnitSpec {
   "toRawScala" should {
     "return expected" in {
-      val a = mock[ValueRef]
+      val a = mock[Node]
       when(a.toRaw).thenReturn("STUB_A")
-      val b = mock[ValueRef]
+      val b = mock[Node]
       when(b.toRaw).thenReturn("STUB_B")
 
       AddOperator(a, b).toRaw should equal("STUB_A + STUB_B")
@@ -29,15 +29,14 @@ final class AddOperatorSpec extends UnitSpec {
   "validate" should {
     "true given child nodes can terminate in under N steps" in {
       val s = Scope(maxDepth = 2)
-      val v = mock[ValueRef]
-      when(v.validate(any[Scope])).thenReturn(true)
+      val v = ValueRef("v")
 
       AddOperator(v, v).validate(s) should equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
       val s = Scope(maxDepth = 0)
-      val v = mock[ValueRef]
+      val v = mock[Node]
       when(v.validate(any[Scope])).thenThrow(new RuntimeException)
 
       AddOperator(v, v).validate(s) should equal(false)
@@ -45,7 +44,7 @@ final class AddOperatorSpec extends UnitSpec {
 
     "false given child nodes cannot terminate in under N steps" in {
       val s = Scope(maxDepth = 10)
-      val v = mock[ValueRef]
+      val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(false)
 
       AddOperator(v, v).validate(s) should equal(false)
@@ -53,15 +52,14 @@ final class AddOperatorSpec extends UnitSpec {
 
     "true given none empty" in {
       val s = Scope(maxDepth = 10)
-      val v = mock[ValueRef]
-      when(v.validate(any[Scope])).thenReturn(true)
+      val v = ValueRef("v")
 
       AddOperator(v, v).validate(s) should equal(true)
     }
 
     "false given contains an empty node" in {
       val s = Scope(maxDepth = 10)
-      val v = mock[ValueRef]
+      val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
 
       AddOperator(v, Empty()).validate(s) should equal(false)
@@ -69,17 +67,17 @@ final class AddOperatorSpec extends UnitSpec {
 
     "false given contains a node that is not valid for this level" in {
       val s = Scope(maxDepth = 10)
-      val v = mock[ValueRef]
+      val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
 
-      AddOperator(v, ObjectDef(Nil, "ObjectM0")).validate(s) should equal(false)
+      AddOperator(v, ObjectDef(Seq.empty, "ObjectM0")).validate(s) should equal(false)
     }
   }
 
   "replaceEmpty" should {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
-      val v = mock[ValueRef]
+      val v = mock[Node]
       when(v.replaceEmpty(any[Scope], any[Injector])).thenReturn(v)
       val i = mock[Injector]
       val instance = AddOperator(v, v)
@@ -91,7 +89,7 @@ final class AddOperatorSpec extends UnitSpec {
 
     "returns same when no empty nodes" in {
       val s = mock[IScope]
-      val v = mock[ValueRef]
+      val v = mock[Node]
       when(v.replaceEmpty(any[Scope], any[Injector])).thenReturn(v)
       val i = mock[Injector]
       val instance = AddOperator(v, v)
@@ -102,7 +100,7 @@ final class AddOperatorSpec extends UnitSpec {
     "returns without empty nodes given there were empty nodes" in {
       class TestDevModule extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
         override def bindAddOperatorFactory(): Unit = {
-          val n: Node = mock[ValueRef]
+          val n: Node = mock[Node]
           val f = mock[AddOperatorFactory]
           when(f.create(any[Scope])).thenReturn(n)
           bind(classOf[AddOperatorFactory]).toInstance(f)
@@ -127,7 +125,7 @@ final class AddOperatorSpec extends UnitSpec {
 
   "getMaxDepth" should {
     "return 1 + child getMaxDepth" in {
-      val v = mock[ValueRef]
+      val v = mock[Node]
       when(v.getMaxDepth).thenReturn(1)
 
       AddOperator(v, v).getMaxDepth should equal(2)
