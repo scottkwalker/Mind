@@ -37,7 +37,7 @@ final class ValueRefFactorySpec extends UnitSpec {
 
   "neighbours" should {
     "be empty" in {
-      factory.neighbours.length should equal(0)
+      factory.neighbourIds.length should equal(0)
     }
   }
 

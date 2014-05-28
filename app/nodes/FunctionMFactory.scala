@@ -17,11 +17,7 @@ case class FunctionMFactory @Inject()(injector: Injector,
   private val paramsNeighbours: Seq[ICreateChildNodes] = Seq(
     injector.getInstance(classOf[ValDclInFunctionParamFactory])
   )
-  override val neighbours = Seq(
-    injector.getInstance(classOf[AddOperatorFactory]),
-    injector.getInstance(classOf[ValueRefFactory])
-  )
-  override val neighbours2 = Seq(AddOperatorFactory.id, ValueRefFactory.id)
+  override val neighbourIds = Seq(AddOperatorFactory.id, ValueRefFactory.id)
 
   override def create(scope: IScope): Node = {
     val (updatedScope, params) = createParams(scope)
@@ -44,7 +40,7 @@ case class FunctionMFactory @Inject()(injector: Injector,
   def createNodes(scope: IScope, acc: Seq[Node] = Seq.empty) = {
     val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
     creator.createSeq(
-      possibleChildren = legalNeighbours.fetch(scope, neighbours2),
+      possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,
       acc = acc,
       factoryLimit = scope.maxExpressionsInFunc

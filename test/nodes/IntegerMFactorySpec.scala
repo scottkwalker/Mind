@@ -10,7 +10,7 @@ import utils.helpers.UnitSpec
 final class IntegerMFactorySpec extends UnitSpec {
   "neighbours" should {
     "have no possible children" in {
-      factory.neighbours.length should equal(0)
+      factory.neighbourIds.length should equal(0)
     }
   }
 

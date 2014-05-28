@@ -11,7 +11,7 @@ final class LegalNeighboursImpl @Inject()(intToFactory: FactoryIdToFactory) exte
         if (innerScope.hasDepthRemaining) neighbours.filter {
           neighbourId =>
             val factory = intToFactory.convert(neighbourId)
-            factory.neighbours2.isEmpty || legalForScope(scope = innerScope.incrementDepth, neighbours = factory.neighbours2).length > 0
+            factory.neighbourIds.isEmpty || legalForScope(scope = innerScope.incrementDepth, neighbours = factory.neighbourIds).length > 0
         }
         else Seq.empty
       }
