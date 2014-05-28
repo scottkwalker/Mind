@@ -6,7 +6,7 @@ import com.google.inject.Injector
 import scala.annotation.tailrec
 import models.domain.common.Node
 
-case class ObjectDef(nodes: Seq[Node], name: String) extends Node with UpdateScopeIncrementObjects {
+final case class ObjectDef(nodes: Seq[Node], name: String) extends Node with UpdateScopeIncrementObjects {
   override def toRaw: String = s"object $name ${nodes.map(f => f.toRaw).mkString("{ ", " ", " }")}"
 
   override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) {

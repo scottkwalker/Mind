@@ -12,13 +12,13 @@ import models.domain.scala.FunctionM
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 import utils.helpers.UnitSpec
+import models.domain.common.Node
 
 final class NodeTreeSpec extends UnitSpec {
   "validate" should {
     "true given it can terminates in under N steps" in {
       val s = Scope(maxDepth = 10)
-      val f = mock[ObjectDef]
-      when(f.validate(any[Scope])).thenReturn(true)
+      val f = ObjectDef(nodes = Seq.empty, name = "o0")
       val nodeTree = new NodeTree(Seq(f))
 
       nodeTree.validate(s) should equal(true)
@@ -26,7 +26,7 @@ final class NodeTreeSpec extends UnitSpec {
 
     "false given it cannot terminate in under N steps" in {
       val s = Scope(maxDepth = 10)
-      val f = mock[ObjectDef]
+      val f = mock[Node]
       when(f.validate(any[Scope])).thenReturn(false)
       val nodeTree = new NodeTree(Seq(f))
 
@@ -35,8 +35,7 @@ final class NodeTreeSpec extends UnitSpec {
 
     "true given none empty" in {
       val s = Scope(maxDepth = 10)
-      val f = mock[ObjectDef]
-      when(f.validate(any[Scope])).thenReturn(true)
+      val f = ObjectDef(nodes = Seq.empty, name = "o0")
       val nodeTree = new NodeTree(Seq(f))
 
       nodeTree.validate(s) should equal(true)
@@ -52,7 +51,7 @@ final class NodeTreeSpec extends UnitSpec {
   "replaceEmpty" should {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
-      val f = mock[ObjectDef]
+      val f = mock[Node]
       when(f.replaceEmpty(any[Scope], any[Injector])).thenReturn(f)
       val i = mock[Injector]
       val instance = NodeTree(Seq(f))
@@ -64,7 +63,7 @@ final class NodeTreeSpec extends UnitSpec {
 
     "returns same when no empty nodes" in {
       val s = mock[IScope]
-      val f = mock[ObjectDef]
+      val f = mock[Node]
       when(f.replaceEmpty(any[Scope], any[Injector])).thenReturn(f)
       val i = mock[Injector]
       val instance = new NodeTree(Seq(f))
@@ -97,7 +96,7 @@ final class NodeTreeSpec extends UnitSpec {
 
   "getMaxDepth" should {
     "returns 1 + child getMaxDepth when has one child" in {
-      val f = mock[ObjectDef]
+      val f = mock[Node]
       when(f.getMaxDepth).thenReturn(2)
       val nodeTree = new NodeTree(Seq(f))
 
@@ -105,9 +104,9 @@ final class NodeTreeSpec extends UnitSpec {
     }
 
     "returns 1 + child getMaxDepth when has two children" in {
-      val f = mock[ObjectDef]
+      val f = mock[Node]
       when(f.getMaxDepth).thenReturn(1)
-      val f2 = mock[ObjectDef]
+      val f2 = mock[Node]
       when(f2.getMaxDepth).thenReturn(2)
       val nodeTree = new NodeTree(Seq(f, f2))
 
