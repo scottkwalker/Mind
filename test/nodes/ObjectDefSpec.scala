@@ -8,13 +8,15 @@ import models.domain.scala.{Empty, FunctionM, ObjectDef}
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 import utils.helpers.UnitSpec
+import models.domain.common.Node
 
 final class ObjectDefSpec extends UnitSpec {
   "validate" should {
     "true given it can terminates in under N steps" in {
       val s = Scope(maxDepth = 4)
-      val f = mock[FunctionM]
-      when(f.validate(any[Scope])).thenReturn(true)
+      val f = FunctionM(params = Seq.empty,
+        nodes = Seq.empty,
+        name = "f0")
       val objectM = ObjectDef(Seq(f), name)
 
       objectM.validate(s) should equal(true)
@@ -22,7 +24,7 @@ final class ObjectDefSpec extends UnitSpec {
 
     "false given it cannot terminate in 0 steps" in {
       val s = Scope(depth = 0)
-      val f = mock[FunctionM]
+      val f = mock[Node]
       when(f.validate(any[Scope])).thenThrow(new RuntimeException)
       val objectM = ObjectDef(Seq(f), name)
 
@@ -31,7 +33,7 @@ final class ObjectDefSpec extends UnitSpec {
 
     "false given it cannot terminate in under N steps" in {
       val s = Scope(depth = 3)
-      val f = mock[FunctionM]
+      val f = mock[Node]
       when(f.validate(any[Scope])).thenReturn(false)
       val objectM = ObjectDef(Seq(f), name)
 
@@ -40,8 +42,9 @@ final class ObjectDefSpec extends UnitSpec {
 
     "true given no empty nodes" in {
       val s = Scope(maxDepth = 10)
-      val f = mock[FunctionM]
-      when(f.validate(any[Scope])).thenReturn(true)
+      val f = FunctionM(params = Seq.empty,
+        nodes = Seq.empty,
+        name = "f0")
       val objectM = ObjectDef(Seq(f), name)
 
       objectM.validate(s) should equal(true)
@@ -55,7 +58,7 @@ final class ObjectDefSpec extends UnitSpec {
 
     "false given empty method node in a sequence" in {
       val s = Scope(maxDepth = 10)
-      val f = mock[FunctionM]
+      val f = mock[Node]
       when(f.validate(any[Scope])).thenReturn(true)
       val objectM = ObjectDef(Seq(f, Empty()), name)
 
@@ -65,7 +68,7 @@ final class ObjectDefSpec extends UnitSpec {
 
   "toRawScala" should {
     "return expected" in {
-      val f = mock[FunctionM]
+      val f = mock[Node]
       when(f.toRaw).thenReturn("STUB")
       val objectM = ObjectDef(Seq(f), name)
 
@@ -76,7 +79,7 @@ final class ObjectDefSpec extends UnitSpec {
   "replaceEmpty" should {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
-      val f = mock[FunctionM]
+      val f = mock[Node]
       when(f.replaceEmpty(any[Scope], any[Injector])).thenReturn(f)
       val i = mock[Injector]
       val instance = ObjectDef(Seq(f), name = name)
@@ -88,7 +91,7 @@ final class ObjectDefSpec extends UnitSpec {
 
     "returns same when no empty nodes" in {
       val s = mock[IScope]
-      val f = mock[FunctionM]
+      val f = mock[Node]
       when(f.replaceEmpty(any[Scope], any[Injector])).thenReturn(f)
       val i = mock[Injector]
       val instance = ObjectDef(Seq(f), name)
@@ -123,7 +126,7 @@ final class ObjectDefSpec extends UnitSpec {
 
   "getMaxDepth" should {
     "getMaxDepth returns 1 + child getMaxDepth when has 1 child" in {
-      val f = mock[FunctionM]
+      val f = mock[Node]
       when(f.getMaxDepth).thenReturn(2)
       val objectM = ObjectDef(Seq(f), name)
 
@@ -131,9 +134,9 @@ final class ObjectDefSpec extends UnitSpec {
     }
 
     "getMaxDepth returns 1 + child getMaxDepth when has 2 children" in {
-      val f = mock[FunctionM]
+      val f = mock[Node]
       when(f.getMaxDepth).thenReturn(1)
-      val f2 = mock[FunctionM]
+      val f2 = mock[Node]
       when(f2.getMaxDepth).thenReturn(2)
       val objectM = ObjectDef(Seq(f, f2), name)
 
