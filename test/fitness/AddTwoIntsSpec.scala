@@ -8,11 +8,12 @@ import models.domain.scala.FunctionM
 import models.domain.scala.IntegerM
 import utils.helpers.UnitSpec
 import org.mockito.Mockito._
+import models.domain.common.Node
 
 final class AddTwoIntsSpec extends UnitSpec {
   "Addition" should {
     "1 add 1 equals 2 with NodeTree that returns hard coded raw Scala" in {
-      val nodeTree = mock[NodeTree]
+      val nodeTree = mock[Node]
       when(nodeTree.toRaw).thenReturn("object o0 { def f0(a: Int, b: Int) = a + b }")
       val f = new AddTwoInts(nodeTree)
       f.fitness should equal(maxFitness)

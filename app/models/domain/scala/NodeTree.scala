@@ -6,7 +6,7 @@ import com.google.inject.Injector
 import scala.annotation.tailrec
 import models.domain.common.Node
 
-case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows {
+final case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows {
   override def toRaw: String = nodes.map(f => f.toRaw).mkString(" ")
 
   override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) {
