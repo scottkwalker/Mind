@@ -14,6 +14,7 @@ case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
                                                   legalNeighbours: LegalNeighbours
                                                    ) extends ICreateChildNodes with UpdateScopeIncrementVals {
   override val neighbours = Seq(injector.getInstance(classOf[IntegerMFactory]))
+  override val neighbours2 = Seq(IntegerMFactory.id)
 
   override def create(scope: IScope): Node = {
     val name = "v" + scope.numVals
@@ -23,4 +24,8 @@ case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
     ValDclInFunctionParam(name = name,
       primitiveType = primitiveType) // TODO need to make more types.
   }
+}
+
+object ValDclInFunctionParamFactory {
+  val id = 6
 }

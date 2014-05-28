@@ -15,7 +15,7 @@ case class FunctionMFactory @Inject()(injector: Injector,
                                       rng: IRandomNumberGenerator,
                                       legalNeighbours: LegalNeighbours
                                        ) extends ICreateChildNodes with UpdateScopeIncrementFuncs {
-  val paramsNeighbours: Seq[ICreateChildNodes] = Seq(
+  private val paramsNeighbours: Seq[ICreateChildNodes] = Seq(
     injector.getInstance(classOf[ValDclInFunctionParamFactory])
   )
 
@@ -23,6 +23,7 @@ case class FunctionMFactory @Inject()(injector: Injector,
     injector.getInstance(classOf[AddOperatorFactory]),
     injector.getInstance(classOf[ValueRefFactory])
   )
+  override val neighbours2 = Seq(AddOperatorFactory.id, ValueRefFactory.id)
 
   override def create(scope: IScope): Node = {
     val (updatedScope, params) = createParams(scope)
@@ -48,4 +49,8 @@ case class FunctionMFactory @Inject()(injector: Injector,
     acc = acc,
     factoryLimit = scope.maxExpressionsInFunc
   )
+}
+
+object FunctionMFactory {
+  val id = 2
 }

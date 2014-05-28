@@ -7,6 +7,7 @@ trait ICreateChildNodes {
   val legalNeighbours: LegalNeighbours
 
   val neighbours: Seq[ICreateChildNodes] // TODO should the collection type be Array?
+  val neighbours2: Seq[Int] = Seq.empty // TODO should the collection type be Array?
 
   def create(scope: IScope): Node
 

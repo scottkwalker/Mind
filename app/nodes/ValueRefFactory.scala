@@ -12,9 +12,14 @@ final case class ValueRefFactory @Inject()(ai: IAi,
                                      legalNeighbours: LegalNeighbours
                                       ) extends ICreateChildNodes with UpdateScopeNoChange {
   override val neighbours = Seq.empty // No possible children
+  override val neighbours2 = Seq.empty
 
   override def create(scope: IScope): Node = {
     val name = "v" + ai.chooseIndex(scope.numVals)
     ValueRef(name = name)
   }
+}
+
+object ValueRefFactory {
+  val id = 7
 }

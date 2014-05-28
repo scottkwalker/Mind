@@ -15,6 +15,7 @@ case class AddOperatorFactory @Inject()(injector: Injector,
                                         legalNeighbours: LegalNeighbours
                                          ) extends ICreateChildNodes with UpdateScopeNoChange {
   override val neighbours = Seq(injector.getInstance(classOf[ValueRefFactory]))
+  override val neighbours2 = Seq(ValueRefFactory.id)
 
   override def create(scope: IScope): Node = {
     val ln = legalNeighbours.fetch(scope, neighbours)
@@ -23,4 +24,8 @@ case class AddOperatorFactory @Inject()(injector: Injector,
     AddOperator(left = leftChild,
       right = rightChild)
   }
+}
+
+object AddOperatorFactory {
+  val id = 1
 }

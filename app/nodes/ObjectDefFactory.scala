@@ -16,6 +16,7 @@ case class ObjectDefFactory @Inject()(injector: Injector,
                                       legalNeighbours: LegalNeighbours
                                        ) extends ICreateChildNodes with UpdateScopeIncrementObjects {
   override val neighbours = Seq(injector.getInstance(classOf[FunctionMFactory]))
+  override val neighbours2 = Seq(FunctionMFactory.id)
 
   override def create(scope: IScope): Node = {
     val (_, nodes) = createNodes(scope)
@@ -31,4 +32,8 @@ case class ObjectDefFactory @Inject()(injector: Injector,
     acc = acc,
     factoryLimit = scope.maxFuncsInObject
   )
+}
+
+object ObjectDefFactory {
+  val id = 5
 }

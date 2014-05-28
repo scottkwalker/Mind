@@ -14,6 +14,11 @@ case class IntegerMFactory @Inject()(creator: ICreateSeqNodes,
                                      legalNeighbours: LegalNeighbours
                                       ) extends ICreateChildNodes with UpdateScopeNoChange {
   override val neighbours = Seq.empty // No possible children
+  override val neighbours2 = Seq.empty
 
   override def create(scope: IScope): Node = IntegerM()
+}
+
+object IntegerMFactory {
+  val id = 3
 }
