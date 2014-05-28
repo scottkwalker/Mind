@@ -5,7 +5,7 @@ import nodes.helpers.{UpdateScopeIncrementVals, IScope}
 import com.google.inject.Injector
 import models.domain.common.Node
 
-case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node with UpdateScopeIncrementVals {
+final case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node with UpdateScopeIncrementVals {
   override def toRaw: String = s"$name: ${primitiveType.toRaw}"
 
   override def validate(scope: IScope): Boolean = scope.hasDepthRemaining && !name.isEmpty && {

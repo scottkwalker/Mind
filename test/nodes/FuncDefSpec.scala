@@ -101,7 +101,7 @@ final class FuncDefSpec extends UnitSpec {
   "replaceEmpty" should {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
-      val p = mock[ValDclInFunctionParam]
+      val p = mock[Node]
       when(p.replaceEmpty(any[Scope], any[Injector])).thenReturn(p)
       val v = mock[Node]
       when(v.replaceEmpty(any[Scope], any[Injector])) thenReturn v
@@ -118,7 +118,7 @@ final class FuncDefSpec extends UnitSpec {
 
     "returns same when no empty nodes" in {
       val s = mock[IScope]
-      val p = mock[ValDclInFunctionParam]
+      val p = mock[Node]
       when(p.replaceEmpty(any[Scope], any[Injector])) thenReturn p
       val v = mock[Node]
       when(v.replaceEmpty(any[Scope], any[Injector])) thenReturn v
