@@ -9,8 +9,7 @@ import nodes.legalNeighbours.LegalNeighbours
 
 case class IntegerMFactory @Inject()(creator: ICreateSeqNodes,
                                      ai: IAi,
-                                     populateMemoizationMapsStrategy: IPopulateMemoizationMaps,
-                                     legalNeighbours: LegalNeighbours
+                                     populateMemoizationMapsStrategy: IPopulateMemoizationMaps
                                       ) extends ICreateChildNodes with UpdateScopeNoChange {
   override val neighbours = Seq.empty // No possible children
   override val neighbours2 = Seq.empty

@@ -8,8 +8,7 @@ import models.domain.common.Node
 import nodes.legalNeighbours.LegalNeighbours
 
 final case class ValueRefFactory @Inject()(ai: IAi,
-                                     rng: IRandomNumberGenerator,
-                                     legalNeighbours: LegalNeighbours
+                                     rng: IRandomNumberGenerator
                                       ) extends ICreateChildNodes with UpdateScopeNoChange {
   override val neighbours = Seq.empty // No possible children
   override val neighbours2 = Seq.empty

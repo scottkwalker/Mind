@@ -10,7 +10,6 @@ final class LegalNeighboursImplSpec extends UnitSpec {
     val factory = mock[ICreateChildNodes]
     when(factory.neighbours).thenReturn(Seq(fNot))
     when(factory.neighbours2).thenReturn(Seq(FakeFactoryDoesNotTerminate.id))
-    when(factory.legalNeighbours).thenReturn(legalNeighboursImpl)
     factory
   }
   private val fT1 = FakeFactoryTerminates1()
@@ -24,7 +23,6 @@ final class LegalNeighboursImplSpec extends UnitSpec {
   }
 
   case class FakeFactoryDoesNotTerminate() extends ICreateChildNodes with UpdateScopeNoChange {
-    override val legalNeighbours: LegalNeighbours = legalNeighboursImpl
     override val neighbours: Seq[ICreateChildNodes] = Seq(fNot)
     override val neighbours2: Seq[Int] = Seq(FakeFactoryDoesNotTerminate.id)
 
@@ -36,7 +34,6 @@ final class LegalNeighboursImplSpec extends UnitSpec {
   }
 
   case class FakeFactoryTerminates1() extends ICreateChildNodes with UpdateScopeNoChange {
-    override val legalNeighbours: LegalNeighbours = legalNeighboursImpl
     override val neighbours: Seq[ICreateChildNodes] = Seq.empty
     override val neighbours2: Seq[Int] = Seq.empty
 
@@ -48,7 +45,6 @@ final class LegalNeighboursImplSpec extends UnitSpec {
   }
 
   case class FakeFactoryTerminates2() extends ICreateChildNodes with UpdateScopeNoChange {
-    override val legalNeighbours: LegalNeighbours = legalNeighboursImpl
     override val neighbours: Seq[ICreateChildNodes] = Seq.empty
     override val neighbours2: Seq[Int] = Seq.empty
 

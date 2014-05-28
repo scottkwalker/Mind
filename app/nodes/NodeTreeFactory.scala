@@ -11,8 +11,7 @@ import nodes.legalNeighbours.LegalNeighbours
 case class NodeTreeFactory @Inject()(injector: Injector,
                                      creator: ICreateSeqNodes,
                                      ai: IAi,
-                                     rng: IRandomNumberGenerator,
-                                     legalNeighbours: LegalNeighbours
+                                     rng: IRandomNumberGenerator
                                       ) extends ICreateChildNodes with UpdateScopeThrows {
   override val neighbours = Seq(injector.getInstance(classOf[ObjectDefFactory]))
   override val neighbours2 = Seq(ObjectDefFactory.id)
@@ -29,13 +28,16 @@ case class NodeTreeFactory @Inject()(injector: Injector,
     NodeTree(nodes)
   }
 
-  def createNodes(scope: IScope, acc: Seq[Node] = Seq()): (IScope, Seq[Node]) = creator.createSeq(
-    possibleChildren = legalNeighbours.fetch(scope, neighbours2),
-    scope = scope,
-    saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumFuncs(accLength)),
-    acc = acc,
-    factoryLimit = scope.maxObjectsInTree
-  )
+  def createNodes(scope: IScope, acc: Seq[Node] = Seq()): (IScope, Seq[Node]) = {
+    val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
+    creator.createSeq(
+      possibleChildren = legalNeighbours.fetch(scope, neighbours2),
+      scope = scope,
+      saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumFuncs(accLength)),
+      acc = acc,
+      factoryLimit = scope.maxObjectsInTree
+    )
+  }
 }
 
 object NodeTreeFactory {

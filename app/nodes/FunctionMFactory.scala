@@ -12,13 +12,11 @@ import nodes.legalNeighbours.LegalNeighbours
 case class FunctionMFactory @Inject()(injector: Injector,
                                       creator: ICreateSeqNodes,
                                       ai: IAi,
-                                      rng: IRandomNumberGenerator,
-                                      legalNeighbours: LegalNeighbours
+                                      rng: IRandomNumberGenerator
                                        ) extends ICreateChildNodes with UpdateScopeIncrementFuncs {
   private val paramsNeighbours: Seq[ICreateChildNodes] = Seq(
     injector.getInstance(classOf[ValDclInFunctionParamFactory])
   )
-
   override val neighbours = Seq(
     injector.getInstance(classOf[AddOperatorFactory]),
     injector.getInstance(classOf[ValueRefFactory])
@@ -43,12 +41,15 @@ case class FunctionMFactory @Inject()(injector: Injector,
     factoryLimit = scope.maxParamsInFunc
   )
 
-  def createNodes(scope: IScope, acc: Seq[Node] = Seq.empty) = creator.createSeq(
-    possibleChildren = legalNeighbours.fetch(scope, neighbours2),
-    scope = scope,
-    acc = acc,
-    factoryLimit = scope.maxExpressionsInFunc
-  )
+  def createNodes(scope: IScope, acc: Seq[Node] = Seq.empty) = {
+    val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
+    creator.createSeq(
+      possibleChildren = legalNeighbours.fetch(scope, neighbours2),
+      scope = scope,
+      acc = acc,
+      factoryLimit = scope.maxExpressionsInFunc
+    )
+  }
 }
 
 object FunctionMFactory {

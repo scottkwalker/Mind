@@ -12,8 +12,7 @@ import nodes.legalNeighbours.LegalNeighbours
 case class ObjectDefFactory @Inject()(injector: Injector,
                                       creator: ICreateSeqNodes,
                                       ai: IAi,
-                                      rng: IRandomNumberGenerator,
-                                      legalNeighbours: LegalNeighbours
+                                      rng: IRandomNumberGenerator
                                        ) extends ICreateChildNodes with UpdateScopeIncrementObjects {
   override val neighbours = Seq(injector.getInstance(classOf[FunctionMFactory]))
   override val neighbours2 = Seq(FunctionMFactory.id)
@@ -25,13 +24,16 @@ case class ObjectDefFactory @Inject()(injector: Injector,
       name = "o" + scope.numObjects)
   }
 
-  def createNodes(scope: IScope, acc: Seq[Node] = Seq()) = creator.createSeq(
-    possibleChildren = legalNeighbours.fetch(scope, neighbours2),
-    scope = scope,
-    saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumFuncs(accLength)),
-    acc = acc,
-    factoryLimit = scope.maxFuncsInObject
-  )
+  def createNodes(scope: IScope, acc: Seq[Node] = Seq()) = {
+    val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
+    creator.createSeq(
+      possibleChildren = legalNeighbours.fetch(scope, neighbours2),
+      scope = scope,
+      saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumFuncs(accLength)),
+      acc = acc,
+      factoryLimit = scope.maxFuncsInObject
+    )
+  }
 }
 
 object ObjectDefFactory {
