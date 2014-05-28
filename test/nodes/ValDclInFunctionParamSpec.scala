@@ -15,7 +15,7 @@ import utils.helpers.UnitSpec
 final class ValDclInFunctionParamSpec extends UnitSpec {
   "toRawScala" should {
     "return expected" in {
-      val p = mock[IntegerM]
+      val p = mock[Node]
       when(p.toRaw).thenReturn("Int")
       val name = "a"
 
@@ -28,7 +28,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
       val s = mock[IScope]
       when(s.hasDepthRemaining).thenReturn(false)
       val name = "a"
-      val p = mock[IntegerM]
+      val p = mock[Node]
 
       ValDclInFunctionParam(name, p).validate(s) should equal(false)
     }
@@ -37,7 +37,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
       val s = mock[IScope]
       when(s.hasDepthRemaining).thenReturn(true)
       val name = ""
-      val p = mock[IntegerM]
+      val p = mock[Node]
 
       ValDclInFunctionParam(name, p).validate(s) should equal(false)
     }
@@ -46,7 +46,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
       val s = mock[IScope]
       when(s.hasDepthRemaining).thenReturn(true)
       val name = "a"
-      val p = mock[IntegerM]
+      val p = mock[Node]
       when(p.validate(any[Scope])).thenReturn(false)
 
       ValDclInFunctionParam(name, p).validate(s) should equal(false)
@@ -56,8 +56,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
       val s = mock[IScope]
       when(s.hasDepthRemaining).thenReturn(true)
       val name = "a"
-      val p = mock[IntegerM]
-      when(p.validate(any[Scope])).thenReturn(true)
+      val p = IntegerM()
 
       ValDclInFunctionParam(name, p).validate(s) should equal(true)
     }
@@ -69,7 +68,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
       when(s.incrementVals).thenReturn(s)
       when(s.incrementDepth).thenReturn(s)
       val name = "a"
-      val p = mock[IntegerM]
+      val p = mock[Node]
       when(p.replaceEmpty(any[Scope], any[Injector])).thenReturn(p)
       val i = mock[Injector]
       val instance = ValDclInFunctionParam(name, p)
@@ -84,7 +83,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
       when(s.incrementVals).thenReturn(s)
       when(s.incrementDepth).thenReturn(s)
       val name = "a"
-      val p = mock[IntegerM]
+      val p = mock[Node]
       when(p.replaceEmpty(any[Scope], any[Injector])).thenReturn(p)
       val i = mock[Injector]
       val instance = ValDclInFunctionParam(name, p)
@@ -97,7 +96,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
     "returns without empty nodes given there were empty nodes" in {
       class TestDevModule extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
         override def bindValDclInFunctionParamFactory(): Unit = {
-          val n: Node = mock[IntegerM]
+          val n: Node = mock[Node]
           val f = mock[ValDclInFunctionParamFactory]
           when(f.create(any[Scope])).thenReturn(n)
           bind(classOf[ValDclInFunctionParamFactory]).toInstance(f)
@@ -124,7 +123,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
   "getMaxDepth" should {
     "returns 1 + child getMaxDepth" in {
       val name = "a"
-      val p = mock[IntegerM]
+      val p = mock[Node]
       when(p.getMaxDepth).thenReturn(1)
 
       ValDclInFunctionParam(name, p).getMaxDepth should equal(2)
