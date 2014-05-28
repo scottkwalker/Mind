@@ -18,7 +18,7 @@ case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
 
   override def create(scope: IScope): Node = {
     val name = "v" + scope.numVals
-    val ln = legalNeighbours.fetch(scope, neighbours)
+    val ln = legalNeighbours.fetch(scope, neighbours2)
     val (_, primitiveType) = creator.create(ln, scope, ai)
 
     ValDclInFunctionParam(name = name,

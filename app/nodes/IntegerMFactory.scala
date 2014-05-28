@@ -7,7 +7,6 @@ import models.domain.scala.IntegerM
 import models.domain.common.Node
 import nodes.legalNeighbours.LegalNeighbours
 
-
 case class IntegerMFactory @Inject()(creator: ICreateSeqNodes,
                                      ai: IAi,
                                      populateMemoizationMapsStrategy: IPopulateMemoizationMaps,

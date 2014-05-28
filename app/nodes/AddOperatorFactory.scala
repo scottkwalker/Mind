@@ -18,7 +18,7 @@ case class AddOperatorFactory @Inject()(injector: Injector,
   override val neighbours2 = Seq(ValueRefFactory.id)
 
   override def create(scope: IScope): Node = {
-    val ln = legalNeighbours.fetch(scope, neighbours)
+    val ln = legalNeighbours.fetch(scope, neighbours2)
     val (updatedScope, leftChild) = creator.create(ln, scope, ai)
     val (_, rightChild) = creator.create(ln, updatedScope, ai)
     AddOperator(left = leftChild,

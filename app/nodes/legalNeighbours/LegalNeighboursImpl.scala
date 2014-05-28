@@ -1,21 +1,30 @@
 package nodes.legalNeighbours
 
 import nodes.helpers.{ICreateChildNodes, IScope}
+import com.google.inject.Inject
 
-final class LegalNeighboursImpl extends LegalNeighbours {
-  override def fetch(scope: IScope, neighbours: Seq[ICreateChildNodes]): Seq[ICreateChildNodes] ={
-    val memo: IScope => Seq[ICreateChildNodes] = {
-      def calculate(f: IScope => Seq[ICreateChildNodes])(scope: IScope): Seq[ICreateChildNodes] = {
-        if (scope.hasDepthRemaining) neighbours.filter {
-          n => n.neighbours.isEmpty || fetch(scope.incrementDepth, n.neighbours).length > 0
+final class LegalNeighboursImpl @Inject()(intToFactory: FactoryIdToFactory) extends LegalNeighbours {
+
+  private def legalForScope(scope: IScope, neighbours: Seq[Int]): Seq[Int] = {
+    val memo: IScope => Seq[Int] = {
+      def inner(f: IScope => Seq[Int])(innerScope: IScope): Seq[Int] = {
+        if (innerScope.hasDepthRemaining) neighbours.filter {
+          neighbourId =>
+            val factory = intToFactory.convert(neighbourId)
+            factory.neighbours2.isEmpty || legalForScope(scope = innerScope.incrementDepth, neighbours = factory.neighbours2).length > 0
         }
         else Seq.empty
       }
-      Memoize.Y(calculate)
+
+      Memoize.Y(inner)
     }
 
     memo(scope.incrementDepth).intersect(neighbours) // Only return legal moves that are neighbours
   }
 
+  override def fetch(scope: IScope, neighbours: Seq[Int]): Seq[ICreateChildNodes] = legalForScope(scope, neighbours).map(intToFactory.convert)
+
   // TODO write to disk
 }
+
+
