@@ -20,7 +20,7 @@ final case class ObjectDef(nodes: Seq[Node], name: String) extends Node with Upd
 
   override def replaceEmpty(scope: IScope, injector: Injector): Node = {
     def funcCreateNodes(scope: IScope, injector: Injector, premade: Seq[Node]): (IScope, Seq[Node]) = {
-      val factory = injector.getInstance(classOf[ObjectDefFactory])
+      val factory = injector.getInstance(classOf[ObjectDefFactoryImpl])
       factory.createNodes(scope = scope, acc = premade.init)
     }
 

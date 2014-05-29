@@ -17,7 +17,7 @@ final class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFac
                                         functionMFactory: FunctionMFactory,
                                         integerMFactory: IntegerMFactory,
                                         nodeTreeFactory: NodeTreeFactory,
-                                        objectDefFactory: ObjectDefFactory,
+                                        objectDefFactory: ObjectDefFactoryImpl,
                                         valDclInFunctionParamFactory: ValDclInFunctionParamFactoryImpl,
                                         valueRefFactory: ValueRefFactory) extends IPopulateMemoizationMaps {
   def memoizeCanTerminateInStepsRemaining(that: ICreateChildNodes,

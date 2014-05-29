@@ -3,15 +3,17 @@ package nodes
 import nodes.helpers._
 import com.google.inject.Injector
 import com.google.inject.Inject
-import ai.{IRandomNumberGenerator, IAi}
+import ai.IRandomNumberGenerator
 import models.domain.scala.ObjectDef
 import models.domain.common.Node
 import nodes.legalNeighbours.LegalNeighbours
 
+trait ObjectDefFactory extends ICreateChildNodes
 
-case class ObjectDefFactory @Inject()(injector: Injector,
-                                      creator: ICreateSeqNodes
-                                       ) extends ICreateChildNodes with UpdateScopeIncrementObjects {
+case class ObjectDefFactoryImpl @Inject()(injector: Injector,
+                                      creator: ICreateSeqNodes,
+                                      legalNeighbours: LegalNeighbours
+                                       ) extends ObjectDefFactory with UpdateScopeIncrementObjects {
   override val neighbourIds = Seq(FunctionMFactory.id)
 
   override def create(scope: IScope): Node = {
@@ -22,7 +24,6 @@ case class ObjectDefFactory @Inject()(injector: Injector,
   }
 
   def createNodes(scope: IScope, acc: Seq[Node] = Seq()) = {
-    val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
     creator.createSeq(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,
@@ -33,6 +34,6 @@ case class ObjectDefFactory @Inject()(injector: Injector,
   }
 }
 
-object ObjectDefFactory {
+object ObjectDefFactoryImpl {
   val id = 5
 }

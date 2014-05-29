@@ -11,7 +11,7 @@ import nodes.legalNeighbours.LegalNeighbours
 case class NodeTreeFactory @Inject()(injector: Injector,
                                      creator: ICreateSeqNodes
                                       ) extends ICreateChildNodes with UpdateScopeThrows {
-  override val neighbourIds = Seq(ObjectDefFactory.id)
+  override val neighbourIds = Seq(ObjectDefFactoryImpl.id)
 
   def create(scope: IScope, premadeChildren: Seq[ICreateChildNodes]): Node = {
     val (_, generated) = createNodes(scope)

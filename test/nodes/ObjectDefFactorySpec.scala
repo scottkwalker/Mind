@@ -69,5 +69,5 @@ final class ObjectDefFactorySpec extends UnitSpec {
   when(rng.nextBoolean()).thenReturn(true)
 
   private val injector: Injector = Guice.createInjector(new DevModule(randomNumberGenerator = rng), new LegalGamerModule)
-  private val factory = injector.getInstance(classOf[ObjectDefFactory])
+  private val factory = injector.getInstance(classOf[ObjectDefFactoryImpl])
 }
