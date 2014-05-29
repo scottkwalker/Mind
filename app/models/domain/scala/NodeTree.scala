@@ -1,6 +1,6 @@
 package models.domain.scala
 
-import nodes.NodeTreeFactory
+import nodes.NodeTreeFactoryImpl
 import nodes.helpers.{UpdateScopeThrows, IScope}
 import com.google.inject.Injector
 import scala.annotation.tailrec
@@ -20,7 +20,7 @@ final case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows 
 
   override def replaceEmpty(scope: IScope, injector: Injector): Node = {
     def funcCreateNodes(scope: IScope, injector: Injector, premade: Seq[Node]): (IScope, Seq[Node]) = {
-      val factory = injector.getInstance(classOf[NodeTreeFactory])
+      val factory = injector.getInstance(classOf[NodeTreeFactoryImpl])
       factory.createNodes(scope = scope, acc = premade.init)
     }
 

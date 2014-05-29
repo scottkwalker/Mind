@@ -10,7 +10,8 @@ import nodes.legalNeighbours.LegalNeighbours
 trait FunctionMFactory extends ICreateChildNodes
 
 case class FunctionMFactoryImpl @Inject()(injector: Injector,
-                                      creator: ICreateSeqNodes
+                                      creator: ICreateSeqNodes,
+                                      legalNeighbours: LegalNeighbours
                                        ) extends FunctionMFactory with UpdateScopeIncrementFuncs {
   private val paramsNeighbours = Seq(ValDclInFunctionParamFactoryImpl.id)
 
@@ -27,7 +28,6 @@ case class FunctionMFactoryImpl @Inject()(injector: Injector,
   }
 
   def createParams(scope: IScope, acc: Seq[Node] = Seq.empty) = {
-    val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
     creator.createSeq(
       possibleChildren = legalNeighbours.fetch(scope, paramsNeighbours),
       scope = scope,
@@ -38,7 +38,6 @@ case class FunctionMFactoryImpl @Inject()(injector: Injector,
   }
 
   def createNodes(scope: IScope, acc: Seq[Node] = Seq.empty) = {
-    val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
     creator.createSeq(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,

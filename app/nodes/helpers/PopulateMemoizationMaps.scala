@@ -16,7 +16,7 @@ Json serializer runs over the Map
 final class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFactoryImpl,
                                         functionMFactory: FunctionMFactoryImpl,
                                         integerMFactory: IntegerMFactory,
-                                        nodeTreeFactory: NodeTreeFactory,
+                                        nodeTreeFactory: NodeTreeFactoryImpl,
                                         objectDefFactory: ObjectDefFactoryImpl,
                                         valDclInFunctionParamFactory: ValDclInFunctionParamFactoryImpl,
                                         valueRefFactory: ValueRefFactory) extends IPopulateMemoizationMaps {

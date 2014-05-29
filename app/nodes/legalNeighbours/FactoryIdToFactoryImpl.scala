@@ -15,7 +15,7 @@ final class FactoryIdToFactoryImpl @Inject()(addOperatorFactory: AddOperatorFact
     case AddOperatorFactoryImpl.id => addOperatorFactory
     case FunctionMFactoryImpl.id => functionMFactory
     case IntegerMFactory.id => integerMFactory
-    case NodeTreeFactory.id => nodeTreeFactory
+    case NodeTreeFactoryImpl.id => nodeTreeFactory
     case ObjectDefFactoryImpl.id => objectDefFactory
     case ValDclInFunctionParamFactoryImpl.id => valDclInFunctionParamFactory
     case ValueRefFactory.id => valueRefFactory

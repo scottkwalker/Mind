@@ -59,7 +59,7 @@ final class NodeTreeFactorySpec extends UnitSpec {
   when(rng.nextBoolean()).thenReturn(true)
 
   private val injector: Injector = Guice.createInjector(new TestDevModule(rng), new LegalGamerModule)
-  private val factory = injector.getInstance(classOf[NodeTreeFactory])
+  private val factory = injector.getInstance(classOf[NodeTreeFactoryImpl])
   private val s = injector.getInstance(classOf[IScope])
 
 }

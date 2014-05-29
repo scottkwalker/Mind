@@ -3,14 +3,16 @@ package nodes
 import nodes.helpers._
 import com.google.inject.Injector
 import com.google.inject.Inject
-import ai.IRandomNumberGenerator
 import models.domain.scala.NodeTree
 import models.domain.common.Node
 import nodes.legalNeighbours.LegalNeighbours
 
-case class NodeTreeFactory @Inject()(injector: Injector,
-                                     creator: ICreateSeqNodes
-                                      ) extends ICreateChildNodes with UpdateScopeThrows {
+trait NodeTreeFactory extends ICreateChildNodes
+
+case class NodeTreeFactoryImpl @Inject()(injector: Injector,
+                                     creator: ICreateSeqNodes,
+                                     legalNeighbours: LegalNeighbours
+                                      ) extends NodeTreeFactory with UpdateScopeThrows {
   override val neighbourIds = Seq(ObjectDefFactoryImpl.id)
 
   def create(scope: IScope, premadeChildren: Seq[ICreateChildNodes]): Node = {
@@ -26,7 +28,6 @@ case class NodeTreeFactory @Inject()(injector: Injector,
   }
 
   def createNodes(scope: IScope, acc: Seq[Node] = Seq()): (IScope, Seq[Node]) = {
-    val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
     creator.createSeq(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,
@@ -37,6 +38,6 @@ case class NodeTreeFactory @Inject()(injector: Injector,
   }
 }
 
-object NodeTreeFactory {
+object NodeTreeFactoryImpl {
   val id = 4
 }
