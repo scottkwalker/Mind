@@ -7,8 +7,10 @@ import models.domain.scala.ValueRef
 import models.domain.common.Node
 import nodes.legalNeighbours.LegalNeighbours
 
-final case class ValueRefFactory @Inject()(ai: IAi
-                                      ) extends ICreateChildNodes with UpdateScopeNoChange {
+trait ValueRefFactory extends ICreateChildNodes
+
+final case class ValueRefFactoryImpl @Inject()(ai: IAi
+                                      ) extends ValueRefFactory with UpdateScopeNoChange {
   override val neighbourIds = Seq.empty
 
   override def create(scope: IScope): Node = {
@@ -17,6 +19,6 @@ final case class ValueRefFactory @Inject()(ai: IAi
   }
 }
 
-object ValueRefFactory {
+object ValueRefFactoryImpl {
   val id = 7
 }

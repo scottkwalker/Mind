@@ -18,7 +18,7 @@ final class FactoryIdToFactoryImpl @Inject()(addOperatorFactory: AddOperatorFact
     case NodeTreeFactoryImpl.id => nodeTreeFactory
     case ObjectDefFactoryImpl.id => objectDefFactory
     case ValDclInFunctionParamFactoryImpl.id => valDclInFunctionParamFactory
-    case ValueRefFactory.id => valueRefFactory
+    case ValueRefFactoryImpl.id => valueRefFactory
     case _ => throw new RuntimeException("Unknown id for factory")
   }
 }

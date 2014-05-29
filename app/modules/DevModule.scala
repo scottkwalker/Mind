@@ -18,7 +18,7 @@ class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject
     bindFunctionMFactory()
     bind(classOf[NodeTreeFactory]).to(classOf[NodeTreeFactoryImpl]).asEagerSingleton()
     bind(classOf[ObjectDefFactory]).to(classOf[ObjectDefFactoryImpl]).asEagerSingleton()
-    bind(classOf[ValueRefFactory]).asEagerSingleton()
+    bind(classOf[ValueRefFactory]).to(classOf[ValueRefFactoryImpl]).asEagerSingleton()
     bindValDclInFunctionParamFactory()
     bind(classOf[IScope]).toInstance(scope)
     bind(classOf[ICreateNode]).to(classOf[CreateNode]).asEagerSingleton()

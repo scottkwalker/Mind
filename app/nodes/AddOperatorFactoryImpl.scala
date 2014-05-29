@@ -14,7 +14,7 @@ case class AddOperatorFactoryImpl @Inject()(injector: Injector,
                                         creator: ICreateNode,
                                         legalNeighbours: LegalNeighbours
                                          ) extends AddOperatorFactory with UpdateScopeNoChange {
-  override val neighbourIds = Seq(ValueRefFactory.id)
+  override val neighbourIds = Seq(ValueRefFactoryImpl.id)
 
   override def create(scope: IScope): Node = {
     val ln = legalNeighbours.fetch(scope, neighbourIds)
