@@ -14,7 +14,7 @@ final case class CreateSeqNodes @Inject()(createNode: ICreateNode, ai: IAi) exte
                       factoryLimit: Int
                        ): (IScope, Seq[Node]) = {
     if (ai.canAddAnother(acc.length, factoryLimit)) {
-      val (updatedScope, child) = createNode.create(possibleChildren, scope, ai)
+      val (updatedScope, child) = createNode.create(possibleChildren, scope)
       createSeq(possibleChildren,
         updatedScope,
         saveAccLengthInScope,

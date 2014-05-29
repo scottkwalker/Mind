@@ -13,9 +13,9 @@ final class CreateNodeSpec extends UnitSpec {
       when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
       when(ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope])).thenReturn(v)
-      val sut = CreateNode()
+      val sut = CreateNode(ai)
 
-      val (_, _) = sut.create(Seq(v), scope, ai)
+      val (_, _) = sut.create(Seq(v), scope)
 
       verify(ai, times(1)).chooseChild(Seq(v), scope)
     }
@@ -26,9 +26,9 @@ final class CreateNodeSpec extends UnitSpec {
       when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
       when(ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope])).thenReturn(v)
-      val sut = CreateNode()
+      val sut = CreateNode(ai)
 
-      val (_, _) = sut.create(Seq(v), scope, ai)
+      val (_, _) = sut.create(Seq(v), scope)
 
       verify(v, times(1)).updateScope(scope)
     }
@@ -39,9 +39,9 @@ final class CreateNodeSpec extends UnitSpec {
       when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
       when(ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope])).thenReturn(v)
-      val sut = CreateNode()
+      val sut = CreateNode(ai)
 
-      val (_, _) = sut.create(Seq(v), scope, ai)
+      val (_, _) = sut.create(Seq(v), scope)
 
       verify(v, times(1)).create(scope)
     }

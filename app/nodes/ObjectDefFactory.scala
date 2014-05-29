@@ -10,9 +10,7 @@ import nodes.legalNeighbours.LegalNeighbours
 
 
 case class ObjectDefFactory @Inject()(injector: Injector,
-                                      creator: ICreateSeqNodes,
-                                      ai: IAi,
-                                      rng: IRandomNumberGenerator
+                                      creator: ICreateSeqNodes
                                        ) extends ICreateChildNodes with UpdateScopeIncrementObjects {
   override val neighbourIds = Seq(FunctionMFactory.id)
 

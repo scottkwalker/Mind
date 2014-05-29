@@ -9,8 +9,7 @@ import nodes.legalNeighbours.LegalNeighbours
 
 
 case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
-                                                  creator: ICreateNode,
-                                                  ai: IAi
+                                                  creator: ICreateNode
                                                    ) extends ICreateChildNodes with UpdateScopeIncrementVals {
   override val neighbourIds = Seq(IntegerMFactory.id)
 
@@ -18,7 +17,7 @@ case class ValDclInFunctionParamFactory @Inject()(injector: Injector,
     val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
     val name = "v" + scope.numVals
     val ln = legalNeighbours.fetch(scope, neighbourIds)
-    val (_, primitiveType) = creator.create(ln, scope, ai)
+    val (_, primitiveType) = creator.create(ln, scope)
 
     ValDclInFunctionParam(name = name,
       primitiveType = primitiveType) // TODO need to make more types.

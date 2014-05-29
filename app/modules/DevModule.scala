@@ -16,8 +16,7 @@ import models.domain.scala.Empty
 import nodes.legalNeighbours.{FactoryIdToFactoryImpl, FactoryIdToFactory, LegalNeighboursImpl, LegalNeighbours}
 
 class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1),
-                randomNumberGenerator: IRandomNumberGenerator = RandomNumberGenerator(),
-                createNode: ICreateNode = CreateNode()) extends ScalaModule {
+                randomNumberGenerator: IRandomNumberGenerator = RandomNumberGenerator()) extends ScalaModule {
   def configure(): Unit = {
     bindAddOperatorFactory()
     bind(classOf[Empty]).asEagerSingleton()
@@ -27,7 +26,8 @@ class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject
     bind(classOf[ValueRefFactory]).asEagerSingleton()
     bindValDclInFunctionParamFactory()
     bind(classOf[IScope]).toInstance(scope)
-    bind(classOf[ICreateNode]).toInstance(createNode)
+    //bind(classOf[ICreateNode]).toInstance(createNode)
+    bind(classOf[ICreateNode]).to(classOf[CreateNode]).asEagerSingleton()
     bind(classOf[ICreateSeqNodes]).to(classOf[CreateSeqNodes])
     bind(classOf[IRandomNumberGenerator]).toInstance(randomNumberGenerator)
     bindIPopulateMemoizationMaps()

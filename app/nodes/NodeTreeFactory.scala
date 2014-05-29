@@ -3,15 +3,13 @@ package nodes
 import nodes.helpers._
 import com.google.inject.Injector
 import com.google.inject.Inject
-import ai.{IRandomNumberGenerator, IAi}
+import ai.IRandomNumberGenerator
 import models.domain.scala.NodeTree
 import models.domain.common.Node
 import nodes.legalNeighbours.LegalNeighbours
 
 case class NodeTreeFactory @Inject()(injector: Injector,
-                                     creator: ICreateSeqNodes,
-                                     ai: IAi,
-                                     rng: IRandomNumberGenerator
+                                     creator: ICreateSeqNodes
                                       ) extends ICreateChildNodes with UpdateScopeThrows {
   override val neighbourIds = Seq(ObjectDefFactory.id)
 

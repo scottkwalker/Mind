@@ -7,10 +7,7 @@ import models.domain.scala.IntegerM
 import models.domain.common.Node
 import nodes.legalNeighbours.LegalNeighbours
 
-case class IntegerMFactory @Inject()(creator: ICreateSeqNodes,
-                                     ai: IAi,
-                                     populateMemoizationMapsStrategy: IPopulateMemoizationMaps
-                                      ) extends ICreateChildNodes with UpdateScopeNoChange {
+case class IntegerMFactory @Inject()() extends ICreateChildNodes with UpdateScopeNoChange {
   override val neighbourIds = Seq.empty
 
   override def create(scope: IScope): Node = IntegerM()

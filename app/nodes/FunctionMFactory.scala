@@ -10,9 +10,7 @@ import nodes.legalNeighbours.LegalNeighbours
 
 
 case class FunctionMFactory @Inject()(injector: Injector,
-                                      creator: ICreateSeqNodes,
-                                      ai: IAi,
-                                      rng: IRandomNumberGenerator
+                                      creator: ICreateSeqNodes
                                        ) extends ICreateChildNodes with UpdateScopeIncrementFuncs {
   private val paramsNeighbours: Seq[ICreateChildNodes] = Seq(
     injector.getInstance(classOf[ValDclInFunctionParamFactory])

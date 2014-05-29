@@ -24,8 +24,7 @@ final class CreateSeqNodeScalaTestSpec extends UnitSpec {
         anyInt())).thenReturn(true, false)
 
       when(cn.create(anyObject[Seq[ICreateChildNodes]],
-        anyObject[IScope],
-        anyObject[IAi])).thenReturn((s, n))
+        anyObject[IScope])).thenReturn((s, n))
 
       // Act
       val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
@@ -49,7 +48,7 @@ final class CreateSeqNodeScalaTestSpec extends UnitSpec {
       val sut = CreateSeqNodes(cn, ai)
       when(s.maxFuncsInObject).thenReturn(2)
       when(ai.canAddAnother(anyInt(), anyInt())).thenReturn(true, true, false)
-      when(cn.create(anyObject[Seq[ICreateChildNodes]], anyObject[IScope], anyObject[IAi])).thenReturn((s, n))
+      when(cn.create(anyObject[Seq[ICreateChildNodes]], anyObject[IScope])).thenReturn((s, n))
 
       // Act
       val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
@@ -77,8 +76,7 @@ final class CreateSeqNodeScalaTestSpec extends UnitSpec {
         anyInt())).thenReturn(true, false)
 
       when(cn.create(anyObject[Seq[ICreateChildNodes]],
-        anyObject[IScope],
-        anyObject[IAi])).thenReturn((s, n))
+        anyObject[IScope])).thenReturn((s, n))
 
       // Act
       val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
@@ -105,8 +103,7 @@ final class CreateSeqNodeScalaTestSpec extends UnitSpec {
       when(ai.canAddAnother(anyInt(), anyInt())).thenReturn(true, false)
 
       when(cn.create(anyObject[Seq[ICreateChildNodes]],
-        anyObject[IScope],
-        anyObject[IAi])).thenReturn((s, n))
+        anyObject[IScope])).thenReturn((s, n))
 
       // Act
       val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
