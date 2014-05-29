@@ -22,7 +22,7 @@ class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject
     bindValDclInFunctionParamFactory()
     bind(classOf[IScope]).toInstance(scope)
     bind(classOf[ICreateNode]).to(classOf[CreateNode]).asEagerSingleton()
-    bind(classOf[ICreateSeqNodes]).to(classOf[CreateSeqNodes])
+    bind(classOf[ICreateSeqNodes]).to(classOf[CreateSeqNodes]).asEagerSingleton()
     bind(classOf[IRandomNumberGenerator]).toInstance(randomNumberGenerator)
     bindIPopulateMemoizationMaps()
     bind(classOf[FactoryIdToFactory]).to(classOf[FactoryIdToFactoryImpl]).asEagerSingleton()
