@@ -7,10 +7,11 @@ import models.domain.scala.FunctionM
 import models.domain.common.Node
 import nodes.legalNeighbours.LegalNeighbours
 
+trait FunctionMFactory extends ICreateChildNodes
 
-case class FunctionMFactory @Inject()(injector: Injector,
+case class FunctionMFactoryImpl @Inject()(injector: Injector,
                                       creator: ICreateSeqNodes
-                                       ) extends ICreateChildNodes with UpdateScopeIncrementFuncs {
+                                       ) extends FunctionMFactory with UpdateScopeIncrementFuncs {
   private val paramsNeighbours = Seq(ValDclInFunctionParamFactoryImpl.id)
 
   override val neighbourIds = Seq(AddOperatorFactory.id, ValueRefFactory.id)
@@ -47,6 +48,6 @@ case class FunctionMFactory @Inject()(injector: Injector,
   }
 }
 
-object FunctionMFactory {
+object FunctionMFactoryImpl {
   val id = 2
 }

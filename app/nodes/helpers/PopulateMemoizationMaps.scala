@@ -14,7 +14,7 @@ Json serializer runs over the Map
 */
 
 final class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFactory,
-                                        functionMFactory: FunctionMFactory,
+                                        functionMFactory: FunctionMFactoryImpl,
                                         integerMFactory: IntegerMFactory,
                                         nodeTreeFactory: NodeTreeFactory,
                                         objectDefFactory: ObjectDefFactoryImpl,

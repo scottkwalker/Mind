@@ -69,5 +69,5 @@ final class FunctionMFactorySpec extends UnitSpec {
   when(rng.nextBoolean()).thenReturn(true)
 
   private val injector: Injector = Guice.createInjector(new DevModule(randomNumberGenerator = rng), new LegalGamerModule)
-  private val factory = injector.getInstance(classOf[FunctionMFactory])
+  private val factory = injector.getInstance(classOf[FunctionMFactoryImpl])
 }

@@ -10,7 +10,7 @@ import modules.DevModule
 final class PopulateMemoizationMapsSpec extends UnitSpec {
   private val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
   private val addOperatorFactory = injector.getInstance(classOf[AddOperatorFactory])
-  private val functionMFactory = injector.getInstance(classOf[FunctionMFactory])
+  private val functionMFactory = injector.getInstance(classOf[FunctionMFactoryImpl])
   private val integerMFactory = injector.getInstance(classOf[IntegerMFactory])
   private val nodeTreeFactory = injector.getInstance(classOf[NodeTreeFactory])
   private val objectDefFactory = injector.getInstance(classOf[ObjectDefFactoryImpl])

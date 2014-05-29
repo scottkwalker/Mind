@@ -20,12 +20,12 @@ final case class FunctionM(params: Seq[Node],
 
   override def replaceEmpty(scope: IScope, injector: Injector): Node = {
     def funcCreateParams(scope: IScope, injector: Injector, premade: Seq[Node]): (IScope, Seq[Node]) = {
-      val factory = injector.getInstance(classOf[FunctionMFactory])
+      val factory = injector.getInstance(classOf[FunctionMFactoryImpl])
       factory.createParams(scope = scope, acc = premade.init)
     }
 
     def funcCreateNodes(scope: IScope, injector: Injector, premade: Seq[Node]): (IScope, Seq[Node]) = {
-      val factory = injector.getInstance(classOf[FunctionMFactory])
+      val factory = injector.getInstance(classOf[FunctionMFactoryImpl])
       factory.createNodes(scope = scope, acc = premade.init)
     }
 
