@@ -24,7 +24,10 @@ final class LegalNeighboursImpl @Inject()(intToFactory: FactoryIdToFactory) exte
 
   override def fetch(scope: IScope, neighbours: Seq[Int]): Seq[ICreateChildNodes] = legalForScope(scope, neighbours).map(intToFactory.convert)
 
-  // TODO write to disk
+  // TODO write to disk:
+  // running populate memo
+  // it returns an answer
+  // write the answer to stream that goes to a file.
 }
 
 
