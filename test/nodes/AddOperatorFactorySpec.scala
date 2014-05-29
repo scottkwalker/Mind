@@ -15,7 +15,7 @@ final class AddOperatorFactorySpec extends UnitSpec {
     "return instance of this type" in {
       val s = Scope(maxDepth = 10, numVals = 1)
       val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
-      val factory = injector.getInstance(classOf[AddOperatorFactory])
+      val factory = injector.getInstance(classOf[AddOperatorFactoryImpl])
 
       val instance = factory.create(scope = s)
 

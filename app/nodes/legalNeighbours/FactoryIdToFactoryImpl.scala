@@ -12,7 +12,7 @@ final class FactoryIdToFactoryImpl @Inject()(addOperatorFactory: AddOperatorFact
                                    valDclInFunctionParamFactory: ValDclInFunctionParamFactory,
                                    valueRefFactory: ValueRefFactory) extends FactoryIdToFactory {
   override def convert(id: Int): ICreateChildNodes = id match {
-    case AddOperatorFactory.id => addOperatorFactory
+    case AddOperatorFactoryImpl.id => addOperatorFactory
     case FunctionMFactoryImpl.id => functionMFactory
     case IntegerMFactory.id => integerMFactory
     case NodeTreeFactory.id => nodeTreeFactory

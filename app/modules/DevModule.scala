@@ -34,7 +34,7 @@ class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject
   }
 
   def bindAddOperatorFactory(): Unit = {
-    bind(classOf[AddOperatorFactory]).asEagerSingleton()
+    bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl]).asEagerSingleton()
   }
 
   def bindValDclInFunctionParamFactory(): Unit = {

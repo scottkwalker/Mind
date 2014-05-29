@@ -8,14 +8,15 @@ import models.domain.scala.AddOperator
 import models.domain.common.Node
 import nodes.legalNeighbours.LegalNeighbours
 
+trait AddOperatorFactory extends ICreateChildNodes
 
-case class AddOperatorFactory @Inject()(injector: Injector,
-                                        creator: ICreateNode
-                                         ) extends ICreateChildNodes with UpdateScopeNoChange {
+case class AddOperatorFactoryImpl @Inject()(injector: Injector,
+                                        creator: ICreateNode,
+                                        legalNeighbours: LegalNeighbours
+                                         ) extends AddOperatorFactory with UpdateScopeNoChange {
   override val neighbourIds = Seq(ValueRefFactory.id)
 
   override def create(scope: IScope): Node = {
-    val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
     val ln = legalNeighbours.fetch(scope, neighbourIds)
     val (updatedScope, leftChild) = creator.create(ln, scope)
     val (_, rightChild) = creator.create(ln, updatedScope)
@@ -24,6 +25,6 @@ case class AddOperatorFactory @Inject()(injector: Injector,
   }
 }
 
-object AddOperatorFactory {
+object AddOperatorFactoryImpl {
   val id = 1
 }

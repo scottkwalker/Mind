@@ -101,7 +101,7 @@ final class AddOperatorSpec extends UnitSpec {
       class TestDevModule extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
         override def bindAddOperatorFactory(): Unit = {
           val n: Node = mock[Node]
-          val f = mock[AddOperatorFactory]
+          val f = mock[AddOperatorFactoryImpl]
           when(f.create(any[Scope])).thenReturn(n)
           bind(classOf[AddOperatorFactory]).toInstance(f)
         }
