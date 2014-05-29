@@ -14,7 +14,7 @@ final class PopulateMemoizationMapsSpec extends UnitSpec {
   private val integerMFactory = injector.getInstance(classOf[IntegerMFactory])
   private val nodeTreeFactory = injector.getInstance(classOf[NodeTreeFactory])
   private val objectDefFactory = injector.getInstance(classOf[ObjectDefFactory])
-  private val valDclInFunctionParamFactory = injector.getInstance(classOf[ValDclInFunctionParamFactory])
+  private val valDclInFunctionParamFactory = injector.getInstance(classOf[ValDclInFunctionParamFactoryImpl])
   private val valueRefFactory = injector.getInstance(classOf[ValueRefFactory])
   /*
     "IoC" should {

@@ -11,7 +11,7 @@ import nodes.legalNeighbours.LegalNeighbours
 case class FunctionMFactory @Inject()(injector: Injector,
                                       creator: ICreateSeqNodes
                                        ) extends ICreateChildNodes with UpdateScopeIncrementFuncs {
-  private val paramsNeighbours = Seq(ValDclInFunctionParamFactory.id)
+  private val paramsNeighbours = Seq(ValDclInFunctionParamFactoryImpl.id)
 
   override val neighbourIds = Seq(AddOperatorFactory.id, ValueRefFactory.id)
 

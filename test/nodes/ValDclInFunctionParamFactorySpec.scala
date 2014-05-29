@@ -57,5 +57,5 @@ final class ValDclInFunctionParamFactorySpec extends UnitSpec {
   }
 
   private val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
-  private val factory = injector.getInstance(classOf[ValDclInFunctionParamFactory])
+  private val factory = injector.getInstance(classOf[ValDclInFunctionParamFactoryImpl])
 }

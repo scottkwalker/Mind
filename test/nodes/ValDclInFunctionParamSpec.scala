@@ -97,7 +97,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
       class TestDevModule extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
         override def bindValDclInFunctionParamFactory(): Unit = {
           val n: Node = mock[Node]
-          val f = mock[ValDclInFunctionParamFactory]
+          val f = mock[ValDclInFunctionParamFactoryImpl]
           when(f.create(any[Scope])).thenReturn(n)
           bind(classOf[ValDclInFunctionParamFactory]).toInstance(f)
         }
