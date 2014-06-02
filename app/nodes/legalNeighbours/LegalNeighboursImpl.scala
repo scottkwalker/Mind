@@ -2,12 +2,13 @@ package nodes.legalNeighbours
 
 import nodes.helpers.{ICreateChildNodes, IScope}
 import com.google.inject.Inject
+import nodes.memoization.{Memoize, Memoize1}
 
 final class LegalNeighboursImpl @Inject()(intToFactory: FactoryIdToFactory) extends LegalNeighbours {
 
   private def legalForScope(scope: IScope, neighbours: Seq[Int]): Seq[Int] = {
-    val memo: IMemo[IScope, Seq[Int]] = {
-      def inner(f: IMemo[IScope, Seq[Int]])(innerScope: IScope): Seq[Int] = {
+    val memo: Memoize1[IScope, Seq[Int]] = {
+      def inner(f: Memoize1[IScope, Seq[Int]])(innerScope: IScope): Seq[Int] = {
         if (innerScope.hasDepthRemaining) neighbours.filter {
           neighbourId =>
             val factory = intToFactory.convert(neighbourId)
@@ -23,11 +24,6 @@ final class LegalNeighboursImpl @Inject()(intToFactory: FactoryIdToFactory) exte
   }
 
   override def fetch(scope: IScope, neighbours: Seq[Int]): Seq[ICreateChildNodes] = legalForScope(scope, neighbours).map(intToFactory.convert)
-
-  // TODO write to disk:
-  // running populate memo
-  // it returns an answer
-  // write the answer to stream that goes to a file.
 }
 
 

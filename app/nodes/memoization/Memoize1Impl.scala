@@ -1,17 +1,9 @@
-package nodes.legalNeighbours
+package nodes.memoization
 
 import java.util.concurrent.CountDownLatch
 import scala.annotation.tailrec
 import play.api.libs.json.JsValue
 
-trait IMemo[-TInput, +TOutput] {
-  def apply(key: TInput): TOutput
-
-  def write: JsValue
-}
-
-// The code below is a mashup between an example from stackoverflow and code originally based on com.twitter.util.Memoize.
-// I changed it from an object to a class.
 /**
  * A memoized unary function.
  *
@@ -19,7 +11,7 @@ trait IMemo[-TInput, +TOutput] {
  *          T the argument type
  *          R the return type
  */
-final class Memoize1[-TInput, +TOutput](f: TInput => TOutput) extends IMemo[TInput, TOutput] {
+final class Memoize1Impl[-TInput, +TOutput](f: TInput => TOutput) extends Memoize1[TInput, TOutput] {
   /**
    * Thread-safe memoization for a function.
    *
@@ -110,49 +102,5 @@ final class Memoize1[-TInput, +TOutput](f: TInput => TOutput) extends IMemo[TInp
       case _ => missing(key)
     }
 
-  def write: JsValue = ???
-}
-
-object Memoize {
-  /**
-   * Memoize a unary (single-argument) function.
-   *
-   * @param f the unary function to memoize
-   */
-  def memoize[TInput, TOutput](f: TInput => TOutput): IMemo[TInput, TOutput] = new Memoize1(f)
-
-  /*
-    /**
-     * Memoize a binary (two-argument) function.
-     *
-     * @param f the binary function to memoize
-     *
-     *          This works by turning a function that takes two arguments of type
-     *          T1 and T2 into a function that takes a single argument of type
-     *          (T1, T2), memoizing that "tupled" function, then "untupling" the
-     *          memoized function.
-     */
-    def memoize[T1, T2, R](f: (T1, T2) => R): ((T1, T2) => R) =
-      Function.untupled(memoize(f.tupled))
-
-    /**
-     * Memoize a ternary (three-argument) function.
-     *
-     * @param f the ternary function to memoize
-     */
-    def memoize[T1, T2, T3, R](f: (T1, T2, T3) => R): ((T1, T2, T3) => R) =
-      Function.untupled(memoize(f.tupled))
-
-    // ... more memoize methods for higher-arity functions ...
-  */
-  /**
-   * Fixed-point combinator (for memoizing recursive functions).
-   */
-  def Y[TInput, TOutput](f: IMemo[TInput, TOutput] => TInput => TOutput): IMemo[TInput, TOutput] = {
-    lazy val yf: IMemo[TInput, TOutput] = memoize(f(yf)(_))
-    yf
-  }
-
-
-  // TODO Memoize needs play json serialization after changing the value to type of BitSet
+  override def write: JsValue = ???
 }

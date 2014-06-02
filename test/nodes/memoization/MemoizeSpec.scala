@@ -1,4 +1,4 @@
-package nodes.legalNeighbours
+package nodes.memoization
 
 import java.util.concurrent.TimeUnit
 import scala.annotation.tailrec
@@ -9,6 +9,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.atomic.AtomicInteger
 import com.twitter.util.Throw
 import utils.helpers.UnitSpec
+import nodes.memoization
 
 final class MemoizeSpec extends UnitSpec {
   "apply" should {
@@ -20,7 +21,7 @@ final class MemoizeSpec extends UnitSpec {
       }
 
       val adder = spy(new Adder)
-      val memoizer = Memoize.memoize(adder(_: Int))
+      val memoizer = memoization.Memoize.memoize(adder(_: Int))
 
       memoizer(1) should equal(2)
       memoizer(1) should equal(2)
@@ -38,7 +39,7 @@ final class MemoizeSpec extends UnitSpec {
       }
 
       val adder = spy(new Fib)
-      val memoizer = Memoize.memoize(adder(_: Int))
+      val memoizer = memoization.Memoize.memoize(adder(_: Int))
 
       memoizer(1) should equal(1)
       memoizer(1) should equal(1)
@@ -63,7 +64,7 @@ final class MemoizeSpec extends UnitSpec {
       }
 
       val fib = spy(new Fib)
-      val memoizer = Memoize.memoize(fib(_: Int))
+      val memoizer = memoization.Memoize.memoize(fib(_: Int))
 
       memoizer(1) should equal(1)
       memoizer(1) should equal(1)
@@ -85,7 +86,7 @@ final class MemoizeSpec extends UnitSpec {
       }
 
       val adder = spy(new Adder)
-      val memoizer = Memoize.memoize(adder(_: Int))
+      val memoizer = memoization.Memoize.memoize(adder(_: Int))
 
       memoizer(1) should equal(2)
       memoizer(1) should equal(2)
@@ -117,7 +118,7 @@ final class MemoizeSpec extends UnitSpec {
       }
 
       val incrementer = spy(new Incrementer)
-      val memoizer = Memoize.memoize(incrementer(_: Int))
+      val memoizer = memoization.Memoize.memoize(incrementer(_: Int))
 
       val ConcurrencyLevel = 5
       val computations =
@@ -160,7 +161,7 @@ final class MemoizeSpec extends UnitSpec {
       // A computation that should fail the first time, and then
       // succeed for all subsequent attempts.
       val failFirstTime = spy(new FailFirstTime)
-      val memoizer = Memoize.memoize(failFirstTime(_: Int))
+      val memoizer = memoization.Memoize.memoize(failFirstTime(_: Int))
 
       val ConcurrencyLevel = 5
       val computation =
@@ -189,5 +190,26 @@ final class MemoizeSpec extends UnitSpec {
       callCount.get() should equal(2)
     }
   }
+/*
+  "write" should {
+    "turn map into Json" in {
+      lazy val memoizer: Memoize1[Int, Int] = {
+        def inner(f: Memoize1[Int, Int])(i: Int): Int = {
+          i match {
+            case 0 => 0
+            case 1 => 1
+            case _ => memoizer(i - 1) + memoizer(i - 2)
+          }
+        }
+        Memoize.Y(inner)
+      }
+
+      memoizer(1) should equal(1)
+      memoizer(2) should equal(1)
+      memoizer(3) should equal(2)
+
+      memoizer.write.toString() should equal("test")
+    }
+  }*/
 }
 
