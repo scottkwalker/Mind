@@ -6,8 +6,8 @@ import com.google.inject.Inject
 final class LegalNeighboursImpl @Inject()(intToFactory: FactoryIdToFactory) extends LegalNeighbours {
 
   private def legalForScope(scope: IScope, neighbours: Seq[Int]): Seq[Int] = {
-    val memo: IScope => Seq[Int] = {
-      def inner(f: IScope => Seq[Int])(innerScope: IScope): Seq[Int] = {
+    val memo: IMemo[IScope, Seq[Int]] = {
+      def inner(f: IMemo[IScope, Seq[Int]])(innerScope: IScope): Seq[Int] = {
         if (innerScope.hasDepthRemaining) neighbours.filter {
           neighbourId =>
             val factory = intToFactory.convert(neighbourId)

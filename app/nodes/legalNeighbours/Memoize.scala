@@ -2,6 +2,13 @@ package nodes.legalNeighbours
 
 import java.util.concurrent.CountDownLatch
 import scala.annotation.tailrec
+import play.api.libs.json.JsValue
+
+trait IMemo[-TInput, +TOutput] {
+  def apply(key: TInput): TOutput
+
+  def write: JsValue
+}
 
 // The code below is a mashup between an example from stackoverflow and code originally based on com.twitter.util.Memoize.
 // I changed it from an object to a class.
@@ -12,7 +19,7 @@ import scala.annotation.tailrec
  *          T the argument type
  *          R the return type
  */
-final class Memoize1[-TInput, +TOutput](f: TInput => TOutput) extends (TInput => TOutput) {
+final class Memoize1[-TInput, +TOutput](f: TInput => TOutput) extends IMemo[TInput, TOutput] {
   /**
    * Thread-safe memoization for a function.
    *
@@ -96,27 +103,14 @@ final class Memoize1[-TInput, +TOutput](f: TInput => TOutput) extends (TInput =>
         calculated
     }
 
-  
-/*
-  def getOpt(a: TInput): Option[TOutput] =
-  // If the value is present, then return the calculated value.
-  // Else it is not yet calculated.
-    vals.get(a) match {
-      case Some(Right(b)) => Some(b)
-      case _ => None
-    }
-*/
-  def apply(key: TInput): TOutput = {
-    // Look in the (possibly stale) memo table. If the value is present, then it is guaranteed to be the final value. 
-    // If it is absent, call missing() to determine what to do.
+  override def apply(key: TInput): TOutput = // Look in the (possibly stale) memo table. If the value is present, then it is guaranteed to be the final value.
+  // If it is absent, call missing() to determine what to do.
     cache.get(key) match {
       case Some(Right(b)) => b
       case _ => missing(key)
     }
-  
-}
 
-  //def apply(x: Some[TInput]): Option[TOutput] = getOpt(x.get)
+  def write: JsValue = ???
 }
 
 object Memoize {
@@ -125,7 +119,7 @@ object Memoize {
    *
    * @param f the unary function to memoize
    */
-  def memoize[TInput, TOutput](f: TInput => TOutput): (TInput => TOutput) = new Memoize1(f)
+  def memoize[TInput, TOutput](f: TInput => TOutput): IMemo[TInput, TOutput] = new Memoize1(f)
 
   /*
     /**
@@ -154,10 +148,11 @@ object Memoize {
   /**
    * Fixed-point combinator (for memoizing recursive functions).
    */
-  def Y[TInput, TOutput](f: (TInput => TOutput) => TInput => TOutput): (TInput => TOutput) = {
-    lazy val yf: (TInput => TOutput) = memoize(f(yf)(_))
+  def Y[TInput, TOutput](f: IMemo[TInput, TOutput] => TInput => TOutput): IMemo[TInput, TOutput] = {
+    lazy val yf: IMemo[TInput, TOutput] = memoize(f(yf)(_))
     yf
   }
+
 
   // TODO Memoize needs play json serialization after changing the value to type of BitSet
 }
