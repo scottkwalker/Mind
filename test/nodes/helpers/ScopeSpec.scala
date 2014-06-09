@@ -137,7 +137,7 @@ final class ScopeSpec extends UnitSpec {
 
   "deserialize" should {
     "return expected mode" in {
-      jsonSerialiser.deserialize(asJson) should equal(asModel)
+      jsonSerialiser.deserialize[Scope](asJson) should equal(asModel)
     }
   }
 
