@@ -27,6 +27,6 @@ final case class Scope(numVals: Int = 0,
 }
 
 object Scope {
-  implicit val jsonFormat = Json.format[Scope]
+  implicit private[helpers] val jsonFormat = Json.format[Scope]
 }
 

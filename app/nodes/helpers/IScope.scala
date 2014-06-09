@@ -1,5 +1,7 @@
 package nodes.helpers
 
+import play.api.libs.json._
+
 trait IScope {
   val numVals: Int
   val numFuncs: Int
@@ -24,4 +26,12 @@ trait IScope {
   def setNumVals(newValue: Int): IScope
 
   def hasDepthRemaining: Boolean
+}
+
+object IScope {
+  implicit val jsonReads: Reads[IScope] = __.read[Scope](Json.reads[Scope]).map(x => x:Scope)
+
+  implicit val jsonWrites = Writes[IScope] {
+    case s: Scope => nodes.helpers.Scope.jsonFormat.writes(s)
+  }
 }
