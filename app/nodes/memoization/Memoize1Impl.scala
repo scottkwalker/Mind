@@ -2,7 +2,8 @@ package nodes.memoization
 
 import java.util.concurrent.CountDownLatch
 import scala.annotation.tailrec
-import play.api.libs.json.JsValue
+import play.api.libs.json.{Format, JsValue}
+import nodes.helpers.JsonSerialiser
 
 /**
  * A memoized unary function.
@@ -11,7 +12,8 @@ import play.api.libs.json.JsValue
  *          T the argument type
  *          R the return type
  */
-final class Memoize1Impl[-TInput, +TOutput](f: TInput => TOutput) extends Memoize1[TInput, TOutput] {
+final class Memoize1Impl[-TInput, +TOutput](f: TInput => TOutput)
+                                           (implicit tInputFormat: Format[TInput], tOutputFormat: Format[TOutput]) extends Memoize1[TInput, TOutput] {
   /**
    * Thread-safe memoization for a function.
    *
@@ -102,5 +104,9 @@ final class Memoize1Impl[-TInput, +TOutput](f: TInput => TOutput) extends Memoiz
       case _ => missing(key)
     }
 
-  override def write: JsValue = ???
+  override def write: JsValue = {
+    val jsonSerialiser = new JsonSerialiser
+    //jsonSerialiser.serialize(cache)
+    ???
+  }
 }

@@ -1,5 +1,7 @@
 package nodes.memoization
 
+import play.api.libs.json.Format
+
 
 // The code below is a mashup between an example from stackoverflow and code originally based on com.twitter.util.Memoize.
 // I changed it from an object to a class.
@@ -11,7 +13,9 @@ object Memoize {
    *
    * @param f the unary function to memoize
    */
-  def memoize[TInput, TOutput](f: TInput => TOutput): Memoize1[TInput, TOutput] = new Memoize1Impl(f)
+  def memoize[TInput, TOutput](f: TInput => TOutput)
+                              (implicit tInputFormat: Format[TInput], tOutputFormat: Format[TOutput]): Memoize1[TInput, TOutput] =
+    new Memoize1Impl(f)
 
   /*
     /**
@@ -40,7 +44,8 @@ object Memoize {
   /**
    * Fixed-point combinator (for memoizing recursive functions).
    */
-  def Y[TInput, TOutput](f: Memoize1[TInput, TOutput] => TInput => TOutput): Memoize1[TInput, TOutput] = {
+  def Y[TInput, TOutput](f: Memoize1[TInput, TOutput] => TInput => TOutput)
+                        (implicit tInputFormat: Format[TInput], tOutputFormat: Format[TOutput]): Memoize1[TInput, TOutput] = {
     lazy val yf: Memoize1[TInput, TOutput] = memoize(f(yf)(_))
     yf
   }
