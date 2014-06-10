@@ -159,7 +159,7 @@ final class ScopeSpec extends UnitSpec {
     }
 
     "Either[String, Int]" in {
-      implicit val attachmentFormat = new Writes[Either[String, Int]] {
+      implicit val jsonWrites = new Writes[Either[String, Int]] {
         def writes(o: Either[String, Int]): JsValue = obj(
           o.fold(
             stringContent => "stringContent" -> JsString(stringContent),
@@ -173,7 +173,7 @@ final class ScopeSpec extends UnitSpec {
     }
 
     "Either[IScope, Int]" in {
-      implicit val attachmentFormat = new Writes[Either[IScope, Int]] {
+      implicit val jsonWrites = new Writes[Either[IScope, Int]] {
         def writes(o: Either[IScope, Int]): JsValue = obj(
           o.fold(
             scopeContent => "scopeContent" -> jsonSerialiser.serialize(scopeContent),
@@ -185,7 +185,8 @@ final class ScopeSpec extends UnitSpec {
       jsonSerialiser.serialize(Left(asModel)) should equal(
         JsObject(
           Seq(
-            ("scopeContent", JsObject(
+            ("scopeContent",
+              JsObject(
                 Seq(
                   ("numVals", JsNumber(0)),
                   ("numFuncs", JsNumber(0)),
@@ -198,7 +199,7 @@ final class ScopeSpec extends UnitSpec {
                   ("maxObjectsInTree", JsNumber(0))
                 )
               )
-            )
+              )
           )
         )
       )
@@ -206,7 +207,7 @@ final class ScopeSpec extends UnitSpec {
     }
 
     "Either[IScope, Seq[Int]]" in {
-      implicit val attachmentFormat = new Writes[Either[IScope, Seq[Int]]] {
+      implicit val jsonWrites = new Writes[Either[IScope, Seq[Int]]] {
         def writes(o: Either[IScope, Seq[Int]]): JsValue = obj(
           o.fold(
             scopeContent => "scopeContent" -> jsonSerialiser.serialize(scopeContent),
@@ -215,19 +216,71 @@ final class ScopeSpec extends UnitSpec {
         )
       }
 
-      jsonSerialiser.serialize(Left(asModel)) should equal(JsObject(Seq(("scopeContent", JsObject(Seq(
-        ("numVals", JsNumber(0)),
-        ("numFuncs", JsNumber(0)),
-        ("numObjects", JsNumber(0)),
-        ("depth", JsNumber(0)),
-        ("maxExpressionsInFunc", JsNumber(0)),
-        ("maxFuncsInObject", JsNumber(0)),
-        ("maxParamsInFunc", JsNumber(0)),
-        ("maxDepth", JsNumber(0)),
-        ("maxObjectsInTree", JsNumber(0))
-      ))))))
-      jsonSerialiser.serialize(Right(Seq[Int](0, 1, 2))) should equal(JsObject(Seq(("intContent", JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2)))))))
+      jsonSerialiser.serialize(Left(asModel)) should equal(
+        JsObject(
+          Seq(
+            ("scopeContent",
+              JsObject(
+                Seq(
+                  ("numVals", JsNumber(0)),
+                  ("numFuncs", JsNumber(0)),
+                  ("numObjects", JsNumber(0)),
+                  ("depth", JsNumber(0)),
+                  ("maxExpressionsInFunc", JsNumber(0)),
+                  ("maxFuncsInObject", JsNumber(0)),
+                  ("maxParamsInFunc", JsNumber(0)),
+                  ("maxDepth", JsNumber(0)),
+                  ("maxObjectsInTree", JsNumber(0))
+                )
+              )
+              )
+          )
+        )
+      )
+      jsonSerialiser.serialize(Right(Seq[Int](0, 1, 2))) should equal(
+        JsObject(
+          Seq(
+            ("intContent", JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2))))
+          )
+        )
+      )
     }
+
+    "Map[Int, Int]" in {
+      implicit val jsonWrites = new Writes[Map[Int, Int]] {
+        def writes(o: Map[Int, Int]): JsValue = {
+          val x = o.map {
+            kv => Json.obj(
+              kv._1.toString -> kv._2
+            )
+          }
+          Json.toJson(x)
+        }
+      }
+
+      jsonSerialiser.serialize(Map[Int, Int](0 -> 1)) should equal(
+        JsArray(
+          Seq(
+            JsObject(
+              Seq(
+                ("0", JsNumber(1))
+              )
+            )
+          )
+        )
+      )
+    }
+
+    "Map[String, Int]" in {
+      implicit val jsonWrites = new Writes[Map[String, Int]] {
+        def writes(o: Map[String, Int]): JsValue = Json.toJson(o)
+      }
+
+      jsonSerialiser.serialize(Map[String, Int]("a" -> 1)) should equal(JsObject(Seq(
+        ("a", JsNumber(1))
+      )))
+    }
+    //scala.collection.immutable.Map[TInput,Either[java.util.concurrent.CountDownLatch,TOutput]].
   }
 
 
