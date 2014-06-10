@@ -7,6 +7,7 @@ import modules.DevModule
 import utils.helpers.UnitSpec
 import play.api.libs.json._
 import play.api.libs.json.Json.obj
+import scala.collection.immutable.BitSet
 
 final class ScopeSpec extends UnitSpec {
   "constructor" should {
@@ -246,31 +247,6 @@ final class ScopeSpec extends UnitSpec {
       )
     }
 
-    "Map[Int, Int]" in {
-      implicit val jsonWrites = new Writes[Map[Int, Int]] {
-        def writes(o: Map[Int, Int]): JsValue = {
-          val x = o.map {
-            kv => Json.obj(
-              kv._1.toString -> kv._2
-            )
-          }
-          Json.toJson(x)
-        }
-      }
-
-      jsonSerialiser.serialize(Map[Int, Int](0 -> 1)) should equal(
-        JsArray(
-          Seq(
-            JsObject(
-              Seq(
-                ("0", JsNumber(1))
-              )
-            )
-          )
-        )
-      )
-    }
-
     "Map[String, Int]" in {
       implicit val jsonWrites = new Writes[Map[String, Int]] {
         def writes(o: Map[String, Int]): JsValue = Json.toJson(o)
@@ -279,6 +255,40 @@ final class ScopeSpec extends UnitSpec {
       jsonSerialiser.serialize(Map[String, Int]("a" -> 1)) should equal(JsObject(Seq(
         ("a", JsNumber(1))
       )))
+    }
+
+    "Map[Int, Int]" in {
+      implicit val jsonWrites = new Writes[Map[Int, Int]] {
+        def writes(o: Map[Int, Int]): JsValue = {
+          val keyAsString = o.map { kv => kv._1.toString -> kv._2 } // Convert to Map[String,Int] which it can convert
+          Json.toJson(keyAsString)
+        }
+      }
+
+      jsonSerialiser.serialize(Map[Int, Int](0 -> 1)) should equal(
+        JsObject(
+          Seq(
+            ("0", JsNumber(1))
+          )
+        )
+      )
+    }
+
+    "Map[Int, BitSet]" in {
+      implicit val jsonWrites = new Writes[Map[Int, BitSet]] {
+        def writes(o: Map[Int, BitSet]): JsValue = {
+          val keyAsString = o.map { kv => kv._1.toString -> kv._2.toBitMask.mkString(".") } // Convert to Map[String,Int] which it can convert
+          Json.toJson(keyAsString)
+        }
+      }
+
+      jsonSerialiser.serialize(Map[Int, BitSet](1 -> (BitSet.empty + 1 + 2) )) should equal(
+        JsObject(
+          Seq(
+            ("1", JsString("6"))
+          )
+        )
+      )
     }
     //scala.collection.immutable.Map[TInput,Either[java.util.concurrent.CountDownLatch,TOutput]].
   }
