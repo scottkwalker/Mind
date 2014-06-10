@@ -5,6 +5,8 @@ import com.google.inject.Guice
 import modules.ai.aco.AcoModule
 import modules.DevModule
 import utils.helpers.UnitSpec
+import play.api.libs.json._
+import play.api.libs.json.Json.obj
 
 final class ScopeSpec extends UnitSpec {
   "constructor" should {
@@ -131,7 +133,17 @@ final class ScopeSpec extends UnitSpec {
 
   "serialize" should {
     "return expected json" in {
-      jsonSerialiser.serialize(asModel).toString should equal(asJson)
+      jsonSerialiser.serialize(asModel) should equal(JsObject(Seq(
+        ("numVals", JsNumber(0)),
+        ("numFuncs", JsNumber(0)),
+        ("numObjects", JsNumber(0)),
+        ("depth", JsNumber(0)),
+        ("maxExpressionsInFunc", JsNumber(0)),
+        ("maxFuncsInObject", JsNumber(0)),
+        ("maxParamsInFunc", JsNumber(0)),
+        ("maxDepth", JsNumber(0)),
+        ("maxObjectsInTree", JsNumber(0))
+      )))
     }
   }
 
@@ -140,6 +152,84 @@ final class ScopeSpec extends UnitSpec {
       jsonSerialiser.deserialize[Scope](asJson) should equal(asModel)
     }
   }
+
+  "experiment with json serialization" should {
+    "Seq[Int]" in {
+      jsonSerialiser.serialize(Seq[Int](0, 1, 2)) should equal(JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2))))
+    }
+
+    "Either[String, Int]" in {
+      implicit val attachmentFormat = new Writes[Either[String, Int]] {
+        def writes(o: Either[String, Int]): JsValue = obj(
+          o.fold(
+            stringContent => "stringContent" -> JsString(stringContent),
+            intContent => "intContent" -> JsNumber(intContent)
+          )
+        )
+      }
+
+      jsonSerialiser.serialize(Left("test")) should equal(JsObject(Seq(("stringContent", JsString("test")))))
+      jsonSerialiser.serialize(Right(123)) should equal(JsObject(Seq(("intContent", JsNumber(123)))))
+    }
+
+    "Either[IScope, Int]" in {
+      implicit val attachmentFormat = new Writes[Either[IScope, Int]] {
+        def writes(o: Either[IScope, Int]): JsValue = obj(
+          o.fold(
+            scopeContent => "scopeContent" -> jsonSerialiser.serialize(scopeContent),
+            intContent => "intContent" -> JsNumber(intContent)
+          )
+        )
+      }
+
+      jsonSerialiser.serialize(Left(asModel)) should equal(
+        JsObject(
+          Seq(
+            ("scopeContent", JsObject(
+                Seq(
+                  ("numVals", JsNumber(0)),
+                  ("numFuncs", JsNumber(0)),
+                  ("numObjects", JsNumber(0)),
+                  ("depth", JsNumber(0)),
+                  ("maxExpressionsInFunc", JsNumber(0)),
+                  ("maxFuncsInObject", JsNumber(0)),
+                  ("maxParamsInFunc", JsNumber(0)),
+                  ("maxDepth", JsNumber(0)),
+                  ("maxObjectsInTree", JsNumber(0))
+                )
+              )
+            )
+          )
+        )
+      )
+      jsonSerialiser.serialize(Right(123)) should equal(JsObject(Seq(("intContent", JsNumber(123)))))
+    }
+
+    "Either[IScope, Seq[Int]]" in {
+      implicit val attachmentFormat = new Writes[Either[IScope, Seq[Int]]] {
+        def writes(o: Either[IScope, Seq[Int]]): JsValue = obj(
+          o.fold(
+            scopeContent => "scopeContent" -> jsonSerialiser.serialize(scopeContent),
+            intContent => "intContent" -> jsonSerialiser.serialize(intContent)
+          )
+        )
+      }
+
+      jsonSerialiser.serialize(Left(asModel)) should equal(JsObject(Seq(("scopeContent", JsObject(Seq(
+        ("numVals", JsNumber(0)),
+        ("numFuncs", JsNumber(0)),
+        ("numObjects", JsNumber(0)),
+        ("depth", JsNumber(0)),
+        ("maxExpressionsInFunc", JsNumber(0)),
+        ("maxFuncsInObject", JsNumber(0)),
+        ("maxParamsInFunc", JsNumber(0)),
+        ("maxDepth", JsNumber(0)),
+        ("maxObjectsInTree", JsNumber(0))
+      ))))))
+      jsonSerialiser.serialize(Right(Seq[Int](0, 1, 2))) should equal(JsObject(Seq(("intContent", JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2)))))))
+    }
+  }
+
 
   val jsonSerialiser = new JsonSerialiser
   val asJson = """{"numVals":0,"numFuncs":0,"numObjects":0,"depth":0,"maxExpressionsInFunc":0,"maxFuncsInObject":0,"maxParamsInFunc":0,"maxDepth":0,"maxObjectsInTree":0}"""

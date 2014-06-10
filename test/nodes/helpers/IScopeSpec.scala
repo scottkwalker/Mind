@@ -1,11 +1,26 @@
 package nodes.helpers
 
 import utils.helpers.UnitSpec
+import play.api.libs.json.{JsNumber, JsObject}
 
 final class IScopeSpec extends UnitSpec {
   "serialize" should {
     "return expected json" in {
-      jsonSerialiser.serialize[IScope](asModel).toString should equal(asJson)
+      jsonSerialiser.serialize[IScope](asModel) should equal(
+        JsObject(
+          Seq(
+            ("numVals", JsNumber(0)),
+            ("numFuncs", JsNumber(0)),
+            ("numObjects", JsNumber(0)),
+            ("depth", JsNumber(0)),
+            ("maxExpressionsInFunc", JsNumber(0)),
+            ("maxFuncsInObject", JsNumber(0)),
+            ("maxParamsInFunc", JsNumber(0)),
+            ("maxDepth", JsNumber(0)),
+            ("maxObjectsInTree", JsNumber(0))
+          )
+        )
+      )
     }
   }
 
