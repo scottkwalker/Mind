@@ -369,7 +369,7 @@ final class ScopeSpec extends UnitSpec {
       implicit val jsonWrites = new Writes[Either[CountDownLatch, Seq[Int]]] {
         def writes(o: Either[CountDownLatch, Seq[Int]]): JsValue = obj(
           o.fold(
-            scopeContent => ???,
+            countDownLatchContent => ???,
             intContent => "intContent" -> jsonSerialiser.serialize(intContent)
           )
         )
@@ -398,8 +398,9 @@ final class ScopeSpec extends UnitSpec {
       )
 
       jsonSerialiser.serialize(Map(
-        "keyRight" -> Right(Seq[Int](0, 1, 2)),
-        "keyLeft" -> Left(countdownLatchModel))
+        "keyLeft" -> Left(countdownLatchModel),
+        "keyRight" -> Right(Seq[Int](0, 1, 2))
+      )
       ) should equal(
         JsObject(
           Seq(
@@ -413,6 +414,48 @@ final class ScopeSpec extends UnitSpec {
           )
         )
       )
+    }
+
+    "Map[IScope, Either[CountDownLatch, Seq[Int]]]" in {
+      implicit val jsonWrites = new Writes[Either[CountDownLatch, Seq[Int]]] {
+        def writes(o: Either[CountDownLatch, Seq[Int]]): JsValue = obj(
+          o.fold(
+            countDownLatchContent => ???,
+            intContent => "intContent" -> jsonSerialiser.serialize(intContent)
+          )
+        )
+      }
+      implicit val jsonWrites2 = new Writes[Map[IScope, Either[CountDownLatch, Seq[Int]]]] {
+        def writes(o: Map[IScope, Either[CountDownLatch, Seq[Int]]]): JsValue = {
+          val keyAsString = o.filter(kv => kv._2.isRight). // Only completed values.
+            map(kv => kv._1.toString -> kv._2) // Json keys must be strings.
+          Json.toJson(keyAsString)
+        }
+      }
+      val countdownLatchModel = new CountDownLatch(1)
+      val left = Left(countdownLatchModel)
+      val right = Right(Seq[Int](0, 1, 2))
+      val expected = JsObject(
+        Seq(
+          ("Scope(0,0,0,0,0,0,0,1,0)",
+            JsObject(
+              Seq(
+                ("intContent", JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2))))
+              )
+            )
+            )
+        )
+      )
+
+      jsonSerialiser.serialize(Map[IScope, Either[CountDownLatch, Seq[Int]]](Scope() -> left)) should equal(JsObject(Seq.empty))
+
+      jsonSerialiser.serialize(Map[IScope, Either[CountDownLatch, Seq[Int]]](Scope(maxDepth = 1) -> right)) should equal(expected)
+
+      jsonSerialiser.serialize(Map[IScope, Either[CountDownLatch, Seq[Int]]](
+        Scope() -> left,
+        Scope(maxDepth = 1) -> right
+      )
+      ) should equal(expected)
     }
   }
 
