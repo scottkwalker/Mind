@@ -275,6 +275,23 @@ final class ScopeSpec extends UnitSpec {
       )
     }
 
+    "Map[IScope, Int]" in {
+      implicit val jsonWrites = new Writes[Map[IScope, Int]] {
+        def writes(o: Map[IScope, Int]): JsValue = {
+          val keyAsString = o.map { kv => kv._1.toString -> kv._2} // Convert to Map[String,Int] which it can convert
+          Json.toJson(keyAsString)
+        }
+      }
+
+      jsonSerialiser.serialize(Map[IScope, Int](Scope() -> 1)) should equal(
+        JsObject(
+          Seq(
+            ("Scope(0,0,0,0,0,0,0,0,0)", JsNumber(1))
+          )
+        )
+      )
+    }
+
     "Map[Int, BitSet]" in {
       implicit val jsonWrites = new Writes[Map[Int, BitSet]] {
         def writes(o: Map[Int, BitSet]): JsValue = {
