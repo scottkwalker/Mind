@@ -8,6 +8,7 @@ import utils.helpers.UnitSpec
 import play.api.libs.json._
 import play.api.libs.json.Json.obj
 import scala.collection.immutable.BitSet
+import java.util.concurrent.CountDownLatch
 
 final class ScopeSpec extends UnitSpec {
   "constructor" should {
@@ -134,7 +135,7 @@ final class ScopeSpec extends UnitSpec {
 
   "serialize" should {
     "return expected json" in {
-      jsonSerialiser.serialize(asModel) should equal(JsObject(Seq(
+      jsonSerialiser.serialize(scopeAsModel) should equal(JsObject(Seq(
         ("numVals", JsNumber(0)),
         ("numFuncs", JsNumber(0)),
         ("numObjects", JsNumber(0)),
@@ -150,7 +151,7 @@ final class ScopeSpec extends UnitSpec {
 
   "deserialize" should {
     "return expected mode" in {
-      jsonSerialiser.deserialize[Scope](asJson) should equal(asModel)
+      jsonSerialiser.deserialize[Scope](scopeAsJsonString) should equal(scopeAsModel)
     }
   }
 
@@ -183,7 +184,7 @@ final class ScopeSpec extends UnitSpec {
         )
       }
 
-      jsonSerialiser.serialize(Left(asModel)) should equal(
+      jsonSerialiser.serialize(Left(scopeAsModel)) should equal(
         JsObject(
           Seq(
             ("scopeContent",
@@ -217,11 +218,11 @@ final class ScopeSpec extends UnitSpec {
         )
       }
 
-      jsonSerialiser.serialize(Left(asModel)) should equal(
+      jsonSerialiser.serialize(Left(scopeAsModel)) should equal(
         JsObject(
           Seq(
             ("scopeContent",
-              JsObject(
+              JsObject(// Objects are the mapping type in JSON.
                 Seq(
                   ("numVals", JsNumber(0)),
                   ("numFuncs", JsNumber(0)),
@@ -260,7 +261,7 @@ final class ScopeSpec extends UnitSpec {
     "Map[Int, Int]" in {
       implicit val jsonWrites = new Writes[Map[Int, Int]] {
         def writes(o: Map[Int, Int]): JsValue = {
-          val keyAsString = o.map { kv => kv._1.toString -> kv._2 } // Convert to Map[String,Int] which it can convert
+          val keyAsString = o.map { kv => kv._1.toString -> kv._2} // Convert to Map[String,Int] which it can convert
           Json.toJson(keyAsString)
         }
       }
@@ -277,12 +278,12 @@ final class ScopeSpec extends UnitSpec {
     "Map[Int, BitSet]" in {
       implicit val jsonWrites = new Writes[Map[Int, BitSet]] {
         def writes(o: Map[Int, BitSet]): JsValue = {
-          val keyAsString = o.map { kv => kv._1.toString -> kv._2.toBitMask.mkString(".") } // Convert to Map[String,Int] which it can convert
+          val keyAsString = o.map { kv => kv._1.toString -> kv._2.toBitMask.mkString(".")} // Convert to Map[String,Int] which it can convert
           Json.toJson(keyAsString)
         }
       }
 
-      jsonSerialiser.serialize(Map[Int, BitSet](1 -> (BitSet.empty + 1 + 2) )) should equal(
+      jsonSerialiser.serialize(Map[Int, BitSet](1 -> (BitSet.empty + 1 + 2))) should equal(
         JsObject(
           Seq(
             ("1", JsString("6"))
@@ -290,11 +291,116 @@ final class ScopeSpec extends UnitSpec {
         )
       )
     }
-    //scala.collection.immutable.Map[TInput,Either[java.util.concurrent.CountDownLatch,TOutput]].
+
+    "Map[String, Either[IScope, Seq[Int]]]" in {
+      implicit val jsonWrites = new Writes[Either[IScope, Seq[Int]]] {
+        def writes(o: Either[IScope, Seq[Int]]): JsValue = obj(
+          o.fold(
+            scopeContent => "scopeContent" -> jsonSerialiser.serialize(scopeContent),
+            intContent => "intContent" -> jsonSerialiser.serialize(intContent)
+          )
+        )
+      }
+      implicit val jsonWrites2 = new Writes[Map[String, Either[IScope, Seq[Int]]]] {
+        def writes(o: Map[String, Either[IScope, Seq[Int]]]): JsValue = Json.toJson(o)
+      }
+
+      jsonSerialiser.serialize(Map("key" -> Left(scopeAsModel))) should equal(
+        JsObject(
+          Seq(
+            ("key",
+              JsObject(
+                Seq(
+                  ("scopeContent",
+                    JsObject(// Objects are the mapping type in JSON.
+                      Seq(
+                        ("numVals", JsNumber(0)),
+                        ("numFuncs", JsNumber(0)),
+                        ("numObjects", JsNumber(0)),
+                        ("depth", JsNumber(0)),
+                        ("maxExpressionsInFunc", JsNumber(0)),
+                        ("maxFuncsInObject", JsNumber(0)),
+                        ("maxParamsInFunc", JsNumber(0)),
+                        ("maxDepth", JsNumber(0)),
+                        ("maxObjectsInTree", JsNumber(0))
+                      )
+                    )
+                    )
+                )
+              )
+              )
+          )
+        )
+      )
+
+      jsonSerialiser.serialize(Map("key" -> Right(Seq[Int](0, 1, 2)))) should equal(
+        JsObject(
+          Seq(
+            ("key",
+              JsObject(
+                Seq(
+                  ("intContent", JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2))))
+                )
+              )
+              )
+          )
+        )
+      )
+    }
+
+    "Map[String, Either[CountDownLatch, Seq[Int]]]" in {
+      implicit val jsonWrites = new Writes[Either[CountDownLatch, Seq[Int]]] {
+        def writes(o: Either[CountDownLatch, Seq[Int]]): JsValue = obj(
+          o.fold(
+            scopeContent => ???,
+            intContent => "intContent" -> jsonSerialiser.serialize(intContent)
+          )
+        )
+      }
+      implicit val jsonWrites2 = new Writes[Map[String, Either[CountDownLatch, Seq[Int]]]] {
+        def writes(o: Map[String, Either[CountDownLatch, Seq[Int]]]): JsValue = Json.toJson(o.filter {
+          x => x._2.isRight // Only completed values.
+        })
+      }
+      val countdownLatchModel = new CountDownLatch(1)
+
+      jsonSerialiser.serialize(Map("keyLeft" -> Left(countdownLatchModel))) should equal(JsObject(Seq.empty))
+
+      jsonSerialiser.serialize(Map("keyRight" -> Right(Seq[Int](0, 1, 2)))) should equal(
+        JsObject(
+          Seq(
+            ("keyRight",
+              JsObject(
+                Seq(
+                  ("intContent", JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2))))
+                )
+              )
+              )
+          )
+        )
+      )
+
+      jsonSerialiser.serialize(Map(
+        "keyRight" -> Right(Seq[Int](0, 1, 2)),
+        "keyLeft" -> Left(countdownLatchModel))
+      ) should equal(
+        JsObject(
+          Seq(
+            ("keyRight",
+              JsObject(
+                Seq(
+                  ("intContent", JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2))))
+                )
+              )
+              )
+          )
+        )
+      )
+    }
   }
 
 
-  val jsonSerialiser = new JsonSerialiser
-  val asJson = """{"numVals":0,"numFuncs":0,"numObjects":0,"depth":0,"maxExpressionsInFunc":0,"maxFuncsInObject":0,"maxParamsInFunc":0,"maxDepth":0,"maxObjectsInTree":0}"""
-  val asModel: IScope = Scope()
+  private val jsonSerialiser = new JsonSerialiser
+  private val scopeAsJsonString = """{"numVals":0,"numFuncs":0,"numObjects":0,"depth":0,"maxExpressionsInFunc":0,"maxFuncsInObject":0,"maxParamsInFunc":0,"maxDepth":0,"maxObjectsInTree":0}"""
+  private val scopeAsModel: IScope = Scope()
 }
