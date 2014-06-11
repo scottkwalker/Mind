@@ -1,6 +1,7 @@
 package nodes.memoization
 
-import play.api.libs.json.Format
+import play.api.libs.json.{Writes, Format}
+import java.util.concurrent.CountDownLatch
 
 
 // The code below is a mashup between an example from stackoverflow and code originally based on com.twitter.util.Memoize.
@@ -14,7 +15,7 @@ object Memoize {
    * @param f the unary function to memoize
    */
   def memoize[TInput, TOutput](f: TInput => TOutput)
-                              (implicit tInputFormat: Format[TInput], tOutputFormat: Format[TOutput]): Memoize1[TInput, TOutput] =
+                              (implicit cacheFormat: Writes[Map[TInput, Either[CountDownLatch, TOutput]]]): Memoize1[TInput, TOutput] =
     new Memoize1Impl(f)
 
   /*
@@ -45,7 +46,7 @@ object Memoize {
    * Fixed-point combinator (for memoizing recursive functions).
    */
   def Y[TInput, TOutput](f: Memoize1[TInput, TOutput] => TInput => TOutput)
-                        (implicit tInputFormat: Format[TInput], tOutputFormat: Format[TOutput]): Memoize1[TInput, TOutput] = {
+                        (implicit cacheFormat: Writes[Map[TInput, Either[CountDownLatch, TOutput]]]): Memoize1[TInput, TOutput] = {
     lazy val yf: Memoize1[TInput, TOutput] = memoize(f(yf)(_))
     yf
   }

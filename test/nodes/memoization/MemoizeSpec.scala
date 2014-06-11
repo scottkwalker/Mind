@@ -21,7 +21,7 @@ final class MemoizeSpec extends UnitSpec {
       }
 
       val adder = spy(new Adder)
-      val memoizer = memoization.Memoize.memoize(adder(_: Int))
+      val memoizer = memoization.Memoize.memoize(adder(_: Int))(null)
 
       memoizer(1) should equal(2)
       memoizer(1) should equal(2)
@@ -39,7 +39,7 @@ final class MemoizeSpec extends UnitSpec {
       }
 
       val adder = spy(new Fib)
-      val memoizer = memoization.Memoize.memoize(adder(_: Int))
+      val memoizer = memoization.Memoize.memoize(adder(_: Int))(null)
 
       memoizer(1) should equal(1)
       memoizer(1) should equal(1)
@@ -64,7 +64,7 @@ final class MemoizeSpec extends UnitSpec {
       }
 
       val fib = spy(new Fib)
-      val memoizer = memoization.Memoize.memoize(fib(_: Int))
+      val memoizer = memoization.Memoize.memoize(fib(_: Int))(null)
 
       memoizer(1) should equal(1)
       memoizer(1) should equal(1)
@@ -86,7 +86,7 @@ final class MemoizeSpec extends UnitSpec {
       }
 
       val adder = spy(new Adder)
-      val memoizer = memoization.Memoize.memoize(adder(_: Int))
+      val memoizer = memoization.Memoize.memoize(adder(_: Int))(null)
 
       memoizer(1) should equal(2)
       memoizer(1) should equal(2)
@@ -118,7 +118,7 @@ final class MemoizeSpec extends UnitSpec {
       }
 
       val incrementer = spy(new Incrementer)
-      val memoizer = memoization.Memoize.memoize(incrementer(_: Int))
+      val memoizer = memoization.Memoize.memoize(incrementer(_: Int))(null)
 
       val ConcurrencyLevel = 5
       val computations =
@@ -161,7 +161,7 @@ final class MemoizeSpec extends UnitSpec {
       // A computation that should fail the first time, and then
       // succeed for all subsequent attempts.
       val failFirstTime = spy(new FailFirstTime)
-      val memoizer = memoization.Memoize.memoize(failFirstTime(_: Int))
+      val memoizer = memoization.Memoize.memoize(failFirstTime(_: Int))(null)
 
       val ConcurrencyLevel = 5
       val computation =
