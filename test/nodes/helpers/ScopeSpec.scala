@@ -1,14 +1,15 @@
 package nodes.helpers
 
-import com.google.inject.Injector
-import com.google.inject.Guice
-import modules.ai.aco.AcoModule
-import modules.DevModule
-import utils.helpers.UnitSpec
-import play.api.libs.json._
-import play.api.libs.json.Json.obj
-import scala.collection.immutable.BitSet
 import java.util.concurrent.CountDownLatch
+
+import com.google.inject.{Guice, Injector}
+import modules.DevModule
+import modules.ai.aco.AcoModule
+import play.api.libs.json.Json.obj
+import play.api.libs.json._
+import utils.helpers.UnitSpec
+
+import scala.collection.immutable.BitSet
 
 final class ScopeSpec extends UnitSpec {
   "constructor" should {
@@ -416,6 +417,61 @@ final class ScopeSpec extends UnitSpec {
       )
     }
 
+    "Map[Int, Either[CountDownLatch, Seq[Int]]]" in {
+      implicit val jsonWrites = new Writes[Either[CountDownLatch, Seq[Int]]] {
+        def writes(o: Either[CountDownLatch, Seq[Int]]): JsValue = obj(
+          o.fold(
+            countDownLatchContent => ???,
+            intContent => "intContent" -> jsonSerialiser.serialize(intContent)
+          )
+        )
+      }
+      implicit val jsonWrites2 = new Writes[Map[Int, Either[CountDownLatch, Seq[Int]]]] {
+        def writes(o: Map[Int, Either[CountDownLatch, Seq[Int]]]): JsValue = {
+          val filtered = o.
+            filter(kvp => kvp._2.isRight). // Only completed values.
+            map(kvp => kvp._1.toString -> kvp._2) // Key must be string
+
+          Json.toJson(filtered)
+        }
+      }
+      val countdownLatchModel = new CountDownLatch(1)
+
+      jsonSerialiser.serialize(Map(1 -> Left(countdownLatchModel))) should equal(JsObject(Seq.empty))
+
+      jsonSerialiser.serialize(Map(2 -> Right(Seq[Int](0, 1, 2)))) should equal(
+        JsObject(
+          Seq(
+            ("2",
+              JsObject(
+                Seq(
+                  ("intContent", JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2))))
+                )
+              )
+              )
+          )
+        )
+      )
+
+      jsonSerialiser.serialize(Map(
+        1 -> Left(countdownLatchModel),
+        2 -> Right(Seq[Int](0, 1, 2))
+      )
+      ) should equal(
+        JsObject(
+          Seq(
+            ("2",
+              JsObject(
+                Seq(
+                  ("intContent", JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2))))
+                )
+              )
+              )
+          )
+        )
+      )
+    }
+
     "Map[IScope, Either[CountDownLatch, Seq[Int]]]" in {
       implicit val jsonWrites = new Writes[Either[CountDownLatch, Seq[Int]]] {
         def writes(o: Either[CountDownLatch, Seq[Int]]): JsValue = obj(
@@ -427,9 +483,10 @@ final class ScopeSpec extends UnitSpec {
       }
       implicit val jsonWrites2 = new Writes[Map[IScope, Either[CountDownLatch, Seq[Int]]]] {
         def writes(o: Map[IScope, Either[CountDownLatch, Seq[Int]]]): JsValue = {
-          val keyAsString = o.filter(kv => kv._2.isRight). // Only completed values.
+          val filtered = o.
+            filter(kv => kv._2.isRight). // Only completed values. // TODO is there an in-place filter to avoid writing new map.
             map(kv => kv._1.toString -> kv._2) // Json keys must be strings.
-          Json.toJson(keyAsString)
+          Json.toJson(filtered)
         }
       }
       val countdownLatchModel = new CountDownLatch(1)
