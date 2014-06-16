@@ -1,15 +1,18 @@
 package nodes.memoization
 
-import java.util.concurrent.TimeUnit
-import scala.annotation.tailrec
-import org.mockito.Mockito._
-import com.twitter.util._
-import com.twitter.conversions.time._
-import java.util.concurrent.CountDownLatch
+import java.util.concurrent.{CountDownLatch, TimeUnit}
 import java.util.concurrent.atomic.AtomicInteger
-import com.twitter.util.Throw
-import utils.helpers.UnitSpec
+
+import com.twitter.conversions.time._
+import com.twitter.util.{Throw, _}
+import nodes.helpers.JsonSerialiser
 import nodes.memoization
+import org.mockito.Mockito._
+import play.api.libs.json.Json._
+import play.api.libs.json._
+import utils.helpers.UnitSpec
+
+import scala.annotation.tailrec
 
 final class MemoizeSpec extends UnitSpec {
   "apply" should {
@@ -190,9 +193,27 @@ final class MemoizeSpec extends UnitSpec {
       callCount.get() should equal(2)
     }
   }
-/*
+
   "write" should {
     "turn map into Json" in {
+      val jsonSerialiser = new JsonSerialiser
+      implicit val jsonWrites = new Writes[Either[CountDownLatch, Int]] {
+        def writes(o: Either[CountDownLatch, Int]): JsValue = obj(
+          o.fold(
+            countDownLatchContent => ???,
+            intContent => "intContent" -> jsonSerialiser.serialize(intContent)
+          )
+        )
+      }
+      implicit val jsonWrites2 = new Writes[Map[Int, Either[CountDownLatch, Int]]] {
+        def writes(o: Map[Int, Either[CountDownLatch, Int]]): JsValue = {
+          val filtered = o.
+            filter(kvp => kvp._2.isRight). // Only completed values.
+            map(kvp => kvp._1.toString -> kvp._2) // Key must be string
+
+          Json.toJson(filtered)
+        }
+      }
       lazy val memoizer: Memoize1[Int, Int] = {
         def inner(f: Memoize1[Int, Int])(i: Int): Int = {
           i match {
@@ -208,8 +229,42 @@ final class MemoizeSpec extends UnitSpec {
       memoizer(2) should equal(1)
       memoizer(3) should equal(2)
 
-      memoizer.write.toString() should equal("test")
+      memoizer.write should equal(
+        JsObject(
+          Seq(
+            ("1",
+              JsObject(
+                Seq(
+                  ("intContent", JsNumber(1))
+                )
+              )
+              ),
+            ("2",
+              JsObject(
+                Seq(
+                  ("intContent", JsNumber(1))
+                )
+              )
+              ),
+            ("0",
+              JsObject(
+                Seq(
+                  ("intContent", JsNumber(0))
+                )
+              )
+              ),
+            ("3",
+              JsObject(
+                Seq(
+                  ("intContent", JsNumber(2))
+                )
+              )
+              )
+          )
+        )
+
+      )
     }
-  }*/
+  }
 }
 
