@@ -366,6 +366,57 @@ final class ScopeSpec extends UnitSpec {
       )
     }
 
+    "Map[String, Either[CountDownLatch, Int]]" in {
+      implicit val jsonWrites = new Writes[Either[CountDownLatch, Int]] {
+        def writes(o: Either[CountDownLatch, Int]): JsValue = obj(
+          o.fold(
+            countDownLatchContent => ???,
+            intContent => "intContent" -> jsonSerialiser.serialize(intContent)
+          )
+        )
+      }
+      implicit val jsonWrites2 = new Writes[Map[String, Either[CountDownLatch, Int]]] {
+        def writes(o: Map[String, Either[CountDownLatch, Int]]): JsValue = Json.toJson(o.filter {
+          x => x._2.isRight // Only completed values.
+        })
+      }
+      val countdownLatchModel = new CountDownLatch(1)
+
+      jsonSerialiser.serialize(Map("keyLeft" -> Left(countdownLatchModel))) should equal(JsObject(Seq.empty))
+
+      jsonSerialiser.serialize(Map("keyRight" -> Right(1))) should equal(
+        JsObject(
+          Seq(
+            ("keyRight",
+              JsObject(
+                Seq(
+                  ("intContent", JsNumber(1))
+                )
+              )
+              )
+          )
+        )
+      )
+
+      jsonSerialiser.serialize(Map(
+        "keyLeft" -> Left(countdownLatchModel),
+        "keyRight" -> Right(1)
+      )
+      ) should equal(
+        JsObject(
+          Seq(
+            ("keyRight",
+              JsObject(
+                Seq(
+                  ("intContent", JsNumber(1))
+                )
+              )
+              )
+          )
+        )
+      )
+    }
+
     "Map[String, Either[CountDownLatch, Seq[Int]]]" in {
       implicit val jsonWrites = new Writes[Either[CountDownLatch, Seq[Int]]] {
         def writes(o: Either[CountDownLatch, Seq[Int]]): JsValue = obj(
