@@ -8,15 +8,16 @@ import java.util.concurrent.CountDownLatch
 import play.api.libs.json.Json._
 
 final class LegalNeighboursImpl @Inject()(intToFactory: FactoryIdToFactory) extends LegalNeighbours {
-  implicit val jsonWrites = new Writes[Either[CountDownLatch, Seq[Int]]] {
-    def writes(o: Either[CountDownLatch, Seq[Int]]): JsValue = obj(
-      o.fold(
-        countDownLatchContent => ???,
-        intContent => "intContent" -> Json.toJson(intContent)
+  implicit val mapWrites = new Writes[Map[IScope, Either[CountDownLatch, Seq[Int]]]] {
+    implicit val eitherWrites = new Writes[Either[CountDownLatch, Seq[Int]]] {
+      def writes(o: Either[CountDownLatch, Seq[Int]]): JsValue = obj(
+        o.fold(
+          countDownLatchContent => ???,
+          intContent => "intContent" -> Json.toJson(intContent)
+        )
       )
-    )
-  }
-  implicit val jsonWrites2 = new Writes[Map[IScope, Either[CountDownLatch, Seq[Int]]]] {
+    }
+    
     def writes(o: Map[IScope, Either[CountDownLatch, Seq[Int]]]): JsValue = {
       val keyAsString = o.filter(kv => kv._2.isRight). // Only completed values.
         map(kv => kv._1.toString -> kv._2) // Json keys must be strings.
@@ -35,7 +36,7 @@ final class LegalNeighboursImpl @Inject()(intToFactory: FactoryIdToFactory) exte
         else Seq.empty
       }
 
-      Memoize.Y(inner)(jsonWrites2)
+      Memoize.Y(inner)
     }
 
     memo(scope.incrementDepth).intersect(neighbours) // Only return legal moves that are neighbours
