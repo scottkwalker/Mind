@@ -13,9 +13,9 @@ object Build extends sbt.Build {
 
   val appDependencies = Seq(
     // Add your project dependencies here,
-    jdbc,
-    anorm,
-    "org.mockito" % "mockito-all" % "1.9.5" % "test" withSources() withJavadoc(), // For specs2
+//    jdbc,
+//    anorm,
+    "org.mockito" % "mockito-all" % "1.9.5" % "test" withSources() withJavadoc(),
     "com.twitter" % "util-eval_2.10" % "6.17.0",
     "org.scalacheck" %% "scalacheck" % "1.11.4" % "test",
     "com.google.inject" % "guice" % "4.0-beta4",
@@ -23,6 +23,8 @@ object Build extends sbt.Build {
     "org.scalatest" % "scalatest_2.10" % "2.2.0" % "test",
     "com.twitter" % "util-core_2.10" % "6.17.0"
   )
+
+  scalacOptions in Test ++= Seq("-deprecation", "-feature")
 
   val jcoco = Seq(parallelExecution in jacoco.Config := false)
 
