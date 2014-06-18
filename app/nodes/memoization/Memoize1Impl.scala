@@ -1,9 +1,11 @@
 package nodes.memoization
 
 import java.util.concurrent.CountDownLatch
+
+import nodes.helpers.JsonSerialiser
+import play.api.libs.json.{JsValue, Writes}
+
 import scala.annotation.tailrec
-import play.api.libs.json.{Writes, Format, JsValue}
-import nodes.helpers.{IScope, JsonSerialiser}
 
 /**
  * A memoized unary function.
@@ -111,17 +113,11 @@ final class Memoize1Impl[-TInput, +TOutput](f: TInput => TOutput)
 }
 
 
-
-
 /**
  * A memoized unary function.
- *
- * @param f A unary function to memoize
- *          T the argument type
- *          R the return type
  */
 abstract class Memoize2Impl[IScope, Seq[Int]]()
-                                           (implicit cacheFormat: Writes[Map[IScope, Either[CountDownLatch, Seq[Int]]]]) {
+                                             (implicit cacheFormat: Writes[Map[IScope, Either[CountDownLatch, Seq[Int]]]]) {
   /**
    * Thread-safe memoization for a function.
    *
@@ -149,7 +145,7 @@ abstract class Memoize2Impl[IScope, Seq[Int]]()
    * overhead, and will be called repeatedly.
    */
 
-  def f: (IScope, Seq[Int]) => Seq[Int]
+  def f(scope: IScope, neighbours: Seq[Int]): Seq[Int]
 
   private[this] var cache = Map.empty[IScope, Either[CountDownLatch, Seq[Int]]]
 
@@ -157,7 +153,7 @@ abstract class Memoize2Impl[IScope, Seq[Int]]()
    * What to do if we do not find the value already in the memo
    * table.
    */
-  @tailrec private[this] def missing(key: IScope, neighbours: Seq[Int]): Seq[Int] = {
+  @tailrec protected final def missing(key: IScope, neighbours: Seq[Int]): Seq[Int] = {
     synchronized {
       // With the lock, check to see what state the value is in.
       cache.get(key) match {
@@ -209,7 +205,7 @@ abstract class Memoize2Impl[IScope, Seq[Int]]()
   }
 
   def apply(key: IScope, neighbours: Seq[Int]): Seq[Int] = // Look in the (possibly stale) memo table. If the value is present, then it is guaranteed to be the final value.
-    // If it is absent, call missing() to determine what to do.
+  // If it is absent, call missing() to determine what to do.
     cache.get(key) match {
       case Some(Right(b)) => b
       case _ => f(key, neighbours)
