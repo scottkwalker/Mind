@@ -27,7 +27,7 @@ final class LegalNeighboursImpl @Inject()(intToFactory: FactoryIdToFactory) exte
   }
 
   override def fetch(scope: IScope, neighbours: Seq[Int]): Seq[ICreateChildNodes] = {
-    val memo = new Memoize2Impl {
+    val memo = new Memoize2Impl[IScope, Seq[Int], Seq[Int]] {
       def f(scope: IScope, neighbours: Seq[Int]): Seq[Int] = {
         if (scope.hasDepthRemaining) neighbours.filter {
           neighbourId =>
