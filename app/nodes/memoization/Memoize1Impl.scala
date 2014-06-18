@@ -117,7 +117,7 @@ final class Memoize1Impl[-TInput, +TOutput](f: TInput => TOutput)
  * A memoized unary function.
  */
 abstract class Memoize2Impl[-T1, -T2, +T3]()
-                                             (implicit cacheFormat: Writes[Map[T1, Either[CountDownLatch, T3]]]) {
+                                          (implicit cacheFormat: Writes[Map[T1, Either[CountDownLatch, T3]]]) extends Memoize2[T1, T2, T3] {
   /**
    * Thread-safe memoization for a function.
    *
@@ -210,4 +210,6 @@ abstract class Memoize2Impl[-T1, -T2, +T3]()
       case Some(Right(b)) => b
       case _ => f(key, neighbours)
     }
+
+  def write: JsValue = ???
 }
