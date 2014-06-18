@@ -98,10 +98,8 @@ final class LegalNeighboursImpl @Inject()(intToFactory: FactoryIdToFactory) exte
     else Seq.empty
   }
 
-  private def legalForScope2(key: IScope, neighbours: Seq[Int]): Seq[Int] = {
-    cache.get(key) match {
-      case Some(Right(b)) => b
-      case _ => f(key, neighbours)
-    }
+  private def legalForScope2(key: IScope, neighbours: Seq[Int]): Seq[Int] = cache.get(key) match {
+    case Some(Right(b)) => b
+    case _ => f(key, neighbours)
   }
 }
