@@ -5,7 +5,6 @@ import java.util.concurrent.{CountDownLatch, TimeUnit}
 
 import com.twitter.conversions.time._
 import com.twitter.util._
-import nodes.helpers.JsonSerialiser
 import org.mockito.Mockito._
 import play.api.libs.json.Json._
 import play.api.libs.json._
@@ -249,8 +248,6 @@ final class Memoize1ImplSpec extends UnitSpec {
       )
     }
   }
-
-  private val jsonSerialiser = new JsonSerialiser
 
   private implicit val jsonWritesEitherLatchInt = new Writes[Either[CountDownLatch, Int]] {
     def writes(o: Either[CountDownLatch, Int]): JsValue = obj(
