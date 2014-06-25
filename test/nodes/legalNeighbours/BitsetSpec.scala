@@ -1,6 +1,7 @@
 package nodes.legalNeighbours
 
 import nodes.helpers.{BinarySerializer, JsonSerialiser}
+import play.api.libs.json.Json
 import scala.collection.immutable.BitSet
 import utils.helpers.UnitSpec
 
@@ -8,7 +9,7 @@ final class BitSetSpec extends UnitSpec {
   "serialize" should {
     "to json" in {
       import BitSetAdapter.writeJsonBitsetAsBitMask
-      jsonSerialiser.serialize(dataAsBitSet).toString should equal(bitMaskAsJson)
+      Json.toJson(dataAsBitSet).toString should equal(bitMaskAsJson)
     }
 
     "to binary" in {

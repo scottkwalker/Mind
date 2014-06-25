@@ -2,8 +2,7 @@ package nodes.memoization
 
 import java.util.concurrent.CountDownLatch
 
-import nodes.helpers.JsonSerialiser
-import play.api.libs.json.{JsValue, Writes}
+import play.api.libs.json.{JsValue, Json, Writes}
 
 import scala.annotation.tailrec
 
@@ -100,8 +99,5 @@ abstract class Memoize2Impl[-T1, -T2, +T3]()
       case _ => f(key, t2)
     }
 
-  override def write: JsValue = {
-    val jsonSerialiser = new JsonSerialiser
-    jsonSerialiser.serialize(cache)
-  }
+  override def write: JsValue = Json.toJson(cache)
 }

@@ -2,8 +2,7 @@ package nodes.memoization
 
 import java.util.concurrent.CountDownLatch
 
-import nodes.helpers.JsonSerialiser
-import play.api.libs.json.{JsValue, Writes}
+import play.api.libs.json.{JsValue, Json, Writes}
 
 import scala.annotation.tailrec
 
@@ -93,15 +92,13 @@ abstract class Memoize1Impl[-TInput, +TOutput]()
         calculated
     }
 
-  override def apply(key: TInput): TOutput = // Look in the (possibly stale) memo table. If the value is present, then it is guaranteed to be the final value.
-  // If it is absent, call missing() to determine what to do.
+  override def apply(key: TInput): TOutput = // Look in the (possibly stale) memo table. If the value is present, then
+  // it is guaranteed to be the final value.
+  // Else it is absent, call missing() to determine what to do.
     cache.get(key) match {
       case Some(Right(b)) => b
       case _ => missing(key)
     }
 
-  override def write: JsValue = {
-    val jsonSerialiser = new JsonSerialiser
-    jsonSerialiser.serialize(cache)
-  }
+  override def write: JsValue = Json.toJson(cache)
 }

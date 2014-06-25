@@ -256,7 +256,7 @@ final class Memoize1ImplSpec extends UnitSpec {
     def writes(o: Either[CountDownLatch, Int]): JsValue = obj(
       o.fold(
         countDownLatchContent => ???,
-        intContent => "intContent" -> jsonSerialiser.serialize(intContent)
+        intContent => "intContent" -> Json.toJson(intContent)
       )
     )
   }
@@ -275,7 +275,7 @@ final class Memoize1ImplSpec extends UnitSpec {
     def writes(o: Either[CountDownLatch, String]): JsValue = obj(
       o.fold(
         countDownLatchContent => ???,
-        intContent => "strContent" -> jsonSerialiser.serialize(intContent.toString)
+        intContent => "strContent" -> Json.toJson(intContent.toString)
       )
     )
   }
