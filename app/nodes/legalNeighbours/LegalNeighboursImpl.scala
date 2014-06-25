@@ -32,12 +32,12 @@ final class LegalNeighboursImpl @Inject()(intToFactory: FactoryIdToFactory) exte
         if (scope.hasDepthRemaining) neighbours.filter {
           neighbourId =>
             val factory = intToFactory.convert(neighbourId)
-            factory.neighbourIds.isEmpty || missing(key = scope.incrementDepth, neighbours = factory.neighbourIds).length > 0
+            factory.neighbourIds.isEmpty || missing(key = scope.incrementDepth, t2 = factory.neighbourIds).length > 0
         }
         else Seq.empty
       }
     }
-    val validForThisScope = memo.apply(key = scope, neighbours = neighbours)
+    val validForThisScope = memo.apply(key = scope, t2 = neighbours)
     validForThisScope.map(intToFactory.convert)
   }
 }

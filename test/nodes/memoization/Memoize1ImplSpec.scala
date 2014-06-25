@@ -13,7 +13,7 @@ import utils.helpers.UnitSpec
 
 import scala.annotation.tailrec
 
-final class MemoizeSpec extends UnitSpec {
+final class Memoize1ImplSpec extends UnitSpec {
   "apply" should {
     "return the same result when called twice" in {
       val memoizePlusOne = new Memoize1Impl[Int, Int] {
@@ -290,4 +290,3 @@ final class MemoizeSpec extends UnitSpec {
     }
   }
 }
-

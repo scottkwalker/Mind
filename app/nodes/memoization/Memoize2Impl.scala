@@ -7,8 +7,8 @@ import play.api.libs.json.{JsValue, Writes}
 
 import scala.annotation.tailrec
 
-abstract class Memoize1Impl[-TInput, +TOutput]()
-                                              (implicit cacheFormat: Writes[Map[TInput, Either[CountDownLatch, TOutput]]]) extends Memoize1[TInput, TOutput] {
+abstract class Memoize2Impl[-T1, -T2, +T3]()
+                                          (implicit cacheFormat: Writes[Map[T1, Either[CountDownLatch, T3]]]) extends Memoize2[T1, T2, T3] {
   /**
    * Thread-safe memoization for a function.
    *
@@ -36,13 +36,13 @@ abstract class Memoize1Impl[-TInput, +TOutput]()
    * overhead, and will be called repeatedly.
    */
 
-  private[this] var cache = Map.empty[TInput, Either[CountDownLatch, TOutput]]
+  private[this] var cache = Map.empty[T1, Either[CountDownLatch, T3]]
 
   /**
    * What to do if we do not find the value already in the memo
    * table.
    */
-  @tailrec protected final def missing(key: TInput): TOutput =
+  @tailrec protected final def missing(key: T1, t2: T2): T3 = {
     synchronized {
       // With the lock, check to see what state the value is in.
       cache.get(key) match {
@@ -50,7 +50,7 @@ abstract class Memoize1Impl[-TInput, +TOutput]()
           // If it's missing, then claim the slot by putting in a CountDownLatch that will be completed when the value is
           // available.
           val latch = new CountDownLatch(1)
-          cache = cache + (key -> Left(latch))
+          cache += (key -> Left(latch))
 
           // The latch wrapped in Left indicates that the value needs to be computed in this thread, and then the
           // latch counted down.
@@ -64,21 +64,20 @@ abstract class Memoize1Impl[-TInput, +TOutput]()
       case Right(Left(latch)) =>
         // Someone else is doing the computation.
         latch.await()
-
         // This recursive call will happen when there is an exception computing the value, or if the value is
         // currently being computed.
-        missing(key)
+        missing(key, t2)
       case Left(latch) =>
         // Compute the value outside of the synchronized block.
         val calculated =
           try {
-            f(key)
+            f(key, t2)
           } catch {
             case t: Throwable =>
               // If there was an exception running the computation, then we need to make sure we do not
               // starve any waiters before propagating the exception.
               synchronized {
-                cache = cache - key
+                cache -= key
               }
               latch.countDown()
               throw t
@@ -87,17 +86,18 @@ abstract class Memoize1Impl[-TInput, +TOutput]()
         // Update the memo table to indicate that the work has been done, and signal to any waiting threads that the
         // work is complete.
         synchronized {
-          cache = cache + (key -> Right(calculated))
+          cache += (key -> Right(calculated))
         }
         latch.countDown()
         calculated
     }
+  }
 
-  override def apply(key: TInput): TOutput = // Look in the (possibly stale) memo table. If the value is present, then it is guaranteed to be the final value.
+  def apply(key: T1, t2: T2): T3 = // Look in the (possibly stale) memo table. If the value is present, then it is guaranteed to be the final value.
   // If it is absent, call missing() to determine what to do.
     cache.get(key) match {
       case Some(Right(b)) => b
-      case _ => missing(key)
+      case _ => f(key, t2)
     }
 
   override def write: JsValue = {
