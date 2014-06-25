@@ -1,10 +1,11 @@
 package models.domain.scala
 
-import nodes.NodeTreeFactoryImpl
-import nodes.helpers.{UpdateScopeThrows, IScope}
 import com.google.inject.Injector
-import scala.annotation.tailrec
 import models.domain.common.Node
+import nodes.NodeTreeFactoryImpl
+import nodes.helpers.{IScope, UpdateScopeThrows}
+
+import scala.annotation.tailrec
 
 final case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows {
   override def toRaw: String = nodes.map(f => f.toRaw).mkString(" ")

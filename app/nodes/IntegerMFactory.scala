@@ -1,11 +1,9 @@
 package nodes
 
-import nodes.helpers._
 import com.google.inject.Inject
-import ai.IAi
-import models.domain.scala.IntegerM
 import models.domain.common.Node
-import nodes.legalNeighbours.LegalNeighbours
+import models.domain.scala.IntegerM
+import nodes.helpers._
 
 case class IntegerMFactory @Inject()() extends ICreateChildNodes with UpdateScopeNoChange {
   override val neighbourIds = Seq.empty

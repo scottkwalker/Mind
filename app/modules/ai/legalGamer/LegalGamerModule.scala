@@ -1,8 +1,8 @@
 package modules.ai.legalGamer
 
-import com.tzavellas.sse.guice.ScalaModule
 import ai.IAi
 import ai.legalGamer.LegalGamer
+import com.tzavellas.sse.guice.ScalaModule
 
 final class LegalGamerModule extends ScalaModule {
   def configure(): Unit = {

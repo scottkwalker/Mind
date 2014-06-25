@@ -1,7 +1,6 @@
-import modules.DevModule
 import com.google.inject.Guice
-import play.api.{Application, Play, GlobalSettings}
-import play.api.Play.current
+import modules.DevModule
+import play.api.{Application, GlobalSettings}
 
 object Global extends GlobalSettings {
   // Play.isTest will evaluate to true when you run "play test" from the command line

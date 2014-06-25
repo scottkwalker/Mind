@@ -1,14 +1,15 @@
 package models.domain.scala
 
-import nodes._
-import nodes.helpers.{UpdateScopeIncrementFuncs, IScope}
 import com.google.inject.Injector
-import scala.annotation.tailrec
 import models.domain.common.Node
+import nodes._
+import nodes.helpers.{IScope, UpdateScopeIncrementFuncs}
+
+import scala.annotation.tailrec
 
 final case class FunctionM(params: Seq[Node],
-                     nodes: Seq[Node],
-                     name: String) extends Node with UpdateScopeIncrementFuncs {
+                           nodes: Seq[Node],
+                           name: String) extends Node with UpdateScopeIncrementFuncs {
   override def toRaw: String = {
     require(!name.isEmpty)
     s"def $name${params.map(f => f.toRaw).mkString("(", ", ", ")")} = ${nodes.map(f => f.toRaw).mkString("{ ", " ", " }")}"

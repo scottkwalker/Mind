@@ -1,9 +1,9 @@
 package nodes
 
-import nodes.helpers._
-import com.google.inject.{Injector, Inject}
-import models.domain.scala.ValDclInFunctionParam
+import com.google.inject.{Inject, Injector}
 import models.domain.common.Node
+import models.domain.scala.ValDclInFunctionParam
+import nodes.helpers._
 import nodes.legalNeighbours.LegalNeighbours
 
 trait ValDclInFunctionParamFactory extends ICreateChildNodes

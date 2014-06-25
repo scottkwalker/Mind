@@ -4,6 +4,8 @@ import play.api.libs.json.JsValue
 
 trait Memoize1[-TInput, +TOutput] {
   def f(key: TInput): TOutput
+
   def apply(key: TInput): TOutput
+
   def write: JsValue
 }

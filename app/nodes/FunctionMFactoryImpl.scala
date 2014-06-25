@@ -1,18 +1,17 @@
 package nodes
 
-import nodes.helpers._
-import com.google.inject.Injector
-import com.google.inject.Inject
-import models.domain.scala.FunctionM
+import com.google.inject.{Inject, Injector}
 import models.domain.common.Node
+import models.domain.scala.FunctionM
+import nodes.helpers._
 import nodes.legalNeighbours.LegalNeighbours
 
 trait FunctionMFactory extends ICreateChildNodes
 
 case class FunctionMFactoryImpl @Inject()(injector: Injector,
-                                      creator: ICreateSeqNodes,
-                                      legalNeighbours: LegalNeighbours
-                                       ) extends FunctionMFactory with UpdateScopeIncrementFuncs {
+                                          creator: ICreateSeqNodes,
+                                          legalNeighbours: LegalNeighbours
+                                           ) extends FunctionMFactory with UpdateScopeIncrementFuncs {
   private val paramsNeighbours = Seq(ValDclInFunctionParamFactoryImpl.id)
 
   override val neighbourIds = Seq(AddOperatorFactoryImpl.id, ValueRefFactoryImpl.id)

@@ -14,12 +14,12 @@ Json serializer runs over the Map
 */
 
 final class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFactoryImpl,
-                                        functionMFactory: FunctionMFactoryImpl,
-                                        integerMFactory: IntegerMFactory,
-                                        nodeTreeFactory: NodeTreeFactoryImpl,
-                                        objectDefFactory: ObjectDefFactoryImpl,
-                                        valDclInFunctionParamFactory: ValDclInFunctionParamFactoryImpl,
-                                        valueRefFactory: ValueRefFactoryImpl) extends IPopulateMemoizationMaps {
+                                              functionMFactory: FunctionMFactoryImpl,
+                                              integerMFactory: IntegerMFactory,
+                                              nodeTreeFactory: NodeTreeFactoryImpl,
+                                              objectDefFactory: ObjectDefFactoryImpl,
+                                              valDclInFunctionParamFactory: ValDclInFunctionParamFactoryImpl,
+                                              valueRefFactory: ValueRefFactoryImpl) extends IPopulateMemoizationMaps {
   def memoizeCanTerminateInStepsRemaining(that: ICreateChildNodes,
                                           scope: IScope): Unit = {
     //that.mapOfCanTerminateInStepsRemaining getOrElseUpdate(scope, that.canTerminateInStepsRemaining(scope))

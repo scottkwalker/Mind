@@ -1,8 +1,8 @@
 package models.domain.scala
 
-import nodes.helpers.{UpdateScopeNoChange, IScope}
 import com.google.inject.Injector
 import models.domain.common.Node
+import nodes.helpers.{IScope, UpdateScopeNoChange}
 
 final case class IntegerM() extends Node with UpdateScopeNoChange {
   override def toRaw: String = "Int"

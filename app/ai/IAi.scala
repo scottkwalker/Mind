@@ -1,6 +1,6 @@
 package ai
 
-import nodes.helpers.{IScope, ICreateChildNodes}
+import nodes.helpers.{ICreateChildNodes, IScope}
 
 trait IAi {
   def chooseChild(possibleChildren: Seq[ICreateChildNodes]): ICreateChildNodes

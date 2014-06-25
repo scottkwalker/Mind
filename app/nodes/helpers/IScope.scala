@@ -29,7 +29,7 @@ trait IScope {
 }
 
 object IScope {
-  implicit val jsonReads: Reads[IScope] = __.read[Scope](Json.reads[Scope]).map(x => x:Scope)
+  implicit val jsonReads: Reads[IScope] = __.read[Scope](Json.reads[Scope]).map(x => x: Scope)
 
   implicit val jsonWrites = Writes[IScope] {
     case s: Scope => nodes.helpers.Scope.jsonFormat.writes(s)

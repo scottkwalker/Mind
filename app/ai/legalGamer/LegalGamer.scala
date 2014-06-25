@@ -1,8 +1,8 @@
 package ai.legalGamer
 
 import ai.{IRandomNumberGenerator, SelectionStrategy}
-import nodes.helpers._
 import com.google.inject.Inject
+import nodes.helpers._
 
 // Always chooses the first legal move available
 final case class LegalGamer @Inject()(rng: IRandomNumberGenerator) extends SelectionStrategy {

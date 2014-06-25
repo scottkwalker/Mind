@@ -1,8 +1,8 @@
 package ai.randomWalk
 
-import ai.{SelectionStrategy, IRandomNumberGenerator}
-import nodes.helpers._
+import ai.{IRandomNumberGenerator, SelectionStrategy}
 import com.google.inject.Inject
+import nodes.helpers._
 
 // Always chooses a random move from the legal moves.
 final case class RandomGamer @Inject()(rng: IRandomNumberGenerator) extends SelectionStrategy {

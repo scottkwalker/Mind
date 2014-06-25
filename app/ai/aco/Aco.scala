@@ -1,8 +1,8 @@
 package ai.aco
 
 import ai.{IRandomNumberGenerator, SelectionStrategy}
-import nodes.helpers._
 import com.google.inject.Inject
+import nodes.helpers._
 
 
 final case class Aco @Inject()(rng: IRandomNumberGenerator) extends SelectionStrategy {

@@ -1,8 +1,8 @@
 package modules.ai.randomWalk
 
-import com.tzavellas.sse.guice.ScalaModule
 import ai.IAi
 import ai.randomWalk.RandomGamer
+import com.tzavellas.sse.guice.ScalaModule
 
 final class RandomWalkModule extends ScalaModule {
   def configure(): Unit = {

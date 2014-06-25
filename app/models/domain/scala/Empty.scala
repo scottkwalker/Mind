@@ -1,8 +1,8 @@
 package models.domain.scala
 
-import com.google.inject.{Injector, Inject}
-import nodes.helpers.{UpdateScopeThrows, IScope}
+import com.google.inject.{Inject, Injector}
 import models.domain.common.Node
+import nodes.helpers.{IScope, UpdateScopeThrows}
 
 final case class Empty @Inject()() extends Node with UpdateScopeThrows {
   override def toRaw: String = throw new scala.RuntimeException

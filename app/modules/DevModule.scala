@@ -1,14 +1,11 @@
 package modules
 
-import _root_.ai.{RandomNumberGenerator, IRandomNumberGenerator}
+import _root_.ai.{IRandomNumberGenerator, RandomNumberGenerator}
 import com.tzavellas.sse.guice.ScalaModule
-import nodes.helpers._
-import nodes._
-import nodes.helpers.Scope
-import nodes.legalNeighbours.{FactoryIdToFactoryImpl, FactoryIdToFactory, LegalNeighboursImpl, LegalNeighbours}
-import nodes.helpers.CreateNode
 import models.domain.scala.Empty
-import nodes.helpers.CreateSeqNodes
+import nodes._
+import nodes.helpers.{CreateNode, CreateSeqNodes, Scope, _}
+import nodes.legalNeighbours.{FactoryIdToFactory, FactoryIdToFactoryImpl, LegalNeighbours, LegalNeighboursImpl}
 
 class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1),
                 randomNumberGenerator: IRandomNumberGenerator = RandomNumberGenerator()) extends ScalaModule {
