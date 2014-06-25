@@ -22,16 +22,16 @@ class MemoizeScopeToNeighbours()(implicit intToFactory: FactoryIdToFactory) exte
 object MemoizeScopeToNeighbours {
   implicit val mapWrites = new Writes[Map[IScope, Either[CountDownLatch, Seq[Int]]]] {
     implicit val eitherWrites = new Writes[Either[CountDownLatch, Seq[Int]]] {
-      def writes(o: Either[CountDownLatch, Seq[Int]]): JsValue = obj(
-        o.fold(
+      def writes(state: Either[CountDownLatch, Seq[Int]]): JsValue = obj(
+        state.fold(
           countDownLatchContent => ???,
           intContent => "intContent" -> Json.toJson(intContent)
         )
       )
     }
 
-    def writes(o: Map[IScope, Either[CountDownLatch, Seq[Int]]]): JsValue = {
-      val keyAsString = o.filter(kv => kv._2.isRight). // Only completed values.
+    def writes(cache: Map[IScope, Either[CountDownLatch, Seq[Int]]]): JsValue = {
+      val keyAsString = cache.filter(kv => kv._2.isRight). // Only completed values.
         map(kv => kv._1.toString -> kv._2) // Json keys must be strings.
       Json.toJson(keyAsString)
     }
