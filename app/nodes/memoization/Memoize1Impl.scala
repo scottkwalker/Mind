@@ -7,15 +7,8 @@ import play.api.libs.json.{JsValue, Writes}
 
 import scala.annotation.tailrec
 
-/**
- * A memoized unary function.
- *
- * @param f A unary function to memoize
- *          T the argument type
- *          R the return type
- */
-final class Memoize1Impl[-TInput, +TOutput](f: TInput => TOutput)
-                                           (implicit cacheFormat: Writes[Map[TInput, Either[CountDownLatch, TOutput]]]) extends Memoize1[TInput, TOutput] {
+abstract class Memoize1Impl[-TInput, +TOutput]()
+                                              (implicit cacheFormat: Writes[Map[TInput, Either[CountDownLatch, TOutput]]]) extends Memoize1[TInput, TOutput] {
   /**
    * Thread-safe memoization for a function.
    *
@@ -42,13 +35,16 @@ final class Memoize1Impl[-TInput, +TOutput](f: TInput => TOutput)
    * inputs, are expensive compared to a hash lookup and the memory
    * overhead, and will be called repeatedly.
    */
+
+  def f(i: TInput): TOutput
+
   private[this] var cache = Map.empty[TInput, Either[CountDownLatch, TOutput]]
 
   /**
    * What to do if we do not find the value already in the memo
    * table.
    */
-  @tailrec private[this] def missing(key: TInput): TOutput =
+  @tailrec protected final def missing(key: TInput): TOutput =
     synchronized {
       // With the lock, check to see what state the value is in.
       cache.get(key) match {
@@ -112,10 +108,6 @@ final class Memoize1Impl[-TInput, +TOutput](f: TInput => TOutput)
   }
 }
 
-
-/**
- * A memoized unary function.
- */
 abstract class Memoize2Impl[-T1, -T2, +T3]()
                                           (implicit cacheFormat: Writes[Map[T1, Either[CountDownLatch, T3]]]) extends Memoize2[T1, T2, T3] {
   /**

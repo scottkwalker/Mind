@@ -1,12 +1,11 @@
 package nodes.memoization
 
-import java.util.concurrent.{CountDownLatch, TimeUnit}
 import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.{CountDownLatch, TimeUnit}
 
 import com.twitter.conversions.time._
-import com.twitter.util.{Throw, _}
+import com.twitter.util._
 import nodes.helpers.JsonSerialiser
-import nodes.memoization
 import org.mockito.Mockito._
 import play.api.libs.json.Json._
 import play.api.libs.json._
@@ -17,17 +16,12 @@ import scala.annotation.tailrec
 final class MemoizeSpec extends UnitSpec {
   "apply" should {
     "return the same result when called twice" in {
-      // mockito can't spy anonymous classes,
-      // and this was the simplest approach i could come up with.
-      class Adder extends (Int => Int) {
-        override def apply(i: Int) = i + 1
+      val memoizePlusOne = new Memoize1Impl[Int, Int] {
+        def f(i: Int): Int = i + 1
       }
 
-      val adder = spy(new Adder)
-      val memoizer = memoization.Memoize.memoize(adder(_: Int))(null)
-
-      memoizer(1) should equal(2)
-      memoizer(1) should equal(2)
+      memoizePlusOne(1) should equal(2)
+      memoizePlusOne(1) should equal(2)
     }
 
     "only runs the function once for the same input (fibonacci recursive)" in {
@@ -41,8 +35,10 @@ final class MemoizeSpec extends UnitSpec {
         }
       }
 
-      val adder = spy(new Fib)
-      val memoizer = memoization.Memoize.memoize(adder(_: Int))(null)
+      val fib = spy(new Fib)
+      val memoizer = new Memoize1Impl[Int, Int] {
+        def f(i: Int): Int = fib(i)
+      }
 
       memoizer(1) should equal(1)
       memoizer(1) should equal(1)
@@ -51,9 +47,9 @@ final class MemoizeSpec extends UnitSpec {
       memoizer(3) should equal(2)
       memoizer(3) should equal(2)
 
-      verify(adder, times(1))(1)
-      verify(adder, times(1))(2)
-      verify(adder, times(1))(3)
+      verify(fib, times(1))(1)
+      verify(fib, times(1))(2)
+      verify(fib, times(1))(3)
     }
 
     "only runs the function once for the same input (fibonacci tail recursive)" in {
@@ -67,7 +63,9 @@ final class MemoizeSpec extends UnitSpec {
       }
 
       val fib = spy(new Fib)
-      val memoizer = memoization.Memoize.memoize(fib(_: Int))(null)
+      val memoizer = new Memoize1Impl[Int, Int] {
+        def f(i: Int): Int = fib(i)
+      }
 
       memoizer(1) should equal(1)
       memoizer(1) should equal(1)
@@ -89,12 +87,14 @@ final class MemoizeSpec extends UnitSpec {
       }
 
       val adder = spy(new Adder)
-      val memoizer = memoization.Memoize.memoize(adder(_: Int))(null)
+      val memoizePlusOne = new Memoize1Impl[Int, Int] {
+        def f(i: Int): Int = adder(i)
+      }
 
-      memoizer(1) should equal(2)
-      memoizer(1) should equal(2)
-      memoizer(2) should equal(3)
-      memoizer(2) should equal(3)
+      memoizePlusOne(1) should equal(2)
+      memoizePlusOne(1) should equal(2)
+      memoizePlusOne(2) should equal(3)
+      memoizePlusOne(2) should equal(3)
 
       verify(adder, times(1))(1)
       verify(adder, times(1))(2)
@@ -121,13 +121,15 @@ final class MemoizeSpec extends UnitSpec {
       }
 
       val incrementer = spy(new Incrementer)
-      val memoizer = memoization.Memoize.memoize(incrementer(_: Int))(null)
+      val memoizeIncrementer = new Memoize1Impl[Int, String] {
+        def f(i: Int): String = incrementer(i)
+      }
 
       val ConcurrencyLevel = 5
       val computations =
         Future.collect(1 to ConcurrencyLevel map {
           _ =>
-            FuturePool.unboundedPool(memoizer(5))
+            FuturePool.unboundedPool(memoizeIncrementer(5))
         })
 
       startUpLatch.countDown()
@@ -164,13 +166,15 @@ final class MemoizeSpec extends UnitSpec {
       // A computation that should fail the first time, and then
       // succeed for all subsequent attempts.
       val failFirstTime = spy(new FailFirstTime)
-      val memoizer = memoization.Memoize.memoize(failFirstTime(_: Int))(null)
+      val memoizeFailFirstTime = new Memoize1Impl[Int, Int] {
+        def f(i: Int): Int = failFirstTime(i)
+      }
 
       val ConcurrencyLevel = 5
       val computation =
         Future.collect(1 to ConcurrencyLevel map {
           _ =>
-            FuturePool.unboundedPool(memoizer(5)) transform {
+            FuturePool.unboundedPool(memoizeFailFirstTime(5)) transform {
               Future.value
             }
         })
@@ -196,40 +200,19 @@ final class MemoizeSpec extends UnitSpec {
 
   "write" should {
     "turn map into Json" in {
-      val jsonSerialiser = new JsonSerialiser
-      implicit val jsonWrites = new Writes[Either[CountDownLatch, Int]] {
-        def writes(o: Either[CountDownLatch, Int]): JsValue = obj(
-          o.fold(
-            countDownLatchContent => ???,
-            intContent => "intContent" -> jsonSerialiser.serialize(intContent)
-          )
-        )
-      }
-      implicit val jsonWrites2 = new Writes[Map[Int, Either[CountDownLatch, Int]]] {
-        def writes(o: Map[Int, Either[CountDownLatch, Int]]): JsValue = {
-          val filtered = o.
-            filter(kvp => kvp._2.isRight). // Only completed values.
-            map(kvp => kvp._1.toString -> kvp._2) // Key must be string
-
-          Json.toJson(filtered)
+      val memoizeFib = new Memoize1Impl[Int, Int] {
+        def f(i: Int): Int = i match {
+          case 0 => 0
+          case 1 => 1
+          case _ => missing(i - 1) + missing(i - 2)
         }
       }
-      lazy val memoizer: Memoize1[Int, Int] = {
-        def inner(f: Memoize1[Int, Int])(i: Int): Int = {
-          i match {
-            case 0 => 0
-            case 1 => 1
-            case _ => memoizer(i - 1) + memoizer(i - 2)
-          }
-        }
-        Memoize.Y(inner)
-      }
 
-      memoizer(1) should equal(1)
-      memoizer(2) should equal(1)
-      memoizer(3) should equal(2)
+      memoizeFib(1) should equal(1)
+      memoizeFib(2) should equal(1)
+      memoizeFib(3) should equal(2)
 
-      memoizer.write should equal(
+      memoizeFib.write should equal(
         JsObject(
           Seq(
             ("1",
@@ -264,6 +247,46 @@ final class MemoizeSpec extends UnitSpec {
         )
 
       )
+    }
+  }
+
+  private val jsonSerialiser = new JsonSerialiser
+
+  private implicit val jsonWritesEitherLatchInt = new Writes[Either[CountDownLatch, Int]] {
+    def writes(o: Either[CountDownLatch, Int]): JsValue = obj(
+      o.fold(
+        countDownLatchContent => ???,
+        intContent => "intContent" -> jsonSerialiser.serialize(intContent)
+      )
+    )
+  }
+
+  private implicit val jsonWritesIntInt = new Writes[Map[Int, Either[CountDownLatch, Int]]] {
+    def writes(o: Map[Int, Either[CountDownLatch, Int]]): JsValue = {
+      val filtered = o.
+        filter(kvp => kvp._2.isRight). // Only completed values.
+        map(kvp => kvp._1.toString -> kvp._2) // Key must be string
+
+      Json.toJson(filtered)
+    }
+  }
+
+  private implicit val jsonWritesEitherLatchStr = new Writes[Either[CountDownLatch, String]] {
+    def writes(o: Either[CountDownLatch, String]): JsValue = obj(
+      o.fold(
+        countDownLatchContent => ???,
+        intContent => "strContent" -> jsonSerialiser.serialize(intContent.toString)
+      )
+    )
+  }
+
+  private implicit val jsonWritesIntStr = new Writes[Map[Int, Either[CountDownLatch, String]]] {
+    def writes(o: Map[Int, Either[CountDownLatch, String]]): JsValue = {
+      val filtered = o.
+        filter(kvp => kvp._2.isRight). // Only completed values.
+        map(kvp => kvp._1.toString -> kvp._2) // Key must be string
+
+      Json.toJson(filtered)
     }
   }
 }
