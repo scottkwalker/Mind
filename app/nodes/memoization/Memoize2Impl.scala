@@ -6,8 +6,8 @@ import play.api.libs.json.{JsValue, Json, Writes}
 
 import scala.annotation.tailrec
 
-abstract class Memoize2Impl[-T1, -T2, +T3]()
-                                          (implicit cacheFormat: Writes[Map[T1, Either[CountDownLatch, T3]]]) extends Memoize2[T1, T2, T3] {
+abstract class Memoize2Impl[-TKey1, -TKey2, +TOutput]()
+                                          (implicit cacheFormat: Writes[Map[String, Either[CountDownLatch, TOutput]]]) extends Memoize2[TKey1, TKey2, TOutput] {
   /**
    * Thread-safe memoization for a function.
    *
@@ -34,14 +34,17 @@ abstract class Memoize2Impl[-T1, -T2, +T3]()
    * inputs, are expensive compared to a hash lookup and the memory
    * overhead, and will be called repeatedly.
    */
+  private[this] var cache = Map.empty[String, Either[CountDownLatch, TOutput]]
 
-  private[this] var cache = Map.empty[T1, Either[CountDownLatch, T3]]
+  // Combine keys into a delimited string as strings are lowest common denominator.
+  private[this] def combineKeys(implicit key1: TKey1, key2: TKey2) = s"$key1|$key2"
 
   /**
    * What to do if we do not find the value already in the memo
    * table.
    */
-  @tailrec protected final def missing(key: T1, t2: T2): T3 = {
+  @tailrec protected final def missing(implicit key1: TKey1, key2: TKey2): TOutput = {
+    val key = combineKeys
     synchronized {
       // With the lock, check to see what state the value is in.
       cache.get(key) match {
@@ -65,12 +68,12 @@ abstract class Memoize2Impl[-T1, -T2, +T3]()
         latch.await()
         // This recursive call will happen when there is an exception computing the value, or if the value is
         // currently being computed.
-        missing(key, t2)
+        missing(key1, key2)
       case Left(latch) =>
         // Compute the value outside of the synchronized block.
         val calculated =
           try {
-            f(key, t2)
+            f(key1, key2)
           } catch {
             case t: Throwable =>
               // If there was an exception running the computation, then we need to make sure we do not
@@ -92,11 +95,13 @@ abstract class Memoize2Impl[-T1, -T2, +T3]()
     }
   }
 
-  def apply(key: T1, t2: T2): T3 = // Look in the (possibly stale) memo table. If the value is present, then it is guaranteed to be the final value.
-  // If it is absent, call missing() to determine what to do.
-    cache.get(key) match {
+  def apply(implicit key1: TKey1, key2: TKey2): TOutput =
+    // Look in the (possibly stale) memo table. If the value is present, then
+    // it is guaranteed to be the final value.
+    // Else it is absent, call missing() to determine what to do.
+    cache.get(combineKeys) match {
       case Some(Right(b)) => b
-      case _ => f(key, t2)
+      case _ => missing
     }
 
   override def write: JsValue = Json.toJson(cache)

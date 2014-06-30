@@ -6,8 +6,8 @@ import play.api.libs.json.{JsValue, Json, Writes}
 
 import scala.annotation.tailrec
 
-abstract class Memoize1Impl[-TInput, +TOutput]()
-                                              (implicit cacheFormat: Writes[Map[TInput, Either[CountDownLatch, TOutput]]]) extends Memoize1[TInput, TOutput] {
+abstract class Memoize1Impl[-TKey, +TOutput]()
+                                              (implicit cacheFormat: Writes[Map[TKey, Either[CountDownLatch, TOutput]]]) extends Memoize1[TKey, TOutput] {
   /**
    * Thread-safe memoization for a function.
    *
@@ -35,13 +35,13 @@ abstract class Memoize1Impl[-TInput, +TOutput]()
    * overhead, and will be called repeatedly.
    */
 
-  private[this] var cache = Map.empty[TInput, Either[CountDownLatch, TOutput]]
+  private[this] var cache = Map.empty[TKey, Either[CountDownLatch, TOutput]]
 
   /**
    * What to do if we do not find the value already in the memo
    * table.
    */
-  @tailrec protected final def missing(key: TInput): TOutput =
+  @tailrec protected final def missing(key: TKey): TOutput =
     synchronized {
       // With the lock, check to see what state the value is in.
       cache.get(key) match {
@@ -92,9 +92,10 @@ abstract class Memoize1Impl[-TInput, +TOutput]()
         calculated
     }
 
-  override def apply(key: TInput): TOutput = // Look in the (possibly stale) memo table. If the value is present, then
-  // it is guaranteed to be the final value.
-  // Else it is absent, call missing() to determine what to do.
+  override def apply(key: TKey): TOutput =
+    // Look in the (possibly stale) memo table. If the value is present, then
+    // it is guaranteed to be the final value.
+    // Else it is absent, call missing() to determine what to do.
     cache.get(key) match {
       case Some(Right(b)) => b
       case _ => missing(key)

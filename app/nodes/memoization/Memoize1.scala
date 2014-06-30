@@ -2,10 +2,10 @@ package nodes.memoization
 
 import play.api.libs.json.JsValue
 
-trait Memoize1[-TInput, +TOutput] {
-  def f(key: TInput): TOutput
+trait Memoize1[-TKey, +TOutput] {
+  def f(key: TKey): TOutput
 
-  def apply(key: TInput): TOutput
+  def apply(key: TKey): TOutput
 
   def write: JsValue
 }

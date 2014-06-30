@@ -13,14 +13,14 @@ class MemoizeScopeToNeighbours()(implicit intToFactory: FactoryIdToFactory) exte
     if (scope.hasDepthRemaining) neighbours.filter {
       neighbourId =>
         val factory = intToFactory.convert(neighbourId)
-        factory.neighbourIds.isEmpty || missing(key = scope.incrementDepth, t2 = factory.neighbourIds).length > 0
+        factory.neighbourIds.isEmpty || missing(key1 = scope.incrementDepth, key2 = factory.neighbourIds).length > 0
     }
     else Seq.empty
   }
 }
 
 object MemoizeScopeToNeighbours {
-  implicit val mapWrites = new Writes[Map[IScope, Either[CountDownLatch, Seq[Int]]]] {
+  implicit val mapWrites = new Writes[Map[String, Either[CountDownLatch, Seq[Int]]]] {
     implicit val eitherWrites = new Writes[Either[CountDownLatch, Seq[Int]]] {
       def writes(state: Either[CountDownLatch, Seq[Int]]): JsValue = obj(
         state.fold(
@@ -30,9 +30,9 @@ object MemoizeScopeToNeighbours {
       )
     }
 
-    def writes(cache: Map[IScope, Either[CountDownLatch, Seq[Int]]]): JsValue = {
+    def writes(cache: Map[String, Either[CountDownLatch, Seq[Int]]]): JsValue = {
       val keyAsString = cache.filter(kv => kv._2.isRight). // Only completed values.
-        map(kv => kv._1.toString -> kv._2) // Json keys must be strings.
+        map(kv => kv._1 -> kv._2) // Json keys must be strings.
       Json.toJson(keyAsString)
     }
   }
