@@ -19,5 +19,5 @@ final case class ValueRefFactoryImpl @Inject()(ai: IAi
 }
 
 object ValueRefFactoryImpl {
-  val id = 7
+  final val id = 7
 }

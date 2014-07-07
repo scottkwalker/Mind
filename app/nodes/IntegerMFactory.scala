@@ -12,5 +12,5 @@ case class IntegerMFactory @Inject()() extends ICreateChildNodes with UpdateScop
 }
 
 object IntegerMFactory {
-  val id = 3
+  final val id = 3
 }

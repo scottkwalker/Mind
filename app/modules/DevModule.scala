@@ -4,7 +4,7 @@ import _root_.ai.{IRandomNumberGenerator, RandomNumberGenerator}
 import com.tzavellas.sse.guice.ScalaModule
 import models.domain.scala.Empty
 import nodes._
-import nodes.helpers.{CreateNode, CreateSeqNodes, Scope, _}
+import nodes.helpers._
 import nodes.legalNeighbours.{FactoryIdToFactory, FactoryIdToFactoryImpl, LegalNeighbours, LegalNeighboursImpl}
 
 class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1),

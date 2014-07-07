@@ -47,5 +47,5 @@ case class FunctionMFactoryImpl @Inject()(injector: Injector,
 }
 
 object FunctionMFactoryImpl {
-  val id = 2
+  final val id = 2
 }

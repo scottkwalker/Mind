@@ -4,7 +4,6 @@ import ai.{IRandomNumberGenerator, SelectionStrategy}
 import com.google.inject.Inject
 import nodes.helpers._
 
-
 final case class Aco @Inject()(rng: IRandomNumberGenerator) extends SelectionStrategy {
   override def chooseChild(possibleChildren: Seq[ICreateChildNodes]): ICreateChildNodes = {
     require(possibleChildren.length > 0, "Sequence must not be empty otherwise we cannot pick an node from it")

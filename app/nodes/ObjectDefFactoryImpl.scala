@@ -33,5 +33,5 @@ case class ObjectDefFactoryImpl @Inject()(injector: Injector,
 }
 
 object ObjectDefFactoryImpl {
-  val id = 5
+  final val id = 5
 }
