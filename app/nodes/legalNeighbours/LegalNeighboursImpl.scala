@@ -2,6 +2,7 @@ package nodes.legalNeighbours
 
 import com.google.inject.Inject
 import nodes.helpers.{ICreateChildNodes, IScope}
+import nodes.memoization.MemoizeScopeToNeighbours
 
 final class LegalNeighboursImpl @Inject()(implicit intToFactory: FactoryIdToFactory) extends LegalNeighbours {
   val memo = new MemoizeScopeToNeighbours() // TODO we could IoC this

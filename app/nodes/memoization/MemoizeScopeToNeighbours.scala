@@ -1,10 +1,9 @@
-package nodes.legalNeighbours
+package nodes.memoization
 
 import java.util.concurrent.CountDownLatch
 
 import nodes.helpers.IScope
-import nodes.legalNeighbours.MemoizeScopeToNeighbours.mapWrites
-import nodes.memoization.Memoize2Impl
+import nodes.legalNeighbours.FactoryIdToFactory
 import play.api.libs.json.Json._
 import play.api.libs.json.{JsValue, Json, Writes}
 
