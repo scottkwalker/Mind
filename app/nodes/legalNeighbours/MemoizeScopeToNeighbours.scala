@@ -25,7 +25,7 @@ object MemoizeScopeToNeighbours {
       def writes(state: Either[CountDownLatch, Seq[Int]]): JsValue = obj(
         state.fold(
           countDownLatchContent => ???,
-          intContent => "intContent" -> Json.toJson(intContent)
+          intContent => "right" -> Json.toJson(intContent)
         )
       )
     }
