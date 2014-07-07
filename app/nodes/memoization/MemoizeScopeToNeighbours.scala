@@ -4,6 +4,7 @@ import java.util.concurrent.CountDownLatch
 
 import nodes.helpers.IScope
 import nodes.legalNeighbours.FactoryIdToFactory
+import nodes.memoization.MemoizeScopeToNeighbours.mapWrites
 import play.api.libs.json.Json._
 import play.api.libs.json.{JsValue, Json, Writes}
 
