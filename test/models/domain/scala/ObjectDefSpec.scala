@@ -1,14 +1,13 @@
-package nodes
+package models.domain.scala
 
-import nodes.helpers.{IScope, Scope}
 import com.google.inject.{Guice, Injector}
-import modules.ai.legalGamer.LegalGamerModule
-import modules.DevModule
-import models.domain.scala.{Empty, FunctionM, ObjectDef}
-import org.mockito.Mockito._
-import org.mockito.Matchers._
-import utils.helpers.UnitSpec
 import models.domain.common.Node
+import modules.DevModule
+import modules.ai.legalGamer.LegalGamerModule
+import nodes.helpers.{IScope, Scope}
+import org.mockito.Matchers._
+import org.mockito.Mockito._
+import utils.helpers.UnitSpec
 
 final class ObjectDefSpec extends UnitSpec {
   "validate" should {

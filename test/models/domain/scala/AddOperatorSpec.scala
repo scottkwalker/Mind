@@ -1,18 +1,15 @@
-package nodes
+package models.domain.scala
 
-import com.google.inject.{Guice, Injector}
-import nodes.helpers.{IScope, Scope}
 import ai.IRandomNumberGenerator
-import modules.ai.legalGamer.LegalGamerModule
-import modules.DevModule
+import com.google.inject.{Guice, Injector}
 import models.domain.common.Node
-import utils.helpers.UnitSpec
-import org.mockito.Mockito._
+import modules.DevModule
+import modules.ai.legalGamer.LegalGamerModule
+import nodes.helpers.{IScope, Scope}
+import nodes.{AddOperatorFactory, AddOperatorFactoryImpl}
 import org.mockito.Matchers._
-import models.domain.scala.AddOperator
-import models.domain.scala.Empty
-import models.domain.scala.ObjectDef
-import models.domain.scala.ValueRef
+import org.mockito.Mockito._
+import utils.helpers.UnitSpec
 
 final class AddOperatorSpec extends UnitSpec {
   "toRawScala" should {

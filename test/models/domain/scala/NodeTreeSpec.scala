@@ -1,18 +1,13 @@
-package nodes
+package models.domain.scala
 
 import com.google.inject.{Guice, Injector}
-import modules.ai.legalGamer.LegalGamerModule
-import modules.DevModule
-import models.domain.scala._
-import models.domain.scala.AddOperator
-import nodes.helpers.{IScope, Scope}
-import models.domain.scala.IntegerM
-import models.domain.scala.ObjectDef
-import models.domain.scala.FunctionM
-import org.mockito.Mockito._
-import org.mockito.Matchers._
-import utils.helpers.UnitSpec
 import models.domain.common.Node
+import modules.DevModule
+import modules.ai.legalGamer.LegalGamerModule
+import nodes.helpers.{IScope, Scope}
+import org.mockito.Matchers._
+import org.mockito.Mockito._
+import utils.helpers.UnitSpec
 
 final class NodeTreeSpec extends UnitSpec {
   "validate" should {

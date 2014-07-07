@@ -1,15 +1,14 @@
-package nodes
+package models.domain.scala
 
-import com.google.inject.{Guice, Injector}
 import ai.IRandomNumberGenerator
-
-import nodes.helpers.{IScope, Scope}
-import modules.ai.legalGamer.LegalGamerModule
-import modules.DevModule
-import models.domain.scala.{Empty, ValDclInFunctionParam, IntegerM}
+import com.google.inject.{Guice, Injector}
 import models.domain.common.Node
-import org.mockito.Mockito._
+import modules.DevModule
+import modules.ai.legalGamer.LegalGamerModule
+import nodes.helpers.{IScope, Scope}
+import nodes.{ValDclInFunctionParamFactory, ValDclInFunctionParamFactoryImpl}
 import org.mockito.Matchers._
+import org.mockito.Mockito._
 import utils.helpers.UnitSpec
 
 final class ValDclInFunctionParamSpec extends UnitSpec {

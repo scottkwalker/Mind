@@ -1,21 +1,15 @@
-package nodes
+package models.domain.scala
 
-import java.lang.IllegalArgumentException
 import com.google.inject.{Guice, Injector}
-import modules.ai.legalGamer.LegalGamerModule
-import modules.DevModule
-import models.domain.scala._
-import nodes.helpers.{IScope, Scope}
-import models.domain.scala.ValDclInFunctionParam
-import models.domain.scala.AddOperator
-import models.domain.scala.IntegerM
-import models.domain.scala.FunctionM
-import utils.helpers.UnitSpec
-import org.mockito.Mockito._
-import org.mockito.Matchers._
 import models.domain.common.Node
+import modules.DevModule
+import modules.ai.legalGamer.LegalGamerModule
+import nodes.helpers.{IScope, Scope}
+import org.mockito.Matchers._
+import org.mockito.Mockito._
+import utils.helpers.UnitSpec
 
-final class FuncDefSpec extends UnitSpec {
+final class FunctionMSpec extends UnitSpec {
   "validate" should {
     "false given an empty name" in {
       val s = Scope(maxDepth = 10)

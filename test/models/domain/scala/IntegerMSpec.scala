@@ -1,8 +1,7 @@
-package nodes
+package models.domain.scala
 
-import nodes.helpers.IScope
 import com.google.inject.Injector
-import models.domain.scala.IntegerM
+import nodes.helpers.IScope
 import utils.helpers.UnitSpec
 
 final class IntegerMSpec extends UnitSpec {

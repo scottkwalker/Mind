@@ -5,5 +5,5 @@ trait Fitness {
 }
 
 object Fitness {
-  val maxFitness: Double = 1.0
+  final val maxFitness = 1.0d
 }
