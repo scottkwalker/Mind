@@ -10,11 +10,8 @@ import play.api.libs.json.Json._
 import play.api.libs.json._
 import utils.helpers.UnitSpec
 
-import scala.annotation.tailrec
-
 final class Memoize2ImplSpec extends UnitSpec {
   "apply" should {
-
     "return the same result when called twice" in {
       val memoizeAddTogether = new Memoize2Impl[Int, Int, Int] {
         def f(i: Int, j: Int): Int = i + j
@@ -25,9 +22,9 @@ final class Memoize2ImplSpec extends UnitSpec {
       memoizeAddTogether(2, 2) should equal(4)
     }
 
-    "only runs the function once for the same input" in {
+    "only runs the function once for the same input (adder)" in {
       class F {
-        def apply(i: Int, j: Int): Int = invoke(i,j)
+        def apply(i: Int, j: Int): Int = invoke(i, j)
 
         private def invoke(i: Int, j: Int) = i + j
       }
@@ -37,183 +34,149 @@ final class Memoize2ImplSpec extends UnitSpec {
         def f(i: Int, j: Int): Int = adder(i, j)
       }
 
-      memoizer(1,1) should equal(2)
-      memoizer(1,1) should equal(2)
+      memoizer(1, 1) should equal(2)
+      memoizer(1, 1) should equal(2)
       memoizer(1, 2) should equal(3)
       memoizer(1, 2) should equal(3)
-      memoizer(1,3) should equal(4)
-      memoizer(1,3) should equal(4)
+      memoizer(1, 3) should equal(4)
+      memoizer(1, 3) should equal(4)
       memoizer(2, 2) should equal(4)
       memoizer(2, 2) should equal(4)
 
-      verify(adder, times(1))(1,1)
-      verify(adder, times(1))(1,2)
-      verify(adder, times(1))(2,2)
+      verify(adder, times(1))(1, 1)
+      verify(adder, times(1))(1, 2)
+      verify(adder, times(1))(2, 2)
     }
-    /*
 
+    "only executes the memoized computation once per input" in {
+      val callCount = new AtomicInteger(0)
+      val startUpLatch = new CountDownLatch(1)
 
-        "only runs the function once for the same input (adder)" in {
-          // mockito can't spy anonymous classes,
-          // and this was the simplest approach i could come up with.
-          class Adder extends (Int => Int) {
-            override def apply(i: Int) = i + 1
-          }
+      class Incrementer {
+        def apply(i: Int, j: Int) = {
+          // Wait for all of the threads to be started before
+          // continuing. This gives races a chance to happen.
+          startUpLatch.await()
 
-          val adder = spy(new Adder)
-          val memoizePlusOne = new Memoize1Impl[Int, Int] {
-            def f(i: Int): Int = adder(i)
-          }
+          // Perform the effect of incrementing the counter, so that we
+          // can detect whether this code is executed more than once.
+          callCount.incrementAndGet()
 
-          memoizePlusOne(1) should equal(2)
-          memoizePlusOne(1) should equal(2)
-          memoizePlusOne(2) should equal(3)
-          memoizePlusOne(2) should equal(3)
-
-          verify(adder, times(1))(1)
-          verify(adder, times(1))(2)
-        }
-
-        "only executes the memoized computation once per input" in {
-          val callCount = new AtomicInteger(0)
-          val startUpLatch = new CountDownLatch(1)
-
-          class Incrementer extends (Int => String) {
-            override def apply(i: Int) = {
-              // Wait for all of the threads to be started before
-              // continuing. This gives races a chance to happen.
-              startUpLatch.await()
-
-              // Perform the effect of incrementing the counter, so that we
-              // can detect whether this code is executed more than once.
-              callCount.incrementAndGet()
-
-              // Return a new object so that object equality will not pass
-              // if two different result values are used.
-              "." * i
-            }
-          }
-
-          val incrementer = spy(new Incrementer)
-          val memoizeIncrementer = new Memoize1Impl[Int, String] {
-            def f(i: Int): String = incrementer(i)
-          }
-
-          val ConcurrencyLevel = 5
-          val computations =
-            Future.collect(1 to ConcurrencyLevel map {
-              _ =>
-                FuturePool.unboundedPool(memoizeIncrementer(5))
-            })
-
-          startUpLatch.countDown()
-          val results = Await.result(computations)
-
-          // All of the items are equal, up to reference equality
-          results foreach {
-            item =>
-              val result = results(0)
-              result should equal(item)
-              result should be theSameInstanceAs item
-          }
-
-          // The effects happen exactly once
-          callCount.get() should equal(1)
-        }
-
-        "handles exceptions during computations" in {
-          val TheException = new RuntimeException
-          val startUpLatch = new CountDownLatch(1)
-          val callCount = new AtomicInteger(0)
-
-          class FailFirstTime extends (Int => Int) {
-            override def apply(i: Int) = {
-              // Ensure that all of the callers have been started
-              startUpLatch.await(200, TimeUnit.MILLISECONDS)
-              // This effect should happen once per exception plus once for
-              // all successes
-              val n = callCount.incrementAndGet()
-              if (n == 1) throw TheException else i + 1
-            }
-          }
-
-          // A computation that should fail the first time, and then
-          // succeed for all subsequent attempts.
-          val failFirstTime = spy(new FailFirstTime)
-          val memoizeFailFirstTime = new Memoize1Impl[Int, Int] {
-            def f(i: Int): Int = failFirstTime(i)
-          }
-
-          val ConcurrencyLevel = 5
-          val computation =
-            Future.collect(1 to ConcurrencyLevel map {
-              _ =>
-                FuturePool.unboundedPool(memoizeFailFirstTime(5)) transform {
-                  Future.value
-                }
-            })
-
-          startUpLatch.countDown()
-
-          val (successes, failures) =
-            Await.result(computation, 200.milliseconds).toList partition {
-              _.isReturn
-            }
-
-          // One of the times, the computation must have failed.
-          failures should equal(List(Throw(TheException)))
-
-          // Another time, it must have succeeded, and then the stored
-          // result will be reused for the other calls.
-          successes should equal(List.fill(ConcurrencyLevel - 1)(Return(6)))
-
-          // The exception plus another successful call:
-          callCount.get() should equal(2)
-        }*/
-  }
-/*
-  "write" should {
-    "turn map into Json" in {
-      val memoizeFib = new Memoize1Impl[Int, Int] {
-        def f(i: Int): Int = i match {
-          case 0 => 0
-          case 1 => 1
-          case _ => missing(i - 1) + missing(i - 2)
+          // Return a new object so that object equality will not pass
+          // if two different result values are used.
+          "." * i * j
         }
       }
 
-      memoizeFib(1) should equal(1)
-      memoizeFib(2) should equal(1)
-      memoizeFib(3) should equal(2)
+      val incrementer = spy(new Incrementer)
+      val memoizeIncrementer = new Memoize2Impl[Int, Int, String] {
+        def f(i: Int, j: Int): String = incrementer(i, j)
+      }
 
-      memoizeFib.write should equal(
+      val ConcurrencyLevel = 5
+      val computations =
+        Future.collect(1 to ConcurrencyLevel map {
+          _ =>
+            FuturePool.unboundedPool(memoizeIncrementer(5, 1))
+        })
+
+      startUpLatch.countDown()
+      val results = Await.result(computations)
+
+      // All of the items are equal, up to reference equality
+      results foreach {
+        item =>
+          val result = results(0)
+          result should equal(item)
+          result should be theSameInstanceAs item
+      }
+
+      // The effects happen exactly once
+      callCount.get() should equal(1)
+    }
+
+    "handles exceptions during computations" in {
+      val TheException = new RuntimeException
+      val startUpLatch = new CountDownLatch(1)
+      val callCount = new AtomicInteger(0)
+
+      class FailFirstTime {
+        def apply(i: Int, j: Int) = {
+          // Ensure that all of the callers have been started
+          startUpLatch.await(200, TimeUnit.MILLISECONDS)
+          // This effect should happen once per exception plus once for
+          // all successes
+          val n = callCount.incrementAndGet()
+          if (n == 1) throw TheException else i + j + 1
+        }
+      }
+
+      // A computation that should fail the first time, and then
+      // succeed for all subsequent attempts.
+      val failFirstTime = spy(new FailFirstTime)
+      val memoizeFailFirstTime = new Memoize2Impl[Int, Int, Int] {
+        def f(i: Int, j: Int): Int = failFirstTime(i, j)
+      }
+
+      val ConcurrencyLevel = 5
+      val computation =
+        Future.collect(1 to ConcurrencyLevel map {
+          _ =>
+            FuturePool.unboundedPool(memoizeFailFirstTime(5, 0)) transform {
+              Future.value
+            }
+        })
+
+      startUpLatch.countDown()
+
+      val (successes, failures) =
+        Await.result(computation, 200.milliseconds).toList partition {
+          _.isReturn
+        }
+
+      // One of the times, the computation must have failed.
+      failures should equal(List(Throw(TheException)))
+
+      // Another time, it must have succeeded, and then the stored
+      // result will be reused for the other calls.
+      successes should equal(List.fill(ConcurrencyLevel - 1)(Return(6)))
+
+      // The exception plus another successful call:
+      callCount.get() should equal(2)
+    }
+  }
+
+  "write" should {
+    "turn map into Json" in {
+      val memoizeAddTogether = new Memoize2Impl[Int, Int, Int] {
+        def f(i: Int, j: Int): Int = i + j
+      }
+
+      memoizeAddTogether(1, 1) should equal(2)
+      memoizeAddTogether(1, 2) should equal(3)
+      memoizeAddTogether(2, 2) should equal(4)
+
+      memoizeAddTogether.write should equal(
         JsObject(
           Seq(
-            ("1",
+            ("1|1",
               JsObject(
                 Seq(
-                  ("intContent", JsNumber(1))
+                  ("right", JsNumber(2))
                 )
               )
               ),
-            ("2",
+            ("1|2",
               JsObject(
                 Seq(
-                  ("intContent", JsNumber(1))
+                  ("right", JsNumber(3))
                 )
               )
               ),
-            ("0",
+            ("2|2",
               JsObject(
                 Seq(
-                  ("intContent", JsNumber(0))
-                )
-              )
-              ),
-            ("3",
-              JsObject(
-                Seq(
-                  ("intContent", JsNumber(2))
+                  ("right", JsNumber(4))
                 )
               )
               )
@@ -224,50 +187,20 @@ final class Memoize2ImplSpec extends UnitSpec {
     }
   }
 
-  private implicit val jsonWritesEitherLatchInt = new Writes[Either[CountDownLatch, Int]] {
-    def writes(o: Either[CountDownLatch, Int]): JsValue = obj(
-      o.fold(
-        countDownLatchContent => ???,
-        intContent => "intContent" -> Json.toJson(intContent)
-      )
-    )
-  }
-
-  private implicit val jsonWritesIntInt = new Writes[Map[Int, Either[CountDownLatch, Int]]] {
-    def writes(o: Map[Int, Either[CountDownLatch, Int]]): JsValue = {
-      val filtered = o.
-        filter(kvp => kvp._2.isRight). // Only completed values.
-        map(kvp => kvp._1.toString -> kvp._2) // Key must be string
-
-      Json.toJson(filtered)
-    }
-  }
-
-  private implicit val jsonWritesEitherLatchStr = new Writes[Either[CountDownLatch, String]] {
+  private implicit val jsonWritesEitherLatchString = new Writes[Either[CountDownLatch, String]] {
     def writes(o: Either[CountDownLatch, String]): JsValue = obj(
       o.fold(
         countDownLatchContent => ???,
-        intContent => "strContent" -> Json.toJson(intContent.toString)
+        right => "right" -> Json.toJson(right)
       )
     )
   }
-
-  private implicit val jsonWritesIntStr = new Writes[Map[Int, Either[CountDownLatch, String]]] {
-    def writes(o: Map[Int, Either[CountDownLatch, String]]): JsValue = {
-      val filtered = o.
-        filter(kvp => kvp._2.isRight). // Only completed values.
-        map(kvp => kvp._1.toString -> kvp._2) // Key must be string
-
-      Json.toJson(filtered)
-    }
-  }
-  */
 
   private implicit val jsonWritesEitherLatchInt = new Writes[Either[CountDownLatch, Int]] {
     def writes(o: Either[CountDownLatch, Int]): JsValue = obj(
       o.fold(
         countDownLatchContent => ???,
-        intContent => "intContent" -> Json.toJson(intContent)
+        right => "right" -> Json.toJson(right)
       )
     )
   }
