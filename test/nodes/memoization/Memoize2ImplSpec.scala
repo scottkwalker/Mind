@@ -6,8 +6,8 @@ import java.util.concurrent.{CountDownLatch, TimeUnit}
 import com.twitter.conversions.time._
 import com.twitter.util._
 import org.mockito.Mockito._
-import play.api.libs.json.Json._
-import play.api.libs.json._
+import play.api.libs.json.Json.obj
+import play.api.libs.json.{JsNumber, JsObject, JsValue, Json, Writes}
 import utils.helpers.UnitSpec
 
 final class Memoize2ImplSpec extends UnitSpec {
@@ -49,6 +49,15 @@ final class Memoize2ImplSpec extends UnitSpec {
     }
 
     "only executes the memoized computation once per input" in {
+      implicit val eitherLatchOrStringToJson = new Writes[Either[CountDownLatch, String]] {
+        def writes(o: Either[CountDownLatch, String]): JsValue = obj(
+          o.fold(
+            countDownLatchContent => ???, // Should be filtered out at a higher level so that we do not store incomplete calculations.
+            right => stateKey -> Json.toJson(right)
+          )
+        )
+      }
+
       val callCount = new AtomicInteger(0)
       val startUpLatch = new CountDownLatch(1)
 
@@ -162,21 +171,21 @@ final class Memoize2ImplSpec extends UnitSpec {
             ("1|1",
               JsObject(
                 Seq(
-                  ("right", JsNumber(2))
+                  (stateKey, JsNumber(2))
                 )
               )
               ),
             ("1|2",
               JsObject(
                 Seq(
-                  ("right", JsNumber(3))
+                  (stateKey, JsNumber(3))
                 )
               )
               ),
             ("2|2",
               JsObject(
                 Seq(
-                  ("right", JsNumber(4))
+                  (stateKey, JsNumber(4))
                 )
               )
               )
@@ -187,29 +196,25 @@ final class Memoize2ImplSpec extends UnitSpec {
     }
   }
 
-  private implicit val jsonWritesEitherLatchString = new Writes[Either[CountDownLatch, String]] {
-    def writes(o: Either[CountDownLatch, String]): JsValue = obj(
-      o.fold(
-        countDownLatchContent => ???,
-        right => "right" -> Json.toJson(right)
-      )
-    )
-  }
+  private final val stateKey = "neighbours"
 
-  private implicit val jsonWritesEitherLatchInt = new Writes[Either[CountDownLatch, Int]] {
+  private implicit val eitherLatchOrIntToJson = new Writes[Either[CountDownLatch, Int]] {
     def writes(o: Either[CountDownLatch, Int]): JsValue = obj(
       o.fold(
-        countDownLatchContent => ???,
-        right => "right" -> Json.toJson(right)
+        countDownLatchContent => ???, // Should be filtered out at a higher level so that we do not store incomplete calculations.
+        right => stateKey -> Json.toJson(right)
       )
     )
   }
 
-  private implicit val jsonWritesStringInt = new Writes[Map[String, Either[CountDownLatch, Int]]] {
+  private implicit val mapOfNeighboursToJson = new Writes[Map[String, Either[CountDownLatch, Int]]] {
     def writes(o: Map[String, Either[CountDownLatch, Int]]): JsValue = {
-      val filtered = o.
-        filter(kvp => kvp._2.isRight). // Only completed values.
-        map(kvp => kvp._1.toString -> kvp._2) // Key must be string
+      val filtered = o.filter {
+        case (k, v) => v.isRight // Only completed values.
+      }.
+        map {
+        case (k, v) => k.toString -> v // Key must be string
+      }
 
       Json.toJson(filtered)
     }

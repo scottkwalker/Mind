@@ -249,16 +249,16 @@ final class Memoize1ImplSpec extends UnitSpec {
     }
   }
 
-  private implicit val jsonWritesEitherLatchInt = new Writes[Either[CountDownLatch, Int]] {
+  private implicit val eitherLatchOrIntToJson = new Writes[Either[CountDownLatch, Int]] {
     def writes(o: Either[CountDownLatch, Int]): JsValue = obj(
       o.fold(
-        countDownLatchContent => ???,
+        countDownLatchContent => ???, // Should be filtered out at a higher level so that we do not store incomplete calculations.
         intContent => "intContent" -> Json.toJson(intContent)
       )
     )
   }
 
-  private implicit val jsonWritesIntInt = new Writes[Map[Int, Either[CountDownLatch, Int]]] {
+  private implicit val mapOfIntNeighboursToJson = new Writes[Map[Int, Either[CountDownLatch, Int]]] {
     def writes(o: Map[Int, Either[CountDownLatch, Int]]): JsValue = {
       val filtered = o.
         filter(kvp => kvp._2.isRight). // Only completed values.
@@ -268,20 +268,23 @@ final class Memoize1ImplSpec extends UnitSpec {
     }
   }
 
-  private implicit val jsonWritesEitherLatchStr = new Writes[Either[CountDownLatch, String]] {
+  private implicit val eitherLatchOrStringToJson = new Writes[Either[CountDownLatch, String]] {
     def writes(o: Either[CountDownLatch, String]): JsValue = obj(
       o.fold(
-        countDownLatchContent => ???,
+        countDownLatchContent => ???, // Should be filtered out at a higher level so that we do not store incomplete calculations.
         intContent => "strContent" -> Json.toJson(intContent.toString)
       )
     )
   }
 
-  private implicit val jsonWritesIntStr = new Writes[Map[Int, Either[CountDownLatch, String]]] {
+  private implicit val mapOfStringNeighboursToJson = new Writes[Map[Int, Either[CountDownLatch, String]]] {
     def writes(o: Map[Int, Either[CountDownLatch, String]]): JsValue = {
-      val filtered = o.
-        filter(kvp => kvp._2.isRight). // Only completed values.
-        map(kvp => kvp._1.toString -> kvp._2) // Key must be string
+      val filtered = o.filter {
+        case (k, v) => v.isRight // Only completed values.
+      }.
+        map {
+        case (k, v) => k.toString -> v // Key must be string
+      }
 
       Json.toJson(filtered)
     }
