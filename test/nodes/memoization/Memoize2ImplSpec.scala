@@ -7,7 +7,7 @@ import com.twitter.conversions.time._
 import com.twitter.util._
 import org.mockito.Mockito._
 import play.api.libs.json.Json.obj
-import play.api.libs.json.{JsNumber, JsObject, JsValue, Json, Writes}
+import play.api.libs.json._
 import utils.helpers.UnitSpec
 
 final class Memoize2ImplSpec extends UnitSpec {
@@ -168,42 +168,64 @@ final class Memoize2ImplSpec extends UnitSpec {
       memoizeAddTogether.write should equal(
         JsObject(
           Seq(
-            ("1|1",
+            ("cache",
               JsObject(
                 Seq(
-                  (stateKey, JsNumber(2))
-                )
-              )
-              ),
-            ("1|2",
-              JsObject(
-                Seq(
-                  (stateKey, JsNumber(3))
-                )
-              )
-              ),
-            ("2|2",
-              JsObject(
-                Seq(
-                  (stateKey, JsNumber(4))
+                  ("1|1", JsNumber(2)),
+                  ("1|2", JsNumber(3)),
+                  ("2|2", JsNumber(4))
                 )
               )
               )
           )
         )
-
       )
+    }
+  }
+
+  "read" should {
+    "turn json to map" in {
+      class Adder(private var cache: Map[String, Either[CountDownLatch, Int]]) extends Memoize2Impl[Int, Int, Int](cache) {
+        def f(i: Int, j: Int): Int = throw new Exception("Should not be called as the result should have been retrieved from the json")
+      }
+
+      implicit val adderFromJson: Reads[Adder] =
+        (__ \ "cache").read[Map[String, Int]].map {
+          keyValueMap =>
+            val cache = keyValueMap.map {
+              case (k, v) => k -> Right[CountDownLatch, Int](v)
+            }
+            new Adder(cache)
+        }
+
+      val json = JsObject(
+        Seq(
+          ("cache",
+            JsObject(
+              Seq(
+                ("1|1", JsNumber(2)),
+                ("1|2", JsNumber(3)),
+                ("2|2", JsNumber(4))
+              )
+            )
+            )
+        )
+      )
+
+      val asObj = Memoize2Impl.read[Adder](json)
+
+      asObj(1, 1) should equal(2)
+      asObj(1, 2) should equal(3)
+      asObj(2, 2) should equal(4)
     }
   }
 
   private final val stateKey = "neighbours"
 
   private implicit val eitherLatchOrIntToJson = new Writes[Either[CountDownLatch, Int]] {
-    def writes(o: Either[CountDownLatch, Int]): JsValue = obj(
-      o.fold(
-        countDownLatchContent => ???, // Should be filtered out at a higher level so that we do not store incomplete calculations.
-        right => stateKey -> Json.toJson(right)
-      )
+    def writes(o: Either[CountDownLatch, Int]): JsValue = o.fold(
+      countDownLatchContent => ???, // Should be filtered out at a higher level so that we do not store incomplete calculations.
+      right => JsNumber(right)
     )
   }
 
@@ -216,7 +238,7 @@ final class Memoize2ImplSpec extends UnitSpec {
         case (k, v) => k.toString -> v // Key must be string
       }
 
-      Json.toJson(filtered)
+      Json.obj("cache" -> Json.toJson(filtered))
     }
   }
 }

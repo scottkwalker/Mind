@@ -2,12 +2,13 @@ package nodes.memoization
 
 import java.util.concurrent.CountDownLatch
 
-import play.api.libs.json.{JsValue, Json, Writes}
+import models.domain.common.JsonValidationException
+import play.api.libs.json._
 
 import scala.annotation.tailrec
 
-abstract class Memoize2Impl[-TKey1, -TKey2, +TOutput]()
-                                          (implicit cacheFormat: Writes[Map[String, Either[CountDownLatch, TOutput]]]) extends Memoize2[TKey1, TKey2, TOutput] {
+abstract class Memoize2Impl[TKey1, TKey2, TOutput](private var cache: Map[String, Either[CountDownLatch, TOutput]] = Map.empty[String, Either[CountDownLatch, TOutput]])
+                                                  (implicit cacheFormat: Writes[Map[String, Either[CountDownLatch, TOutput]]]) extends Memoize2[TKey1, TKey2, TOutput] {
   /**
    * Thread-safe memoization for a function.
    *
@@ -34,8 +35,6 @@ abstract class Memoize2Impl[-TKey1, -TKey2, +TOutput]()
    * inputs, are expensive compared to a hash lookup and the memory
    * overhead, and will be called repeatedly.
    */
-  private[this] var cache = Map.empty[String, Either[CountDownLatch, TOutput]]
-
   // Combine keys into a delimited string as strings are lowest common denominator.
   private[this] def combineKeys(implicit key1: TKey1, key2: TKey2) = s"$key1|$key2"
 
@@ -96,13 +95,23 @@ abstract class Memoize2Impl[-TKey1, -TKey2, +TOutput]()
   }
 
   def apply(implicit key1: TKey1, key2: TKey2): TOutput =
-    // Look in the (possibly stale) memo table. If the value is present, then
-    // it is guaranteed to be the final value.
-    // Else it is absent, call missing() to determine what to do.
+  // Look in the (possibly stale) memo table. If the value is present, then
+  // it is guaranteed to be the final value.
+  // Else it is absent, call missing() to determine what to do.
     cache.get(combineKeys) match {
       case Some(Right(b)) => b
       case _ => missing
     }
 
   override def write: JsValue = Json.toJson(cache)
+}
+
+object Memoize2Impl {
+  def read[T](json: JsValue)(implicit fromJson: Reads[T]): T = {
+    val jsResult = Json.fromJson[T](json)
+    jsResult.asEither match {
+      case Left(errors) => println(errors);throw JsonValidationException(errors)
+      case Right(model) => model
+    }
+  }
 }
