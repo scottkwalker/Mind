@@ -16,9 +16,6 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
   "apply" should {
     "return only values that are valid for this scope" in {
       val scope = Scope(depth = 0, maxDepth = 1)
-      val neighbours = Seq[Int](AddOperatorFactoryImpl.id, ValueRefFactoryImpl.id)
-      val addOperatorFactoryImpl = injector.getInstance(classOf[AddOperatorFactoryImpl])
-      val valueRefFactoryImpl = injector.getInstance(classOf[ValueRefFactoryImpl])
       implicit val factoryIdToFactory = mock[FactoryIdToFactory]
       when(factoryIdToFactory.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
       when(factoryIdToFactory.convert(ValueRefFactoryImpl.id)).thenReturn(valueRefFactoryImpl)
@@ -29,9 +26,6 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
 
     "only runs the function once for the same input" in {
       val scope = Scope(depth = 0, maxDepth = 1)
-      val neighbours = Seq[Int](AddOperatorFactoryImpl.id, ValueRefFactoryImpl.id)
-      val addOperatorFactoryImpl = injector.getInstance(classOf[AddOperatorFactoryImpl])
-      val valueRefFactoryImpl = injector.getInstance(classOf[ValueRefFactoryImpl])
       implicit val factoryIdToFactory = mock[FactoryIdToFactory]
       when(factoryIdToFactory.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
       when(factoryIdToFactory.convert(ValueRefFactoryImpl.id)).thenReturn(valueRefFactoryImpl)
@@ -50,11 +44,12 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
 
   "write" should {
     "return the expected json" in {
-      val scope = Scope()
-      val neighbours = Seq[Int](ValueRefFactoryImpl.id)
+      val scope = Scope(depth = 0, maxDepth = 1)
       implicit val factoryIdToFactory = mock[FactoryIdToFactory]
+      when(factoryIdToFactory.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
+      when(factoryIdToFactory.convert(ValueRefFactoryImpl.id)).thenReturn(valueRefFactoryImpl)
       val sut = new MemoizeScopeToNeighbours()
-      sut.apply(key1 = scope, key2 = neighbours) should equal(Seq.empty)
+      sut.apply(key1 = scope, key2 = neighbours) should equal(Seq(ValueRefFactoryImpl.id))
 
       sut.write should equal(
         JsObject(
@@ -62,7 +57,8 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
             ("cache",
               JsObject(
                 Seq(
-                  (s"Scope(0,0,0,0,0,0,0,0,0)|List(${ValueRefFactoryImpl.id})", JsArray())
+                  (s"Scope(0,0,0,0,0,0,0,1,0)|List(${AddOperatorFactoryImpl.id}, ${ValueRefFactoryImpl.id})", JsArray(Seq(ValueRefFactoryImpl.id).map(n => JsNumber(n)))),
+                  (s"Scope(0,0,0,1,0,0,0,1,0)|List(${ValueRefFactoryImpl.id})", JsArray())
                 )
               )
             )
@@ -71,12 +67,11 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
       )
     }
   }
-
+  
   "read" should {
     "convert from json to usable object" in {
       val scope = Scope()
       val neighbours = Seq[Int](ValueRefFactoryImpl.id)
-      val valueRefFactoryImpl = injector.getInstance(classOf[ValueRefFactoryImpl])
       implicit val factoryIdToFactory = mock[FactoryIdToFactory]
       when(factoryIdToFactory.convert(ValueRefFactoryImpl.id)).thenReturn(valueRefFactoryImpl)
 
@@ -107,5 +102,8 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
     }
   }
 
+  private val neighbours = Seq[Int](AddOperatorFactoryImpl.id, ValueRefFactoryImpl.id)
   private val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
+  private val addOperatorFactoryImpl = injector.getInstance(classOf[AddOperatorFactoryImpl])
+  private val valueRefFactoryImpl = injector.getInstance(classOf[ValueRefFactoryImpl])
 }
