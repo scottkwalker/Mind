@@ -6,9 +6,11 @@ import nodes.helpers.IScope
 import nodes.legalNeighbours.FactoryIdToFactory
 import nodes.memoization.MemoizeScopeToNeighbours.mapOfNeighboursToJson
 import play.api.libs.json.Json._
-import play.api.libs.json.{JsValue, Json, Writes}
+import play.api.libs.json._
 
-class MemoizeScopeToNeighbours()(implicit intToFactory: FactoryIdToFactory) extends Memoize2Impl[IScope, Seq[Int], Seq[Int]]()(mapOfNeighboursToJson) {
+class MemoizeScopeToNeighbours(private var cache: Map[String, Either[CountDownLatch, Seq[Int]]] = Map.empty[String, Either[CountDownLatch, Seq[Int]]])
+                              (implicit intToFactory: FactoryIdToFactory)
+                              extends Memoize2Impl[IScope, Seq[Int], Seq[Int]](cache)(mapOfNeighboursToJson) {
   override def f(scope: IScope, neighbours: Seq[Int]): Seq[Int] = {
     if (scope.hasDepthRemaining) neighbours.filter {
       neighbourId =>
@@ -22,12 +24,11 @@ class MemoizeScopeToNeighbours()(implicit intToFactory: FactoryIdToFactory) exte
 object MemoizeScopeToNeighbours {
   private implicit val eitherLatchOrNeighboursToJson = new Writes[Either[CountDownLatch, Seq[Int]]] {
     private final val stateKey = "neighbours"
-    def writes(state: Either[CountDownLatch, Seq[Int]]): JsValue = obj(
+    def writes(state: Either[CountDownLatch, Seq[Int]]): JsValue =
       state.fold(
         countDownLatch => ???, // Should be filtered out at a higher level so that we do not store incomplete calculations.
-        neighbours => stateKey -> Json.toJson(neighbours)
+        neighbours => JsArray(neighbours.map(n => JsNumber(n)))
       )
-    )
   }
   
   private implicit val mapOfNeighboursToJson = new Writes[Map[String, Either[CountDownLatch, Seq[Int]]]] {
