@@ -15,23 +15,13 @@ import org.mockito.Mockito._
 class MemoizeScopeToNeighboursSpec extends UnitSpec {
   "apply" should {
     "return only values that are valid for this scope" in {
-      implicit val factoryIdToFactory = mock[FactoryIdToFactory]
-      when(factoryIdToFactory.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
-      when(factoryIdToFactory.convert(ValueRefFactoryImpl.id)).thenReturn(valueRefFactoryImpl)
-      val sut = new MemoizeScopeToNeighbours()
+      val (sut, _) = createSut
 
       sut.apply(key1 = scope, key2 = neighbours) should equal(Seq(ValueRefFactoryImpl.id))
     }
 
     "only runs the function once for the same input" in {
-      implicit val factoryIdToFactory = mock[FactoryIdToFactory]
-      when(factoryIdToFactory.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
-      when(factoryIdToFactory.convert(ValueRefFactoryImpl.id)).thenReturn(valueRefFactoryImpl)
-      val sut = new MemoizeScopeToNeighbours()
-
-      // TODO extract the above to a private def that returns a tuple of sut and the factoryIdToFactory,
-      // so that we can verify on the mock
-
+      val (sut, factoryIdToFactory) = createSut
       sut.apply(key1 = scope, key2 = neighbours) should equal(Seq(ValueRefFactoryImpl.id))
       sut.apply(key1 = scope, key2 = neighbours) should equal(Seq(ValueRefFactoryImpl.id))
 
@@ -42,10 +32,7 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
 
   "write" should {
     "return the expected json" in {
-      implicit val factoryIdToFactory = mock[FactoryIdToFactory]
-      when(factoryIdToFactory.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
-      when(factoryIdToFactory.convert(ValueRefFactoryImpl.id)).thenReturn(valueRefFactoryImpl)
-      val sut = new MemoizeScopeToNeighbours()
+      val (sut, _) = createSut
       sut.apply(key1 = scope, key2 = neighbours) should equal(Seq(ValueRefFactoryImpl.id))
 
       sut.write should equal(
@@ -67,15 +54,13 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
 
   "read" should {
     "convert from json to usable object" in {
-      implicit val factoryIdToFactory = mock[FactoryIdToFactory]
-      when(factoryIdToFactory.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
-      when(factoryIdToFactory.convert(ValueRefFactoryImpl.id)).thenReturn(valueRefFactoryImpl)
+      implicit val factoryIdToFactory = factoryIdToFactoryStub
 
-      implicit val mapOfNeighboursFromJson: Reads[MemoizeScopeToNeighbours] =
+      implicit val mapOfNeighboursFromJson: Reads[MemoizeScopeToNeighbours] = // TODO move to production code
         (__ \ "cache").read[Map[String, Seq[Int]]].map {
           keyValueMap =>
             val cache = keyValueMap.map {
-              case (k, v) => k -> Right[CountDownLatch, Seq[Int]](v) // TODO convert key to Scope | List
+              case (k, v) => k -> Right[CountDownLatch, Seq[Int]](v)
             }
             new MemoizeScopeToNeighbours(cache)
         }
@@ -104,4 +89,15 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
   private val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
   private val addOperatorFactoryImpl = injector.getInstance(classOf[AddOperatorFactoryImpl])
   private val valueRefFactoryImpl = injector.getInstance(classOf[ValueRefFactoryImpl])
+  private def factoryIdToFactoryStub = {
+    val stub = mock[FactoryIdToFactory]
+    when(stub.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
+    when(stub.convert(ValueRefFactoryImpl.id)).thenReturn(valueRefFactoryImpl)
+    stub
+  }
+  private def createSut = {
+    implicit val factoryIdToFactory = factoryIdToFactoryStub
+    val sut = new MemoizeScopeToNeighbours()
+    (sut, factoryIdToFactory)
+  }
 }
