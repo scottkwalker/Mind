@@ -15,7 +15,6 @@ import org.mockito.Mockito._
 class MemoizeScopeToNeighboursSpec extends UnitSpec {
   "apply" should {
     "return only values that are valid for this scope" in {
-      val scope = Scope(depth = 0, maxDepth = 1)
       implicit val factoryIdToFactory = mock[FactoryIdToFactory]
       when(factoryIdToFactory.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
       when(factoryIdToFactory.convert(ValueRefFactoryImpl.id)).thenReturn(valueRefFactoryImpl)
@@ -25,7 +24,6 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
     }
 
     "only runs the function once for the same input" in {
-      val scope = Scope(depth = 0, maxDepth = 1)
       implicit val factoryIdToFactory = mock[FactoryIdToFactory]
       when(factoryIdToFactory.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
       when(factoryIdToFactory.convert(ValueRefFactoryImpl.id)).thenReturn(valueRefFactoryImpl)
@@ -44,7 +42,6 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
 
   "write" should {
     "return the expected json" in {
-      val scope = Scope(depth = 0, maxDepth = 1)
       implicit val factoryIdToFactory = mock[FactoryIdToFactory]
       when(factoryIdToFactory.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
       when(factoryIdToFactory.convert(ValueRefFactoryImpl.id)).thenReturn(valueRefFactoryImpl)
@@ -70,7 +67,6 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
 
   "read" should {
     "convert from json to usable object" in {
-      val scope = Scope(depth = 0, maxDepth = 1)
       implicit val factoryIdToFactory = mock[FactoryIdToFactory]
       when(factoryIdToFactory.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
       when(factoryIdToFactory.convert(ValueRefFactoryImpl.id)).thenReturn(valueRefFactoryImpl)
@@ -103,6 +99,7 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
     }
   }
 
+  private val scope = Scope(depth = 0, maxDepth = 1)
   private val neighbours = Seq[Int](AddOperatorFactoryImpl.id, ValueRefFactoryImpl.id)
   private val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
   private val addOperatorFactoryImpl = injector.getInstance(classOf[AddOperatorFactoryImpl])
