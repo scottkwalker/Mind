@@ -67,12 +67,12 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
       )
     }
   }
-  
+
   "read" should {
     "convert from json to usable object" in {
-      val scope = Scope()
-      val neighbours = Seq[Int](ValueRefFactoryImpl.id)
+      val scope = Scope(depth = 0, maxDepth = 1)
       implicit val factoryIdToFactory = mock[FactoryIdToFactory]
+      when(factoryIdToFactory.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
       when(factoryIdToFactory.convert(ValueRefFactoryImpl.id)).thenReturn(valueRefFactoryImpl)
 
       implicit val mapOfNeighboursFromJson: Reads[MemoizeScopeToNeighbours] =
@@ -89,7 +89,8 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
           ("cache",
             JsObject(
               Seq(
-                (s"Scope(0,0,0,0,0,0,0,0,0)|List(${ValueRefFactoryImpl.id})", JsArray())
+                (s"Scope(0,0,0,0,0,0,0,1,0)|List(${AddOperatorFactoryImpl.id}, ${ValueRefFactoryImpl.id})", JsArray(Seq(ValueRefFactoryImpl.id).map(n => JsNumber(n)))),
+                (s"Scope(0,0,0,1,0,0,0,1,0)|List(${ValueRefFactoryImpl.id})", JsArray())
               )
             )
           )
@@ -98,7 +99,7 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
 
       val asObj: MemoizeScopeToNeighbours = Memoize2Impl.read[MemoizeScopeToNeighbours](json)
 
-      asObj(scope, neighbours) should equal(Seq.empty)
+      asObj(scope, neighbours) should equal(Seq(ValueRefFactoryImpl.id))
     }
   }
 
