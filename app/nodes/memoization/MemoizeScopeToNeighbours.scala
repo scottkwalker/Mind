@@ -32,13 +32,13 @@ object MemoizeScopeToNeighbours {
   
   private implicit val mapOfNeighboursToJson = new Writes[Map[String, Either[CountDownLatch, Seq[Int]]]] {
     def writes(cache: Map[String, Either[CountDownLatch, Seq[Int]]]): JsValue = {
-      val keyAsString = cache.filter {
+      val filtered = cache.filter {
           case (k, v) => v.isRight // Only completed values.
         }.
         map{
           case (k, v) => k -> v // Json keys must be strings.
         }
-      Json.toJson(keyAsString)
+      Json.obj("cache" -> Json.toJson(filtered))
     }
   }
 }

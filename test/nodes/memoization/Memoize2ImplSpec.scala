@@ -184,7 +184,7 @@ final class Memoize2ImplSpec extends UnitSpec {
   }
 
   "read" should {
-    "turn json to map" in {
+    "turn json to usable object" in {
       class Adder(private var cache: Map[String, Either[CountDownLatch, Int]]) extends Memoize2Impl[Int, Int, Int](cache) {
         def f(i: Int, j: Int): Int = throw new Exception("Should not be called as the result should have been retrieved from the json")
       }
