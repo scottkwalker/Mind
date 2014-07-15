@@ -1,17 +1,17 @@
 Scott Walker
 ============
-Hello! I'm a developer based in London. I really enjoy functional programming and have put together this Scala application as a way to practice techniques.
+Hello! I'm an developer based in London. I have a lot of experience working in Agile, TDD environments. I really enjoy functional programming and have put together this Scala application as a way to practice techniques.
 
-You can find out more about the other projects I've worked on through my [LinkedIn page](uk.linkedin.com/in/scottwalkerlondon/). A few of the big government projects ([Carer's Allowance](https://github.com/Department-for-Work-and-Pensions/carers-allowance-prototype) and [DVLA](https://github.com/dvla)) are in the process of being open sourced.
+You can find out more about the other projects I've worked on through my [LinkedIn page](https://www.linkedin.com/in/scottwalkerlondon). A few of the big government projects ([Carer's Allowance](https://github.com/Department-for-Work-and-Pensions/carers-allowance-prototype) and [DVLA](https://github.com/dvla)) are in the process of being open sourced.
 
 Mind
 ====
 
 Travis-CI build status for master branch [![Build Status](https://travis-ci.org/scottkwalker/Mind.svg?branch=master)](https://travis-ci.org/scottkwalker/Mind)
 
-Scala hobby project. It will consist of:
+This is a Scala hobby project. It will consist of:
 
-* one RESTful micro-service that will generate a table of legal moves in a language according to whatever rules you give it
+* one RESTful micro-service that will generate a table of legal moves in a programming language according to whatever rules you give it
 * one micro-service that will call the first micro-service to get a list of legal moves and then use AI to pick the next move. I want to experiment with algorithms such as Ant Colony Optimisation (ACO).
 
 It doesn't yet have the RESTful routes as there is plenty of work to do in the back end first.
