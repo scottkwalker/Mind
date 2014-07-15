@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Mind by scottkwalker</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/scottkwalker/Mind">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/scottkwalker/Mind/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/scottkwalker/Mind/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Mind</h1>
+          <p>Scala metaprogramming ACO</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/scottkwalker">scottkwalker</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <p>Master <a href="https://travis-ci.org/scottkwalker/Mind"><img src="https://travis-ci.org/scottkwalker/Mind.svg?branch=master" alt="Build Status"></a></p>
+
+<h1>
+<a name="mind" class="anchor" href="#mind"><span class="octicon octicon-link"></span></a>Mind</h1>
+
+<p>Scala hobby project. It will consist of:</p>
+
+<ul>
+<li>one RESTful micro-service that will generate a table of legal moves in a language according to whatever rules you give it</li>
+<li>one micro-service that will call the first micro-service to get a list of legal moves and then use AI to pick the next move. I want to experiment with algorithms such as Ant Colony Optimisation (ACO).</li>
+</ul><h2>
+<a name="web-framework" class="anchor" href="#web-framework"><span class="octicon octicon-link"></span></a>Web framework</h2>
+
+<p>I am using <a href="http://www.playframework.com/documentation/2.3.x/Home">Play framework</a> because:</p>
+
+<ul>
+<li>I am familiar with the framework from using it for projects for DWP Carer's Allowance and the DVLA.</li>
+<li>JSON writing and reading is done in what I find to be a very intuitive way (<a href="http://www.playframework.com/documentation/2.2.3/ScalaJsonInception">JSON macro inception</a>).</li>
+<li>It offers the tools to create a rich front end.</li>
+<li>Although Spray has higher throughput it is very different to write the routes and I don't require throughput at the level.</li>
+</ul><h2>
+<a name="build-server" class="anchor" href="#build-server"><span class="octicon octicon-link"></span></a>Build server</h2>
+
+<p>I am using <a href="https://travis-ci.org/scottkwalker">Travis CI</a> as my build server because:</p>
+
+<ul>
+<li>It offers incredibly fast setup with a Github account.</li>
+<li>It is hosted in the cloud (unlike my previous Jenkins server that was running as a local instance).</li>
+<li>It automatically builds branches.</li>
+<li>It automatically builds forks!</li>
+<li>It is free.</li>
+</ul><h2>
+<a name="version-control" class="anchor" href="#version-control"><span class="octicon octicon-link"></span></a>Version control</h2>
+
+<p>I am using Git with Github because:</p>
+
+<ul>
+<li>I am familiar with Github from using it on several projects.</li>
+<li>I prefer using Git for version control as it works well with TDD's short iterations of coding. Also Git is great for local commits when I am working from a train with no 4G signal.</li>
+</ul>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
