@@ -28,6 +28,8 @@ object Build extends sbt.Build {
 
   val jcoco = Seq(parallelExecution in jacoco.Config := false)
 
+  CoverallsPlugin.coverallsSettings
+
   val appSettings: Seq[Def.Setting[_]] = jcoco
 
   val main = play.Project(name = appName,
