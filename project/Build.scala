@@ -28,8 +28,6 @@ object Build extends sbt.Build {
 
   val jcoco = Seq(parallelExecution in jacoco.Config := false)
 
-  CoverallsPlugin.coverallsSettings
-
   val appSettings: Seq[Def.Setting[_]] = jcoco
 
   val main = play.Project(name = appName,
@@ -37,6 +35,8 @@ object Build extends sbt.Build {
     dependencies = appDependencies,
     settings = play.Project.playScalaSettings ++
       jacoco.settings ++
+      ScoverageSbtPlugin.instrumentSettings ++
+      CoverallsPlugin.coverallsSettings ++
       ScalastylePlugin.Settings).settings(
       // Add your own project settings here
       resolvers ++= Seq(
