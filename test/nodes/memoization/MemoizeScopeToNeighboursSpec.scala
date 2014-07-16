@@ -54,16 +54,7 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
 
   "read" should {
     "convert from json to usable object" in {
-      implicit val factoryIdToFactory = factoryIdToFactoryStub
-
-      implicit val mapOfNeighboursFromJson: Reads[MemoizeScopeToNeighbours] = // TODO move to production code
-        (__ \ "cache").read[Map[String, Seq[Int]]].map {
-          keyValueMap =>
-            val cache = keyValueMap.map {
-              case (k, v) => k -> Right[CountDownLatch, Seq[Int]](v)
-            }
-            new MemoizeScopeToNeighbours(cache)
-        }
+      import nodes.memoization.MemoizeScopeToNeighbours.mapOfNeighboursFromJson
 
       val json = JsObject(
         Seq(
@@ -78,7 +69,7 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
         )
       )
 
-      val asObj: MemoizeScopeToNeighbours = Memoize2Impl.read[MemoizeScopeToNeighbours](json)
+      val asObj: MemoizeScopeToNeighbours = Memoize2Impl.read[MemoizeScopeToNeighbours](json)(mapOfNeighboursFromJson(factoryIdToFactoryStub))
 
       asObj(scope, neighbours) should equal(Seq(ValueRefFactoryImpl.id))
     }

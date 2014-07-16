@@ -42,4 +42,13 @@ object MemoizeScopeToNeighbours {
       Json.obj("cache" -> Json.toJson(filtered))
     }
   }
+
+  implicit def mapOfNeighboursFromJson(implicit factoryIdToFactory: FactoryIdToFactory): Reads[MemoizeScopeToNeighbours] =
+    (__ \ "cache").read[Map[String, Seq[Int]]].map {
+      keyValueMap =>
+        val cache = keyValueMap.map {
+          case (k, v) => k -> Right[CountDownLatch, Seq[Int]](v)
+        }
+        new MemoizeScopeToNeighbours(cache)
+    }
 }
