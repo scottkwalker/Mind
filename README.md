@@ -7,7 +7,9 @@ You can find out more about the other projects I've worked on through my [Linked
 Mind
 ====
 
-Travis-CI build status for master branch [![Build Status](https://travis-ci.org/scottkwalker/Mind.svg?branch=master)](https://travis-ci.org/scottkwalker/Mind)
+Build status for master branch [![Build Status](https://travis-ci.org/scottkwalker/Mind.svg?branch=master)](https://travis-ci.org/scottkwalker/Mind)
+
+Code coverage for master branch [![Coverage Status](https://coveralls.io/repos/scottkwalker/Mind/badge.png)](https://coveralls.io/r/scottkwalker/Mind)
 
 This is a Scala hobby project. It will consist of:
 
@@ -25,8 +27,8 @@ I am using [Play framework](http://www.playframework.com/documentation/2.3.x/Hom
 * It offers the tools to create a rich front end.
 * Although Spray has higher throughput it is very different to write the routes and I don't require throughput at the level.
 
-Build server
-------------
+Continuous Integration
+----------------------
 I am using [Travis CI](https://travis-ci.org/scottkwalker) as my build server because:
 
 * It offers incredibly fast setup with a Github account.
@@ -34,6 +36,17 @@ I am using [Travis CI](https://travis-ci.org/scottkwalker) as my build server be
 * It automatically builds branches.
 * It automatically builds forks!
 * It is free.
+
+Code coverage
+-------------
+When the Continuous Integration build runs, the tests will gather coverage statistics and post the results online to [Coveralls](https://coveralls.io).
+
+Offline I run the sbt plugin for [Scoverage](https://github.com/scoverage/sbt-scoverage). From the sbt console run 'scoverage:test' to make it run the tests and output statistics to html files.
+
+Previously I was using Jacoco offline, but the problems are:
+
+* It only records line-coverage. For example, when operating on lists we may chain several operations together on a single line. If our tests all exit in the first few operations and never reach the final operation then this will be recorded as a false positive.
+* It gave many false-negatives when running on parts of the Play framework such as the reverse routing. This may be because it runs against the Java compiled code and is unaware of how to track the Scala.
 
 Version control
 ---------------
