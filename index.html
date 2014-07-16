@@ -48,7 +48,9 @@
 <h1>
 <a name="mind" class="anchor" href="#mind"><span class="octicon octicon-link"></span></a>Mind</h1>
 
-<p>Travis-CI build status for master branch <a href="https://travis-ci.org/scottkwalker/Mind"><img src="https://travis-ci.org/scottkwalker/Mind.svg?branch=master" alt="Build Status"></a></p>
+<p>Build status for master branch <a href="https://travis-ci.org/scottkwalker/Mind"><img src="https://travis-ci.org/scottkwalker/Mind.svg?branch=master" alt="Build Status"></a></p>
+
+<p>Code coverage for master branch <a href="https://coveralls.io/r/scottkwalker/Mind"><img src="https://coveralls.io/repos/scottkwalker/Mind/badge.png" alt="Coverage Status"></a></p>
 
 <p>This is a Scala hobby project. It will consist of:</p>
 
@@ -68,7 +70,7 @@
 <li>It offers the tools to create a rich front end.</li>
 <li>Although Spray has higher throughput it is very different to write the routes and I don't require throughput at the level.</li>
 </ul><h2>
-<a name="build-server" class="anchor" href="#build-server"><span class="octicon octicon-link"></span></a>Build server</h2>
+<a name="continuous-integration" class="anchor" href="#continuous-integration"><span class="octicon octicon-link"></span></a>Continuous Integration</h2>
 
 <p>I am using <a href="https://travis-ci.org/scottkwalker">Travis CI</a> as my build server because:</p>
 
@@ -78,6 +80,18 @@
 <li>It automatically builds branches.</li>
 <li>It automatically builds forks!</li>
 <li>It is free.</li>
+</ul><h2>
+<a name="code-coverage" class="anchor" href="#code-coverage"><span class="octicon octicon-link"></span></a>Code coverage</h2>
+
+<p>When the Continuous Integration build runs, the tests will gather coverage statistics and post the results online to <a href="https://coveralls.io">Coveralls</a>.</p>
+
+<p>Offline I run the sbt plugin for <a href="https://github.com/scoverage/sbt-scoverage">Scoverage</a>. From the sbt console run 'scoverage:test' to make it run the tests and output statistics to html files.</p>
+
+<p>Previously I was using Jacoco offline, but the problems are:</p>
+
+<ul>
+<li>It only records line-coverage. For example, when operating on lists we may chain several operations together on a single line. If our tests all exit in the first few operations and never reach the final operation then this will be recorded as a false positive.</li>
+<li>It gave many false-negatives when running on parts of the Play framework such as the reverse routing. This may be because it runs against the Java compiled code and is unaware of how to track the Scala.</li>
 </ul><h2>
 <a name="version-control" class="anchor" href="#version-control"><span class="octicon octicon-link"></span></a>Version control</h2>
 
