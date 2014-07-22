@@ -8,7 +8,7 @@ import org.mockito.Matchers.any
 final class CreateNodeSpec extends UnitSpec {
   "create" should {
     "calls chooseChild on ai" in {
-      val scope = Scope(maxDepth = 10)
+      val scope = Scope(depth = 10)
       val v = mock[ICreateChildNodes]
       when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
@@ -21,7 +21,7 @@ final class CreateNodeSpec extends UnitSpec {
     }
 
     "calls updateScope" in {
-      val scope = Scope(maxDepth = 10)
+      val scope = Scope(depth = 10)
       val v = mock[ICreateChildNodes]
       when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
@@ -34,7 +34,7 @@ final class CreateNodeSpec extends UnitSpec {
     }
 
     "calls create on factory" in {
-      val scope = Scope(maxDepth = 10)
+      val scope = Scope(depth = 10)
       val v = mock[ICreateChildNodes]
       when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]

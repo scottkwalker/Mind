@@ -12,7 +12,7 @@ import utils.helpers.UnitSpec
 final class NodeTreeSpec extends UnitSpec {
   "validate" should {
     "true given it can terminates in under N steps" in {
-      val s = Scope(maxDepth = 10)
+      val s = Scope(depth = 10)
       val f = ObjectDef(nodes = Seq.empty, name = "o0")
       val nodeTree = new NodeTree(Seq(f))
 
@@ -20,7 +20,7 @@ final class NodeTreeSpec extends UnitSpec {
     }
 
     "false given it cannot terminate in under N steps" in {
-      val s = Scope(maxDepth = 10)
+      val s = Scope(depth = 10)
       val f = mock[Node]
       when(f.validate(any[Scope])).thenReturn(false)
       val nodeTree = new NodeTree(Seq(f))
@@ -29,7 +29,7 @@ final class NodeTreeSpec extends UnitSpec {
     }
 
     "true given none empty" in {
-      val s = Scope(maxDepth = 10)
+      val s = Scope(depth = 10)
       val f = ObjectDef(nodes = Seq.empty, name = "o0")
       val nodeTree = new NodeTree(Seq(f))
 
@@ -37,7 +37,7 @@ final class NodeTreeSpec extends UnitSpec {
     }
 
     "false given empty root node" in {
-      val s = Scope(maxDepth = 10)
+      val s = Scope(depth = 10)
       val nodeTree = new NodeTree(Seq(Empty()))
       nodeTree.validate(s) should equal(false)
     }
@@ -70,7 +70,7 @@ final class NodeTreeSpec extends UnitSpec {
       val s = Scope(maxExpressionsInFunc = 1,
         maxFuncsInObject = 1,
         maxParamsInFunc = 1,
-        maxDepth = 10,
+        depth = 10,
         maxObjectsInTree = 1)
       val empty = Empty()
       val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)

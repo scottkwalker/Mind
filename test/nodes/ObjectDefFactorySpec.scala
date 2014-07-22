@@ -13,7 +13,7 @@ import utils.helpers.UnitSpec
 final class ObjectDefFactorySpec extends UnitSpec {
   "create" should {
     "returns instance of this type" in {
-      val s = Scope(maxDepth = 10)
+      val s = Scope(depth = 10)
 
       val instance = factory.create(scope = s)
 
@@ -21,7 +21,7 @@ final class ObjectDefFactorySpec extends UnitSpec {
     }
 
     "returns expected given scope with 0 functions" in {
-      val s = Scope(numObjects = 0, maxDepth = 10)
+      val s = Scope(numObjects = 0, depth = 10)
 
       val instance = factory.create(scope = s)
 
@@ -32,7 +32,7 @@ final class ObjectDefFactorySpec extends UnitSpec {
     }
 
     "returns expected given scope with 1 functions" in {
-      val s = Scope(numObjects = 1, maxDepth = 10)
+      val s = Scope(numObjects = 1, depth = 10)
 
       val instance = factory.create(scope = s)
 
@@ -43,7 +43,7 @@ final class ObjectDefFactorySpec extends UnitSpec {
     }
 
     "returns 3 children given scope with 3 maxExpressionsInFunc (and rng mocked)" in {
-      val s = Scope(numFuncs = 0, maxDepth = 10, maxFuncsInObject = 3)
+      val s = Scope(numFuncs = 0, depth = 10, maxFuncsInObject = 3)
 
       val instance = factory.create(scope = s)
 

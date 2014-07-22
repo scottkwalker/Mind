@@ -36,16 +36,16 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
       val (sut, _) = createSut
       sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id) should equal(false)
       sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id) should equal(true)
-
+      
       sut.write should equal(
         JsObject(
           Seq(
             ("cache",
               JsObject(
                 Seq(
-                  (s"Scope(0,0,0,0,0,0,0,1,0)|${AddOperatorFactoryImpl.id}", JsBoolean(false)),
-                  (s"Scope(0,0,0,1,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(false)),
-                  (s"Scope(0,0,0,0,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(true))
+                  (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}", JsBoolean(false)),
+                  (s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(false)),
+                  (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(true))
                 )
               )
             )
@@ -80,7 +80,7 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
     }
   }
 
-  private val scope = Scope(depth = 0, maxDepth = 1)
+  private val scope = Scope(depth = 1)
   private val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
   private val addOperatorFactoryImpl = injector.getInstance(classOf[AddOperatorFactoryImpl])
   private val valueRefFactoryImpl = injector.getInstance(classOf[ValueRefFactoryImpl])

@@ -12,7 +12,7 @@ import utils.helpers.UnitSpec
 final class FunctionMSpec extends UnitSpec {
   "validate" should {
     "false given an empty name" in {
-      val s = Scope(maxDepth = 10)
+      val s = Scope(depth = 10)
       val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
       FunctionM(params = params,
@@ -21,7 +21,7 @@ final class FunctionMSpec extends UnitSpec {
     }
 
     "true given it can terminate in under N steps" in {
-      val s = Scope(maxDepth = 3)
+      val s = Scope(depth = 3)
       val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
 
@@ -51,7 +51,7 @@ final class FunctionMSpec extends UnitSpec {
     }
 
     "true given no empty nodes" in {
-      val s = Scope(maxDepth = 10)
+      val s = Scope(depth = 10)
       val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
 
@@ -61,7 +61,7 @@ final class FunctionMSpec extends UnitSpec {
     }
 
     "false given an empty node" in {
-      val s = Scope(maxDepth = 10)
+      val s = Scope(depth = 10)
       val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
 
@@ -128,7 +128,7 @@ final class FunctionMSpec extends UnitSpec {
       val s = Scope(maxExpressionsInFunc = 1,
         maxFuncsInObject = 1,
         maxParamsInFunc = 1,
-        maxDepth = 5,
+        depth = 5,
         maxObjectsInTree = 1)
       val empty = Empty()
       val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)

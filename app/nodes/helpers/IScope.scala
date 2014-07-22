@@ -10,7 +10,6 @@ trait IScope {
   val maxExpressionsInFunc: Int
   val maxFuncsInObject: Int
   val maxParamsInFunc: Int
-  val maxDepth: Int
   val maxObjectsInTree: Int
 
   def incrementVals: IScope
@@ -19,7 +18,7 @@ trait IScope {
 
   def incrementObjects: IScope
 
-  def incrementDepth: IScope
+  def decrementDepth: IScope
 
   def setNumFuncs(newValue: Int): IScope
 

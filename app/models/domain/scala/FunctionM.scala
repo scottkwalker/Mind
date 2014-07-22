@@ -16,7 +16,7 @@ final case class FunctionM(params: Seq[Node],
   }
 
   override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) !name.isEmpty &&
-    nodes.forall(n => n.validate(scope.incrementDepth))
+    nodes.forall(n => n.validate(scope.decrementDepth))
   else false
 
   override def replaceEmpty(scope: IScope, injector: Injector): Node = {

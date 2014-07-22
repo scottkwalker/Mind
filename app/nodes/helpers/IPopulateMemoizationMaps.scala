@@ -8,13 +8,13 @@ trait IPopulateMemoizationMaps {
                                           maxExpressionsInFunc: Int,
                                           maxFuncsInObject: Int,
                                           maxParamsInFunc: Int,
-                                          maxDepth: Int,
+                                          depth: Int,
                                           maxObjectsInTree: Int)
 
   def run(
            maxExpressionsInFunc: Int,
            maxFuncsInObject: Int,
            maxParamsInFunc: Int,
-           maxDepth: Int,
+           depth: Int,
            maxObjectsInTree: Int)
 }

@@ -95,9 +95,9 @@ final class PopulateMemoizationMapsSpec extends UnitSpec {
         val maxExpressionsInFunc = 0
         val maxFuncsInObject = 0
         val maxParamsInFunc = 0
-        val maxDepth = 1
+        val depth = 1
         val maxObjectsInTree = 0
-        val expected = (numVals + 1) * (numFuncs + 1) * (numObjects + 1) * (maxExpressionsInFunc + 1) * (maxFuncsInObject + 1) * (maxParamsInFunc + 1) * (maxDepth + 1) * (maxObjectsInTree + 1)
+        val expected = (numVals + 1) * (numFuncs + 1) * (numObjects + 1) * (maxExpressionsInFunc + 1) * (maxFuncsInObject + 1) * (maxParamsInFunc + 1) * (depth + 1) * (maxObjectsInTree + 1)
 
         val ccn = strictMock[ICreateChildNodes]
 
@@ -111,7 +111,7 @@ final class PopulateMemoizationMapsSpec extends UnitSpec {
 
         whenExecuting(ccn) {
           // Act
-          pmm.memoizeCanTerminateInStepsRemaining(ccn, numVals, numFuncs, numObjects, maxExpressionsInFunc, maxFuncsInObject, maxParamsInFunc, maxDepth, maxObjectsInTree)
+          pmm.memoizeCanTerminateInStepsRemaining(ccn, numVals, numFuncs, numObjects, maxExpressionsInFunc, maxFuncsInObject, maxParamsInFunc, depth, maxObjectsInTree)
 
           // Assert
           assert(memoizeDi.store.size == expected)
@@ -124,7 +124,7 @@ final class PopulateMemoizationMapsSpec extends UnitSpec {
         val maxExpressionsInFunc = 1
         val maxFuncsInObject = 1
         val maxParamsInFunc = 1
-        val maxDepth = 1
+        val depth = 1
         val maxObjectsInTree = 1
 
         val pmm: IPopulateMemoizationMaps = new PopulateMemoizationMaps(addOperatorFactory,
@@ -136,7 +136,7 @@ final class PopulateMemoizationMapsSpec extends UnitSpec {
           valueRefFactory)
 
         // Act
-        pmm.run(maxExpressionsInFunc, maxFuncsInObject, maxParamsInFunc, maxDepth, maxObjectsInTree)
+        pmm.run(maxExpressionsInFunc, maxFuncsInObject, maxParamsInFunc, depth, maxObjectsInTree)
 
         // Assert
         assert(addOperatorFactory.mapOfCanTerminateInStepsRemaining.size > 0)

@@ -65,7 +65,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
       when(s.incrementVals).thenReturn(s)
-      when(s.incrementDepth).thenReturn(s)
+      when(s.decrementDepth).thenReturn(s)
       val name = "a"
       val p = mock[Node]
       when(p.replaceEmpty(any[Scope], any[Injector])).thenReturn(p)
@@ -80,7 +80,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
     "returns same when no empty nodes" in {
       val s = mock[IScope]
       when(s.incrementVals).thenReturn(s)
-      when(s.incrementDepth).thenReturn(s)
+      when(s.decrementDepth).thenReturn(s)
       val name = "a"
       val p = mock[Node]
       when(p.replaceEmpty(any[Scope], any[Injector])).thenReturn(p)

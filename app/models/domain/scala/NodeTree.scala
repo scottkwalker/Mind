@@ -12,7 +12,7 @@ final case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows 
 
   override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) {
     nodes.forall {
-      case n: ObjectDef => n.validate(scope.incrementDepth)
+      case n: ObjectDef => n.validate(scope.decrementDepth)
       case _: Empty => false
       case _ => false
     }

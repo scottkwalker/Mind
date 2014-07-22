@@ -51,7 +51,7 @@ final class NodeTreeFactorySpec extends UnitSpec {
     }
   }
 
-  final class TestDevModule(rng: IRandomNumberGenerator) extends DevModule(scope = Scope(maxDepth = 10, maxExpressionsInFunc = 2, maxFuncsInObject = 3, maxParamsInFunc = 2, maxObjectsInTree = 3),
+  final class TestDevModule(rng: IRandomNumberGenerator) extends DevModule(scope = Scope(depth = 10, maxExpressionsInFunc = 2, maxFuncsInObject = 3, maxParamsInFunc = 2, maxObjectsInTree = 3),
     randomNumberGenerator = rng) {}
 
   private val rng = mock[IRandomNumberGenerator]

@@ -17,7 +17,7 @@ class MemoizeScopeToNeighbours(private var cache: Map[String, Either[CountDownLa
       val possibleNeighbourIds = intToFactory.convert(neighbourId).neighbourIds
       possibleNeighbourIds.isEmpty ||
       possibleNeighbourIds.exists { possNeighbourId =>
-        missing(key1 = scope.incrementDepth, key2 = possNeighbourId)
+        missing(key1 = scope.decrementDepth, key2 = possNeighbourId)
       }
     }
   }

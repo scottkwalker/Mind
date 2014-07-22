@@ -13,7 +13,7 @@ import org.mockito.Matchers._
 final class FunctionMFactorySpec extends UnitSpec {
   "create" should {
     "return instance of this type" in {
-      val s = Scope(maxDepth = 10)
+      val s = Scope(depth = 10)
 
       val instance = factory.create(scope = s)
 
@@ -21,7 +21,7 @@ final class FunctionMFactorySpec extends UnitSpec {
     }
 
     "return expected given scope with 0 functions" in {
-      val s = Scope(numFuncs = 0, maxDepth = 10)
+      val s = Scope(numFuncs = 0, depth = 10)
 
       val instance = factory.create(scope = s)
 
@@ -32,7 +32,7 @@ final class FunctionMFactorySpec extends UnitSpec {
     }
 
     "return expected given scope with 1 functions" in {
-      val s = Scope(numFuncs = 1, maxDepth = 10)
+      val s = Scope(numFuncs = 1, depth = 10)
 
       val instance = factory.create(scope = s)
 
@@ -43,7 +43,7 @@ final class FunctionMFactorySpec extends UnitSpec {
     }
 
     "returns 3 children given scope with 3 maxExpressionsInFunc (and rng mocked)" in {
-      val s = Scope(numFuncs = 0, maxDepth = 10, maxParamsInFunc = 3, maxExpressionsInFunc = 3)
+      val s = Scope(numFuncs = 0, depth = 10, maxParamsInFunc = 3, maxExpressionsInFunc = 3)
 
       val instance = factory.create(scope = s)
 

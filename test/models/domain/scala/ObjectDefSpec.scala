@@ -12,7 +12,7 @@ import utils.helpers.UnitSpec
 final class ObjectDefSpec extends UnitSpec {
   "validate" should {
     "true given it can terminates in under N steps" in {
-      val s = Scope(maxDepth = 4)
+      val s = Scope(depth = 4)
       val f = FunctionM(params = Seq.empty,
         nodes = Seq.empty,
         name = "f0")
@@ -40,7 +40,7 @@ final class ObjectDefSpec extends UnitSpec {
     }
 
     "true given no empty nodes" in {
-      val s = Scope(maxDepth = 10)
+      val s = Scope(depth = 10)
       val f = FunctionM(params = Seq.empty,
         nodes = Seq.empty,
         name = "f0")
@@ -50,13 +50,13 @@ final class ObjectDefSpec extends UnitSpec {
     }
 
     "false given single empty method node" in {
-      val s = Scope(maxDepth = 10)
+      val s = Scope(depth = 10)
       val objectM = ObjectDef(Seq(Empty()), name)
       objectM.validate(s) should equal(false)
     }
 
     "false given empty method node in a sequence" in {
-      val s = Scope(maxDepth = 10)
+      val s = Scope(depth = 10)
       val f = mock[Node]
       when(f.validate(any[Scope])).thenReturn(true)
       val objectM = ObjectDef(Seq(f, Empty()), name)
@@ -102,7 +102,7 @@ final class ObjectDefSpec extends UnitSpec {
       val s = Scope(maxExpressionsInFunc = 1,
         maxFuncsInObject = 1,
         maxParamsInFunc = 1,
-        maxDepth = 5,
+        depth = 5,
         maxObjectsInTree = 1)
       val empty = Empty()
       val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)

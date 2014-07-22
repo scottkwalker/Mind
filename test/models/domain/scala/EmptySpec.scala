@@ -13,7 +13,7 @@ final class EmptySpec extends UnitSpec {
 
   "validate" should {
     "return false" in {
-      val s = Scope(maxDepth = 10)
+      val s = Scope(depth = 10)
       Empty().validate(s) should equal(false)
     }
   }

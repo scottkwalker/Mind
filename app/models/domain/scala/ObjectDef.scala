@@ -12,7 +12,7 @@ final case class ObjectDef(nodes: Seq[Node], name: String) extends Node with Upd
 
   override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) {
     nodes.forall {
-      case n: FunctionM => n.validate(scope.incrementDepth)
+      case n: FunctionM => n.validate(scope.decrementDepth)
       case _: Empty => false
       case _ => false
     }

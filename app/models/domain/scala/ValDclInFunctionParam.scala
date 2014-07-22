@@ -18,7 +18,7 @@ final case class ValDclInFunctionParam(name: String, primitiveType: Node) extend
   override def replaceEmpty(scope: IScope, injector: Injector): Node = {
     val pt = primitiveType match {
       case _: Empty => injector.getInstance(classOf[IntegerMFactory]).create(scope)
-      case node: Node => node.replaceEmpty(updateScope(scope.incrementDepth), injector)
+      case node: Node => node.replaceEmpty(updateScope(scope.decrementDepth), injector)
     }
     ValDclInFunctionParam(name, pt)
   }

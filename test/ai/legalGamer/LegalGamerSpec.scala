@@ -39,7 +39,7 @@ final class LegalGamerSpec extends UnitSpec {
         maxExpressionsInFunc = 1,
         maxFuncsInObject = 1,
         maxParamsInFunc = 2,
-        maxDepth = 5,
+        depth = 5,
         maxObjectsInTree = 1)
 
       try {

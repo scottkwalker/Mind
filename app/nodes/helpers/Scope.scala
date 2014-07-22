@@ -9,7 +9,6 @@ final case class Scope(numVals: Int = 0,
                        maxExpressionsInFunc: Int = 0,
                        maxFuncsInObject: Int = 0,
                        maxParamsInFunc: Int = 0,
-                       maxDepth: Int = 0,
                        maxObjectsInTree: Int = 0) extends IScope {
   def incrementVals: IScope = copy(numVals = numVals + 1)
 
@@ -17,13 +16,13 @@ final case class Scope(numVals: Int = 0,
 
   def incrementObjects: IScope = copy(numObjects = numObjects + 1)
 
-  def incrementDepth: IScope = copy(depth = depth + 1)
+  def decrementDepth: IScope = copy(depth = depth - 1)
 
   def setNumFuncs(newValue: Int): IScope = copy(numFuncs = newValue)
 
   def setNumVals(newValue: Int): IScope = copy(numVals = newValue)
 
-  def hasDepthRemaining: Boolean = depth < maxDepth
+  def hasDepthRemaining: Boolean = depth > 0
 }
 
 object Scope {
