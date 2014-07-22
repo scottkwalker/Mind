@@ -1,4 +1,5 @@
-// Comment to get more information during initialization
+//SBT plugins used by the project build including Play itself.
+
 logLevel := Level.Debug
 
 // The Typesafe repository 
@@ -11,11 +12,12 @@ resolvers += "sonatype-releases" at "https://oss.sonatype.org/content/repositori
 resolvers += "Boundary Public Repo" at "http://maven.boundary.com/artifactory/repo"
 
 // Use the Play sbt plugin for Play projects
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.2.3")
+//addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.2.3")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.2")
 
-addSbtPlugin("de.johoop" % "jacoco4sbt" % "2.1.5")
+//addSbtPlugin("de.johoop" % "jacoco4sbt" % "2.1.5")
 
-addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.4.0")
+//addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.4.0")
 
 // Plugin for publishing scoverage results to coveralls
 addSbtPlugin("org.scoverage" %% "sbt-scoverage" % "0.98.0")
