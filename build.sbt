@@ -2,9 +2,7 @@ name := """Mind"""
 
 version := "1.0-SNAPSHOT"
 
-//crossScalaVersions := Seq("2.11.0", "2.10.3")
-
-lazy val root = (project in file(".")).enablePlugins(play.PlayScala)
+lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.10.4"
 
