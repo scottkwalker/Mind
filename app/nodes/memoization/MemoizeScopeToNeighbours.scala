@@ -8,46 +8,48 @@ import nodes.memoization.MemoizeScopeToNeighbours.mapOfNeighboursToJson
 import play.api.libs.json.Json._
 import play.api.libs.json._
 
-class MemoizeScopeToNeighbours(private var cache: Map[String, Either[CountDownLatch, Seq[Int]]] = Map.empty[String, Either[CountDownLatch, Seq[Int]]])
+class MemoizeScopeToNeighbours(private var cache: Map[String, Either[CountDownLatch, Boolean]] = Map.empty[String, Either[CountDownLatch, Boolean]])
                               (implicit intToFactory: FactoryIdToFactory)
-                              extends Memoize2Impl[IScope, Seq[Int], Seq[Int]](cache)(mapOfNeighboursToJson) {
-  override def f(scope: IScope, neighbours: Seq[Int]): Seq[Int] = {
-    if (scope.hasDepthRemaining) neighbours.filter {
-      neighbourId =>
-        val factory = intToFactory.convert(neighbourId)
-        factory.neighbourIds.isEmpty || missing(key1 = scope.incrementDepth, key2 = factory.neighbourIds).length > 0
+  extends Memoize2Impl[IScope, Int, Boolean](cache)(mapOfNeighboursToJson) {
+
+  override def f(scope: IScope, neighbourId: Int): Boolean = {
+    scope.hasDepthRemaining && {
+      val possibleNeighbourIds = intToFactory.convert(neighbourId).neighbourIds
+      possibleNeighbourIds.isEmpty ||
+      possibleNeighbourIds.exists { possNeighbourId =>
+        missing(key1 = scope.incrementDepth, key2 = possNeighbourId)
+      }
     }
-    else Seq.empty
   }
 }
 
 object MemoizeScopeToNeighbours {
-  private implicit val eitherLatchOrNeighboursToJson = new Writes[Either[CountDownLatch, Seq[Int]]] {
-    private final val stateKey = "neighbours"
-    def writes(state: Either[CountDownLatch, Seq[Int]]): JsValue =
+
+  private implicit val eitherLatchOrNeighboursToJson = new Writes[Either[CountDownLatch, Boolean]] {
+    def writes(state: Either[CountDownLatch, Boolean]): JsValue =
       state.fold(
         countDownLatch => ???, // Should be filtered out at a higher level so that we do not store incomplete calculations.
-        neighbours => JsArray(neighbours.map(n => JsNumber(n)))
+        neighbours => JsBoolean(neighbours)
       )
   }
-  
-  private implicit val mapOfNeighboursToJson = new Writes[Map[String, Either[CountDownLatch, Seq[Int]]]] {
-    def writes(cache: Map[String, Either[CountDownLatch, Seq[Int]]]): JsValue = {
+
+  private implicit val mapOfNeighboursToJson = new Writes[Map[String, Either[CountDownLatch, Boolean]]] {
+    def writes(cache: Map[String, Either[CountDownLatch, Boolean]]): JsValue = {
       val filtered = cache.filter {
-          case (k, v) => v.isRight // Only completed values.
-        }.
-        map{
-          case (k, v) => k -> v // Json keys must be strings.
-        }
+        case (k, v) => v.isRight // Only completed values.
+      }.
+        map {
+        case (k, v) => k -> v // Json keys must be strings.
+      }
       Json.obj("cache" -> Json.toJson(filtered))
     }
   }
 
   implicit def mapOfNeighboursFromJson(implicit factoryIdToFactory: FactoryIdToFactory): Reads[MemoizeScopeToNeighbours] =
-    (__ \ "cache").read[Map[String, Seq[Int]]].map {
+    (__ \ "cache").read[Map[String, Boolean]].map {
       keyValueMap =>
         val cache = keyValueMap.map {
-          case (k, v) => k -> Right[CountDownLatch, Seq[Int]](v)
+          case (k, v) => k -> Right[CountDownLatch, Boolean](v)
         }
         new MemoizeScopeToNeighbours(cache)
     }
