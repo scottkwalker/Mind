@@ -22,3 +22,5 @@ libraryDependencies ++= Seq(
 ScoverageSbtPlugin.instrumentSettings
 
 CoverallsPlugin.coverallsSettings
+
+incOptions := incOptions.value.withNameHashing(nameHashing = true)
