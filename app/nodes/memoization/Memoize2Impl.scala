@@ -108,6 +108,8 @@ abstract class Memoize2Impl[TKey1, TKey2, TOutput](private var cache: Map[String
    */
   // Combine keys into a delimited string as strings are lowest common denominator.
   private[this] def combineKeys(implicit key1: TKey1, key2: TKey2) = s"$key1|$key2"
+
+  override def isVersioningValid(intendedVersioning: String): Boolean = intendedVersioning == versioning
 }
 
 object Memoize2Impl {

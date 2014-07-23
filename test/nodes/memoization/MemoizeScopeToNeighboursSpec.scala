@@ -42,7 +42,7 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
       sut.write should equal(
         JsObject(
           Seq(
-            ("versioning" -> JsString("test")),
+            "versioning" -> JsString("test"),
             "cache" -> JsObject(
               Seq(
                 (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}", JsBoolean(false)),
@@ -57,10 +57,12 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
   }
 
   "read" should {
+
     "convert from json to usable object" in {
       val versioning = s"${AddOperatorFactoryImpl.id}|${ValueRefFactoryImpl.id}"
       val json = JsObject(
         Seq(
+          "versioning" -> JsString(versioning),
           "cache" -> JsObject(
             Seq(
               (s"Scope(0,0,0,0,0,0,0,1,0)|${AddOperatorFactoryImpl.id}", JsBoolean(false)),
@@ -77,8 +79,32 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
       asObj.apply(scope, AddOperatorFactoryImpl.id) should equal(false)
       asObj.apply(scope, ValueRefFactoryImpl.id) should equal(true)
     }
+  }
 
-    "throw when versioning doesn't match what we expect" in pendingUntilFixed {
+  "isVersioningValid" should {
+
+    "return true when versioning string match" in {
+      val versioning = s"${AddOperatorFactoryImpl.id}|${ValueRefFactoryImpl.id}"
+      val json = JsObject(
+        Seq(
+          "versioning" -> JsString(versioning),
+          "cache" -> JsObject(
+            Seq(
+              (s"Scope(0,0,0,0,0,0,0,1,0)|${AddOperatorFactoryImpl.id}", JsBoolean(false)),
+              (s"Scope(0,0,0,1,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(false)),
+              (s"Scope(0,0,0,0,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(true))
+            )
+          )
+        )
+      )
+
+      val readsFromJson = readsMemoizeScopeToNeighbours(versioning = versioning)(factoryIdToFactoryStub)
+      val asObj: MemoizeScopeToNeighbours = Memoize2Impl.read[MemoizeScopeToNeighbours](json)(readsFromJson)
+
+      asObj.isVersioningValid(versioning) should equal(true)
+    }
+
+    "return false when versioning string doesn't match what we intend to use" in {
       val versioning = s"${AddOperatorFactoryImpl.id}|${ValueRefFactoryImpl.id}"
       val versioningWithoutAddOp = s"${ValueRefFactoryImpl.id}"
       val json = JsObject(
@@ -95,8 +121,9 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
       )
 
       val readsFromJson = readsMemoizeScopeToNeighbours(versioning = versioning)(factoryIdToFactoryStub)
+      val asObj: MemoizeScopeToNeighbours = Memoize2Impl.read[MemoizeScopeToNeighbours](json)(readsFromJson)
 
-      a[RuntimeException] should be thrownBy Memoize2Impl.read[MemoizeScopeToNeighbours](json)(readsFromJson)
+      asObj.isVersioningValid(versioningWithoutAddOp) should equal(false)
     }
   }
 
