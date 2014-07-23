@@ -20,6 +20,8 @@ libraryDependencies ++= Seq(
   "org.scala-lang" %% "scala-pickling" % "0.8.0"
 )
 
+scalacOptions ++= Seq("-feature")
+
 ScoverageSbtPlugin.instrumentSettings
 
 CoverallsPlugin.coverallsSettings

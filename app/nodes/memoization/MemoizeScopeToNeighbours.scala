@@ -5,6 +5,7 @@ import nodes.helpers.IScope
 import nodes.legalNeighbours.FactoryIdToFactory
 import nodes.memoization.MemoizeScopeToNeighbours.mapOfNeighboursToJson
 import play.api.libs.json._
+import scala.language.implicitConversions
 
 class MemoizeScopeToNeighbours(private var cache: Map[String, Either[CountDownLatch, Boolean]] = Map.empty[String, Either[CountDownLatch, Boolean]],
                                private val versioning: String
