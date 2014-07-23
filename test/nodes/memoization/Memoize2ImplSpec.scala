@@ -157,10 +157,11 @@ final class Memoize2ImplSpec extends UnitSpec {
 
   "write" should {
     "turn map into Json" in {
-      val memoizeAddTogether = new Memoize2Impl[Int, Int, Int] {
+      val memoizeAddTogether = new Memoize2Impl[Int, Int, Int](versioning = "test") {
         def f(i: Int, j: Int): Int = i + j
       }
-
+//{"versioning":"test","cache":{"cache":{"1|1":2,"1|2":3,"2|2":4}}}
+//{"versioning":"test","cache":{"1|1":2,"1|2":3,"2|2":4}}
       memoizeAddTogether(1, 1) should equal(2)
       memoizeAddTogether(1, 2) should equal(3)
       memoizeAddTogether(2, 2) should equal(4)
@@ -168,6 +169,7 @@ final class Memoize2ImplSpec extends UnitSpec {
       memoizeAddTogether.write should equal(
         JsObject(
           Seq(
+            ("versioning", JsString("test")),
             ("cache",
               JsObject(
                 Seq(
@@ -238,7 +240,7 @@ final class Memoize2ImplSpec extends UnitSpec {
         case (k, v) => k.toString -> v // Key must be string
       }
 
-      Json.obj("cache" -> Json.toJson(filtered))
+      Json.toJson(filtered)
     }
   }
 }

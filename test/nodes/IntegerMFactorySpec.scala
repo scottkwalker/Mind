@@ -28,5 +28,5 @@ final class IntegerMFactorySpec extends UnitSpec {
   }
 
   private val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
-  private val factory = injector.getInstance(classOf[IntegerMFactory])
+  private val factory = injector.getInstance(classOf[IntegerMFactoryImpl])
 }

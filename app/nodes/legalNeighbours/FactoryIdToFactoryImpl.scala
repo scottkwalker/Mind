@@ -6,7 +6,7 @@ import nodes.helpers.ICreateChildNodes
 
 final class FactoryIdToFactoryImpl @Inject()(addOperatorFactory: AddOperatorFactory,
                                              functionMFactory: FunctionMFactory,
-                                             integerMFactory: IntegerMFactory,
+                                             integerMFactory: IntegerMFactoryImpl,
                                              nodeTreeFactory: NodeTreeFactory,
                                              objectDefFactory: ObjectDefFactory,
                                              valDclInFunctionParamFactory: ValDclInFunctionParamFactory,
@@ -14,7 +14,7 @@ final class FactoryIdToFactoryImpl @Inject()(addOperatorFactory: AddOperatorFact
   override def convert(id: Int): ICreateChildNodes = id match {
     case AddOperatorFactoryImpl.id => addOperatorFactory
     case FunctionMFactoryImpl.id => functionMFactory
-    case IntegerMFactory.id => integerMFactory
+    case IntegerMFactoryImpl.id => integerMFactory
     case NodeTreeFactoryImpl.id => nodeTreeFactory
     case ObjectDefFactoryImpl.id => objectDefFactory
     case ValDclInFunctionParamFactoryImpl.id => valDclInFunctionParamFactory
