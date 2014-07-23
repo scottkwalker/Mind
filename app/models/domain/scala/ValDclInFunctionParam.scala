@@ -6,6 +6,7 @@ import nodes.IntegerMFactoryImpl
 import nodes.helpers.{IScope, UpdateScopeIncrementVals}
 
 final case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node with UpdateScopeIncrementVals {
+
   override def toRaw: String = s"$name: ${primitiveType.toRaw}"
 
   override def validate(scope: IScope): Boolean = scope.hasHeightRemaining && !name.isEmpty && {

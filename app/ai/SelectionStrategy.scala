@@ -2,8 +2,8 @@ package ai
 
 import nodes.helpers._
 
-
 trait SelectionStrategy extends IAi {
+
   implicit val rng: IRandomNumberGenerator // TODO should this live in IAi and should it be implicit?
 
   def chooseChild(possibleChildren: Seq[ICreateChildNodes], scope: IScope): ICreateChildNodes = {

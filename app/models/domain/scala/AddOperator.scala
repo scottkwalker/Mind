@@ -6,6 +6,7 @@ import nodes._
 import nodes.helpers.{IScope, UpdateScopeNoChange}
 
 final case class AddOperator(left: Node, right: Node) extends Node with UpdateScopeNoChange {
+
   override def toRaw: String = s"${left.toRaw} + ${right.toRaw}"
 
   override def validate(scope: IScope): Boolean = {

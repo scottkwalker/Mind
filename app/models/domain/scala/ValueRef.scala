@@ -5,6 +5,7 @@ import models.domain.common.Node
 import nodes.helpers.{IScope, UpdateScopeNoChange}
 
 final case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
+
   override def toRaw: String = name
 
   override def validate(scope: IScope): Boolean = if (scope.hasHeightRemaining) !name.isEmpty else false

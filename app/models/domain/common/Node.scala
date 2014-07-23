@@ -4,6 +4,7 @@ import com.google.inject.Injector
 import nodes.helpers.IScope
 
 trait Node {
+
   def toRaw: String
 
   def validate(scope: IScope): Boolean

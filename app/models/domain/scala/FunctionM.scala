@@ -4,12 +4,12 @@ import com.google.inject.Injector
 import models.domain.common.Node
 import nodes._
 import nodes.helpers.{IScope, UpdateScopeIncrementFuncs}
-
 import scala.annotation.tailrec
 
 final case class FunctionM(params: Seq[Node],
                            nodes: Seq[Node],
                            name: String) extends Node with UpdateScopeIncrementFuncs {
+
   override def toRaw: String = {
     require(!name.isEmpty)
     s"def $name${params.map(f => f.toRaw).mkString("(", ", ", ")")} = ${nodes.map(f => f.toRaw).mkString("{ ", " ", " }")}"
@@ -36,6 +36,11 @@ final case class FunctionM(params: Seq[Node],
     FunctionM(p, n, name)
   }
 
+  override def getMaxDepth: Int = {
+    def getMaxDepth(n: Seq[Node]): Int = n.map(_.getMaxDepth).reduceLeft(math.max)
+    1 + math.max(getMaxDepth(params), getMaxDepth(nodes))
+  }
+
   @tailrec
   private def replaceEmptyInSeq(scope: IScope, injector: Injector, n: Seq[Node], f: ((IScope, Injector, Seq[Node]) => (IScope, Seq[Node])), acc: Seq[Node] = Seq.empty): (IScope, Seq[Node]) = {
     n match {
@@ -50,10 +55,5 @@ final case class FunctionM(params: Seq[Node],
         replaceEmptyInSeq(updatedScope, injector, xs, f, acc ++ replaced)
       case nil => (scope, acc)
     }
-  }
-
-  override def getMaxDepth: Int = {
-    def getMaxDepth(n: Seq[Node]): Int = n.map(_.getMaxDepth).reduceLeft(math.max)
-    1 + math.max(getMaxDepth(params), getMaxDepth(nodes))
   }
 }

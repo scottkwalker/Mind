@@ -4,10 +4,10 @@ import com.google.inject.Injector
 import models.domain.common.Node
 import nodes.NodeTreeFactoryImpl
 import nodes.helpers.{IScope, UpdateScopeThrows}
-
 import scala.annotation.tailrec
 
 final case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows {
+
   override def toRaw: String = nodes.map(f => f.toRaw).mkString(" ")
 
   override def validate(scope: IScope): Boolean = if (scope.hasHeightRemaining) {

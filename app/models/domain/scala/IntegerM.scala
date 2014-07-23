@@ -5,6 +5,7 @@ import models.domain.common.Node
 import nodes.helpers.{IScope, UpdateScopeNoChange}
 
 final case class IntegerM() extends Node with UpdateScopeNoChange {
+
   override def toRaw: String = "Int"
 
   override def validate(scope: IScope): Boolean = true

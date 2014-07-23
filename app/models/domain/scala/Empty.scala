@@ -5,6 +5,7 @@ import models.domain.common.Node
 import nodes.helpers.{IScope, UpdateScopeThrows}
 
 final case class Empty @Inject()() extends Node with UpdateScopeThrows {
+
   override def toRaw: String = throw new scala.RuntimeException
 
   override def validate(scope: IScope): Boolean = false
