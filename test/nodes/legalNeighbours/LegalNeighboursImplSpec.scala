@@ -53,7 +53,7 @@ final class LegalNeighboursImplSpec extends UnitSpec {
 
   "fetchLegalNeighbours" should {
     "returns only the neighbours that can terminate" in {
-      val scope = Scope(depth = 3)
+      val scope = Scope(height = 3)
 
       val result = legalNeighboursImpl.fetch(scope = scope,
         neighbours = Seq(FakeFactoryDoesNotTerminate.id,

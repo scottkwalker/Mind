@@ -25,7 +25,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
   "validate" should {
     "false given it cannot terminate in under N steps" in {
       val s = mock[IScope]
-      when(s.hasDepthRemaining).thenReturn(false)
+      when(s.hasHeightRemaining).thenReturn(false)
       val name = "a"
       val p = mock[Node]
 
@@ -34,7 +34,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
 
     "false given an empty name" in {
       val s = mock[IScope]
-      when(s.hasDepthRemaining).thenReturn(true)
+      when(s.hasHeightRemaining).thenReturn(true)
       val name = ""
       val p = mock[Node]
 
@@ -43,7 +43,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
 
     "false given an invalid child" in {
       val s = mock[IScope]
-      when(s.hasDepthRemaining).thenReturn(true)
+      when(s.hasHeightRemaining).thenReturn(true)
       val name = "a"
       val p = mock[Node]
       when(p.validate(any[Scope])).thenReturn(false)
@@ -53,7 +53,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
 
     "true given it can terminate, has a non-empty name and valid child" in {
       val s = mock[IScope]
-      when(s.hasDepthRemaining).thenReturn(true)
+      when(s.hasHeightRemaining).thenReturn(true)
       val name = "a"
       val p = IntegerM()
 
@@ -65,7 +65,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
       when(s.incrementVals).thenReturn(s)
-      when(s.decrementDepth).thenReturn(s)
+      when(s.decrementHeight).thenReturn(s)
       val name = "a"
       val p = mock[Node]
       when(p.replaceEmpty(any[Scope], any[Injector])).thenReturn(p)
@@ -80,7 +80,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
     "returns same when no empty nodes" in {
       val s = mock[IScope]
       when(s.incrementVals).thenReturn(s)
-      when(s.decrementDepth).thenReturn(s)
+      when(s.decrementHeight).thenReturn(s)
       val name = "a"
       val p = mock[Node]
       when(p.replaceEmpty(any[Scope], any[Injector])).thenReturn(p)

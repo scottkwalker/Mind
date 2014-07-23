@@ -6,7 +6,7 @@ trait IScope {
   val numVals: Int
   val numFuncs: Int
   val numObjects: Int
-  val depth: Int
+  val height: Int
   val maxExpressionsInFunc: Int
   val maxFuncsInObject: Int
   val maxParamsInFunc: Int
@@ -18,13 +18,13 @@ trait IScope {
 
   def incrementObjects: IScope
 
-  def decrementDepth: IScope
+  def decrementHeight: IScope
 
   def setNumFuncs(newValue: Int): IScope
 
   def setNumVals(newValue: Int): IScope
 
-  def hasDepthRemaining: Boolean
+  def hasHeightRemaining: Boolean
 }
 
 object IScope {

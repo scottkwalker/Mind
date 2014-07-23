@@ -15,21 +15,21 @@ final class ValueRefSpec extends UnitSpec {
 
   "validate" should {
     "false given it cannot terminate in under N steps" in {
-      val s = Scope(depth = 0)
+      val s = Scope(height = 0)
       val name = "a"
 
       ValueRef(name).validate(s) should equal(false)
     }
 
     "true given a non-empty name" in {
-      val s = Scope(depth = 10)
+      val s = Scope(height = 10)
       val name = "a"
 
       ValueRef(name).validate(s) should equal(true)
     }
 
     "false given an empty name" in {
-      val s = Scope(depth = 10)
+      val s = Scope(height = 10)
       val name = ""
 
       ValueRef(name).validate(s) should equal(false)

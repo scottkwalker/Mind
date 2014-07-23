@@ -5,7 +5,7 @@ import play.api.libs.json.Json
 final case class Scope(numVals: Int = 0,
                        numFuncs: Int = 0,
                        numObjects: Int = 0,
-                       depth: Int = 0,
+                       height: Int = 0,
                        maxExpressionsInFunc: Int = 0,
                        maxFuncsInObject: Int = 0,
                        maxParamsInFunc: Int = 0,
@@ -16,13 +16,13 @@ final case class Scope(numVals: Int = 0,
 
   def incrementObjects: IScope = copy(numObjects = numObjects + 1)
 
-  def decrementDepth: IScope = copy(depth = depth - 1)
+  def decrementHeight: IScope = copy(height = height - 1)
 
   def setNumFuncs(newValue: Int): IScope = copy(numFuncs = newValue)
 
   def setNumVals(newValue: Int): IScope = copy(numVals = newValue)
 
-  def hasDepthRemaining: Boolean = depth > 0
+  def hasHeightRemaining: Boolean = height > 0
 }
 
 object Scope {

@@ -10,9 +10,9 @@ import scala.annotation.tailrec
 final case class ObjectDef(nodes: Seq[Node], name: String) extends Node with UpdateScopeIncrementObjects {
   override def toRaw: String = s"object $name ${nodes.map(f => f.toRaw).mkString("{ ", " ", " }")}"
 
-  override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) {
+  override def validate(scope: IScope): Boolean = if (scope.hasHeightRemaining) {
     nodes.forall {
-      case n: FunctionM => n.validate(scope.decrementDepth)
+      case n: FunctionM => n.validate(scope.decrementHeight)
       case _: Empty => false
       case _ => false
     }

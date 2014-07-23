@@ -11,13 +11,13 @@ final case class AddOperator(left: Node, right: Node) extends Node with UpdateSc
   override def validate(scope: IScope): Boolean = {
     def validate(n: Node, scope: IScope) = {
       n match {
-        case _: ValueRef => n.validate(scope.decrementDepth)
+        case _: ValueRef => n.validate(scope.decrementHeight)
         case _: Empty => false
         case _ => false
       }
     }
 
-    if (scope.hasDepthRemaining) validate(left, scope) && validate(right, scope)
+    if (scope.hasHeightRemaining) validate(left, scope) && validate(right, scope)
     else false
   }
 
@@ -25,7 +25,7 @@ final case class AddOperator(left: Node, right: Node) extends Node with UpdateSc
     def replaceEmpty(scope: IScope, injector: Injector, n: Node): Node = {
       n match {
         case _: Empty => injector.getInstance(classOf[ValueRefFactoryImpl]).create(scope)
-        case n: Node => n.replaceEmpty(scope.decrementDepth, injector)
+        case n: Node => n.replaceEmpty(scope.decrementHeight, injector)
       }
     }
 

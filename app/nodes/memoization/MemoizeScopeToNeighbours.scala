@@ -13,11 +13,11 @@ class MemoizeScopeToNeighbours(private var cache: Map[String, Either[CountDownLa
   extends Memoize2Impl[IScope, Int, Boolean](cache)(mapOfNeighboursToJson) {
 
   override def f(scope: IScope, neighbourId: Int): Boolean = {
-    scope.hasDepthRemaining && {
+    scope.hasHeightRemaining && {
       val possibleNeighbourIds = intToFactory.convert(neighbourId).neighbourIds
       possibleNeighbourIds.isEmpty ||
       possibleNeighbourIds.exists { possNeighbourId =>
-        missing(key1 = scope.decrementDepth, key2 = possNeighbourId)
+        missing(key1 = scope.decrementHeight, key2 = possNeighbourId)
       }
     }
   }

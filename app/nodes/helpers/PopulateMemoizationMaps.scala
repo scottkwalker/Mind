@@ -29,10 +29,10 @@ final class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFac
                                           maxExpressionsInFunc: Int,
                                           maxFuncsInObject: Int,
                                           maxParamsInFunc: Int,
-                                          depth: Int,
+                                          height: Int,
                                           maxObjectsInTree: Int): Unit = {
 
-    for (depth <- 0 to depth;
+    for (height <- 0 to height;
          expressionsInFunc <- 0 to maxExpressionsInFunc;
          funcsInObject <- 0 to maxFuncsInObject;
          paramsInFunc <- 0 to maxParamsInFunc;
@@ -40,7 +40,7 @@ final class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFac
       val scope = Scope(maxExpressionsInFunc = expressionsInFunc,
         maxFuncsInObject = funcsInObject,
         maxParamsInFunc = paramsInFunc,
-        depth = depth,
+        height = height,
         maxObjectsInTree = objectsInTree)
       memoizeCanTerminateInStepsRemaining(that, scope)
     }
@@ -49,7 +49,7 @@ final class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFac
   def run(maxExpressionsInFunc: Int,
           maxFuncsInObject: Int,
           maxParamsInFunc: Int,
-          depth: Int,
+          height: Int,
           maxObjectsInTree: Int): Unit = {
     val factories: Seq[ICreateChildNodes] = Seq(
       addOperatorFactory,
@@ -64,7 +64,7 @@ final class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFac
     for (factory <- factories) {
       memoizeCanTerminateInStepsRemaining(
         factory,
-        maxExpressionsInFunc, maxFuncsInObject, maxParamsInFunc, depth, maxObjectsInTree)
+        maxExpressionsInFunc, maxFuncsInObject, maxParamsInFunc, height, maxObjectsInTree)
       // TODO Save map to file
     }
   }

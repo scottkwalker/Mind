@@ -15,11 +15,11 @@ final class ScopeSpec extends UnitSpec {
   "constructor" should {
     "set default values to zero" in {
       Scope() match {
-        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
+        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
           numVals should equal(0)
           numFuncs should equal(0)
           numObjects should equal(0)
-          depth should equal(0)
+          height should equal(0)
           maxExpressionsInFunc should equal(0)
           maxFuncs should equal(0)
           maxParamsInFunc should equal(0)
@@ -32,11 +32,11 @@ final class ScopeSpec extends UnitSpec {
   "incrementVals" should {
     "return expected" in {
       Scope().incrementVals match {
-        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
+        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
           numVals should equal(1)
           numFuncs should equal(0)
           numObjects should equal(0)
-          depth should equal(0)
+          height should equal(0)
           maxExpressionsInFunc should equal(0)
           maxFuncs should equal(0)
           maxParamsInFunc should equal(0)
@@ -49,11 +49,11 @@ final class ScopeSpec extends UnitSpec {
   "incrementFuncs" should {
     "return expected" in {
       Scope().incrementFuncs match {
-        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
+        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
           numVals should equal(0)
           numFuncs should equal(1)
           numObjects should equal(0)
-          depth should equal(0)
+          height should equal(0)
           maxExpressionsInFunc should equal(0)
           maxFuncs should equal(0)
           maxParamsInFunc should equal(0)
@@ -66,11 +66,11 @@ final class ScopeSpec extends UnitSpec {
   "incrementObjects" should {
     "return expected" in {
       Scope().incrementObjects match {
-        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
+        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
           numVals should equal(0)
           numFuncs should equal(0)
           numObjects should equal(1)
-          depth should equal(0)
+          height should equal(0)
           maxExpressionsInFunc should equal(0)
           maxFuncs should equal(0)
           maxParamsInFunc should equal(0)
@@ -80,14 +80,14 @@ final class ScopeSpec extends UnitSpec {
     }
   }
 
-  "decrementStepsRemaining" should {
+  "decrementHeight" should {
     "return expected" in {
-      Scope(depth = 2).decrementDepth match {
-        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
+      Scope(height = 2).decrementHeight match {
+        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
           numVals should equal(0)
           numFuncs should equal(0)
           numObjects should equal(0)
-          depth should equal(1)
+          height should equal(1)
           maxExpressionsInFunc should equal(0)
           maxFuncs should equal(0)
           maxParamsInFunc should equal(0)
@@ -99,16 +99,16 @@ final class ScopeSpec extends UnitSpec {
 
   "fluent interface" should {
     "return expected" in {
-      Scope(depth = 2).
+      Scope(height = 2).
         incrementVals.
         incrementFuncs.
         incrementObjects.
-        decrementDepth match {
-        case Scope(numVals, numFuncs, numObjects, depth, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
+        decrementHeight match {
+        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
           numVals should equal(1)
           numFuncs should equal(1)
           numObjects should equal(1)
-          depth should equal(1)
+          height should equal(1)
           maxExpressionsInFunc should equal(0)
           maxFuncs should equal(0)
           maxParamsInFunc should equal(0)
@@ -134,11 +134,11 @@ final class ScopeSpec extends UnitSpec {
         ("numVals", JsNumber(0)),
         ("numFuncs", JsNumber(0)),
         ("numObjects", JsNumber(0)),
-        ("depth", JsNumber(0)),
+        ("height", JsNumber(0)),
         ("maxExpressionsInFunc", JsNumber(0)),
         ("maxFuncsInObject", JsNumber(0)),
         ("maxParamsInFunc", JsNumber(0)),
-        ("depth", JsNumber(0)),
+        ("height", JsNumber(0)),
         ("maxObjectsInTree", JsNumber(0))
       )))
     }
@@ -188,11 +188,11 @@ final class ScopeSpec extends UnitSpec {
                   ("numVals", JsNumber(0)),
                   ("numFuncs", JsNumber(0)),
                   ("numObjects", JsNumber(0)),
-                  ("depth", JsNumber(0)),
+                  ("height", JsNumber(0)),
                   ("maxExpressionsInFunc", JsNumber(0)),
                   ("maxFuncsInObject", JsNumber(0)),
                   ("maxParamsInFunc", JsNumber(0)),
-                  ("depth", JsNumber(0)),
+                  ("height", JsNumber(0)),
                   ("maxObjectsInTree", JsNumber(0))
                 )
               )
@@ -222,11 +222,11 @@ final class ScopeSpec extends UnitSpec {
                   ("numVals", JsNumber(0)),
                   ("numFuncs", JsNumber(0)),
                   ("numObjects", JsNumber(0)),
-                  ("depth", JsNumber(0)),
+                  ("height", JsNumber(0)),
                   ("maxExpressionsInFunc", JsNumber(0)),
                   ("maxFuncsInObject", JsNumber(0)),
                   ("maxParamsInFunc", JsNumber(0)),
-                  ("depth", JsNumber(0)),
+                  ("height", JsNumber(0)),
                   ("maxObjectsInTree", JsNumber(0))
                 )
               )
@@ -329,11 +329,11 @@ final class ScopeSpec extends UnitSpec {
                         ("numVals", JsNumber(0)),
                         ("numFuncs", JsNumber(0)),
                         ("numObjects", JsNumber(0)),
-                        ("depth", JsNumber(0)),
+                        ("height", JsNumber(0)),
                         ("maxExpressionsInFunc", JsNumber(0)),
                         ("maxFuncsInObject", JsNumber(0)),
                         ("maxParamsInFunc", JsNumber(0)),
-                        ("depth", JsNumber(0)),
+                        ("height", JsNumber(0)),
                         ("maxObjectsInTree", JsNumber(0))
                       )
                     )
@@ -551,16 +551,16 @@ final class ScopeSpec extends UnitSpec {
 
       Json.toJson(Map[IScope, Either[CountDownLatch, Seq[Int]]](Scope() -> left)) should equal(JsObject(Seq.empty))
 
-      Json.toJson(Map[IScope, Either[CountDownLatch, Seq[Int]]](Scope(depth = 1) -> right)) should equal(expected)
+      Json.toJson(Map[IScope, Either[CountDownLatch, Seq[Int]]](Scope(height = 1) -> right)) should equal(expected)
 
       Json.toJson(Map[IScope, Either[CountDownLatch, Seq[Int]]](
         Scope() -> left,
-        Scope(depth = 1) -> right
+        Scope(height = 1) -> right
       )
       ) should equal(expected)
     }
   }
 
-  private val scopeAsJsonString = """{"numVals":0,"numFuncs":0,"numObjects":0,"depth":0,"maxExpressionsInFunc":0,"maxFuncsInObject":0,"maxParamsInFunc":0,"maxObjectsInTree":0}"""
+  private val scopeAsJsonString = """{"numVals":0,"numFuncs":0,"numObjects":0,"height":0,"maxExpressionsInFunc":0,"maxFuncsInObject":0,"maxParamsInFunc":0,"maxObjectsInTree":0}"""
   private val scopeAsModel: IScope = Scope()
 }

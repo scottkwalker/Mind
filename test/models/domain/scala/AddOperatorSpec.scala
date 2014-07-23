@@ -25,14 +25,14 @@ final class AddOperatorSpec extends UnitSpec {
 
   "validate" should {
     "true given child nodes can terminate in under N steps" in {
-      val s = Scope(depth = 2)
+      val s = Scope(height = 2)
       val v = ValueRef("v")
 
       AddOperator(v, v).validate(s) should equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
-      val s = Scope(depth = 0)
+      val s = Scope(height = 0)
       val v = mock[Node]
       when(v.validate(any[Scope])).thenThrow(new RuntimeException)
 
@@ -40,7 +40,7 @@ final class AddOperatorSpec extends UnitSpec {
     }
 
     "false given child nodes cannot terminate in under N steps" in {
-      val s = Scope(depth = 10)
+      val s = Scope(height = 10)
       val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(false)
 
@@ -48,14 +48,14 @@ final class AddOperatorSpec extends UnitSpec {
     }
 
     "true given none empty" in {
-      val s = Scope(depth = 10)
+      val s = Scope(height = 10)
       val v = ValueRef("v")
 
       AddOperator(v, v).validate(s) should equal(true)
     }
 
     "false given contains an empty node" in {
-      val s = Scope(depth = 10)
+      val s = Scope(height = 10)
       val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
 
@@ -63,7 +63,7 @@ final class AddOperatorSpec extends UnitSpec {
     }
 
     "false given contains a node that is not valid for this level" in {
-      val s = Scope(depth = 10)
+      val s = Scope(height = 10)
       val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
 

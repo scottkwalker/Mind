@@ -10,9 +10,9 @@ import scala.annotation.tailrec
 final case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows {
   override def toRaw: String = nodes.map(f => f.toRaw).mkString(" ")
 
-  override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) {
+  override def validate(scope: IScope): Boolean = if (scope.hasHeightRemaining) {
     nodes.forall {
-      case n: ObjectDef => n.validate(scope.decrementDepth)
+      case n: ObjectDef => n.validate(scope.decrementHeight)
       case _: Empty => false
       case _ => false
     }

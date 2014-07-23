@@ -12,7 +12,7 @@ import utils.helpers.UnitSpec
 final class ValDclInFunctionParamFactorySpec extends UnitSpec {
   "create" should {
     "returns instance of this type" in {
-      val s = Scope(depth = 10, maxParamsInFunc = 1)
+      val s = Scope(height = 10, maxParamsInFunc = 1)
 
       val instance = factory.create(scope = s)
 
@@ -20,7 +20,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitSpec {
     }
 
     "returns expected given scope with 0 vals" in {
-      val s = Scope(numVals = 0, maxParamsInFunc = 1, depth = 10)
+      val s = Scope(numVals = 0, maxParamsInFunc = 1, height = 10)
 
       val instance = factory.create(scope = s)
 
@@ -33,7 +33,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitSpec {
     }
 
     "returns expected given scope with 1 val" in {
-      val s = Scope(numVals = 1, maxParamsInFunc = 2, depth = 10)
+      val s = Scope(numVals = 1, maxParamsInFunc = 2, height = 10)
 
       val instance = factory.create(scope = s)
 

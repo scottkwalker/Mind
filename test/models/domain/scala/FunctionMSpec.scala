@@ -12,7 +12,7 @@ import utils.helpers.UnitSpec
 final class FunctionMSpec extends UnitSpec {
   "validate" should {
     "false given an empty name" in {
-      val s = Scope(depth = 10)
+      val s = Scope(height = 10)
       val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
       FunctionM(params = params,
@@ -21,7 +21,7 @@ final class FunctionMSpec extends UnitSpec {
     }
 
     "true given it can terminate in under N steps" in {
-      val s = Scope(depth = 3)
+      val s = Scope(height = 3)
       val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
 
@@ -31,7 +31,7 @@ final class FunctionMSpec extends UnitSpec {
     }
 
     "false given it cannot terminate in 0 steps" in {
-      val s = Scope(depth = 0)
+      val s = Scope(height = 0)
       val v = mock[Node]
       when(v.validate(any[Scope])).thenThrow(new RuntimeException)
 
@@ -41,7 +41,7 @@ final class FunctionMSpec extends UnitSpec {
     }
 
     "false given it cannot terminate in under N steps" in {
-      val s = Scope(depth = 2)
+      val s = Scope(height = 2)
       val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(false)
 
@@ -51,7 +51,7 @@ final class FunctionMSpec extends UnitSpec {
     }
 
     "true given no empty nodes" in {
-      val s = Scope(depth = 10)
+      val s = Scope(height = 10)
       val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
 
@@ -61,7 +61,7 @@ final class FunctionMSpec extends UnitSpec {
     }
 
     "false given an empty node" in {
-      val s = Scope(depth = 10)
+      val s = Scope(height = 10)
       val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
 
@@ -128,7 +128,7 @@ final class FunctionMSpec extends UnitSpec {
       val s = Scope(maxExpressionsInFunc = 1,
         maxFuncsInObject = 1,
         maxParamsInFunc = 1,
-        depth = 5,
+        height = 5,
         maxObjectsInTree = 1)
       val empty = Empty()
       val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)

@@ -7,7 +7,7 @@ import nodes.helpers.{IScope, UpdateScopeNoChange}
 final case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
   override def toRaw: String = name
 
-  override def validate(scope: IScope): Boolean = if (scope.hasDepthRemaining) !name.isEmpty else false
+  override def validate(scope: IScope): Boolean = if (scope.hasHeightRemaining) !name.isEmpty else false
 
   override def replaceEmpty(scope: IScope, injector: Injector): Node = this
 
