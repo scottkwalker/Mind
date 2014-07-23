@@ -11,6 +11,8 @@ Build status for master branch [![Build Status](https://travis-ci.org/scottkwalk
 
 Code coverage for master branch [![Coverage Status](https://coveralls.io/repos/scottkwalker/Mind/badge.png)](https://coveralls.io/r/scottkwalker/Mind)
 
+Latest version [![GitHub version](https://badge.fury.io/gh/scottkwalker%2FMind.svg)](http://badge.fury.io/gh/scottkwalker%2FMind)
+
 This is a Scala hobby project. It will consist of:
 
 * one RESTful micro-service that will generate a table of legal moves in a programming language according to whatever rules you give it
