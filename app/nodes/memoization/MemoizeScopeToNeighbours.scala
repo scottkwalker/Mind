@@ -4,12 +4,11 @@ import java.util.concurrent.CountDownLatch
 import nodes.helpers.IScope
 import nodes.legalNeighbours.FactoryIdToFactory
 import nodes.memoization.MemoizeScopeToNeighbours.mapOfNeighboursToJson
-import play.api.libs.json.Json._
 import play.api.libs.json._
 
 class MemoizeScopeToNeighbours(private var cache: Map[String, Either[CountDownLatch, Boolean]] = Map.empty[String, Either[CountDownLatch, Boolean]],
-                               private val versioning: String = ""
-                              )
+                               private val versioning: String
+                                )
                               (implicit intToFactory: FactoryIdToFactory)
   extends Memoize2Impl[IScope, Int, Boolean](cache, versioning)(mapOfNeighboursToJson) {
 
@@ -46,14 +45,17 @@ object MemoizeScopeToNeighbours {
     }
   }
 
-  implicit def readsMemoizeScopeToNeighbours(versioning: String)(implicit factoryIdToFactory: FactoryIdToFactory): Reads[MemoizeScopeToNeighbours] = {
-    (__ \ "cache").read[Map[String, Boolean]].map {
-      keyValueMap =>
-        val cache = keyValueMap.map {
-          case (k, v) => k -> Right[CountDownLatch, Boolean](v)
-        }
+  implicit def readsMemoizeScopeToNeighbours(versioning: String)(implicit factoryIdToFactory: FactoryIdToFactory): Reads[MemoizeScopeToNeighbours] =
+    (__ \ "versioning").read[String].flatMap[MemoizeScopeToNeighbours] {
+      case versioningFromFile =>
+        require(versioningFromFile == versioning, "version info from file did not match the intended versioning")
+        (__ \ "cache").read[Map[String, Boolean]].map {
+        keyValueMap =>
+          val cache = keyValueMap.map {
+            case (k, v) => k -> Right[CountDownLatch, Boolean](v)
+          }
 
-        new MemoizeScopeToNeighbours(cache, versioning)
+          new MemoizeScopeToNeighbours(cache, versioningFromFile)
+      }
     }
-  }
 }

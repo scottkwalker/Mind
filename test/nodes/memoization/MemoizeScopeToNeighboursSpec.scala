@@ -73,38 +73,14 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
         )
       )
 
-      val readsFromJson = readsMemoizeScopeToNeighbours(versioning = versioning)(factoryIdToFactoryStub)
+      val readsFromJson = readsMemoizeScopeToNeighbours(versioning)(factoryIdToFactoryStub)
       val asObj: MemoizeScopeToNeighbours = Memoize2Impl.read[MemoizeScopeToNeighbours](json)(readsFromJson)
 
       asObj.apply(scope, AddOperatorFactoryImpl.id) should equal(false)
       asObj.apply(scope, ValueRefFactoryImpl.id) should equal(true)
     }
-  }
 
-  "isVersioningValid" should {
-
-    "return true when versioning string match" in {
-      val versioning = s"${AddOperatorFactoryImpl.id}|${ValueRefFactoryImpl.id}"
-      val json = JsObject(
-        Seq(
-          "versioning" -> JsString(versioning),
-          "cache" -> JsObject(
-            Seq(
-              (s"Scope(0,0,0,0,0,0,0,1,0)|${AddOperatorFactoryImpl.id}", JsBoolean(false)),
-              (s"Scope(0,0,0,1,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(false)),
-              (s"Scope(0,0,0,0,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(true))
-            )
-          )
-        )
-      )
-
-      val readsFromJson = readsMemoizeScopeToNeighbours(versioning = versioning)(factoryIdToFactoryStub)
-      val asObj: MemoizeScopeToNeighbours = Memoize2Impl.read[MemoizeScopeToNeighbours](json)(readsFromJson)
-
-      asObj.isVersioningValid(versioning) should equal(true)
-    }
-
-    "return false when versioning string doesn't match what we intend to use" in {
+    "throw RuntimeException when versioning string doesn't match what we intend to use" in {
       val versioning = s"${AddOperatorFactoryImpl.id}|${ValueRefFactoryImpl.id}"
       val versioningWithoutAddOp = s"${ValueRefFactoryImpl.id}"
       val json = JsObject(
@@ -120,10 +96,8 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
         )
       )
 
-      val readsFromJson = readsMemoizeScopeToNeighbours(versioning = versioning)(factoryIdToFactoryStub)
-      val asObj: MemoizeScopeToNeighbours = Memoize2Impl.read[MemoizeScopeToNeighbours](json)(readsFromJson)
-
-      asObj.isVersioningValid(versioningWithoutAddOp) should equal(false)
+      val readsFromJson = readsMemoizeScopeToNeighbours(versioningWithoutAddOp)(factoryIdToFactoryStub)
+      an[RuntimeException] should be thrownBy  Memoize2Impl.read[MemoizeScopeToNeighbours](json)(readsFromJson)
     }
   }
 
