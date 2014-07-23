@@ -1,13 +1,14 @@
 package nodes
 
-import nodes.helpers._
 import com.google.inject.{Guice, Injector}
-import modules.ai.legalGamer.LegalGamerModule
-import modules.DevModule
 import models.domain.scala.IntegerM
+import modules.DevModule
+import modules.ai.legalGamer.LegalGamerModule
+import nodes.helpers._
 import utils.helpers.UnitSpec
 
 final class IntegerMFactorySpec extends UnitSpec {
+
   "neighbours" should {
     "have no possible children" in {
       factory.neighbourIds.length should equal(0)

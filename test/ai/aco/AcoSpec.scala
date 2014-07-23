@@ -1,20 +1,16 @@
 package ai.aco
 
-import nodes.helpers._
+import ai.IRandomNumberGenerator
 import com.google.inject.Guice
 import fitness.AddTwoInts
-import ai.IRandomNumberGenerator
-import modules.ai.aco.AcoModule
+import models.domain.scala.{FunctionM, IntegerM, NodeTree, ObjectDef, _}
 import modules.DevModule
-import models.domain.scala._
-import nodes.helpers.Scope
-import models.domain.scala.IntegerM
-import models.domain.scala.ObjectDef
-import models.domain.scala.NodeTree
-import models.domain.scala.FunctionM
+import modules.ai.aco.AcoModule
+import nodes.helpers.{Scope, _}
 import utils.helpers.UnitSpec
 
 final class AcoSpec extends UnitSpec {
+
   "chooseChild" should {
     "returns expected instance given only one valid choice" in {
       val rng = mock[IRandomNumberGenerator]

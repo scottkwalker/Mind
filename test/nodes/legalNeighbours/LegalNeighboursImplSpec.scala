@@ -1,11 +1,12 @@
 package nodes.legalNeighbours
 
-import nodes.helpers._
 import models.domain.common.Node
-import utils.helpers.UnitSpec
+import nodes.helpers._
 import org.mockito.Mockito._
+import utils.helpers.UnitSpec
 
 final class LegalNeighboursImplSpec extends UnitSpec {
+
   private val fNot: ICreateChildNodes = {
     val factory = mock[ICreateChildNodes]
     when(factory.neighbourIds).thenReturn(Seq(FakeFactoryDoesNotTerminate.id))
@@ -22,32 +23,38 @@ final class LegalNeighboursImplSpec extends UnitSpec {
   }
 
   case class FakeFactoryDoesNotTerminate() extends ICreateChildNodes with UpdateScopeNoChange {
+
     override val neighbourIds: Seq[Int] = Seq(FakeFactoryDoesNotTerminate.id)
 
     override def create(scope: IScope): Node = ???
   }
 
-  object FakeFactoryDoesNotTerminate {
-    val id = 0
-  }
-
   case class FakeFactoryTerminates1() extends ICreateChildNodes with UpdateScopeNoChange {
+
     override val neighbourIds: Seq[Int] = Seq.empty
 
     override def create(scope: IScope): Node = ???
-  }
-
-  object FakeFactoryTerminates1 {
-    val id = 1
   }
 
   case class FakeFactoryTerminates2() extends ICreateChildNodes with UpdateScopeNoChange {
+
     override val neighbourIds: Seq[Int] = Seq.empty
 
     override def create(scope: IScope): Node = ???
   }
 
+  object FakeFactoryDoesNotTerminate {
+
+    val id = 0
+  }
+
+  object FakeFactoryTerminates1 {
+
+    val id = 1
+  }
+
   object FakeFactoryTerminates2 {
+
     val id = 2
   }
 
@@ -65,5 +72,4 @@ final class LegalNeighboursImplSpec extends UnitSpec {
       result should equal(Seq(fT1, fT2))
     }
   }
-
 }

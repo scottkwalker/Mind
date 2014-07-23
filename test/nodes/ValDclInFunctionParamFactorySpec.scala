@@ -1,15 +1,15 @@
 package nodes
 
-import nodes.helpers.{IScope, Scope}
-import com.google.inject.Injector
-import com.google.inject.Guice
+import com.google.inject.{Guice, Injector}
+import models.domain.scala.{IntegerM, ValDclInFunctionParam}
 import modules.DevModule
 import modules.ai.legalGamer.LegalGamerModule
-import models.domain.scala.{ValDclInFunctionParam, IntegerM}
+import nodes.helpers.{IScope, Scope}
 import org.mockito.Mockito._
 import utils.helpers.UnitSpec
 
 final class ValDclInFunctionParamFactorySpec extends UnitSpec {
+
   "create" should {
     "returns instance of this type" in {
       val s = Scope(height = 10, maxParamsInFunc = 1)

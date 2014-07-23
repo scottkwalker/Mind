@@ -5,6 +5,7 @@ import nodes.helpers.{IScope, Scope}
 import utils.helpers.UnitSpec
 
 final class ValueRefSpec extends UnitSpec {
+
   "toRawScala" should {
     "return name" in {
       val name = "a"

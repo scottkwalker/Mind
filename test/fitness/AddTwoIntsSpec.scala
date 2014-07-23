@@ -1,16 +1,13 @@
 package fitness
 
 import fitness.Fitness.maxFitness
-import models.domain.scala._
-import models.domain.scala.AddOperator
-import models.domain.scala.ObjectDef
-import models.domain.scala.FunctionM
-import models.domain.scala.IntegerM
-import utils.helpers.UnitSpec
-import org.mockito.Mockito._
 import models.domain.common.Node
+import models.domain.scala.{AddOperator, FunctionM, IntegerM, ObjectDef, _}
+import org.mockito.Mockito._
+import utils.helpers.UnitSpec
 
 final class AddTwoIntsSpec extends UnitSpec {
+
   "Addition" should {
     "1 add 1 equals 2 with NodeTree that returns hard coded raw Scala" in {
       val nodeTree = mock[Node]

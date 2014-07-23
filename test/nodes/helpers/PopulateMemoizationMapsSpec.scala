@@ -1,13 +1,13 @@
 package nodes.helpers
 
-import utils.helpers.UnitSpec
 import com.google.inject.{Guice, Injector}
-import nodes._
-import modules.ai.legalGamer.LegalGamerModule
 import modules.DevModule
-
+import modules.ai.legalGamer.LegalGamerModule
+import nodes._
+import utils.helpers.UnitSpec
 
 final class PopulateMemoizationMapsSpec extends UnitSpec {
+
   private val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
   private val addOperatorFactory = injector.getInstance(classOf[AddOperatorFactoryImpl])
   private val functionMFactory = injector.getInstance(classOf[FunctionMFactoryImpl])

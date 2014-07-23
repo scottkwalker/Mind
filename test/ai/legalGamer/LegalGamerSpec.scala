@@ -1,19 +1,16 @@
 package ai.legalGamer
 
+import ai.IRandomNumberGenerator
 import com.google.inject.Guice
 import fitness.AddTwoInts
-import modules.ai.legalGamer.LegalGamerModule
+import models.domain.scala.{FunctionM, IntegerM, NodeTree, ObjectDef, _}
 import modules.DevModule
-import models.domain.scala._
+import modules.ai.legalGamer.LegalGamerModule
 import nodes.helpers.{ICreateChildNodes, Scope}
-import models.domain.scala.IntegerM
-import models.domain.scala.ObjectDef
-import models.domain.scala.NodeTree
-import models.domain.scala.FunctionM
 import utils.helpers.UnitSpec
-import ai.IRandomNumberGenerator
 
 final class LegalGamerSpec extends UnitSpec {
+
   "chooseChild" should {
     "return expected type given only one valid choice" in {
       val rng = mock[IRandomNumberGenerator]

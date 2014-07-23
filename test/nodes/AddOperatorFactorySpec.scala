@@ -1,16 +1,14 @@
 package nodes
 
-import org.specs2.mutable._
-import nodes.helpers.Scope
-import org.specs2.mock.Mockito
-import com.google.inject.Injector
-import com.google.inject.Guice
+import com.google.inject.{Guice, Injector}
+import models.domain.scala.AddOperator
 import modules.DevModule
 import modules.ai.legalGamer.LegalGamerModule
-import models.domain.scala.AddOperator
+import nodes.helpers.Scope
 import utils.helpers.UnitSpec
 
 final class AddOperatorFactorySpec extends UnitSpec {
+
   "create" should {
     "return instance of this type" in {
       val s = Scope(height = 10, numVals = 1)

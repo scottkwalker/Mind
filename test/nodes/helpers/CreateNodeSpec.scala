@@ -1,11 +1,12 @@
 package nodes.helpers
 
 import ai.SelectionStrategy
-import utils.helpers.UnitSpec
-import org.mockito.Mockito._
 import org.mockito.Matchers.any
+import org.mockito.Mockito._
+import utils.helpers.UnitSpec
 
 final class CreateNodeSpec extends UnitSpec {
+
   "create" should {
     "calls chooseChild on ai" in {
       val scope = Scope(height = 10)

@@ -1,15 +1,15 @@
 package nodes
 
-import nodes.helpers.IScope
-import com.google.inject.Injector
-import com.google.inject.Guice
+import com.google.inject.{Guice, Injector}
+import models.domain.scala.ValueRef
 import modules.DevModule
 import modules.ai.legalGamer.LegalGamerModule
-import models.domain.scala.ValueRef
+import nodes.helpers.IScope
 import org.mockito.Mockito._
 import utils.helpers.UnitSpec
 
 final class ValueRefFactorySpec extends UnitSpec {
+
   "create" should {
     "return instance of this type" in {
       val instance = factory.create(scope = scope)

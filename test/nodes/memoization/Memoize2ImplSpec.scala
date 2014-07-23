@@ -2,7 +2,6 @@ package nodes.memoization
 
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.{CountDownLatch, TimeUnit}
-
 import com.twitter.conversions.time._
 import com.twitter.util._
 import org.mockito.Mockito._
@@ -11,6 +10,7 @@ import play.api.libs.json._
 import utils.helpers.UnitSpec
 
 final class Memoize2ImplSpec extends UnitSpec {
+
   "apply" should {
     "return the same result when called twice" in {
       val memoizeAddTogether = new Memoize2Impl[Int, Int, Int] {
@@ -24,6 +24,7 @@ final class Memoize2ImplSpec extends UnitSpec {
 
     "only runs the function once for the same input (adder)" in {
       class F {
+
         def apply(i: Int, j: Int): Int = invoke(i, j)
 
         private def invoke(i: Int, j: Int) = i + j
@@ -62,6 +63,7 @@ final class Memoize2ImplSpec extends UnitSpec {
       val startUpLatch = new CountDownLatch(1)
 
       class Incrementer {
+
         def apply(i: Int, j: Int) = {
           // Wait for all of the threads to be started before
           // continuing. This gives races a chance to happen.
@@ -110,6 +112,7 @@ final class Memoize2ImplSpec extends UnitSpec {
       val callCount = new AtomicInteger(0)
 
       class FailFirstTime {
+
         def apply(i: Int, j: Int) = {
           // Ensure that all of the callers have been started
           startUpLatch.await(200, TimeUnit.MILLISECONDS)
@@ -160,8 +163,8 @@ final class Memoize2ImplSpec extends UnitSpec {
       val memoizeAddTogether = new Memoize2Impl[Int, Int, Int](versioning = "test") {
         def f(i: Int, j: Int): Int = i + j
       }
-//{"versioning":"test","cache":{"cache":{"1|1":2,"1|2":3,"2|2":4}}}
-//{"versioning":"test","cache":{"1|1":2,"1|2":3,"2|2":4}}
+      //{"versioning":"test","cache":{"cache":{"1|1":2,"1|2":3,"2|2":4}}}
+      //{"versioning":"test","cache":{"1|1":2,"1|2":3,"2|2":4}}
       memoizeAddTogether(1, 1) should equal(2)
       memoizeAddTogether(1, 2) should equal(3)
       memoizeAddTogether(2, 2) should equal(4)
@@ -188,6 +191,7 @@ final class Memoize2ImplSpec extends UnitSpec {
   "read" should {
     "turn json to usable object" in {
       class Adder(private var cache: Map[String, Either[CountDownLatch, Int]]) extends Memoize2Impl[Int, Int, Int](cache) {
+
         def f(i: Int, j: Int): Int = throw new Exception("Should not be called as the result should have been retrieved from the json")
       }
 

@@ -5,6 +5,7 @@ import nodes.helpers.IScope
 import utils.helpers.UnitSpec
 
 final class IntegerMSpec extends UnitSpec {
+
   "toRawScala" should {
     "return expected" in {
       IntegerM().toRaw should equal("Int")

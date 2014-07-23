@@ -1,16 +1,17 @@
 package nodes
 
-import com.google.inject.{Injector, Guice}
-import nodes.helpers.{IScope, Scope}
 import ai.IRandomNumberGenerator
-import modules.ai.legalGamer.LegalGamerModule
-import modules.DevModule
+import com.google.inject.{Guice, Injector}
 import models.domain.scala.FunctionM
-import utils.helpers.UnitSpec
-import org.mockito.Mockito._
+import modules.DevModule
+import modules.ai.legalGamer.LegalGamerModule
+import nodes.helpers.{IScope, Scope}
 import org.mockito.Matchers._
+import org.mockito.Mockito._
+import utils.helpers.UnitSpec
 
 final class FunctionMFactorySpec extends UnitSpec {
+
   "create" should {
     "return instance of this type" in {
       val s = Scope(height = 10)

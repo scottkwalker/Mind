@@ -1,17 +1,16 @@
 package nodes.helpers
 
 import java.util.concurrent.CountDownLatch
-
 import com.google.inject.{Guice, Injector}
 import modules.DevModule
 import modules.ai.aco.AcoModule
 import play.api.libs.json.Json.obj
 import play.api.libs.json._
 import utils.helpers.UnitSpec
-
 import scala.collection.immutable.BitSet
 
 final class ScopeSpec extends UnitSpec {
+
   "constructor" should {
     "set default values to zero" in {
       Scope() match {

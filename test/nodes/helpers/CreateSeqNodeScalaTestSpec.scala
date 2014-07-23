@@ -2,11 +2,12 @@ package nodes.helpers
 
 import ai.IAi
 import models.domain.common.Node
-import utils.helpers.UnitSpec
-import org.mockito.Mockito._
 import org.mockito.Matchers._
+import org.mockito.Mockito._
+import utils.helpers.UnitSpec
 
 final class CreateSeqNodeScalaTestSpec extends UnitSpec {
+
   "create" should {
     "call a factory once given only space for 1 func in obj and mocked rng the same" in {
       val expected = 1

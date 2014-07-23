@@ -12,6 +12,7 @@ import org.mockito.Mockito._
 import utils.helpers.UnitSpec
 
 final class AddOperatorSpec extends UnitSpec {
+
   "toRawScala" should {
     "return expected" in {
       val a = mock[Node]
@@ -96,6 +97,7 @@ final class AddOperatorSpec extends UnitSpec {
 
     "returns without empty nodes given there were empty nodes" in {
       class TestDevModule extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
+
         override def bindAddOperatorFactory(): Unit = {
           val n: Node = mock[Node]
           val f = mock[AddOperatorFactoryImpl]

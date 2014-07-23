@@ -10,6 +10,7 @@ import org.mockito.Mockito._
 import utils.helpers.UnitSpec
 
 final class FunctionMSpec extends UnitSpec {
+
   "validate" should {
     "false given an empty name" in {
       val s = Scope(height = 10)

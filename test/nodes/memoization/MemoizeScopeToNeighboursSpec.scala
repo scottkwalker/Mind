@@ -97,7 +97,7 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
       )
 
       val readsFromJson = readsMemoizeScopeToNeighbours(versioningWithoutAddOp)(factoryIdToFactoryStub)
-      an[RuntimeException] should be thrownBy  Memoize2Impl.read[MemoizeScopeToNeighbours](json)(readsFromJson)
+      an[RuntimeException] should be thrownBy Memoize2Impl.read[MemoizeScopeToNeighbours](json)(readsFromJson)
     }
   }
 

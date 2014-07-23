@@ -1,13 +1,14 @@
 package nodes.helpers
 
-import ai.{IRandomNumberGenerator, SelectionStrategy}
 import ai.aco.Aco
+import ai.{IRandomNumberGenerator, SelectionStrategy}
 import models.domain.common.Node
-import utils.helpers.UnitSpec
-import org.mockito.Mockito._
 import org.mockito.Matchers.any
+import org.mockito.Mockito._
+import utils.helpers.UnitSpec
 
 final class CreateSeqNodesSpec extends UnitSpec {
+
   "createSeq" should {
     "calls create on factory once given only space for 1 func in obj and mocked rng the same" in {
       val s = mock[IScope]

@@ -2,17 +2,16 @@ package nodes.memoization
 
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.{CountDownLatch, TimeUnit}
-
 import com.twitter.conversions.time._
 import com.twitter.util._
 import org.mockito.Mockito._
 import play.api.libs.json.Json._
 import play.api.libs.json._
 import utils.helpers.UnitSpec
-
 import scala.annotation.tailrec
 
 final class Memoize1ImplSpec extends UnitSpec {
+
   "apply" should {
     "return the same result when called twice" in {
       val memoizePlusOne = new Memoize1Impl[Int, Int] {
@@ -25,6 +24,7 @@ final class Memoize1ImplSpec extends UnitSpec {
 
     "only runs the function once for the same input (fibonacci recursive)" in {
       class Fib {
+
         def apply(i: Int): Int = fib(i)
 
         private def fib(i: Int): Int = i match {
@@ -53,6 +53,7 @@ final class Memoize1ImplSpec extends UnitSpec {
 
     "only runs the function once for the same input (fibonacci tail recursive)" in {
       class Fib {
+
         def apply(i: Int): Int = fib(i)
 
         @tailrec private def fib(i: Int, a: Int = 1, b: Int = 0): Int = i match {
@@ -82,6 +83,7 @@ final class Memoize1ImplSpec extends UnitSpec {
       // mockito can't spy anonymous classes,
       // and this was the simplest approach i could come up with.
       class Adder extends (Int => Int) {
+
         override def apply(i: Int) = i + 1
       }
 
@@ -104,6 +106,7 @@ final class Memoize1ImplSpec extends UnitSpec {
       val startUpLatch = new CountDownLatch(1)
 
       class Incrementer extends (Int => String) {
+
         override def apply(i: Int) = {
           // Wait for all of the threads to be started before
           // continuing. This gives races a chance to happen.
@@ -152,6 +155,7 @@ final class Memoize1ImplSpec extends UnitSpec {
       val callCount = new AtomicInteger(0)
 
       class FailFirstTime extends (Int => Int) {
+
         override def apply(i: Int) = {
           // Ensure that all of the callers have been started
           startUpLatch.await(200, TimeUnit.MILLISECONDS)

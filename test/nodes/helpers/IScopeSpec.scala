@@ -1,9 +1,10 @@
 package nodes.helpers
 
+import play.api.libs.json.{JsNumber, JsObject, Json}
 import utils.helpers.UnitSpec
-import play.api.libs.json.{Json, JsNumber, JsObject}
 
 final class IScopeSpec extends UnitSpec {
+
   "serialize" should {
     "return expected json" in {
       Json.toJson(asModel) should equal(

@@ -5,6 +5,7 @@ import nodes.helpers.{IScope, Scope}
 import utils.helpers.UnitSpec
 
 final class EmptySpec extends UnitSpec {
+
   "toRaw" should {
     "throw if you ask toRawScala" in {
       an[RuntimeException] should be thrownBy Empty().toRaw

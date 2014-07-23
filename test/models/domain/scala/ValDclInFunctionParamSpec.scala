@@ -12,6 +12,7 @@ import org.mockito.Mockito._
 import utils.helpers.UnitSpec
 
 final class ValDclInFunctionParamSpec extends UnitSpec {
+
   "toRawScala" should {
     "return expected" in {
       val p = mock[Node]
@@ -94,6 +95,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
 
     "returns without empty nodes given there were empty nodes" in {
       class TestDevModule extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
+
         override def bindValDclInFunctionParamFactory(): Unit = {
           val n: Node = mock[Node]
           val f = mock[ValDclInFunctionParamFactoryImpl]
