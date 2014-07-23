@@ -3,10 +3,10 @@ package nodes.helpers
 import ai.IAi
 import com.google.inject.Inject
 import models.domain.common.Node
-
 import scala.annotation.tailrec
 
 final case class CreateSeqNodes @Inject()(createNode: ICreateNode, ai: IAi) extends ICreateSeqNodes {
+
   @tailrec
   def createSeq(possibleChildren: => Seq[ICreateChildNodes],
                 scope: IScope,

@@ -51,12 +51,12 @@ object MemoizeScopeToNeighbours {
       case versioningFromFile =>
         require(versioningFromFile == versioning, "version info from file did not match the intended versioning")
         (__ \ "cache").read[Map[String, Boolean]].map {
-        keyValueMap =>
-          val cache = keyValueMap.map {
-            case (k, v) => k -> Right[CountDownLatch, Boolean](v)
-          }
+          keyValueMap =>
+            val cache = keyValueMap.map {
+              case (k, v) => k -> Right[CountDownLatch, Boolean](v)
+            }
 
-          new MemoizeScopeToNeighbours(cache, versioningFromFile)
-      }
+            new MemoizeScopeToNeighbours(cache, versioningFromFile)
+        }
     }
 }

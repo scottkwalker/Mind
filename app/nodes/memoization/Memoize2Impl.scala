@@ -7,7 +7,7 @@ import scala.annotation.tailrec
 
 abstract class Memoize2Impl[TKey1, TKey2, TOutput](private var cache: Map[String, Either[CountDownLatch, TOutput]] = Map.empty[String, Either[CountDownLatch, TOutput]],
                                                    private val versioning: String = "unset" // For versioning purposes save something unique such as the list of all neighbour ids.
-                                                  )
+                                                    )
                                                   (implicit cacheFormat: Writes[Map[String, Either[CountDownLatch, TOutput]]]) extends Memoize2[TKey1, TKey2, TOutput] {
 
   def apply(implicit key1: TKey1, key2: TKey2): TOutput =

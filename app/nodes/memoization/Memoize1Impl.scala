@@ -1,13 +1,12 @@
 package nodes.memoization
 
 import java.util.concurrent.CountDownLatch
-
 import play.api.libs.json.{JsValue, Json, Writes}
-
 import scala.annotation.tailrec
 
 abstract class Memoize1Impl[-TKey, +TOutput]()
-                                              (implicit cacheFormat: Writes[Map[TKey, Either[CountDownLatch, TOutput]]]) extends Memoize1[TKey, TOutput] {
+                                            (implicit cacheFormat: Writes[Map[TKey, Either[CountDownLatch, TOutput]]]) extends Memoize1[TKey, TOutput] {
+
   /**
    * Thread-safe memoization for a function.
    *
@@ -36,6 +35,17 @@ abstract class Memoize1Impl[-TKey, +TOutput]()
    */
 
   private[this] var cache = Map.empty[TKey, Either[CountDownLatch, TOutput]]
+
+  override def apply(key: TKey): TOutput =
+  // Look in the (possibly stale) memo table. If the value is present, then
+  // it is guaranteed to be the final value.
+  // Else it is absent, call missing() to determine what to do.
+    cache.get(key) match {
+      case Some(Right(b)) => b
+      case _ => missing(key)
+    }
+
+  override def write: JsValue = Json.toJson(cache)
 
   /**
    * What to do if we do not find the value already in the memo
@@ -91,15 +101,4 @@ abstract class Memoize1Impl[-TKey, +TOutput]()
         latch.countDown()
         calculated
     }
-
-  override def apply(key: TKey): TOutput =
-    // Look in the (possibly stale) memo table. If the value is present, then
-    // it is guaranteed to be the final value.
-    // Else it is absent, call missing() to determine what to do.
-    cache.get(key) match {
-      case Some(Right(b)) => b
-      case _ => missing(key)
-    }
-
-  override def write: JsValue = Json.toJson(cache)
 }

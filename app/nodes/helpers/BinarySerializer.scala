@@ -1,6 +1,7 @@
 package nodes.helpers
 
 final class BinarySerializer {
+
   def write[A](o: A): Array[Byte] = {
     val ba = new java.io.ByteArrayOutputStream(512)
     val out = new java.io.ObjectOutputStream(ba)

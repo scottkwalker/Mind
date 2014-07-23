@@ -9,6 +9,7 @@ import nodes.legalNeighbours.{FactoryIdToFactory, FactoryIdToFactoryImpl, LegalN
 
 class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1),
                 randomNumberGenerator: IRandomNumberGenerator = RandomNumberGenerator()) extends ScalaModule {
+
   def configure(): Unit = {
     bindAddOperatorFactory()
     bind(classOf[Empty]).asEagerSingleton()

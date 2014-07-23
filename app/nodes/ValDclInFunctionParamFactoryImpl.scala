@@ -12,6 +12,7 @@ case class ValDclInFunctionParamFactoryImpl @Inject()(injector: Injector,
                                                       creator: ICreateNode,
                                                       legalNeighbours: LegalNeighbours
                                                        ) extends ValDclInFunctionParamFactory with UpdateScopeIncrementVals {
+
   override val neighbourIds = Seq(IntegerMFactoryImpl.id)
 
   override def create(scope: IScope): Node = {
@@ -25,5 +26,6 @@ case class ValDclInFunctionParamFactoryImpl @Inject()(injector: Injector,
 }
 
 object ValDclInFunctionParamFactoryImpl {
+
   final val id = 6
 }

@@ -11,6 +11,7 @@ final class FactoryIdToFactoryImpl @Inject()(addOperatorFactory: AddOperatorFact
                                              objectDefFactory: ObjectDefFactory,
                                              valDclInFunctionParamFactory: ValDclInFunctionParamFactory,
                                              valueRefFactory: ValueRefFactory) extends FactoryIdToFactory {
+
   override def convert(id: Int): ICreateChildNodes = id match {
     case AddOperatorFactoryImpl.id => addOperatorFactory
     case FunctionMFactoryImpl.id => functionMFactory

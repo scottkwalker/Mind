@@ -10,6 +10,7 @@ final case class Scope(numVals: Int = 0,
                        maxFuncsInObject: Int = 0,
                        maxParamsInFunc: Int = 0,
                        maxObjectsInTree: Int = 0) extends IScope {
+
   def incrementVals: IScope = copy(numVals = numVals + 1)
 
   def incrementFuncs: IScope = copy(numFuncs = numFuncs + 1)
@@ -26,6 +27,7 @@ final case class Scope(numVals: Int = 0,
 }
 
 object Scope {
+
   implicit private[helpers] val jsonFormat = Json.format[Scope]
 }
 

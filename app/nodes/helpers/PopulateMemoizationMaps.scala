@@ -20,9 +20,28 @@ final class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFac
                                               objectDefFactory: ObjectDefFactoryImpl,
                                               valDclInFunctionParamFactory: ValDclInFunctionParamFactoryImpl,
                                               valueRefFactory: ValueRefFactoryImpl) extends IPopulateMemoizationMaps {
-  def memoizeCanTerminateInStepsRemaining(that: ICreateChildNodes,
-                                          scope: IScope): Unit = {
-    //that.mapOfCanTerminateInStepsRemaining getOrElseUpdate(scope, that.canTerminateInStepsRemaining(scope))
+
+  def run(maxExpressionsInFunc: Int,
+          maxFuncsInObject: Int,
+          maxParamsInFunc: Int,
+          height: Int,
+          maxObjectsInTree: Int): Unit = {
+    val factories: Seq[ICreateChildNodes] = Seq(
+      addOperatorFactory,
+      functionMFactory,
+      integerMFactory,
+      nodeTreeFactory,
+      objectDefFactory,
+      valDclInFunctionParamFactory,
+      valueRefFactory
+    )
+
+    for (factory <- factories) {
+      memoizeCanTerminateInStepsRemaining(
+        factory,
+        maxExpressionsInFunc, maxFuncsInObject, maxParamsInFunc, height, maxObjectsInTree)
+      // TODO Save map to file
+    }
   }
 
   def memoizeCanTerminateInStepsRemaining(that: ICreateChildNodes,
@@ -46,26 +65,8 @@ final class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFac
     }
   }
 
-  def run(maxExpressionsInFunc: Int,
-          maxFuncsInObject: Int,
-          maxParamsInFunc: Int,
-          height: Int,
-          maxObjectsInTree: Int): Unit = {
-    val factories: Seq[ICreateChildNodes] = Seq(
-      addOperatorFactory,
-      functionMFactory,
-      integerMFactory,
-      nodeTreeFactory,
-      objectDefFactory,
-      valDclInFunctionParamFactory,
-      valueRefFactory
-    )
-
-    for (factory <- factories) {
-      memoizeCanTerminateInStepsRemaining(
-        factory,
-        maxExpressionsInFunc, maxFuncsInObject, maxParamsInFunc, height, maxObjectsInTree)
-      // TODO Save map to file
-    }
+  def memoizeCanTerminateInStepsRemaining(that: ICreateChildNodes,
+                                          scope: IScope): Unit = {
+    //that.mapOfCanTerminateInStepsRemaining getOrElseUpdate(scope, that.canTerminateInStepsRemaining(scope))
   }
 }

@@ -12,9 +12,9 @@ case class FunctionMFactoryImpl @Inject()(injector: Injector,
                                           creator: ICreateSeqNodes,
                                           legalNeighbours: LegalNeighbours
                                            ) extends FunctionMFactory with UpdateScopeIncrementFuncs {
-  private val paramsNeighbours = Seq(ValDclInFunctionParamFactoryImpl.id)
 
   override val neighbourIds = Seq(AddOperatorFactoryImpl.id, ValueRefFactoryImpl.id)
+  private val paramsNeighbours = Seq(ValDclInFunctionParamFactoryImpl.id)
 
   override def create(scope: IScope): Node = {
     val (updatedScope, params) = createParams(scope)
@@ -47,5 +47,6 @@ case class FunctionMFactoryImpl @Inject()(injector: Injector,
 }
 
 object FunctionMFactoryImpl {
+
   final val id = 2
 }

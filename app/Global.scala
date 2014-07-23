@@ -3,6 +3,7 @@ import modules.DevModule
 import play.api.{Application, GlobalSettings}
 
 object Global extends GlobalSettings {
+
   // Play.isTest will evaluate to true when you run "play test" from the command line
   // If play is being run to execute the tests then use the TestModule to provide fake
   // implementations of traits otherwise use the DevModule to provide the real ones
@@ -21,7 +22,6 @@ object Global extends GlobalSettings {
    * play -Dconfig.file=conf/application.test.conf run
    */
   private lazy val injector = Guice.createInjector(new DevModule)
-
 
   /**
    * Controllers must be resolved through the application context. There is a special method of GlobalSettings

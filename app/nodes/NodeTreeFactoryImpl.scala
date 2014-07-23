@@ -12,17 +12,13 @@ case class NodeTreeFactoryImpl @Inject()(injector: Injector,
                                          creator: ICreateSeqNodes,
                                          legalNeighbours: LegalNeighbours
                                           ) extends NodeTreeFactory with UpdateScopeThrows {
+
   override val neighbourIds = Seq(ObjectDefFactoryImpl.id)
 
   def create(scope: IScope, premadeChildren: Seq[ICreateChildNodes]): Node = {
     val (_, generated) = createNodes(scope)
     val nodes = generated ++ premadeChildren.map(p => p.create(scope))
 
-    NodeTree(nodes)
-  }
-
-  override def create(scope: IScope): Node = {
-    val (_, nodes) = createNodes(scope)
     NodeTree(nodes)
   }
 
@@ -35,8 +31,14 @@ case class NodeTreeFactoryImpl @Inject()(injector: Injector,
       factoryLimit = scope.maxObjectsInTree
     )
   }
+
+  override def create(scope: IScope): Node = {
+    val (_, nodes) = createNodes(scope)
+    NodeTree(nodes)
+  }
 }
 
 object NodeTreeFactoryImpl {
+
   final val id = 4
 }

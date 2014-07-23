@@ -3,6 +3,7 @@ package nodes.helpers
 import play.api.libs.json._
 
 trait IScope {
+
   val numVals: Int
   val numFuncs: Int
   val numObjects: Int
@@ -28,6 +29,7 @@ trait IScope {
 }
 
 object IScope {
+
   implicit val jsonReads: Reads[IScope] = __.read[Scope](Json.reads[Scope]).map(x => x: Scope)
 
   implicit val jsonWrites = Writes[IScope] {

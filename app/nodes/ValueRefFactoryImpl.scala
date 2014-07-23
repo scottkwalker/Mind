@@ -10,6 +10,7 @@ trait ValueRefFactory extends ICreateChildNodes
 
 final case class ValueRefFactoryImpl @Inject()(ai: IAi
                                                 ) extends ValueRefFactory with UpdateScopeNoChange {
+
   override val neighbourIds = Seq.empty
 
   override def create(scope: IScope): Node = {
@@ -19,5 +20,6 @@ final case class ValueRefFactoryImpl @Inject()(ai: IAi
 }
 
 object ValueRefFactoryImpl {
+
   final val id = 7
 }

@@ -5,6 +5,7 @@ import play.api.libs.json.Json.parse
 import play.api.libs.json.{JsValue, Json, Reads}
 
 object JsonDeserialiser {
+
   def deserialize[A: Reads](data: String): A = {
     deserialize(parse(data))
   }
