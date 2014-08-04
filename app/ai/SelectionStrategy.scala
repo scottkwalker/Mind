@@ -14,6 +14,6 @@ trait SelectionStrategy extends IAi {
   def canAddAnother(accLength: Int,
                     factoryLimit: Int): Boolean = {
     accLength < 1 ||
-      (accLength < factoryLimit && rng.nextBoolean())
+      (accLength < factoryLimit && rng.nextBoolean)
   }
 }

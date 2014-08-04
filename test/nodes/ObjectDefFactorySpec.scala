@@ -67,7 +67,7 @@ final class ObjectDefFactorySpec extends UnitSpec {
 
   private val rng = mock[IRandomNumberGenerator]
   when(rng.nextInt(any[Int])).thenReturn(2)
-  when(rng.nextBoolean()).thenReturn(true)
+  when(rng.nextBoolean).thenReturn(true)
 
   private val injector: Injector = Guice.createInjector(new DevModule(randomNumberGenerator = rng), new LegalGamerModule)
   private val factory = injector.getInstance(classOf[ObjectDefFactoryImpl])
