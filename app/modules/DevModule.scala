@@ -8,7 +8,7 @@ import nodes.helpers._
 import nodes.legalNeighbours.{FactoryIdToFactory, FactoryIdToFactoryImpl, LegalNeighbours, LegalNeighboursImpl}
 
 class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1),
-                randomNumberGenerator: IRandomNumberGenerator = RandomNumberGenerator()) extends ScalaModule {
+                randomNumberGenerator: IRandomNumberGenerator = new RandomNumberGenerator()) extends ScalaModule {
 
   def configure(): Unit = {
     bindAddOperatorFactory()

@@ -2,9 +2,9 @@ package ai
 
 import scala.util.Random
 
-final case class RandomNumberGenerator() extends IRandomNumberGenerator {
+final class RandomNumberGenerator extends IRandomNumberGenerator {
 
-  val rng: Random = new Random
+  private val rng: Random = new Random
 
   def nextBoolean: Boolean = rng.nextBoolean()
 

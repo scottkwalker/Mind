@@ -10,5 +10,5 @@ final class RandomNumberGeneratorSpec extends UnitSpec {
     }
   }
 
-  private val rng = RandomNumberGenerator()
+  private val rng = new RandomNumberGenerator()
 }
