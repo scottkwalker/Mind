@@ -1,6 +1,6 @@
 package nodes.helpers
 
-import ai.IAi
+import ai.SelectionStrategy
 import models.domain.common.Node
 import org.mockito.Matchers._
 import org.mockito.Mockito._
@@ -16,7 +16,7 @@ final class CreateSeqNodeScalaTestSpec extends UnitSpec {
       val n = mock[Node]
       val v = mock[ICreateChildNodes]
       val cn = mock[ICreateNode]
-      val ai = mock[IAi]
+      val ai = mock[SelectionStrategy]
 
       val sut = CreateSeqNodes(cn, ai)
 
@@ -44,7 +44,7 @@ final class CreateSeqNodeScalaTestSpec extends UnitSpec {
       val n = mock[Node]
       val v = mock[ICreateChildNodes]
       val cn = mock[ICreateNode]
-      val ai = mock[IAi]
+      val ai = mock[SelectionStrategy]
 
       val sut = CreateSeqNodes(cn, ai)
       when(s.maxFuncsInObject).thenReturn(2)
@@ -68,7 +68,7 @@ final class CreateSeqNodeScalaTestSpec extends UnitSpec {
       val n = mock[Node]
       val v = mock[ICreateChildNodes]
       val cn = mock[ICreateNode]
-      val ai = mock[IAi]
+      val ai = mock[SelectionStrategy]
 
       val sut = CreateSeqNodes(cn, ai)
 
@@ -96,7 +96,7 @@ final class CreateSeqNodeScalaTestSpec extends UnitSpec {
       val n = mock[Node]
       val v = mock[ICreateChildNodes]
       val cn = mock[ICreateNode]
-      val ai = mock[IAi]
+      val ai = mock[SelectionStrategy]
 
       val sut = CreateSeqNodes(cn, ai)
 

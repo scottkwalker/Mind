@@ -2,18 +2,19 @@ package ai
 
 import nodes.helpers._
 
-trait SelectionStrategy extends IAi {
+trait SelectionStrategy {
 
-  implicit val rng: IRandomNumberGenerator // TODO should this live in IAi and should it be implicit?
+  protected val rng: IRandomNumberGenerator
+
+  def chooseChild(possibleChildren: Seq[ICreateChildNodes]): ICreateChildNodes
+
+  def chooseIndex(seqLength: Int): Int
 
   def chooseChild(possibleChildren: Seq[ICreateChildNodes], scope: IScope): ICreateChildNodes = {
-    require(!possibleChildren.isEmpty, "Sequence possibleChildren must not be empty otherwise we cannot pick an node from it")
+    require(possibleChildren.nonEmpty, "Sequence possibleChildren must not be empty otherwise we cannot pick an node from it")
     chooseChild(possibleChildren)
   }
 
   def canAddAnother(accLength: Int,
-                    factoryLimit: Int): Boolean = {
-    accLength < 1 ||
-      (accLength < factoryLimit && rng.nextBoolean)
-  }
+                    factoryLimit: Int): Boolean = accLength < 1 || (accLength < factoryLimit && rng.nextBoolean)
 }

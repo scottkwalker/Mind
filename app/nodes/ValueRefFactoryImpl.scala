@@ -1,6 +1,6 @@
 package nodes
 
-import ai.IAi
+import ai.SelectionStrategy
 import com.google.inject.Inject
 import models.domain.common.Node
 import models.domain.scala.ValueRef
@@ -8,7 +8,7 @@ import nodes.helpers._
 
 trait ValueRefFactory extends ICreateChildNodes
 
-final case class ValueRefFactoryImpl @Inject()(ai: IAi
+final case class ValueRefFactoryImpl @Inject()(ai: SelectionStrategy
                                                 ) extends ValueRefFactory with UpdateScopeNoChange {
 
   override val neighbourIds = Seq.empty

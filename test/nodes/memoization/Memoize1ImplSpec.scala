@@ -185,7 +185,7 @@ final class Memoize1ImplSpec extends UnitSpec {
       startUpLatch.countDown()
 
       val (successes, failures) =
-        Await.result(computation, 200.milliseconds).toList partition {
+        Await.result(computation, 1.second).toList partition {
           _.isReturn
         }
 

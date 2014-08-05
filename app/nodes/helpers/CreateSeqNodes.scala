@@ -1,11 +1,11 @@
 package nodes.helpers
 
-import ai.IAi
+import ai.SelectionStrategy
 import com.google.inject.Inject
 import models.domain.common.Node
 import scala.annotation.tailrec
 
-final case class CreateSeqNodes @Inject()(createNode: ICreateNode, ai: IAi) extends ICreateSeqNodes {
+final case class CreateSeqNodes @Inject()(createNode: ICreateNode, ai: SelectionStrategy) extends ICreateSeqNodes {
 
   @tailrec
   def createSeq(possibleChildren: => Seq[ICreateChildNodes],
