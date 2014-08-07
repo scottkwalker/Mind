@@ -1,8 +1,7 @@
 package nodes
 
-import com.google.inject.{Guice, Injector}
+import com.google.inject.Guice
 import models.domain.scala.IntegerM
-import modules.DevModule
 import modules.ai.legalGamer.LegalGamerModule
 import nodes.helpers._
 import utils.helpers.UnitSpec
@@ -28,6 +27,6 @@ final class IntegerMFactorySpec extends UnitSpec {
     }
   }
 
-  private val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
+  override lazy val injector = Guice.createInjector(testModule(new LegalGamerModule))
   private val factory = injector.getInstance(classOf[IntegerMFactoryImpl])
 }

@@ -52,7 +52,7 @@ final class NodeTreeFactorySpec extends UnitSpec {
   }
 
   private val rng = mock[IRandomNumberGenerator]
-  private val injector: Injector = Guice.createInjector(new TestDevModule(rng), new LegalGamerModule)
+  override lazy val injector = Guice.createInjector(testModule(new TestDevModule(rng), new LegalGamerModule))
   when(rng.nextInt(any[Int])).thenReturn(2)
   when(rng.nextBoolean).thenReturn(true)
   private val factory = injector.getInstance(classOf[NodeTreeFactoryImpl])

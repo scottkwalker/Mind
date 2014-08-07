@@ -102,7 +102,7 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
   }
 
   private val scope = Scope(height = 1)
-  private val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
+  override lazy val injector: Injector = Guice.createInjector(testModule(new LegalGamerModule))
   private val addOperatorFactoryImpl = injector.getInstance(classOf[AddOperatorFactoryImpl])
   private val valueRefFactoryImpl = injector.getInstance(classOf[ValueRefFactoryImpl])
 
