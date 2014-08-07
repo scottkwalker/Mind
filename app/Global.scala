@@ -1,12 +1,13 @@
-import com.google.inject.Guice
-import modules.DevModule
-import play.api.{Application, GlobalSettings}
+import java.io.File
+import com.typesafe.config.ConfigFactory
+import composition.Composition
+import filters.WithFilters
+import play.api.{Application, Configuration, GlobalSettings, Mode}
 
-object Global extends GlobalSettings {
+object Global extends GlobalLike
 
-  // Play.isTest will evaluate to true when you run "play test" from the command line
-  // If play is being run to execute the tests then use the TestModule to provide fake
-  // implementations of traits otherwise use the DevModule to provide the real ones
+trait GlobalLike extends WithFilters with GlobalSettings with Composition {
+
   /**
    * Application configuration is in a hierarchy of files:
    *
@@ -21,7 +22,15 @@ object Global extends GlobalSettings {
    * To override and stipulate a particular "conf" e.g.
    * play -Dconfig.file=conf/application.test.conf run
    */
-  private lazy val injector = Guice.createInjector(new DevModule)
+  override def onLoadConfig(configuration: Configuration,
+                            path: File,
+                            classloader: ClassLoader,
+                            mode: Mode.Mode): Configuration = {
+    val applicationConf = System.getProperty("config.file", s"application.${mode.toString.toLowerCase}.conf")
+    val environmentOverridingConfiguration = configuration ++
+      Configuration(ConfigFactory.load(applicationConf))
+    super.onLoadConfig(environmentOverridingConfiguration, path, classloader, mode)
+  }
 
   /**
    * Controllers must be resolved through the application context. There is a special method of GlobalSettings

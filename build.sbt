@@ -11,6 +11,7 @@ libraryDependencies ++= Seq(
   //anorm,
   //cache,
   //ws
+  filters,
   "org.mockito" % "mockito-all" % "1.9.5" % "test" withSources() withJavadoc(),
   "com.twitter" % "util-eval_2.10" % "6.18.0",
   "com.google.inject" % "guice" % "4.0-beta4",
