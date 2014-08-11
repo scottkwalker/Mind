@@ -1,10 +1,8 @@
 package models.domain.scala
 
-import ai.IRandomNumberGenerator
-import com.google.inject.{Guice, Injector}
+import com.google.inject.Injector
+import com.tzavellas.sse.guice.ScalaModule
 import models.domain.common.Node
-import modules.DevModule
-import modules.ai.legalGamer.LegalGamerModule
 import nodes.helpers.{IScope, Scope}
 import nodes.{AddOperatorFactory, AddOperatorFactoryImpl}
 import org.mockito.Matchers._
@@ -96,9 +94,9 @@ final class AddOperatorSpec extends UnitSpec {
     }
 
     "returns without empty nodes given there were empty nodes" in {
-      class TestDevModule extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
+      class StubFactoryCreate extends ScalaModule {
 
-        override def bindAddOperatorFactory() = {
+        def configure(): Unit = {
           val n: Node = mock[Node]
           val f = mock[AddOperatorFactoryImpl]
           when(f.create(any[Scope])).thenReturn(n)
@@ -106,12 +104,10 @@ final class AddOperatorSpec extends UnitSpec {
         }
       }
 
-
-
       val s = mock[IScope]
       when(s.numVals).thenReturn(1)
       val empty: Node = Empty()
-      val injector = testInjector(new TestDevModule)
+      val injector = testInjector(new StubFactoryCreate)
       val instance = AddOperator(empty, empty)
 
       val result = instance.replaceEmpty(s, injector)
