@@ -11,7 +11,7 @@ trait Node {
 
   def replaceEmpty(scope: IScope)(implicit injector: Injector): Node
 
-  def getMaxDepth: Int = 0
+  def getMaxDepth: Int
 
   def updateScope(scope: IScope): IScope
 }
