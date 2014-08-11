@@ -1,9 +1,8 @@
 package models.domain.scala
 
-import ai.IRandomNumberGenerator
 import com.google.inject.{Guice, Injector}
+import com.tzavellas.sse.guice.ScalaModule
 import models.domain.common.Node
-import modules.DevModule
 import modules.ai.legalGamer.LegalGamerModule
 import nodes.helpers.{IScope, Scope}
 import nodes.{ValDclInFunctionParamFactory, ValDclInFunctionParamFactoryImpl}
@@ -94,9 +93,9 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
     }
 
     "returns without empty nodes given there were empty nodes" in {
-      class TestDevModule extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
+      class StubFactoryCreate extends ScalaModule {
 
-        override def bindValDclInFunctionParamFactory(): Unit = {
+        def configure(): Unit = {
           val n: Node = mock[Node]
           val f = mock[ValDclInFunctionParamFactoryImpl]
           when(f.create(any[Scope])).thenReturn(n)
@@ -106,9 +105,9 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
 
       val s = mock[IScope]
       val name = "a"
-      val primitiveType = Empty()
-      val injector: Injector = Guice.createInjector(new TestDevModule, new LegalGamerModule)
-      val instance = ValDclInFunctionParam(name, primitiveType)
+      val primitiveTypeEmpty = Empty()
+      val injector: Injector = testInjector(new StubFactoryCreate)
+      val instance = ValDclInFunctionParam(name, primitiveTypeEmpty)
 
       val result = instance.replaceEmpty(s, injector)
 

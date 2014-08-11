@@ -74,7 +74,6 @@ final class NodeTreeSpec extends UnitSpec {
         height = 10,
         maxObjectsInTree = 1)
       val empty = Empty()
-      val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
       val instance = NodeTree(nodes = Seq(empty))
 
       val result = instance.replaceEmpty(s, injector)

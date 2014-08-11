@@ -106,7 +106,6 @@ final class ObjectDefSpec extends UnitSpec {
         height = 5,
         maxObjectsInTree = 1)
       val empty = Empty()
-      val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
       val instance = ObjectDef(nodes = Seq(empty),
         name = name)
 
