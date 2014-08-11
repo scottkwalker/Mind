@@ -98,7 +98,7 @@ final class AddOperatorSpec extends UnitSpec {
     "returns without empty nodes given there were empty nodes" in {
       class TestDevModule extends DevModule(randomNumberGenerator = mock[IRandomNumberGenerator]) {
 
-        override def bindAddOperatorFactory(): Unit = {
+        override def bindAddOperatorFactory() = {
           val n: Node = mock[Node]
           val f = mock[AddOperatorFactoryImpl]
           when(f.create(any[Scope])).thenReturn(n)
@@ -106,10 +106,12 @@ final class AddOperatorSpec extends UnitSpec {
         }
       }
 
+
+
       val s = mock[IScope]
       when(s.numVals).thenReturn(1)
       val empty: Node = Empty()
-      val injector: Injector = Guice.createInjector(new TestDevModule, new LegalGamerModule)
+      val injector = testInjector(new TestDevModule)
       val instance = AddOperator(empty, empty)
 
       val result = instance.replaceEmpty(s, injector)

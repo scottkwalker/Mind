@@ -1,11 +1,12 @@
 package ai.aco
 
 import ai.IRandomNumberGenerator
-import com.google.inject.Guice
+import com.google.inject.{Injector, Guice}
 import fitness.AddTwoInts
 import models.domain.scala.{FunctionM, IntegerM, NodeTree, ObjectDef, _}
 import modules.DevModule
 import modules.ai.aco.AcoModule
+import modules.ai.legalGamer.LegalGamerModule
 import nodes.helpers.{Scope, _}
 import utils.helpers.UnitSpec
 
@@ -22,7 +23,6 @@ final class AcoSpec extends UnitSpec {
     }
 
     "return code that can be compiled and evaluated" in {
-      val injector = Guice.createInjector(new DevModule, new AcoModule)
       val premade = new NodeTree(
         Seq(
           ObjectDef(Seq(
@@ -51,4 +51,6 @@ final class AcoSpec extends UnitSpec {
       }
     }
   }
+
+  override lazy val injector: Injector = testInjector(new AcoModule)
 }

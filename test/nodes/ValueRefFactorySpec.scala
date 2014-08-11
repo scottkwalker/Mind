@@ -2,7 +2,6 @@ package nodes
 
 import com.google.inject.{Guice, Injector}
 import models.domain.scala.ValueRef
-import modules.DevModule
 import modules.ai.legalGamer.LegalGamerModule
 import nodes.helpers.IScope
 import org.mockito.Mockito._

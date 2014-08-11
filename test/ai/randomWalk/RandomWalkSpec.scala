@@ -1,7 +1,7 @@
 package ai.randomWalk
 
 import ai.IRandomNumberGenerator
-import com.google.inject.Guice
+import com.google.inject.{Injector, Guice}
 import fitness.AddTwoInts
 import models.domain.scala.{FunctionM, IntegerM, NodeTree, ObjectDef, _}
 import modules.DevModule
@@ -22,7 +22,6 @@ final class RandomWalkSpec extends UnitSpec {
     }
 
     "return code that can be compiled and evaluated" in {
-      val injector = Guice.createInjector(new DevModule, new RandomWalkModule)
       val premade = new NodeTree(
         Seq(
           ObjectDef(Seq(
@@ -51,4 +50,6 @@ final class RandomWalkSpec extends UnitSpec {
       }
     }
   }
+
+  override lazy val injector: Injector = testInjector(new RandomWalkModule)
 }
