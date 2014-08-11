@@ -41,10 +41,10 @@ final class ValueRefSpec extends UnitSpec {
     "returns same when no empty nodes" in {
       val s = mock[IScope]
       val name = "a"
-      val injector = mock[Injector]
+      implicit val injector = mock[Injector]
       val instance = ValueRef(name)
 
-      instance.replaceEmpty(s, injector) should equal(instance)
+      instance.replaceEmpty(s) should equal(instance)
     }
   }
 

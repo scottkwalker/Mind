@@ -40,7 +40,7 @@ final class RandomWalkSpec extends UnitSpec {
 
       try {
         for (i <- 1 to 10) {
-          val nodeTree: NodeTree = premade.replaceEmpty(scope, injector).asInstanceOf[NodeTree]
+          val nodeTree: NodeTree = premade.replaceEmpty(scope)(injector).asInstanceOf[NodeTree]
           val f = new AddTwoInts(nodeTree)
           f.fitness
         }

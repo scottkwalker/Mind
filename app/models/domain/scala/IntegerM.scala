@@ -10,7 +10,7 @@ final case class IntegerM() extends Node with UpdateScopeNoChange {
 
   override def validate(scope: IScope): Boolean = true
 
-  override def replaceEmpty(scope: IScope, injector: Injector): Node = this
+  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Node = this
 
   override def getMaxDepth = 1
 }

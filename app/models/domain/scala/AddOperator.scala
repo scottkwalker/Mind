@@ -22,16 +22,16 @@ final case class AddOperator(left: Node, right: Node) extends Node with UpdateSc
     else false
   }
 
-  override def replaceEmpty(scope: IScope, injector: Injector): Node = {
-    def replaceEmpty(scope: IScope, injector: Injector, n: Node): Node = {
+  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Node = {
+    def replaceEmpty(scope: IScope, n: Node): Node = {
       n match {
         case _: Empty => injector.getInstance(classOf[ValueRefFactoryImpl]).create(scope)
-        case n: Node => n.replaceEmpty(scope.decrementHeight, injector)
+        case n: Node => n.replaceEmpty(scope.decrementHeight)
       }
     }
 
-    val l = replaceEmpty(scope, injector, left)
-    val r = replaceEmpty(scope, injector, right)
+    val l = replaceEmpty(scope, left)
+    val r = replaceEmpty(scope, right)
     AddOperator(l, r)
   }
 

@@ -96,33 +96,33 @@ final class FunctionMSpec extends UnitSpec {
   "replaceEmpty" should {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
+      implicit val i = mock[Injector]
       val p = mock[Node]
-      when(p.replaceEmpty(any[Scope], any[Injector])).thenReturn(p)
+      when(p.replaceEmpty(any[Scope])(any[Injector])).thenReturn(p)
       val v = mock[Node]
-      when(v.replaceEmpty(any[Scope], any[Injector])) thenReturn v
-      val i = mock[Injector]
+      when(v.replaceEmpty(any[Scope])(any[Injector])) thenReturn v
       val instance = FunctionM(params = Seq(p),
         nodes = Seq(v),
         name = name)
 
-      instance.replaceEmpty(s, i)
+      instance.replaceEmpty(s)
 
-      verify(p, times(1)).replaceEmpty(any[Scope], any[Injector])
-      verify(v, times(1)).replaceEmpty(any[Scope], any[Injector])
+      verify(p, times(1)).replaceEmpty(any[Scope])(any[Injector])
+      verify(v, times(1)).replaceEmpty(any[Scope])(any[Injector])
     }
 
     "returns same when no empty nodes" in {
       val s = mock[IScope]
+      implicit val i = mock[Injector]
       val p = mock[Node]
-      when(p.replaceEmpty(any[Scope], any[Injector])) thenReturn p
+      when(p.replaceEmpty(any[Scope])(any[Injector])) thenReturn p
       val v = mock[Node]
-      when(v.replaceEmpty(any[Scope], any[Injector])) thenReturn v
-      val i = mock[Injector]
+      when(v.replaceEmpty(any[Scope])(any[Injector])) thenReturn v
       val instance = FunctionM(params = Seq(p),
         nodes = Seq(v),
         name = name)
 
-      instance.replaceEmpty(s, i) should equal(instance)
+      instance.replaceEmpty(s) should equal(instance)
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -136,7 +136,7 @@ final class FunctionMSpec extends UnitSpec {
         nodes = Seq(Empty()),
         name = name)
 
-      val result = instance.replaceEmpty(s, injector)
+      val result = instance.replaceEmpty(s)(injector)
 
       result match {
         case FunctionM(p2, n2, n) =>

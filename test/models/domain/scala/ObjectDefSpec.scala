@@ -79,24 +79,24 @@ final class ObjectDefSpec extends UnitSpec {
   "replaceEmpty" should {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
+      implicit val i = mock[Injector]
       val f = mock[Node]
-      when(f.replaceEmpty(any[Scope], any[Injector])).thenReturn(f)
-      val i = mock[Injector]
+      when(f.replaceEmpty(any[Scope])(any[Injector])).thenReturn(f)
       val instance = ObjectDef(Seq(f), name = name)
 
-      instance.replaceEmpty(s, i)
+      instance.replaceEmpty(s)
 
-      verify(f, times(1)).replaceEmpty(any[Scope], any[Injector])
+      verify(f, times(1)).replaceEmpty(any[Scope])(any[Injector])
     }
 
     "returns same when no empty nodes" in {
       val s = mock[IScope]
+      implicit val i = mock[Injector]
       val f = mock[Node]
-      when(f.replaceEmpty(any[Scope], any[Injector])).thenReturn(f)
-      val i = mock[Injector]
+      when(f.replaceEmpty(any[Scope])(any[Injector])).thenReturn(f)
       val instance = ObjectDef(Seq(f), name)
 
-      instance.replaceEmpty(s, i) should equal(instance)
+      instance.replaceEmpty(s) should equal(instance)
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -109,7 +109,7 @@ final class ObjectDefSpec extends UnitSpec {
       val instance = ObjectDef(nodes = Seq(empty),
         name = name)
 
-      val result = instance.replaceEmpty(s, injector)
+      val result = instance.replaceEmpty(s)(injector)
 
       result match {
         case ObjectDef(n2, name2) =>

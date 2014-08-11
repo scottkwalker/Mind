@@ -67,14 +67,14 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
       when(s.incrementVals).thenReturn(s)
       when(s.decrementHeight).thenReturn(s)
       val name = "a"
+      implicit val i = mock[Injector]
       val p = mock[Node]
-      when(p.replaceEmpty(any[Scope], any[Injector])).thenReturn(p)
-      val i = mock[Injector]
+      when(p.replaceEmpty(any[Scope])(any[Injector])).thenReturn(p)
       val instance = ValDclInFunctionParam(name, p)
 
-      instance.replaceEmpty(s, i)
+      instance.replaceEmpty(s)
 
-      verify(p, times(1)).replaceEmpty(any[Scope], any[Injector])
+      verify(p, times(1)).replaceEmpty(any[Scope])(any[Injector])
     }
 
     "returns same when no empty nodes" in {
@@ -82,12 +82,12 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
       when(s.incrementVals).thenReturn(s)
       when(s.decrementHeight).thenReturn(s)
       val name = "a"
+      implicit val i = mock[Injector]
       val p = mock[Node]
-      when(p.replaceEmpty(any[Scope], any[Injector])).thenReturn(p)
-      val i = mock[Injector]
+      when(p.replaceEmpty(any[Scope])(any[Injector])).thenReturn(p)
       val instance = ValDclInFunctionParam(name, p)
 
-      val result = instance.replaceEmpty(s, i)
+      val result = instance.replaceEmpty(s)
 
       result should equal(instance)
     }
@@ -106,10 +106,10 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
       val s = mock[IScope]
       val name = "a"
       val primitiveTypeEmpty = Empty()
-      val injector: Injector = testInjector(new StubFactoryCreate)
+      implicit val injector: Injector = testInjector(new StubFactoryCreate)
       val instance = ValDclInFunctionParam(name, primitiveTypeEmpty)
 
-      val result = instance.replaceEmpty(s, injector)
+      val result = instance.replaceEmpty(s)
 
       result match {
         case ValDclInFunctionParam(name2, primitiveType) =>

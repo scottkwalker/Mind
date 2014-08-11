@@ -22,11 +22,11 @@ final class EmptySpec extends UnitSpec {
   "replaceEmpty" should {
     "throws" in {
       val s = mock[IScope]
-      val i = mock[Injector]
+      implicit val i = mock[Injector]
 
       val instance = Empty()
 
-      a[RuntimeException] should be thrownBy instance.replaceEmpty(s, i)
+      a[RuntimeException] should be thrownBy instance.replaceEmpty(s)
     }
   }
 

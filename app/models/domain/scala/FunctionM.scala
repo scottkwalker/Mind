@@ -19,19 +19,19 @@ final case class FunctionM(params: Seq[Node],
     nodes.forall(n => n.validate(scope.decrementHeight))
   else false
 
-  override def replaceEmpty(scope: IScope, injector: Injector): Node = {
-    def funcCreateParams(scope: IScope, injector: Injector, premade: Seq[Node]): (IScope, Seq[Node]) = {
+  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Node = {
+    def funcCreateParams(scope: IScope, premade: Seq[Node]): (IScope, Seq[Node]) = {
       val factory = injector.getInstance(classOf[FunctionMFactoryImpl])
       factory.createParams(scope = scope, acc = premade.init)
     }
 
-    def funcCreateNodes(scope: IScope, injector: Injector, premade: Seq[Node]): (IScope, Seq[Node]) = {
+    def funcCreateNodes(scope: IScope, premade: Seq[Node]): (IScope, Seq[Node]) = {
       val factory = injector.getInstance(classOf[FunctionMFactoryImpl])
       factory.createNodes(scope = scope, acc = premade.init)
     }
 
-    val (updatedScope, p) = replaceEmptyInSeq(scope, injector, params, funcCreateParams)
-    val (_, n) = replaceEmptyInSeq(updatedScope, injector, nodes, funcCreateNodes)
+    val (updatedScope, p) = replaceEmptyInSeq(scope, params, funcCreateParams)
+    val (_, n) = replaceEmptyInSeq(updatedScope, nodes, funcCreateNodes)
 
     FunctionM(p, n, name)
   }
@@ -42,17 +42,17 @@ final case class FunctionM(params: Seq[Node],
   }
 
   @tailrec
-  private def replaceEmptyInSeq(scope: IScope, injector: Injector, n: Seq[Node], f: ((IScope, Injector, Seq[Node]) => (IScope, Seq[Node])), acc: Seq[Node] = Seq.empty): (IScope, Seq[Node]) = {
+  private def replaceEmptyInSeq(scope: IScope, n: Seq[Node], f: ((IScope, Seq[Node]) => (IScope, Seq[Node])), acc: Seq[Node] = Seq.empty)(implicit injector: Injector): (IScope, Seq[Node]) = {
     n match {
       case x :: xs =>
         val (updatedScope, replaced) = x match {
-          case _: Empty => f(scope, injector, n)
+          case _: Empty => f(scope, n)
           case n: Node =>
-            val r = n.replaceEmpty(scope, injector)
+            val r = n.replaceEmpty(scope)
             val u = r.updateScope(scope)
             (u, Seq(r))
         }
-        replaceEmptyInSeq(updatedScope, injector, xs, f, acc ++ replaced)
+        replaceEmptyInSeq(updatedScope, xs, f, acc ++ replaced)
       case nil => (scope, acc)
     }
   }

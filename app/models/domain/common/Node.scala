@@ -9,7 +9,7 @@ trait Node {
 
   def validate(scope: IScope): Boolean
 
-  def replaceEmpty(scope: IScope, injector: Injector): Node
+  def replaceEmpty(scope: IScope)(implicit injector: Injector): Node
 
   def getMaxDepth: Int = 0
 

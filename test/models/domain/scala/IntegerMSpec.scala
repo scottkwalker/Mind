@@ -22,10 +22,10 @@ final class IntegerMSpec extends UnitSpec {
   "replaceEmpty" should {
     "return same when no empty nodes" in {
       val s = mock[IScope]
-      val i = mock[Injector]
+      implicit val i = mock[Injector]
       val instance = IntegerM()
 
-      instance.replaceEmpty(s, i) should equal(instance)
+      instance.replaceEmpty(s) should equal(instance)
     }
   }
 

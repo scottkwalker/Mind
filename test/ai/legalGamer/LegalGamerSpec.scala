@@ -39,7 +39,7 @@ final class LegalGamerSpec extends UnitSpec {
         maxObjectsInTree = 1)
 
       try {
-        val nodeTree: NodeTree = premade.replaceEmpty(scope, injector).asInstanceOf[NodeTree]
+        val nodeTree: NodeTree = premade.replaceEmpty(scope)(injector).asInstanceOf[NodeTree]
         val f = new AddTwoInts(nodeTree)
         f.fitness
       }

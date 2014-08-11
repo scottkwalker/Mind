@@ -47,24 +47,24 @@ final class NodeTreeSpec extends UnitSpec {
   "replaceEmpty" should {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
+      implicit val i = mock[Injector]
       val f = mock[Node]
-      when(f.replaceEmpty(any[Scope], any[Injector])).thenReturn(f)
-      val i = mock[Injector]
+      when(f.replaceEmpty(any[Scope])(any[Injector])).thenReturn(f)
       val instance = NodeTree(Seq(f))
 
-      instance.replaceEmpty(s, i)
+      instance.replaceEmpty(s)
 
-      verify(f, times(1)).replaceEmpty(any[Scope], any[Injector])
+      verify(f, times(1)).replaceEmpty(any[Scope])(any[Injector])
     }
 
     "returns same when no empty nodes" in {
       val s = mock[IScope]
+      implicit val i = mock[Injector]
       val f = mock[Node]
-      when(f.replaceEmpty(any[Scope], any[Injector])).thenReturn(f)
-      val i = mock[Injector]
+      when(f.replaceEmpty(any[Scope])(any[Injector])).thenReturn(f)
       val instance = new NodeTree(Seq(f))
 
-      instance.replaceEmpty(s, i) should equal(instance)
+      instance.replaceEmpty(s) should equal(instance)
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -76,7 +76,7 @@ final class NodeTreeSpec extends UnitSpec {
       val empty = Empty()
       val instance = NodeTree(nodes = Seq(empty))
 
-      val result = instance.replaceEmpty(s, injector)
+      val result = instance.replaceEmpty(s)(injector)
 
       result match {
         case NodeTree(nodes) =>

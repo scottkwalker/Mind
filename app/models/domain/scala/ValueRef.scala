@@ -10,7 +10,7 @@ final case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
 
   override def validate(scope: IScope): Boolean = if (scope.hasHeightRemaining) !name.isEmpty else false
 
-  override def replaceEmpty(scope: IScope, injector: Injector): Node = this
+  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Node = this
 
   override def getMaxDepth: Int = 1
 }

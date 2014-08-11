@@ -19,34 +19,33 @@ final case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows 
   }
   else false
 
-  override def replaceEmpty(scope: IScope, injector: Injector): Node = {
-    def funcCreateNodes(scope: IScope, injector: Injector, premade: Seq[Node]): (IScope, Seq[Node]) = {
+  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Node = {
+    def funcCreateNodes(scope: IScope, premade: Seq[Node]): (IScope, Seq[Node]) = {
       val factory = injector.getInstance(classOf[NodeTreeFactoryImpl])
       factory.createNodes(scope = scope, acc = premade.init)
     }
 
     @tailrec
     def replaceEmptyInSeq(scope: IScope,
-                          injector: Injector,
                           n: Seq[Node],
-                          f: ((IScope, Injector, Seq[Node]) => (IScope, Seq[Node])),
-                          acc: Seq[Node] = Seq.empty): (IScope, Seq[Node]) = {
+                          f: ((IScope, Seq[Node]) => (IScope, Seq[Node])),
+                          acc: Seq[Node] = Seq.empty)(implicit injector: Injector): (IScope, Seq[Node]) = {
       n match {
         case x :: xs =>
           val (updatedScope, replaced) = x match {
             case _: Empty =>
-              f(scope, injector, n)
+              f(scope, n)
             case n: Node =>
-              val r = n.replaceEmpty(scope, injector)
+              val r = n.replaceEmpty(scope)
               val u = r.updateScope(scope)
               (u, Seq(r))
           }
-          replaceEmptyInSeq(updatedScope, injector, xs, f, acc ++ replaced)
+          replaceEmptyInSeq(updatedScope, xs, f, acc ++ replaced)
         case nil => (scope, acc)
       }
     }
 
-    val (_, n) = replaceEmptyInSeq(scope, injector, nodes, funcCreateNodes)
+    val (_, n) = replaceEmptyInSeq(scope, nodes, funcCreateNodes)
     NodeTree(n)
   }
 

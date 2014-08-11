@@ -73,24 +73,24 @@ final class AddOperatorSpec extends UnitSpec {
   "replaceEmpty" should {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
+      implicit val i = mock[Injector]
       val v = mock[Node]
-      when(v.replaceEmpty(any[Scope], any[Injector])).thenReturn(v)
-      val i = mock[Injector]
+      when(v.replaceEmpty(any[Scope])(any[Injector])).thenReturn(v)
       val instance = AddOperator(v, v)
 
-      instance.replaceEmpty(s, i)
+      instance.replaceEmpty(s)(i)
 
-      verify(v, times(2)).replaceEmpty(any[Scope], any[Injector])
+      verify(v, times(2)).replaceEmpty(any[Scope])(any[Injector])
     }
 
     "returns same when no empty nodes" in {
       val s = mock[IScope]
+      implicit val i = mock[Injector]
       val v = mock[Node]
-      when(v.replaceEmpty(any[Scope], any[Injector])).thenReturn(v)
-      val i = mock[Injector]
+      when(v.replaceEmpty(any[Scope])(any[Injector])).thenReturn(v)
       val instance = AddOperator(v, v)
 
-      instance.replaceEmpty(s, i) should equal(instance)
+      instance.replaceEmpty(s)(i) should equal(instance)
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -107,10 +107,10 @@ final class AddOperatorSpec extends UnitSpec {
       val s = mock[IScope]
       when(s.numVals).thenReturn(1)
       val empty: Node = Empty()
-      val injector = testInjector(new StubFactoryCreate)
+      implicit val injector = testInjector(new StubFactoryCreate)
       val instance = AddOperator(empty, empty)
 
-      val result = instance.replaceEmpty(s, injector)
+      val result = instance.replaceEmpty(s)
 
       result match {
         case AddOperator(left, right) =>
