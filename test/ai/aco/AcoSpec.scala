@@ -4,7 +4,7 @@ import ai.{IRandomNumberGenerator, SelectionStrategy}
 import com.google.inject.Injector
 import com.tzavellas.sse.guice.ScalaModule
 import fitness.AddTwoInts
-import models.domain.scala.{FunctionM, IntegerM, NodeTree, ObjectDef, _}
+import models.domain.scala.{Empty, FunctionM, IntegerM, NodeTree, ObjectDef, ValDclInFunctionParam}
 import modules.ai.aco.AcoModule
 import nodes.helpers.{Scope, _}
 import org.mockito.Matchers._

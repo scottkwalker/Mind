@@ -1,11 +1,8 @@
 package ai.legalGamer
 
-import ai.IRandomNumberGenerator
-import com.google.inject.{Injector, Guice}
+import ai.{IRandomNumberGenerator, SelectionStrategy}
 import fitness.AddTwoInts
-import models.domain.scala.{FunctionM, IntegerM, NodeTree, ObjectDef, _}
-import modules.DevModule
-import modules.ai.legalGamer.LegalGamerModule
+import models.domain.scala.{Empty, FunctionM, IntegerM, NodeTree, ObjectDef, ValDclInFunctionParam}
 import nodes.helpers.{ICreateChildNodes, Scope}
 import utils.helpers.UnitSpec
 
@@ -46,6 +43,23 @@ final class LegalGamerSpec extends UnitSpec {
       catch {
         case e: Throwable => fail("Should not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
       }
+    }
+
+    "throw when sequence is empty" in {
+      val sut = injector.getInstance(classOf[SelectionStrategy])
+      a[RuntimeException] should be thrownBy sut.chooseChild(possibleChildren = Seq.empty)
+    }
+  }
+
+  "chooseIndex" should {
+    "throw when length is zero" in {
+      val sut = injector.getInstance(classOf[SelectionStrategy])
+      a[RuntimeException] should be thrownBy sut.chooseIndex(seqLength = 0)
+    }
+
+    "always returns zero" in {
+      val sut = injector.getInstance(classOf[SelectionStrategy])
+      sut.chooseIndex(2) should equal(0)
     }
   }
 }
