@@ -1,0 +1,3 @@
+build:
+    environment:
+        scala_sbt: 'sbt-0.13.2'
