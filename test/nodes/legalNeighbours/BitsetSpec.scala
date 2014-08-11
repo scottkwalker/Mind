@@ -5,7 +5,7 @@ import play.api.libs.json.Json
 import utils.helpers.UnitSpec
 import scala.collection.immutable.BitSet
 
-final class BitSetSpec extends UnitSpec {
+final class BitsetSpec extends UnitSpec {
 
   "serialize" should {
     "to json" in {
