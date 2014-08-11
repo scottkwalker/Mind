@@ -1,13 +1,14 @@
 package ai.aco
 
-import ai.IRandomNumberGenerator
-import com.google.inject.{Injector, Guice}
+import ai.{IRandomNumberGenerator, SelectionStrategy}
+import com.google.inject.Injector
+import com.tzavellas.sse.guice.ScalaModule
 import fitness.AddTwoInts
 import models.domain.scala.{FunctionM, IntegerM, NodeTree, ObjectDef, _}
-import modules.DevModule
 import modules.ai.aco.AcoModule
-import modules.ai.legalGamer.LegalGamerModule
 import nodes.helpers.{Scope, _}
+import org.mockito.Matchers._
+import org.mockito.Mockito._
 import utils.helpers.UnitSpec
 
 final class AcoSpec extends UnitSpec {
@@ -49,6 +50,37 @@ final class AcoSpec extends UnitSpec {
       catch {
         case e: Throwable => fail("Should not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
       }
+    }
+
+    "throw when sequence is empty" in {
+      val sut = injector.getInstance(classOf[SelectionStrategy])
+      a[RuntimeException] should be thrownBy sut.chooseChild(possibleChildren = Seq.empty)
+    }
+  }
+
+  "chooseIndex" should {
+    "throw when length is zero" in {
+      val sut = injector.getInstance(classOf[SelectionStrategy])
+      a[RuntimeException] should be thrownBy sut.chooseIndex(seqLength = 0)
+    }
+
+    "call random number generator nextInt" in {
+      val expected = 2
+      val rng = mock[IRandomNumberGenerator]
+
+      final class StubRng extends ScalaModule {
+
+        def configure(): Unit = {
+          when(rng.nextInt(any[Int])).thenReturn(2)
+          bind(classOf[IRandomNumberGenerator]).toInstance(rng)
+        }
+      }
+      val injector = testInjector(new AcoModule, new StubRng)
+      val sut = injector.getInstance(classOf[SelectionStrategy])
+
+      sut.chooseIndex(expected)
+
+      verify(rng, times(1)).nextInt(expected)
     }
   }
 
