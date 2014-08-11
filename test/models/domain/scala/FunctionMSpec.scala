@@ -132,7 +132,6 @@ final class FunctionMSpec extends UnitSpec {
         height = 5,
         maxObjectsInTree = 1)
       val empty = Empty()
-      val injector: Injector = Guice.createInjector(new DevModule, new LegalGamerModule)
       val instance = FunctionM(params = Seq(empty),
         nodes = Seq(Empty()),
         name = name)
