@@ -1,11 +1,9 @@
 package nodes
 
 import ai.IRandomNumberGenerator
-import com.google.inject.{Guice, Injector}
 import models.domain.common.Node
 import models.domain.scala.NodeTree
 import modules.DevModule
-import modules.ai.legalGamer.LegalGamerModule
 import nodes.helpers.{Scope, _}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
@@ -51,13 +49,15 @@ final class NodeTreeFactorySpec extends UnitSpec {
     }
   }
 
-  private val rng = mock[IRandomNumberGenerator]
-  override lazy val injector = Guice.createInjector(testModule(new TestDevModule(rng), new LegalGamerModule))
-  when(rng.nextInt(any[Int])).thenReturn(2)
-  when(rng.nextBoolean).thenReturn(true)
+  override lazy val injector = {
+    final class TestDevModule(rng: IRandomNumberGenerator) extends DevModule(scope = Scope(height = 10, maxExpressionsInFunc = 2, maxFuncsInObject = 3, maxParamsInFunc = 2, maxObjectsInTree = 3),
+      randomNumberGenerator = rng) {}
+
+    val rng = mock[IRandomNumberGenerator]
+    when(rng.nextInt(any[Int])).thenReturn(2)
+    when(rng.nextBoolean).thenReturn(true)
+    testInjector(new TestDevModule(rng))
+  }
   private val factory = injector.getInstance(classOf[NodeTreeFactoryImpl])
   private val s = injector.getInstance(classOf[IScope])
-
-  final class TestDevModule(rng: IRandomNumberGenerator) extends DevModule(scope = Scope(height = 10, maxExpressionsInFunc = 2, maxFuncsInObject = 3, maxParamsInFunc = 2, maxObjectsInTree = 3),
-    randomNumberGenerator = rng) {}
 }

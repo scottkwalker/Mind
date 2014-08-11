@@ -119,7 +119,7 @@ final class ScopeSpec extends UnitSpec {
 
   "IoC create" should {
     "return a new instance with injected values" in {
-      val injector: Injector = Guice.createInjector(new DevModule, new AcoModule)
+      val injector: Injector = testInjector(new AcoModule)
       val sut = injector.getInstance(classOf[IScope])
 
       sut.maxFuncsInObject should equal(10)

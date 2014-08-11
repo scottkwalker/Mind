@@ -65,10 +65,11 @@ final class FunctionMFactorySpec extends UnitSpec {
     }
   }
 
-  private val rng = mock[IRandomNumberGenerator]
-  when(rng.nextInt(any[Int])).thenReturn(2)
-  when(rng.nextBoolean).thenReturn(true)
-
-  override lazy val injector = Guice.createInjector(testModule(new DevModule(randomNumberGenerator = rng), new LegalGamerModule))
+  override lazy val injector = {
+    val rng = mock[IRandomNumberGenerator]
+    when(rng.nextInt(any[Int])).thenReturn(2)
+    when(rng.nextBoolean).thenReturn(true)
+    testInjector(new DevModule(randomNumberGenerator = rng))
+  }
   private val factory = injector.getInstance(classOf[FunctionMFactoryImpl])
 }
