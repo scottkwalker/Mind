@@ -1,10 +1,8 @@
 package nodes
 
 import ai.IRandomNumberGenerator
-import com.google.inject.{Guice, Injector}
+import com.tzavellas.sse.guice.ScalaModule
 import models.domain.scala.ObjectDef
-import modules.DevModule
-import modules.ai.legalGamer.LegalGamerModule
 import nodes.helpers.{IScope, Scope}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
@@ -65,10 +63,18 @@ final class ObjectDefFactorySpec extends UnitSpec {
     }
   }
 
-  private val rng = mock[IRandomNumberGenerator]
-  when(rng.nextInt(any[Int])).thenReturn(2)
-  when(rng.nextBoolean).thenReturn(true)
+  override lazy val injector = {
+    final class StubRng extends ScalaModule {
 
-  override lazy val injector = testInjector(new DevModule(randomNumberGenerator = rng))
+      def configure(): Unit = {
+        val rng = mock[IRandomNumberGenerator]
+        when(rng.nextInt(any[Int])).thenReturn(2)
+        when(rng.nextBoolean).thenReturn(true)
+        bind(classOf[IRandomNumberGenerator]).toInstance(rng)
+      }
+    }
+
+    testInjector(new StubRng)
+  }
   private val factory = injector.getInstance(classOf[ObjectDefFactoryImpl])
 }

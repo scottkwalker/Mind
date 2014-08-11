@@ -11,7 +11,7 @@ trait SelectionStrategy {
   def chooseIndex(seqLength: Int): Int
 
   def chooseChild(possibleChildren: Seq[ICreateChildNodes], scope: IScope): ICreateChildNodes = {
-    require(possibleChildren.nonEmpty, "Sequence possibleChildren must not be empty otherwise we cannot pick an node from it")
+    require(possibleChildren.nonEmpty, "Sequence possibleChildren must not be empty otherwise we cannot pick a node from it")
     chooseChild(possibleChildren)
   }
 

@@ -7,8 +7,8 @@ import nodes._
 import nodes.helpers._
 import nodes.legalNeighbours.{FactoryIdToFactory, FactoryIdToFactoryImpl, LegalNeighbours, LegalNeighboursImpl}
 
-class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1),
-                randomNumberGenerator: IRandomNumberGenerator = new RandomNumberGenerator()) extends ScalaModule {
+class DevModule()
+  extends ScalaModule {
 
   def configure(): Unit = {
     bindAddOperatorFactory()
@@ -18,10 +18,10 @@ class DevModule(scope: IScope = Scope(maxExpressionsInFunc = 2, maxFuncsInObject
     bind(classOf[ObjectDefFactory]).to(classOf[ObjectDefFactoryImpl]).asEagerSingleton()
     bind(classOf[ValueRefFactory]).to(classOf[ValueRefFactoryImpl]).asEagerSingleton()
     bindValDclInFunctionParamFactory()
-    bind(classOf[IScope]).toInstance(scope)
+    bind(classOf[IScope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1))
     bind(classOf[ICreateNode]).to(classOf[CreateNode]).asEagerSingleton()
     bind(classOf[ICreateSeqNodes]).to(classOf[CreateSeqNodes]).asEagerSingleton()
-    bind(classOf[IRandomNumberGenerator]).toInstance(randomNumberGenerator)
+    bind(classOf[IRandomNumberGenerator]).to(classOf[RandomNumberGenerator]).asEagerSingleton()
     bindIPopulateMemoizationMaps()
     bind(classOf[FactoryIdToFactory]).to(classOf[FactoryIdToFactoryImpl]).asEagerSingleton()
     bind(classOf[LegalNeighbours]).to(classOf[LegalNeighboursImpl]).asEagerSingleton()
