@@ -4,7 +4,6 @@ import ai.IRandomNumberGenerator
 import com.tzavellas.sse.guice.ScalaModule
 import models.domain.common.Node
 import models.domain.scala.NodeTree
-import modules.DevModule
 import nodes.helpers.{Scope, _}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
@@ -51,13 +50,6 @@ final class NodeTreeFactorySpec extends UnitSpec {
   }
 
   override lazy val injector = {
-//    final class TestDevModule(rng: IRandomNumberGenerator) extends DevModule(scope = Scope(height = 10, maxExpressionsInFunc = 2, maxFuncsInObject = 3, maxParamsInFunc = 2, maxObjectsInTree = 3),
-//      randomNumberGenerator = rng) {}
-//
-//    val rng = mock[IRandomNumberGenerator]
-//    when(rng.nextInt(any[Int])).thenReturn(2)
-//    when(rng.nextBoolean).thenReturn(true)
-//    testInjector(new TestDevModule(rng))
     final class StubRng extends ScalaModule {
 
       def configure(): Unit = {
