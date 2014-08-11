@@ -48,8 +48,11 @@ final class ValueRefFactorySpec extends UnitSpec {
     }
   }
 
-  override lazy val injector: Injector = Guice.createInjector(testModule(new LegalGamerModule))
+  override lazy val injector: Injector = testInjector(new LegalGamerModule)
   private val factory = injector.getInstance(classOf[ValueRefFactoryImpl])
-  private val scope = mock[IScope]
-  when(scope.numVals).thenReturn(1)
+  private val scope = {
+    val stub = mock[IScope]
+    when(stub.numVals).thenReturn(1)
+    stub
+  }
 }

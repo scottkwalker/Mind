@@ -27,6 +27,6 @@ final class IntegerMFactorySpec extends UnitSpec {
     }
   }
 
-  override lazy val injector = Guice.createInjector(testModule(new LegalGamerModule))
+  override lazy val injector = testInjector(new LegalGamerModule)
   private val factory = injector.getInstance(classOf[IntegerMFactoryImpl])
 }

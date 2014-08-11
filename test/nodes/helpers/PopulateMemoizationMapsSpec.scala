@@ -8,7 +8,6 @@ import utils.helpers.UnitSpec
 
 final class PopulateMemoizationMapsSpec extends UnitSpec {
 
-  override lazy val injector: Injector = Guice.createInjector(testModule(new LegalGamerModule))
   private val addOperatorFactory = injector.getInstance(classOf[AddOperatorFactoryImpl])
   private val functionMFactory = injector.getInstance(classOf[FunctionMFactoryImpl])
   private val integerMFactory = injector.getInstance(classOf[IntegerMFactoryImpl])

@@ -56,6 +56,6 @@ final class ValDclInFunctionParamFactorySpec extends UnitSpec {
     }
   }
 
-  override lazy val injector: Injector = Guice.createInjector(testModule(new LegalGamerModule))
+  override lazy val injector: Injector = testInjector(new LegalGamerModule)
   private val factory = injector.getInstance(classOf[ValDclInFunctionParamFactoryImpl])
 }
