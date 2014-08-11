@@ -8,8 +8,7 @@ import nodes.helpers._
 
 trait ValueRefFactory extends ICreateChildNodes
 
-final case class ValueRefFactoryImpl @Inject()(ai: SelectionStrategy
-                                                ) extends ValueRefFactory with UpdateScopeNoChange {
+final case class ValueRefFactoryImpl @Inject()(ai: SelectionStrategy) extends ValueRefFactory with UpdateScopeNoChange {
 
   override val neighbourIds = Seq.empty
 

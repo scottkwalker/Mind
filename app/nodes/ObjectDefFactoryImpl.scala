@@ -1,6 +1,6 @@
 package nodes
 
-import com.google.inject.{Inject, Injector}
+import com.google.inject.Inject
 import models.domain.common.Node
 import models.domain.scala.ObjectDef
 import nodes.helpers._
@@ -8,9 +8,9 @@ import nodes.legalNeighbours.LegalNeighbours
 
 trait ObjectDefFactory extends ICreateChildNodes
 
-case class ObjectDefFactoryImpl @Inject()(injector: Injector,
-                                          creator: ICreateSeqNodes,
-                                          legalNeighbours: LegalNeighbours
+case class ObjectDefFactoryImpl @Inject()(
+                                           creator: ICreateSeqNodes,
+                                           legalNeighbours: LegalNeighbours
                                            ) extends ObjectDefFactory with UpdateScopeIncrementObjects {
 
   override val neighbourIds = Seq(FunctionMFactoryImpl.id)

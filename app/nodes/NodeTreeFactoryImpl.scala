@@ -1,6 +1,6 @@
 package nodes
 
-import com.google.inject.{Inject, Injector}
+import com.google.inject.Inject
 import models.domain.common.Node
 import models.domain.scala.NodeTree
 import nodes.helpers._
@@ -8,9 +8,9 @@ import nodes.legalNeighbours.LegalNeighbours
 
 trait NodeTreeFactory extends ICreateChildNodes
 
-case class NodeTreeFactoryImpl @Inject()(injector: Injector,
-                                         creator: ICreateSeqNodes,
-                                         legalNeighbours: LegalNeighbours
+case class NodeTreeFactoryImpl @Inject()(
+                                          creator: ICreateSeqNodes,
+                                          legalNeighbours: LegalNeighbours
                                           ) extends NodeTreeFactory with UpdateScopeThrows {
 
   override val neighbourIds = Seq(ObjectDefFactoryImpl.id)
