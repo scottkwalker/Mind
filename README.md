@@ -20,6 +20,20 @@ This is a Scala hobby project. It will consist of:
 
 It doesn't yet have the RESTful routes as there is plenty of work to do in the back end first.
 
+Development prerequisites
+-----------------------
+1.  JDK 1.7.51 or 1.8 must be installed
+
+2.  Install SBT.  The [current documentation][install-sbt] suggests:
+
+    Mac: `brew install sbt`
+
+3.  Increase 'permanent generation space' requirements for SBT.
+
+    Mac: Create the file `~/.sbtconfig` with the following content:
+
+        SBT_OPTS="-XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:PermSize=256M -XX:MaxPermSize=2048M"
+
 Web framework
 -------------
 I am using [Play framework](http://www.playframework.com/documentation/2.3.x/Home) because:
@@ -57,3 +71,5 @@ I am using Git with Github because:
 
 * I am familiar with Github from using it on several projects.
 * I prefer using Git for version control as it works well with TDD's short iterations of coding. Also Git is great for local commits when I am working from a train with no 4G signal.
+
+[install-sbt]: http://www.scala-sbt.org/release/docs/Getting-Started/Setup.html#installing-sbt "Install SBT"
