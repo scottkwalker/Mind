@@ -1,9 +1,7 @@
 package models.domain.scala
 
-import com.google.inject.{Guice, Injector}
+import com.google.inject.Injector
 import models.domain.common.Node
-import modules.DevModule
-import modules.ai.legalGamer.LegalGamerModule
 import nodes.helpers.{IScope, Scope}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
@@ -40,6 +38,15 @@ final class NodeTreeSpec extends UnitSpec {
     "false given empty root node" in {
       val s = Scope(height = 10)
       val nodeTree = new NodeTree(Seq(Empty()))
+      nodeTree.validate(s) should equal(false)
+    }
+
+    "false when hasHeightRemaining returns false" in {
+      val s = mock[IScope]
+      when(s.hasHeightRemaining).thenReturn(false)
+      val f = mock[Node]
+      val nodeTree = new NodeTree(Seq(f))
+
       nodeTree.validate(s) should equal(false)
     }
   }

@@ -2,10 +2,7 @@ package fitness
 
 trait Fitness {
 
+  val maxFitness: Double
+
   def fitness: Double
-}
-
-object Fitness {
-
-  final val maxFitness = 1.0d
 }

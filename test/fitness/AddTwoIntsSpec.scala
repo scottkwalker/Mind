@@ -1,6 +1,5 @@
 package fitness
 
-import fitness.Fitness.maxFitness
 import models.domain.common.Node
 import models.domain.scala.{AddOperator, FunctionM, IntegerM, ObjectDef, _}
 import org.mockito.Mockito._
@@ -13,7 +12,7 @@ final class AddTwoIntsSpec extends UnitSpec {
       val nodeTree = mock[Node]
       when(nodeTree.toRaw).thenReturn("object o0 { def f0(a: Int, b: Int) = a + b }")
       val f = new AddTwoInts(nodeTree)
-      f.fitness should equal(maxFitness)
+      f.fitness should equal(f.maxFitness)
     }
 
     "1 add 1 equals 2 with NodeTree that converts nodes to raw Scala" in {
@@ -27,7 +26,7 @@ final class AddTwoIntsSpec extends UnitSpec {
               ), name = "f0")),
             name = "o0")))
       val f = new AddTwoInts(nodeTree)
-      f.fitness should equal(maxFitness)
+      f.fitness should equal(f.maxFitness)
     }
 
     "return score less than max fitness for a non-optimal solution" in {
@@ -38,7 +37,7 @@ final class AddTwoIntsSpec extends UnitSpec {
       val f = new AddTwoInts(nodeTree)
 
       // Assert
-      f.fitness should not equal maxFitness
+      f.fitness < f.maxFitness should be (true)
     }
   }
 }

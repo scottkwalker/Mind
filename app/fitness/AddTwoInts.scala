@@ -5,7 +5,9 @@ import models.domain.common.Node
 
 final class AddTwoInts(val nodeTree: Node) extends Fitness {
 
-  def fitness: Double = {
+  override val maxFitness = 1.0d
+
+  override def fitness: Double = {
     val a = 1
     val b = 2
     val expected = 3
@@ -17,6 +19,6 @@ final class AddTwoInts(val nodeTree: Node) extends Fitness {
 
     val delta = (result - expected).abs
 
-    if (delta == 0) 1.0 else 1 / delta
+    if (delta == 0.0d) maxFitness else 1.0d / delta
   }
 }
