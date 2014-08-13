@@ -24,6 +24,8 @@ scalacOptions ++= Seq("-feature")
 
 ScoverageSbtPlugin.instrumentSettings
 
+ScoverageSbtPlugin.ScoverageKeys.excludedPackages in ScoverageSbtPlugin.scoverage := "<empty>;Reverse.*"
+
 CoverallsPlugin.coverallsSettings
 
 incOptions := incOptions.value.withNameHashing(nameHashing = true)
