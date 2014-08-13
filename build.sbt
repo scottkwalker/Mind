@@ -13,7 +13,7 @@ libraryDependencies ++= Seq(
   //ws
   filters,
   "org.mockito" % "mockito-all" % "1.9.5" % "test" withSources() withJavadoc(),
-  "com.twitter" % "util-eval_2.10" % "6.18.0",
+  "com.twitter" % "util-eval_2.10" % "6.19.0",
   "com.google.inject" % "guice" % "4.0-beta4",
   "com.tzavellas" % "sse-guice" % "0.7.1",
   "org.scalatest" %% "scalatest" % "2.2.0" % "test",
