@@ -19,6 +19,6 @@ addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.2")
 //addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.4.0")
 
 // Plugin for publishing scoverage results to coveralls
-addSbtPlugin("org.scoverage" %% "sbt-scoverage" % "0.98.0")
+addSbtPlugin("org.scoverage" %% "sbt-scoverage" % "0.98.2")
 
 addSbtPlugin("com.sksamuel.scoverage" %% "sbt-coveralls" % "0.0.5")
