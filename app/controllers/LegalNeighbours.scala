@@ -12,6 +12,9 @@ final class LegalNeighbours @Inject()() extends Controller {
   )
 
   def calculate = Action { implicit request =>
-    ???
+    form.bindFromRequest.fold(
+      invalidForm => BadRequest,
+      validForm => ???
+    )
   }
 }
