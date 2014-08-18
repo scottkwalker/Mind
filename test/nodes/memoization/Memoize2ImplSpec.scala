@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.{CountDownLatch, TimeUnit}
 import com.twitter.conversions.time._
 import com.twitter.util._
+import models.domain.common.JsonValidationException
 import org.mockito.Mockito._
 import play.api.libs.json.Json.obj
 import play.api.libs.json._
@@ -142,7 +143,7 @@ final class Memoize2ImplSpec extends UnitSpec {
       startUpLatch.countDown()
 
       val (successes, failures) =
-        Await.result(computation, 1.second).toList partition {
+        Await.result(computation, 2.seconds).toList partition {
           _.isReturn
         }
 
@@ -190,20 +191,6 @@ final class Memoize2ImplSpec extends UnitSpec {
 
   "read" should {
     "turn json to usable object" in {
-      class Adder(private var cache: Map[String, Either[CountDownLatch, Int]]) extends Memoize2Impl[Int, Int, Int](cache) {
-
-        def f(i: Int, j: Int): Int = throw new Exception("Should not be called as the result should have been retrieved from the json")
-      }
-
-      implicit val adderFromJson: Reads[Adder] =
-        (__ \ "cache").read[Map[String, Int]].map {
-          keyValueMap =>
-            val cache = keyValueMap.map {
-              case (k, v) => k -> Right[CountDownLatch, Int](v)
-            }
-            new Adder(cache)
-        }
-
       val json = JsObject(
         Seq(
           ("cache",
@@ -218,33 +205,43 @@ final class Memoize2ImplSpec extends UnitSpec {
         )
       )
 
-      val asObj = Memoize2Impl.read[Adder](json)
+      val asObj = Memoize2Impl.read[ThrowIfNotMemoized](json)
 
       asObj(1, 1) should equal(2)
       asObj(1, 2) should equal(3)
       asObj(2, 2) should equal(4)
     }
+
+    "throw when invalid json" in {
+      val json = JsObject(Seq.empty)
+
+      a[JsonValidationException] should be thrownBy Memoize2Impl.read[ThrowIfNotMemoized](json)
+    }
   }
 
   private final val stateKey = "neighbours"
 
-  private implicit val eitherLatchOrIntToJson = new Writes[Either[CountDownLatch, Int]] {
-    def writes(o: Either[CountDownLatch, Int]): JsValue = o.fold(
-      countDownLatchContent => ???, // Should be filtered out at a higher level so that we do not store incomplete calculations.
-      right => JsNumber(right)
-    )
-  }
-
-  private implicit val mapOfNeighboursToJson = new Writes[Map[String, Either[CountDownLatch, Int]]] {
-    def writes(o: Map[String, Either[CountDownLatch, Int]]): JsValue = {
-      val filtered = o.filter {
-        case (k, v) => v.isRight // Only completed values.
-      }.
-        map {
-        case (k, v) => k.toString -> v // Key must be string
+  private implicit val mapOfStringToInt = new Writes[Map[String, Either[CountDownLatch, Int]]] {
+    def writes(cache: Map[String, Either[CountDownLatch, Int]]): JsValue = {
+      val computedKeyValues = cache.flatMap {
+        case (k, Right(v)) => Some(k -> v) // Only store the computed values (the 'right-side').
+        case _ => None
       }
-
-      Json.toJson(filtered)
+      Json.toJson(computedKeyValues)
     }
   }
+
+  private class ThrowIfNotMemoized(private var cache: Map[String, Either[CountDownLatch, Int]]) extends Memoize2Impl[Int, Int, Int](cache) {
+
+    def f(i: Int, j: Int): Int = throw new Exception("Should not be called as the result should have been retrieved from the json")
+  }
+
+  private implicit val adderFromJson: Reads[ThrowIfNotMemoized] =
+    (__ \ "cache").read[Map[String, Int]].map {
+      keyValueMap =>
+        val cache = keyValueMap.map {
+          case (k, v) => k -> Right[CountDownLatch, Int](v)
+        }
+        new ThrowIfNotMemoized(cache)
+    }
 }

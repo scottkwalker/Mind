@@ -53,10 +53,16 @@ final class AddOperatorSpec extends UnitSpec {
       AddOperator(v, v).validate(s) should equal(true)
     }
 
-    "false given contains an empty node" in {
+    "false when left node is empty" in {
       val s = Scope(height = 10)
-      val v = mock[Node]
-      when(v.validate(any[Scope])).thenReturn(true)
+      val v = ValueRef("stub")
+
+      AddOperator(Empty(), v).validate(s) should equal(false)
+    }
+
+    "false when right node is empty" in {
+      val s = Scope(height = 10)
+      val v = ValueRef("stub")
 
       AddOperator(v, Empty()).validate(s) should equal(false)
     }

@@ -1,7 +1,7 @@
 package nodes.memoization
 
 import java.util.concurrent.CountDownLatch
-import models.domain.common.JsonValidationException
+import nodes.helpers.JsonDeserialiser
 import play.api.libs.json._
 import scala.annotation.tailrec
 
@@ -112,11 +112,5 @@ abstract class Memoize2Impl[TKey1, TKey2, TOutput](private var cache: Map[String
 
 object Memoize2Impl {
 
-  def read[T](json: JsValue)(implicit fromJson: Reads[T]): T = {
-    val jsResult = Json.fromJson[T](json)
-    jsResult.asEither match {
-      case Left(errors) => println(errors); throw JsonValidationException(errors)
-      case Right(model) => model
-    }
-  }
+  def read[T](json: JsValue)(implicit fromJson: Reads[T]): T = JsonDeserialiser.deserialize(json)
 }

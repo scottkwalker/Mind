@@ -1,8 +1,6 @@
 package nodes.memoization
 
-import com.google.inject.{Guice, Injector}
-import modules.DevModule
-import modules.ai.legalGamer.LegalGamerModule
+import java.util.concurrent.CountDownLatch
 import nodes.helpers.Scope
 import nodes.legalNeighbours.FactoryIdToFactory
 import nodes.memoization.MemoizeScopeToNeighbours.readsMemoizeScopeToNeighbours
@@ -15,14 +13,14 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
 
   "apply" should {
     "return true for ids that are valid for this scope" in {
-      val (sut, _) = createSut
+      val (sut, _) = createSut()
 
       sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id) should equal(false)
       sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id) should equal(true)
     }
 
     "only runs the function once for the same input" in {
-      val (sut, factoryIdToFactory) = createSut
+      val (sut, factoryIdToFactory) = createSut()
       sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id) should equal(true)
       sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id) should equal(true)
       sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id) should equal(false)
@@ -35,7 +33,7 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
 
   "write" should {
     "return the expected json" in {
-      val (sut, _) = createSut
+      val (sut, _) = createSut()
       sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id) should equal(false)
       sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id) should equal(true)
 
@@ -45,9 +43,29 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
             "versioning" -> JsString("test"),
             "cache" -> JsObject(
               Seq(
-                (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}", JsBoolean(false)),
-                (s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(false)),
-                (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(true))
+                (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
+                (s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
+                (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
+              )
+            )
+          )
+        )
+      )
+    }
+
+    "does not write values that haven't been computed" in {
+      val (sut, _) = createSut(cache = Map(
+        "in progress" -> Left(new CountDownLatch(1)),
+        s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}" -> Right(false)
+      ))
+
+      sut.write should equal(
+        JsObject(
+          Seq(
+            "versioning" -> JsString("test"),
+            "cache" -> JsObject(
+              Seq(
+                (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false))
               )
             )
           )
@@ -57,7 +75,6 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
   }
 
   "read" should {
-
     "convert from json to usable object" in {
       val versioning = s"${AddOperatorFactoryImpl.id}|${ValueRefFactoryImpl.id}"
       val json = JsObject(
@@ -65,14 +82,13 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
           "versioning" -> JsString(versioning),
           "cache" -> JsObject(
             Seq(
-              (s"Scope(0,0,0,0,0,0,0,1,0)|${AddOperatorFactoryImpl.id}", JsBoolean(false)),
-              (s"Scope(0,0,0,1,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(false)),
-              (s"Scope(0,0,0,0,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(true))
+              (s"Scope(0,0,0,0,0,0,0,1,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
+              (s"Scope(0,0,0,1,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
+              (s"Scope(0,0,0,0,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
             )
           )
         )
       )
-
       val readsFromJson = readsMemoizeScopeToNeighbours(versioning)(factoryIdToFactoryStub)
       val asObj: MemoizeScopeToNeighbours = Memoize2Impl.read[MemoizeScopeToNeighbours](json)(readsFromJson)
 
@@ -88,16 +104,16 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
           "versioning" -> JsString(versioning),
           "cache" -> JsObject(
             Seq(
-              (s"Scope(0,0,0,0,0,0,0,1,0)|${AddOperatorFactoryImpl.id}", JsBoolean(false)),
-              (s"Scope(0,0,0,1,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(false)),
-              (s"Scope(0,0,0,0,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(true))
+              (s"Scope(0,0,0,0,0,0,0,1,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
+              (s"Scope(0,0,0,1,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
+              (s"Scope(0,0,0,0,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
             )
           )
         )
       )
-
       val readsFromJson = readsMemoizeScopeToNeighbours(versioningWithoutAddOp)(factoryIdToFactoryStub)
-      an[RuntimeException] should be thrownBy Memoize2Impl.read[MemoizeScopeToNeighbours](json)(readsFromJson)
+
+      a[RuntimeException] should be thrownBy Memoize2Impl.read[MemoizeScopeToNeighbours](json)(readsFromJson)
     }
   }
 
@@ -105,9 +121,9 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
   private val addOperatorFactoryImpl = injector.getInstance(classOf[AddOperatorFactoryImpl])
   private val valueRefFactoryImpl = injector.getInstance(classOf[ValueRefFactoryImpl])
 
-  private def createSut = {
+  private def createSut(cache: Map[String, Either[CountDownLatch, Boolean]] = Map.empty[String, Either[CountDownLatch, Boolean]]) = {
     implicit val factoryIdToFactory = factoryIdToFactoryStub
-    val sut = new MemoizeScopeToNeighbours(versioning = "test")
+    val sut = new MemoizeScopeToNeighbours(cache = cache, versioning = "test")
     (sut, factoryIdToFactory)
   }
 

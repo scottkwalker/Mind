@@ -26,23 +26,13 @@ class MemoizeScopeToNeighbours(private var cache: Map[String, Either[CountDownLa
 
 object MemoizeScopeToNeighbours {
 
-  private implicit val eitherLatchOrNeighboursToJson = new Writes[Either[CountDownLatch, Boolean]] {
-    def writes(state: Either[CountDownLatch, Boolean]): JsValue =
-      state.fold(
-        countDownLatch => ???, // Should be filtered out at a higher level so that we do not store incomplete calculations.
-        neighbours => JsBoolean(neighbours)
-      )
-  }
-
   private implicit val mapOfNeighboursToJson = new Writes[Map[String, Either[CountDownLatch, Boolean]]] {
     def writes(cache: Map[String, Either[CountDownLatch, Boolean]]): JsValue = {
-      val filtered = cache.filter {
-        case (k, v) => v.isRight // Only completed values.
-      }.
-        map {
-        case (k, v) => k -> v // Json keys must be strings.
+      val computedKeyValues = cache.flatMap {
+        case (k, Right(v)) => Some(k -> v) // Only store the computed values (the 'right-side').
+        case _ => None
       }
-      Json.toJson(filtered)
+      Json.toJson(computedKeyValues)
     }
   }
 
