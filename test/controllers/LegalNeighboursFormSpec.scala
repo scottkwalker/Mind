@@ -24,16 +24,47 @@ final class LegalNeighboursFormSpec extends UnitSpec {
       ).errors
       errors.length should equal(8)
     }
+
+    "accept when submission is valid" in {
+      val numVals = 1
+      val numFuncs = 2
+      val numObjects = 3
+      val height = 4
+      val maxExpressionsInFunc = 5
+      val maxFuncsInObject = 6
+      val maxParamsInFunc = 7
+      val maxObjectsInTree = 8
+      val result = formWithValidDefaults(
+        numVals.toString,
+        numFuncs.toString,
+        numObjects.toString,
+        height.toString,
+        maxExpressionsInFunc.toString,
+        maxFuncsInObject.toString,
+        maxParamsInFunc.toString,
+        maxObjectsInTree.toString
+      )
+      result.errors.length should equal(0)
+      val model = result.get
+      model.numVals should equal(numVals)
+      model.numFuncs should equal(numFuncs)
+      model.numObjects should equal(numObjects)
+      model.height should equal(height)
+      model.maxExpressionsInFunc should equal(maxExpressionsInFunc)
+      model.maxFuncsInObject should equal(maxFuncsInObject)
+      model.maxParamsInFunc should equal(maxParamsInFunc)
+      model.maxObjectsInTree should equal(maxObjectsInTree)
+    }
   }
 
-  private def formWithValidDefaults(numVals: String = "0",
-                                    numFuncs: String = "0",
-                                    numObjects: String = "0",
-                                    height: String = "0",
-                                    maxExpressionsInFunc: String = "0",
-                                    maxFuncsInObject: String = "0",
-                                    maxParamsInFunc: String = "0",
-                                    maxObjectsInTree: String = "0") = {
+  private def formWithValidDefaults(numVals: String,
+                                    numFuncs: String,
+                                    numObjects: String,
+                                    height: String,
+                                    maxExpressionsInFunc: String,
+                                    maxFuncsInObject: String,
+                                    maxParamsInFunc: String,
+                                    maxObjectsInTree: String) = {
     legalNeighbours.form.bind(
       Map(
         numValsId -> numVals,
