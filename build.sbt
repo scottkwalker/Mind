@@ -6,6 +6,9 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.10.4"
 
+// Disable documentation generation to save time for the CI build process
+sources in doc in Compile := List()
+
 libraryDependencies ++= Seq(
   //jdbc,
   //anorm,

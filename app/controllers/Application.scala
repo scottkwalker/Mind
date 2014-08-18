@@ -1,12 +1,10 @@
 package controllers
 
-import play.api.mvc._
+import play.api.mvc.{Action, Controller}
 
 object Application extends Controller {
 
   def index = Action {
-    Ok(<p>Hello, World!
-    </p>
-    )
+    Redirect(routes.Intro.present)
   }
 }
