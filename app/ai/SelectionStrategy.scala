@@ -1,5 +1,6 @@
 package ai
 
+import models.common.IScope
 import nodes.helpers._
 
 trait SelectionStrategy {

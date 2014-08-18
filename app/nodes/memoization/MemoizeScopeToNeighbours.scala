@@ -1,7 +1,7 @@
 package nodes.memoization
 
 import java.util.concurrent.CountDownLatch
-import nodes.helpers.IScope
+import models.common.IScope
 import nodes.legalNeighbours.FactoryIdToFactory
 import nodes.memoization.MemoizeScopeToNeighbours.mapOfNeighboursToJson
 import play.api.libs.json._

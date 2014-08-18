@@ -1,10 +1,8 @@
 package models.domain.scala
 
-import com.google.inject.{Guice, Injector}
+import com.google.inject.Injector
 import com.tzavellas.sse.guice.ScalaModule
-import models.domain.common.Node
-import modules.ai.legalGamer.LegalGamerModule
-import nodes.helpers.{IScope, Scope}
+import models.common.{IScope, Node, Scope}
 import nodes.{ValDclInFunctionParamFactory, ValDclInFunctionParamFactoryImpl}
 import org.mockito.Matchers._
 import org.mockito.Mockito._

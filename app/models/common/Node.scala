@@ -1,7 +1,6 @@
-package models.domain.common
+package models.common
 
 import com.google.inject.Injector
-import nodes.helpers.IScope
 
 trait Node {
 

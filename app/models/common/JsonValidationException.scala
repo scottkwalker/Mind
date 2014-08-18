@@ -1,4 +1,4 @@
-package models.domain.common
+package models.common
 
 import play.api.data.validation.ValidationError
 import play.api.libs.json.JsPath

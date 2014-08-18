@@ -1,5 +1,7 @@
 package nodes.helpers
 
+import models.common.IScope
+
 trait IPopulateMemoizationMaps {
 
   def memoizeCanTerminateInStepsRemaining(that: ICreateChildNodes,

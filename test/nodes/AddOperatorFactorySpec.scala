@@ -1,10 +1,7 @@
 package nodes
 
-import com.google.inject.{Guice, Injector}
+import models.common.Scope
 import models.domain.scala.AddOperator
-import modules.DevModule
-import modules.ai.legalGamer.LegalGamerModule
-import nodes.helpers.Scope
 import utils.helpers.UnitSpec
 
 final class AddOperatorFactorySpec extends UnitSpec {

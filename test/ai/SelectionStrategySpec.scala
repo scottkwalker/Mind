@@ -1,7 +1,7 @@
 package ai
 
 import ai.legalGamer.LegalGamer
-import nodes.helpers.IScope
+import models.common.IScope
 import org.mockito.Mockito._
 import utils.helpers.UnitSpec
 

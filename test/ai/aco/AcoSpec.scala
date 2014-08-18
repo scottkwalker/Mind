@@ -4,9 +4,10 @@ import ai.{IRandomNumberGenerator, SelectionStrategy}
 import com.google.inject.Injector
 import com.tzavellas.sse.guice.ScalaModule
 import fitness.AddTwoInts
+import models.common.Scope
 import models.domain.scala.{Empty, FunctionM, IntegerM, NodeTree, ObjectDef, ValDclInFunctionParam}
 import modules.ai.aco.AcoModule
-import nodes.helpers.{Scope, _}
+import nodes.helpers._
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import utils.helpers.UnitSpec

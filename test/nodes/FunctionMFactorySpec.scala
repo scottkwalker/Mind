@@ -2,8 +2,8 @@ package nodes
 
 import ai.IRandomNumberGenerator
 import com.tzavellas.sse.guice.ScalaModule
+import models.common.{IScope, Scope}
 import models.domain.scala.FunctionM
-import nodes.helpers.{IScope, Scope}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import utils.helpers.UnitSpec

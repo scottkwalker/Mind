@@ -2,8 +2,9 @@ package ai.legalGamer
 
 import ai.{IRandomNumberGenerator, SelectionStrategy}
 import fitness.AddTwoInts
+import models.common.Scope
 import models.domain.scala.{Empty, FunctionM, IntegerM, NodeTree, ObjectDef, ValDclInFunctionParam}
-import nodes.helpers.{ICreateChildNodes, Scope}
+import nodes.helpers.ICreateChildNodes
 import utils.helpers.UnitSpec
 
 final class LegalGamerSpec extends UnitSpec {

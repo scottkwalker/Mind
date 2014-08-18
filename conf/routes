@@ -4,7 +4,8 @@
 
 GET     /                           @controllers.Application.index
 GET     /mind/intro                 @controllers.Intro.present
-GET     /mind/healthcheck           @controllers.HealthCheck.respond
+GET     /mind/health-check          @controllers.HealthCheck.respond
+GET     /mind/legal-neighbours      @controllers.LegalNeighbours.calculate
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

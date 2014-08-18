@@ -2,7 +2,7 @@ package nodes.helpers
 
 import ai.SelectionStrategy
 import com.google.inject.Inject
-import models.domain.common.Node
+import models.common.{IScope, Node}
 import scala.annotation.tailrec
 
 final case class CreateSeqNodes @Inject()(createNode: ICreateNode, ai: SelectionStrategy) extends ICreateSeqNodes {

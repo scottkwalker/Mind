@@ -1,6 +1,6 @@
 package nodes.legalNeighbours
 
-import models.domain.common.Node
+import models.common.{IScope, Node, Scope}
 import nodes.helpers._
 import org.mockito.Mockito._
 import utils.helpers.UnitSpec

@@ -1,6 +1,7 @@
 package nodes.legalNeighbours
 
-import nodes.helpers.{ICreateChildNodes, IScope}
+import models.common.IScope
+import nodes.helpers.ICreateChildNodes
 
 trait LegalNeighbours {
 

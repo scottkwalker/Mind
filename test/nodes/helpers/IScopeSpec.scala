@@ -1,5 +1,6 @@
 package nodes.helpers
 
+import models.common.{IScope, Scope}
 import play.api.libs.json.{JsNumber, JsObject, Json}
 import utils.helpers.UnitSpec
 

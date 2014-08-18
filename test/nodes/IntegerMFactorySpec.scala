@@ -1,9 +1,8 @@
 package nodes
 
-import com.google.inject.Guice
+import models.common.IScope
 import models.domain.scala.IntegerM
 import modules.ai.legalGamer.LegalGamerModule
-import nodes.helpers._
 import utils.helpers.UnitSpec
 
 final class IntegerMFactorySpec extends UnitSpec {

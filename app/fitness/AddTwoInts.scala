@@ -1,7 +1,7 @@
 package fitness
 
 import com.twitter.util.Eval
-import models.domain.common.Node
+import models.common.Node
 
 final class AddTwoInts(val nodeTree: Node) extends Fitness {
 

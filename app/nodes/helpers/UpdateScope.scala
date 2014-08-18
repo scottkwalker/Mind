@@ -1,5 +1,7 @@
 package nodes.helpers
 
+import models.common.IScope
+
 trait UpdateScope {
 
   def updateScope(scope: IScope): IScope

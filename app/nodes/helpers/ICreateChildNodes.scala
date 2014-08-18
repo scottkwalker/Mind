@@ -1,6 +1,6 @@
 package nodes.helpers
 
-import models.domain.common.Node
+import models.common.{IScope, Node}
 
 trait ICreateChildNodes {
 

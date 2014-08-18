@@ -1,6 +1,6 @@
 package nodes.helpers
 
-import models.domain.common.JsonValidationException
+import models.common.JsonValidationException
 import nodes.legalNeighbours.BitSetAdapter.readJsonBitMaskToBitset
 import play.api.libs.json.Json
 import utils.helpers.UnitSpec

@@ -1,7 +1,7 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import nodes.helpers.IScope
+import models.common.IScope
 import utils.helpers.UnitSpec
 
 final class IntegerMSpec extends UnitSpec {

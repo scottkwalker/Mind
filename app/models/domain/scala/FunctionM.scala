@@ -1,9 +1,9 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import models.domain.common.Node
+import models.common.{IScope, Node}
 import nodes._
-import nodes.helpers.{IScope, UpdateScopeIncrementFuncs}
+import nodes.helpers.UpdateScopeIncrementFuncs
 import scala.annotation.tailrec
 
 final case class FunctionM(params: Seq[Node],

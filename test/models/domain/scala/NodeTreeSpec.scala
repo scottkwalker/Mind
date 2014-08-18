@@ -1,8 +1,7 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import models.domain.common.Node
-import nodes.helpers.{IScope, Scope}
+import models.common.{IScope, Node, Scope}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import utils.helpers.UnitSpec

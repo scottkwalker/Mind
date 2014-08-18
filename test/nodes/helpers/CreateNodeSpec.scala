@@ -1,6 +1,7 @@
 package nodes.helpers
 
 import ai.SelectionStrategy
+import models.common.Scope
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
 import utils.helpers.UnitSpec

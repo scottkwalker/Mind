@@ -1,5 +1,6 @@
-package nodes.helpers
+package models.common
 
+import play.api.data.Forms.{mapping, _}
 import play.api.libs.json.Json
 
 final case class Scope(numVals: Int = 0,
@@ -28,6 +29,31 @@ final case class Scope(numVals: Int = 0,
 
 object Scope {
 
-  implicit private[helpers] val jsonFormat = Json.format[Scope]
+  implicit val jsonFormat = Json.format[Scope]
+
+  object Form {
+
+    // TODO May need to move to a view
+    val numValsId = "numVals"
+    val numFuncsId = "numFuncs"
+    val numObjectsId = "numObjects"
+    val heightId = "height"
+    val maxExpressionsInFuncId = "maxExpressionsInFunc"
+    val maxFuncsInObjectId = "maxFuncsInObject"
+    val maxParamsInFuncId = "maxParamsInFunc"
+    val maxObjectsInTreeId = "maxObjectsInTree"
+
+    final val Mapping = mapping(
+      numValsId -> number,
+      numFuncsId -> number,
+      numObjectsId -> number,
+      heightId -> number,
+      maxExpressionsInFuncId -> number,
+      maxFuncsInObjectId -> number,
+      maxParamsInFuncId -> number,
+      maxObjectsInTreeId -> number
+    )(Scope.apply)(Scope.unapply)
+  }
+
 }
 

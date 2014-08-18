@@ -1,6 +1,6 @@
 package nodes.helpers
 
-import models.domain.common.JsonValidationException
+import models.common.JsonValidationException
 import play.api.libs.json.Json.parse
 import play.api.libs.json.{JsValue, Json, Reads}
 

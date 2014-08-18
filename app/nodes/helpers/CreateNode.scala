@@ -2,7 +2,7 @@ package nodes.helpers
 
 import ai.SelectionStrategy
 import com.google.inject.Inject
-import models.domain.common.Node
+import models.common.{IScope, Node}
 
 final case class CreateNode @Inject()(ai: SelectionStrategy) extends ICreateNode {
 

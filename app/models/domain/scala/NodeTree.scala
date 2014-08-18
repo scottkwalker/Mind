@@ -1,9 +1,9 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import models.domain.common.Node
+import models.common.{IScope, Node}
 import nodes.NodeTreeFactoryImpl
-import nodes.helpers.{IScope, UpdateScopeThrows}
+import nodes.helpers.UpdateScopeThrows
 import scala.annotation.tailrec
 
 final case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows {

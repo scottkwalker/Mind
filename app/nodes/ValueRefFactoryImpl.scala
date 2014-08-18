@@ -2,7 +2,7 @@ package nodes
 
 import ai.SelectionStrategy
 import com.google.inject.Inject
-import models.domain.common.Node
+import models.common.{IScope, Node}
 import models.domain.scala.ValueRef
 import nodes.helpers._
 

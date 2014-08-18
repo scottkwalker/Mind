@@ -1,6 +1,6 @@
 package fitness
 
-import models.domain.common.Node
+import models.common.Node
 import models.domain.scala.{AddOperator, FunctionM, IntegerM, ObjectDef, _}
 import org.mockito.Mockito._
 import utils.helpers.UnitSpec

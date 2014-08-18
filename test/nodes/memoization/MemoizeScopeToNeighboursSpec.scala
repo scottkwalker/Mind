@@ -1,7 +1,7 @@
 package nodes.memoization
 
 import java.util.concurrent.CountDownLatch
-import nodes.helpers.Scope
+import models.common.Scope
 import nodes.legalNeighbours.FactoryIdToFactory
 import nodes.memoization.MemoizeScopeToNeighbours.readsMemoizeScopeToNeighbours
 import nodes.{AddOperatorFactoryImpl, ValueRefFactoryImpl}

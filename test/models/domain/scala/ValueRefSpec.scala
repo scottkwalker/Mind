@@ -1,7 +1,7 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import nodes.helpers.{IScope, Scope}
+import models.common.{IScope, Scope}
 import utils.helpers.UnitSpec
 
 final class ValueRefSpec extends UnitSpec {

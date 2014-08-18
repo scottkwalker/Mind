@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.{CountDownLatch, TimeUnit}
 import com.twitter.conversions.time._
 import com.twitter.util._
-import models.domain.common.JsonValidationException
+import models.common.JsonValidationException
 import org.mockito.Mockito._
 import play.api.libs.json.Json.obj
 import play.api.libs.json._

@@ -1,9 +1,9 @@
 package nodes
 
-import com.google.inject.{Guice, Injector}
+import com.google.inject.Injector
+import models.common.IScope
 import models.domain.scala.ValueRef
 import modules.ai.legalGamer.LegalGamerModule
-import nodes.helpers.IScope
 import org.mockito.Mockito._
 import utils.helpers.UnitSpec
 

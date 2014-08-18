@@ -1,7 +1,7 @@
 package nodes
 
 import com.google.inject.Inject
-import models.domain.common.Node
+import models.common.{IScope, Node}
 import models.domain.scala.NodeTree
 import nodes.helpers._
 import nodes.legalNeighbours.LegalNeighbours

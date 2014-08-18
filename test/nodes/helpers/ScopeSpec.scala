@@ -1,8 +1,8 @@
 package nodes.helpers
 
 import java.util.concurrent.CountDownLatch
-import com.google.inject.{Guice, Injector}
-import modules.DevModule
+import com.google.inject.Injector
+import models.common.{IScope, Scope}
 import modules.ai.aco.AcoModule
 import play.api.libs.json.Json.obj
 import play.api.libs.json._

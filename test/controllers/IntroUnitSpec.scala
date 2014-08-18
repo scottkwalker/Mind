@@ -1,7 +1,7 @@
 package controllers
 
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{contentAsString, OK, status}
+import play.api.test.Helpers.{OK, contentAsString, status}
 import utils.helpers.UnitSpec
 
 final class IntroUnitSpec extends UnitSpec {
@@ -14,7 +14,7 @@ final class IntroUnitSpec extends UnitSpec {
 
     "contain expected text" in {
       val result = intro.present(FakeRequest())
-      contentAsString(result) should include("Hello, World!")
+      contentAsString(result) should include("Mind")
     }
   }
 

@@ -1,8 +1,9 @@
 package nodes.legalNeighbours
 
 import com.google.inject.Inject
+import models.common.IScope
 import nodes._
-import nodes.helpers.{ICreateChildNodes, IScope}
+import nodes.helpers.ICreateChildNodes
 import nodes.memoization.MemoizeScopeToNeighbours
 
 final class LegalNeighboursImpl @Inject()(implicit intToFactory: FactoryIdToFactory) extends LegalNeighbours {

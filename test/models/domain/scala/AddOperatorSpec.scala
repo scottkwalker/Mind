@@ -2,8 +2,7 @@ package models.domain.scala
 
 import com.google.inject.Injector
 import com.tzavellas.sse.guice.ScalaModule
-import models.domain.common.Node
-import nodes.helpers.{IScope, Scope}
+import models.common.{IScope, Node, Scope}
 import nodes.{AddOperatorFactory, AddOperatorFactoryImpl}
 import org.mockito.Matchers._
 import org.mockito.Mockito._

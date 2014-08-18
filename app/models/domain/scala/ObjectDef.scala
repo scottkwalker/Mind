@@ -1,9 +1,9 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import models.domain.common.Node
+import models.common.{IScope, Node}
 import nodes._
-import nodes.helpers.{IScope, UpdateScopeIncrementObjects}
+import nodes.helpers.UpdateScopeIncrementObjects
 import scala.annotation.tailrec
 
 final case class ObjectDef(nodes: Seq[Node], name: String) extends Node with UpdateScopeIncrementObjects {
