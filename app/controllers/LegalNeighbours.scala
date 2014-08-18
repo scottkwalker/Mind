@@ -2,7 +2,9 @@ package controllers
 
 import com.google.inject.Inject
 import models.common.Scope
+import nodes.NodeTreeFactoryImpl
 import play.api.data.Form
+import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 
 final class LegalNeighbours @Inject()() extends Controller {
@@ -13,8 +15,10 @@ final class LegalNeighbours @Inject()() extends Controller {
 
   def calculate = Action { implicit request =>
     form.bindFromRequest.fold(
-      invalidForm => BadRequest,
-      validForm => Ok("<p>Hello, world!</p>")
+      invalidForm =>
+        BadRequest,
+      validForm =>
+        Ok(Json.toJson(Seq(NodeTreeFactoryImpl.id)))
     )
   }
 }
