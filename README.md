@@ -31,7 +31,7 @@ Development prerequisites
 
     Mac: `brew install sbt`
 
-3.  Increase 'permanent generation space' requirements for SBT.
+3.  If you are using Java 7 then you should increase the 'permanent generation space' requirements for SBT. Note: PermGen is managed automatically in Java 8.
 
     Mac: Create the file `~/.sbtconfig` with the following content:
 
