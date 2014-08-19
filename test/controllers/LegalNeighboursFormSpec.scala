@@ -1,7 +1,6 @@
 package controllers
 
 import models.common.Scope.Form._
-import play.api.data.FormError
 import utils.helpers.UnitSpec
 
 final class LegalNeighboursFormSpec extends UnitSpec {
@@ -35,7 +34,7 @@ final class LegalNeighboursFormSpec extends UnitSpec {
       errors(6).key should equal(maxParamsInFuncId)
       errors(7).key should equal(maxObjectsInTreeId)
 
-      for(i <- 0 until errors.length) {
+      for (i <- 0 until errors.length) {
         errors(i).messages should equal(List("error.number"))
       }
     }

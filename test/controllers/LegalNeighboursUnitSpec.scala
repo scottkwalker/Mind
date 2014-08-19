@@ -37,7 +37,15 @@ final class LegalNeighboursUnitSpec extends UnitSpec {
       }
     }
 
-    "return empty seq when submission is valid but no matches are in scope" in pending
+    "return empty seq when submission is valid but no matches are in scope" in new WithApplication {
+      val validRequest = requestWithDefaults(height = "0")
+      val result = legalNeighbours.calculate(validRequest)
+      whenReady(result) { r =>
+        r.body.map { b =>
+          Json.parse(b) should equal(Seq.empty)
+        }
+      }
+    }
   }
 
   private val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
