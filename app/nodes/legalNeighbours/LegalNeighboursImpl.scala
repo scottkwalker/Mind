@@ -6,7 +6,7 @@ import nodes._
 import nodes.helpers.ICreateChildNodes
 import nodes.memoization.MemoizeScopeToNeighbours
 
-final class LegalNeighboursImpl @Inject()(implicit factoryIdToFactory: FactoryIdToFactory) extends LegalNeighbours {
+final class LegalNeighboursImpl @Inject()(factoryIdToFactory: FactoryIdToFactory) extends LegalNeighbours {
 
   private val versioning = s"${AddOperatorFactoryImpl.id}|${FunctionMFactoryImpl.id}|${IntegerMFactoryImpl.id}|${NodeTreeFactoryImpl.id}|${ObjectDefFactoryImpl.id}|${ValDclInFunctionParamFactoryImpl.id}|${ValueRefFactoryImpl.id}"
   private val memo = new MemoizeScopeToNeighbours(versioning = versioning, factoryIdToFactory = factoryIdToFactory)

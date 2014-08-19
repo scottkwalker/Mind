@@ -15,11 +15,11 @@ final class LegalNeighboursImplSpec extends UnitSpec {
   private val fT1 = FakeFactoryTerminates1()
   private val fT2 = FakeFactoryTerminates2()
   private val legalNeighboursImpl = {
-    implicit val factoryIdToFactory = mock[FactoryIdToFactory]
+    val factoryIdToFactory = mock[FactoryIdToFactory]
     when(factoryIdToFactory.convert(FakeFactoryDoesNotTerminate.id)).thenReturn(fNot)
     when(factoryIdToFactory.convert(FakeFactoryTerminates1.id)).thenReturn(fT1)
     when(factoryIdToFactory.convert(FakeFactoryTerminates2.id)).thenReturn(fT2)
-    new LegalNeighboursImpl
+    new LegalNeighboursImpl(factoryIdToFactory = factoryIdToFactory)
   }
 
   case class FakeFactoryDoesNotTerminate() extends ICreateChildNodes with UpdateScopeNoChange {

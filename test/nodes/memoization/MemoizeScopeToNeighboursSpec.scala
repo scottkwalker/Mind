@@ -89,7 +89,7 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
           )
         )
       )
-      val readsFromJson = readsMemoizeScopeToNeighbours(versioning)(factoryIdToFactoryStub)
+      val readsFromJson = readsMemoizeScopeToNeighbours(versioning, factoryIdToFactoryStub)
       val asObj: MemoizeScopeToNeighbours = Memoize2Impl.read[MemoizeScopeToNeighbours](json)(readsFromJson)
 
       asObj.apply(scope, AddOperatorFactoryImpl.id) should equal(false)
@@ -111,7 +111,7 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
           )
         )
       )
-      val readsFromJson = readsMemoizeScopeToNeighbours(versioningWithoutAddOp)(factoryIdToFactoryStub)
+      val readsFromJson = readsMemoizeScopeToNeighbours(versioningWithoutAddOp, factoryIdToFactoryStub)
 
       a[RuntimeException] should be thrownBy Memoize2Impl.read[MemoizeScopeToNeighbours](json)(readsFromJson)
     }

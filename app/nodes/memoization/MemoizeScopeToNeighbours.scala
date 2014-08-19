@@ -35,7 +35,7 @@ object MemoizeScopeToNeighbours {
     }
   }
 
-  implicit def readsMemoizeScopeToNeighbours(versioning: String)(implicit factoryIdToFactory: FactoryIdToFactory): Reads[MemoizeScopeToNeighbours] =
+  implicit def readsMemoizeScopeToNeighbours(versioning: String, factoryIdToFactory: FactoryIdToFactory): Reads[MemoizeScopeToNeighbours] =
     (__ \ "versioning").read[String].flatMap[MemoizeScopeToNeighbours] {
       case versioningFromFile =>
         require(versioningFromFile == versioning, "version info from file did not match the intended versioning")
