@@ -1,6 +1,7 @@
 package controllers
 
 import models.common.Scope.Form._
+import play.api.data.FormError
 import utils.helpers.UnitSpec
 
 final class LegalNeighboursFormSpec extends UnitSpec {
@@ -22,7 +23,21 @@ final class LegalNeighboursFormSpec extends UnitSpec {
         maxParamsInFunc = "INVALID",
         maxObjectsInTree = "INVALID"
       ).errors
+
       errors.length should equal(8)
+
+      errors(0).key should equal(numValsId)
+      errors(1).key should equal(numFuncsId)
+      errors(2).key should equal(numObjectsId)
+      errors(3).key should equal(heightId)
+      errors(4).key should equal(maxExpressionsInFuncId)
+      errors(5).key should equal(maxFuncsInObjectId)
+      errors(6).key should equal(maxParamsInFuncId)
+      errors(7).key should equal(maxObjectsInTreeId)
+
+      for(i <- 0 until errors.length) {
+        errors(i).messages should equal(List("error.number"))
+      }
     }
 
     "accept when submission is valid" in {

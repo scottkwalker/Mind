@@ -16,7 +16,7 @@ final class LegalNeighbours @Inject()() extends Controller {
   def calculate = Action { implicit request =>
     form.bindFromRequest.fold(
       invalidForm =>
-        BadRequest,
+        BadRequest(s"form errors: ${invalidForm.errors}"),
       validForm =>
         Ok(Json.toJson(Seq(NodeTreeFactoryImpl.id)))
     )
