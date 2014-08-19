@@ -8,14 +8,13 @@ import play.api.libs.json._
 import scala.language.implicitConversions
 
 class MemoizeScopeToNeighbours(private var cache: Map[String, Either[CountDownLatch, Boolean]] = Map.empty[String, Either[CountDownLatch, Boolean]],
-                               private val versioning: String
-                                )
-                              (implicit intToFactory: FactoryIdToFactory)
+                               private val versioning: String,
+                               factoryIdToFactory: FactoryIdToFactory)
   extends Memoize2Impl[IScope, Int, Boolean](cache, versioning)(mapOfNeighboursToJson) {
 
   override def f(scope: IScope, neighbourId: Int): Boolean = {
     scope.hasHeightRemaining && {
-      val possibleNeighbourIds = intToFactory.convert(neighbourId).neighbourIds
+      val possibleNeighbourIds = factoryIdToFactory.convert(neighbourId).neighbourIds
       possibleNeighbourIds.isEmpty ||
         possibleNeighbourIds.exists { possNeighbourId =>
           missing(key1 = scope.decrementHeight, key2 = possNeighbourId)
@@ -46,7 +45,7 @@ object MemoizeScopeToNeighbours {
               case (k, v) => k -> Right[CountDownLatch, Boolean](v)
             }
 
-            new MemoizeScopeToNeighbours(cache, versioningFromFile)
+            new MemoizeScopeToNeighbours(cache, versioningFromFile, factoryIdToFactory)
         }
     }
 }

@@ -122,8 +122,8 @@ class MemoizeScopeToNeighboursSpec extends UnitSpec {
   private val valueRefFactoryImpl = injector.getInstance(classOf[ValueRefFactoryImpl])
 
   private def createSut(cache: Map[String, Either[CountDownLatch, Boolean]] = Map.empty[String, Either[CountDownLatch, Boolean]]) = {
-    implicit val factoryIdToFactory = factoryIdToFactoryStub
-    val sut = new MemoizeScopeToNeighbours(cache = cache, versioning = "test")
+    val factoryIdToFactory = factoryIdToFactoryStub
+    val sut = new MemoizeScopeToNeighbours(cache = cache, versioning = "test", factoryIdToFactory = factoryIdToFactory)
     (sut, factoryIdToFactory)
   }
 
