@@ -6,8 +6,9 @@ import nodes.NodeTreeFactoryImpl
 import play.api.data.Form
 import play.api.libs.json.Json.toJson
 import play.api.mvc.{Action, Controller}
+import nodes.legalNeighbours.LegalNeighboursMemo
 
-final class LegalNeighbours @Inject()() extends Controller {
+final class LegalNeighbours @Inject()(legalNeighboursMemo: LegalNeighboursMemo) extends Controller {
 
   private[controllers] val form = Form(
     Scope.Form.Mapping

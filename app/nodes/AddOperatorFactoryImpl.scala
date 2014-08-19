@@ -4,13 +4,13 @@ import com.google.inject.Inject
 import models.common.{IScope, Node}
 import models.domain.scala.AddOperator
 import nodes.helpers._
-import nodes.legalNeighbours.LegalNeighbours
+import nodes.legalNeighbours.LegalNeighboursMemo
 
 trait AddOperatorFactory extends ICreateChildNodes
 
 case class AddOperatorFactoryImpl @Inject()(
                                              creator: ICreateNode,
-                                             legalNeighbours: LegalNeighbours
+                                             legalNeighbours: LegalNeighboursMemo
                                              ) extends AddOperatorFactory with UpdateScopeNoChange {
 
   override val neighbourIds = Seq(ValueRefFactoryImpl.id)

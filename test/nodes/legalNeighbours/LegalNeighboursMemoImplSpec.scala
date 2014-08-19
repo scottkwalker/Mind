@@ -5,7 +5,7 @@ import nodes.helpers._
 import org.mockito.Mockito._
 import utils.helpers.UnitSpec
 
-final class LegalNeighboursImplSpec extends UnitSpec {
+final class LegalNeighboursMemoImplSpec extends UnitSpec {
 
   private val fNot: ICreateChildNodes = {
     val factory = mock[ICreateChildNodes]
@@ -19,7 +19,7 @@ final class LegalNeighboursImplSpec extends UnitSpec {
     when(factoryIdToFactory.convert(FakeFactoryDoesNotTerminate.id)).thenReturn(fNot)
     when(factoryIdToFactory.convert(FakeFactoryTerminates1.id)).thenReturn(fT1)
     when(factoryIdToFactory.convert(FakeFactoryTerminates2.id)).thenReturn(fT2)
-    new LegalNeighboursImpl(factoryIdToFactory = factoryIdToFactory)
+    new LegalNeighboursMemoImpl(factoryIdToFactory = factoryIdToFactory)
   }
 
   case class FakeFactoryDoesNotTerminate() extends ICreateChildNodes with UpdateScopeNoChange {

@@ -4,13 +4,13 @@ import com.google.inject.Inject
 import models.common.{IScope, Node}
 import models.domain.scala.FunctionM
 import nodes.helpers._
-import nodes.legalNeighbours.LegalNeighbours
+import nodes.legalNeighbours.LegalNeighboursMemo
 
 trait FunctionMFactory extends ICreateChildNodes
 
 case class FunctionMFactoryImpl @Inject()(
                                            creator: ICreateSeqNodes,
-                                           legalNeighbours: LegalNeighbours
+                                           legalNeighbours: LegalNeighboursMemo
                                            ) extends FunctionMFactory with UpdateScopeIncrementFuncs {
 
   override val neighbourIds = Seq(AddOperatorFactoryImpl.id, ValueRefFactoryImpl.id)

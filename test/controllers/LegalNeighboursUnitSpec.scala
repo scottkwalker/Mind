@@ -1,7 +1,9 @@
 package controllers
 
+import models.common.IScope
 import models.common.Scope.Form._
 import nodes.NodeTreeFactoryImpl
+import nodes.legalNeighbours.LegalNeighboursMemo
 import play.api.libs.json.Json
 import play.api.test.Helpers.{BAD_REQUEST, OK}
 import play.api.test.{FakeRequest, WithApplication}
@@ -46,6 +48,20 @@ final class LegalNeighboursUnitSpec extends UnitSpec {
         }
       }
     }
+
+    "call LegalNeighboursMemo.fetch when submission is valid" in pending /*new WithApplication {
+      val mockLegalNeighboursMemo = mock[LegalNeighboursMemo]
+      val validRequest = requestWithDefaults(height = "0")
+
+      stub a scalaModule
+      use testInjector
+      get sut
+
+      val result = sut.calculate(validRequest)
+      whenReady(result) { r =>
+        verify(mockLegalNeighboursMemo , times(1)).fetch(any[IScope], any[Seq[Int]])
+      }
+    }*/
   }
 
   private val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])

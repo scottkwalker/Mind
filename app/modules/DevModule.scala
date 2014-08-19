@@ -6,7 +6,7 @@ import models.common.{Scope, IScope}
 import models.domain.scala.Empty
 import nodes._
 import nodes.helpers._
-import nodes.legalNeighbours.{FactoryIdToFactory, FactoryIdToFactoryImpl, LegalNeighbours, LegalNeighboursImpl}
+import nodes.legalNeighbours.{FactoryIdToFactory, FactoryIdToFactoryImpl, LegalNeighboursMemo, LegalNeighboursMemoImpl}
 
 class DevModule() extends ScalaModule {
 
@@ -20,7 +20,7 @@ class DevModule() extends ScalaModule {
     bind(classOf[ICreateSeqNodes]).to(classOf[CreateSeqNodes]).asEagerSingleton()
     bind(classOf[IRandomNumberGenerator]).to(classOf[RandomNumberGenerator]).asEagerSingleton()
     bind(classOf[FactoryIdToFactory]).to(classOf[FactoryIdToFactoryImpl]).asEagerSingleton()
-    bind(classOf[LegalNeighbours]).to(classOf[LegalNeighboursImpl]).asEagerSingleton()
+    bind(classOf[LegalNeighboursMemo]).to(classOf[LegalNeighboursMemoImpl]).asEagerSingleton()
     bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl]).asEagerSingleton()
     bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl]).asEagerSingleton()
     bind(classOf[ValDclInFunctionParamFactory]).to(classOf[ValDclInFunctionParamFactoryImpl]).asEagerSingleton()

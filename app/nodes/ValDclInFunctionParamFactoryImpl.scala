@@ -4,13 +4,13 @@ import com.google.inject.Inject
 import models.common.{IScope, Node}
 import models.domain.scala.ValDclInFunctionParam
 import nodes.helpers._
-import nodes.legalNeighbours.LegalNeighbours
+import nodes.legalNeighbours.LegalNeighboursMemo
 
 trait ValDclInFunctionParamFactory extends ICreateChildNodes
 
 case class ValDclInFunctionParamFactoryImpl @Inject()(
                                                        creator: ICreateNode,
-                                                       legalNeighbours: LegalNeighbours
+                                                       legalNeighbours: LegalNeighboursMemo
                                                        ) extends ValDclInFunctionParamFactory with UpdateScopeIncrementVals {
 
   override val neighbourIds = Seq(IntegerMFactoryImpl.id)
