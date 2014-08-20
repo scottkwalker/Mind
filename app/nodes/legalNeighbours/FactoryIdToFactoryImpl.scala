@@ -22,4 +22,15 @@ final class FactoryIdToFactoryImpl @Inject()(addOperatorFactory: AddOperatorFact
     case ValueRefFactoryImpl.id => valueRefFactory
     case _ => throw new RuntimeException("Unknown id for factory")
   }
+
+  override def convert(factory: ICreateChildNodes): Int = factory match {
+    case `addOperatorFactory` => AddOperatorFactoryImpl.id
+    case `functionMFactory` => FunctionMFactoryImpl.id
+    case `integerMFactory` => IntegerMFactoryImpl.id
+    case `nodeTreeFactory` => NodeTreeFactoryImpl.id
+    case `objectDefFactory` => ObjectDefFactoryImpl.id
+    case `valDclInFunctionParamFactory` => ValDclInFunctionParamFactoryImpl.id
+    case `valueRefFactory` => ValueRefFactoryImpl.id
+    case _ => throw new RuntimeException("Unknown factory for id")
+  }
 }
