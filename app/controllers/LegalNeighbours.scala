@@ -1,7 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
-import models.common.{LegalNeighboursRequest, Scope}
+import models.common.LegalNeighboursRequest
 import nodes.legalNeighbours.{FactoryIdToFactory, LegalNeighboursMemo}
 import play.api.data.Form
 import play.api.libs.json.Json.toJson
@@ -20,7 +20,7 @@ final class LegalNeighbours @Inject()(legalNeighboursMemo: LegalNeighboursMemo, 
       },
       validForm => {
         // TODO neighbours should be a single id coming in on the form.
-        val result = legalNeighboursMemo.fetch(scope = validForm.scope, currentNode = 1)
+        val result = legalNeighboursMemo.fetch(scope = validForm.scope, currentNode = validForm.currentNode)
         Ok(toJson(result))
       }
     )

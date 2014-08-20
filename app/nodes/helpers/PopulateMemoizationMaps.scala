@@ -1,7 +1,7 @@
 package nodes.helpers
 
 import com.google.inject.Inject
-import models.common.{Scope, IScope}
+import models.common.{IScope, Scope}
 import nodes._
 
 /* Plan

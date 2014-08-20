@@ -2,7 +2,7 @@ package modules
 
 import _root_.ai.{IRandomNumberGenerator, RandomNumberGenerator}
 import com.tzavellas.sse.guice.ScalaModule
-import models.common.{Scope, IScope}
+import models.common.{IScope, Scope}
 import models.domain.scala.Empty
 import nodes._
 import nodes.helpers._

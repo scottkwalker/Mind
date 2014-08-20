@@ -2,13 +2,14 @@ package controllers
 
 import models.common.Scope.Form._
 import utils.helpers.UnitSpec
+import models.common.LegalNeighboursRequest.Form.currentNodeId
 
 final class LegalNeighboursFormSpec extends UnitSpec {
 
   "form" should {
     "reject when submission is empty" in {
       val errors = legalNeighbours.form.bind(Map("" -> "")).errors
-      errors.length should equal(8)
+      errors.length should equal(9)
     }
 
     "reject when submission contains wrong types" in {
@@ -20,10 +21,11 @@ final class LegalNeighboursFormSpec extends UnitSpec {
         maxExpressionsInFunc = "INVALID",
         maxFuncsInObject = "INVALID",
         maxParamsInFunc = "INVALID",
-        maxObjectsInTree = "INVALID"
+        maxObjectsInTree = "INVALID",
+        currentNode = "INVALID"
       ).errors
 
-      errors.length should equal(8)
+      errors.length should equal(9)
 
       errors(0).key should equal(s"$scopeId.$numValsId")
       errors(1).key should equal(s"$scopeId.$numFuncsId")
@@ -33,6 +35,7 @@ final class LegalNeighboursFormSpec extends UnitSpec {
       errors(5).key should equal(s"$scopeId.$maxFuncsInObjectId")
       errors(6).key should equal(s"$scopeId.$maxParamsInFuncId")
       errors(7).key should equal(s"$scopeId.$maxObjectsInTreeId")
+      errors(8).key should equal(currentNodeId)
 
       for (i <- 0 until errors.length) {
         errors(i).messages should equal(List("error.number"))
@@ -48,6 +51,7 @@ final class LegalNeighboursFormSpec extends UnitSpec {
       val maxFuncsInObject = 6
       val maxParamsInFunc = 7
       val maxObjectsInTree = 8
+      val currentNode = 1
       val result = formWithValidDefaults(
         numVals.toString,
         numFuncs.toString,
@@ -56,7 +60,8 @@ final class LegalNeighboursFormSpec extends UnitSpec {
         maxExpressionsInFunc.toString,
         maxFuncsInObject.toString,
         maxParamsInFunc.toString,
-        maxObjectsInTree.toString
+        maxObjectsInTree.toString,
+        currentNode.toString
       )
       result.errors.length should equal(0)
       val model = result.get
@@ -78,7 +83,8 @@ final class LegalNeighboursFormSpec extends UnitSpec {
                                     maxExpressionsInFunc: String,
                                     maxFuncsInObject: String,
                                     maxParamsInFunc: String,
-                                    maxObjectsInTree: String) = {
+                                    maxObjectsInTree: String,
+                                    currentNode: String) = {
     legalNeighbours.form.bind(
       Map(
         s"$scopeId.$numValsId" -> numVals,
@@ -88,7 +94,8 @@ final class LegalNeighboursFormSpec extends UnitSpec {
         s"$scopeId.$maxExpressionsInFuncId" -> maxExpressionsInFunc,
         s"$scopeId.$maxFuncsInObjectId" -> maxFuncsInObject,
         s"$scopeId.$maxParamsInFuncId" -> maxParamsInFunc,
-        s"$scopeId.$maxObjectsInTreeId" -> maxObjectsInTree
+        s"$scopeId.$maxObjectsInTreeId" -> maxObjectsInTree,
+        currentNodeId -> currentNode
       )
     )
   }

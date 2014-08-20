@@ -3,7 +3,6 @@ package controllers
 import com.google.inject.Inject
 import org.joda.time.format.ISODateTimeFormat
 import play.api.mvc.{Action, Controller}
-import org.joda.time.DateTime
 
 final class HealthCheck @Inject()() extends Controller {
 
