@@ -9,12 +9,12 @@ import utils.helpers.UnitSpec
 
 final class LegalNeighboursMemoImplSpec extends UnitSpec {
 
-  private val fakeFactoryDoesNotTerminate1 = {
+  private val fakeFactoryTerminates1 = {
     val factory = mock[ICreateChildNodes]
     when(factory.neighbourIds).thenReturn(Seq.empty)
     factory
   }
-  private val fakeFactoryDoesNotTerminate2 = {
+  private val fakeFactoryTerminates2 = {
     val factory = mock[ICreateChildNodes]
     when(factory.neighbourIds).thenReturn(Seq.empty)
     factory
@@ -35,8 +35,8 @@ final class LegalNeighboursMemoImplSpec extends UnitSpec {
         fakeFactoryDoesNotTerminate
       }
       when(factoryIdToFactory.convert(fakeFactoryDoesNotTerminateId)).thenReturn(fNot)
-      when(factoryIdToFactory.convert(fakeFactoryTerminates1Id)).thenReturn(fakeFactoryDoesNotTerminate1)
-      when(factoryIdToFactory.convert(fakeFactoryTerminates2Id)).thenReturn(fakeFactoryDoesNotTerminate2)
+      when(factoryIdToFactory.convert(fakeFactoryTerminates1Id)).thenReturn(fakeFactoryTerminates1)
+      when(factoryIdToFactory.convert(fakeFactoryTerminates2Id)).thenReturn(fakeFactoryTerminates2)
       bind(classOf[FactoryIdToFactory]).toInstance(factoryIdToFactory)
     }
   }
@@ -66,12 +66,12 @@ final class LegalNeighboursMemoImplSpec extends UnitSpec {
           fakeFactoryTerminates2Id)
       )
 
-      result should equal(Seq(fakeFactoryDoesNotTerminate1, fakeFactoryDoesNotTerminate2))
+      result should equal(Seq(fakeFactoryTerminates1, fakeFactoryTerminates2))
     }
   }
 
   "fetch with current node" should {
-    "call FactoryIdToFactory.convert(id)" in pending
+    "call FactoryIdToFactory.convert(factory)" in pending
     "returns only the neighbours that can terminate" in pending
   }
 }
