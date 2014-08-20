@@ -91,7 +91,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
     }
 
     "returns without empty nodes given there were empty nodes" in {
-      class StubFactoryCreate extends ScalaModule {
+      final class StubFactoryCreate extends ScalaModule {
 
         def configure(): Unit = {
           val n: Node = mock[Node]

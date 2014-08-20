@@ -8,7 +8,7 @@ import nodes._
 import nodes.helpers._
 import nodes.legalNeighbours.{FactoryIdToFactory, FactoryIdToFactoryImpl, LegalNeighboursMemo, LegalNeighboursMemoImpl}
 
-class DevModule() extends ScalaModule {
+final class DevModule() extends ScalaModule {
 
   def configure(): Unit = {
     bind(classOf[Empty]).asEagerSingleton()
