@@ -34,6 +34,7 @@ object Scope {
   object Form {
 
     // TODO May need to move to a view
+    val scopeId = "scope"
     val numValsId = "numVals"
     val numFuncsId = "numFuncs"
     val numObjectsId = "numObjects"
@@ -44,14 +45,14 @@ object Scope {
     val maxObjectsInTreeId = "maxObjectsInTree"
 
     final val Mapping = mapping(
-      numValsId -> number,
-      numFuncsId -> number,
-      numObjectsId -> number,
-      heightId -> number,
-      maxExpressionsInFuncId -> number,
-      maxFuncsInObjectId -> number,
-      maxParamsInFuncId -> number,
-      maxObjectsInTreeId -> number
+      s"$scopeId.$numValsId" -> number,
+      s"$scopeId.$numFuncsId" -> number,
+      s"$scopeId.$numObjectsId" -> number,
+      s"$scopeId.$heightId" -> number,
+      s"$scopeId.$maxExpressionsInFuncId" -> number,
+      s"$scopeId.$maxFuncsInObjectId" -> number,
+      s"$scopeId.$maxParamsInFuncId" -> number,
+      s"$scopeId.$maxObjectsInTreeId" -> number
     )(Scope.apply)(Scope.unapply)
   }
 

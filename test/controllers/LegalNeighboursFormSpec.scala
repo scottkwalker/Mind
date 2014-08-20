@@ -25,14 +25,14 @@ final class LegalNeighboursFormSpec extends UnitSpec {
 
       errors.length should equal(8)
 
-      errors(0).key should equal(numValsId)
-      errors(1).key should equal(numFuncsId)
-      errors(2).key should equal(numObjectsId)
-      errors(3).key should equal(heightId)
-      errors(4).key should equal(maxExpressionsInFuncId)
-      errors(5).key should equal(maxFuncsInObjectId)
-      errors(6).key should equal(maxParamsInFuncId)
-      errors(7).key should equal(maxObjectsInTreeId)
+      errors(0).key should equal(s"$scopeId.$numValsId")
+      errors(1).key should equal(s"$scopeId.$numFuncsId")
+      errors(2).key should equal(s"$scopeId.$numObjectsId")
+      errors(3).key should equal(s"$scopeId.$heightId")
+      errors(4).key should equal(s"$scopeId.$maxExpressionsInFuncId")
+      errors(5).key should equal(s"$scopeId.$maxFuncsInObjectId")
+      errors(6).key should equal(s"$scopeId.$maxParamsInFuncId")
+      errors(7).key should equal(s"$scopeId.$maxObjectsInTreeId")
 
       for (i <- 0 until errors.length) {
         errors(i).messages should equal(List("error.number"))
@@ -81,14 +81,14 @@ final class LegalNeighboursFormSpec extends UnitSpec {
                                     maxObjectsInTree: String) = {
     legalNeighbours.form.bind(
       Map(
-        numValsId -> numVals,
-        numFuncsId -> numFuncs,
-        numObjectsId -> numObjects,
-        heightId -> height,
-        maxExpressionsInFuncId -> maxExpressionsInFunc,
-        maxFuncsInObjectId -> maxFuncsInObject,
-        maxParamsInFuncId -> maxParamsInFunc,
-        maxObjectsInTreeId -> maxObjectsInTree
+        s"$scopeId.$numValsId" -> numVals,
+        s"$scopeId.$numFuncsId" -> numFuncs,
+        s"$scopeId.$numObjectsId" -> numObjects,
+        s"$scopeId.$heightId" -> height,
+        s"$scopeId.$maxExpressionsInFuncId" -> maxExpressionsInFunc,
+        s"$scopeId.$maxFuncsInObjectId" -> maxFuncsInObject,
+        s"$scopeId.$maxParamsInFuncId" -> maxParamsInFunc,
+        s"$scopeId.$maxObjectsInTreeId" -> maxObjectsInTree
       )
     )
   }

@@ -90,13 +90,13 @@ final class LegalNeighboursUnitSpec extends UnitSpec {
                                    maxObjectsInTree: String = "8"
                                    ) =
     FakeRequest().withFormUrlEncodedBody(
-      s"$numValsId" -> numVals,
-      s"$numFuncsId" -> numFuncs,
-      s"$numObjectsId" -> numObjects,
-      s"$heightId" -> height,
-      s"$maxExpressionsInFuncId" -> maxExpressionsInFunc,
-      s"$maxFuncsInObjectId" -> maxFuncsInObject,
-      s"$maxParamsInFuncId" -> maxParamsInFunc,
-      s"$maxObjectsInTreeId" -> maxObjectsInTree
+      s"$scopeId.$numValsId" -> numVals,
+      s"$scopeId.$numFuncsId" -> numFuncs,
+      s"$scopeId.$numObjectsId" -> numObjects,
+      s"$scopeId.$heightId" -> height,
+      s"$scopeId.$maxExpressionsInFuncId" -> maxExpressionsInFunc,
+      s"$scopeId.$maxFuncsInObjectId" -> maxFuncsInObject,
+      s"$scopeId.$maxParamsInFuncId" -> maxParamsInFunc,
+      s"$scopeId.$maxObjectsInTreeId" -> maxObjectsInTree
     )
 }
