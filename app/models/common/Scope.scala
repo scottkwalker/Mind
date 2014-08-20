@@ -45,14 +45,14 @@ object Scope {
     val maxObjectsInTreeId = "maxObjectsInTree"
 
     final val Mapping = mapping(
-      s"$scopeId.$numValsId" -> number,
-      s"$scopeId.$numFuncsId" -> number,
-      s"$scopeId.$numObjectsId" -> number,
-      s"$scopeId.$heightId" -> number,
-      s"$scopeId.$maxExpressionsInFuncId" -> number,
-      s"$scopeId.$maxFuncsInObjectId" -> number,
-      s"$scopeId.$maxParamsInFuncId" -> number,
-      s"$scopeId.$maxObjectsInTreeId" -> number
+      s"$numValsId" -> number,
+      s"$numFuncsId" -> number,
+      s"$numObjectsId" -> number,
+      s"$heightId" -> number,
+      s"$maxExpressionsInFuncId" -> number,
+      s"$maxFuncsInObjectId" -> number,
+      s"$maxParamsInFuncId" -> number,
+      s"$maxObjectsInTreeId" -> number
     )(Scope.apply)(Scope.unapply)
   }
 

@@ -60,14 +60,14 @@ final class LegalNeighboursFormSpec extends UnitSpec {
       )
       result.errors.length should equal(0)
       val model = result.get
-      model.numVals should equal(numVals)
-      model.numFuncs should equal(numFuncs)
-      model.numObjects should equal(numObjects)
-      model.height should equal(height)
-      model.maxExpressionsInFunc should equal(maxExpressionsInFunc)
-      model.maxFuncsInObject should equal(maxFuncsInObject)
-      model.maxParamsInFunc should equal(maxParamsInFunc)
-      model.maxObjectsInTree should equal(maxObjectsInTree)
+      model.scope.numVals should equal(numVals)
+      model.scope.numFuncs should equal(numFuncs)
+      model.scope.numObjects should equal(numObjects)
+      model.scope.height should equal(height)
+      model.scope.maxExpressionsInFunc should equal(maxExpressionsInFunc)
+      model.scope.maxFuncsInObject should equal(maxFuncsInObject)
+      model.scope.maxParamsInFunc should equal(maxParamsInFunc)
+      model.scope.maxObjectsInTree should equal(maxObjectsInTree)
     }
   }
 

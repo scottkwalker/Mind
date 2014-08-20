@@ -1,8 +1,8 @@
 package controllers
 
 import com.tzavellas.sse.guice.ScalaModule
-import models.common.IScope
 import models.common.Scope.Form._
+import models.common.{LegalNeighboursRequest, IScope, Scope}
 import nodes.NodeTreeFactoryImpl
 import nodes.legalNeighbours.LegalNeighboursMemo
 import org.mockito.Matchers.any
@@ -43,7 +43,7 @@ final class LegalNeighboursUnitSpec extends UnitSpec {
     }
 
     "return empty seq when submission is valid but no matches are in scope" in new WithApplication {
-      val validRequest = requestWithDefaults(height = "0")
+      val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
       val result = legalNeighbours.calculate(validRequest)
       whenReady(result) { r =>
         r.body.map { b =>
@@ -54,7 +54,7 @@ final class LegalNeighboursUnitSpec extends UnitSpec {
 
     "call LegalNeighboursMemo.fetch when submission is valid" in new WithApplication {
       val legalNeighboursMemo = mock[LegalNeighboursMemo]
-      val validRequest = requestWithDefaults(height = "0")
+      val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
 
       final class StubLegalNeighboursMemo extends ScalaModule {
 
@@ -78,7 +78,7 @@ final class LegalNeighboursUnitSpec extends UnitSpec {
   }
 
   private val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
-
+/*
   private def requestWithDefaults(
                                    numVals: String = "1",
                                    numFuncs: String = "2",
@@ -98,5 +98,21 @@ final class LegalNeighboursUnitSpec extends UnitSpec {
       s"$scopeId.$maxFuncsInObjectId" -> maxFuncsInObject,
       s"$scopeId.$maxParamsInFuncId" -> maxParamsInFunc,
       s"$scopeId.$maxObjectsInTreeId" -> maxObjectsInTree
-    )
+    )*/
+
+  private val scopeDefault = Scope(
+    numVals = 1,
+    numFuncs = 2,
+    numObjects = 3,
+    height = 4,
+    maxExpressionsInFunc = 5,
+    maxFuncsInObject = 6,
+    maxParamsInFunc = 7,
+    maxObjectsInTree = 8
+  )
+
+  private def requestWithDefaults(scope: Scope = scopeDefault) = {
+    val request = LegalNeighboursRequest(scope)
+    FakeRequest().withJsonBody(Json.toJson(request))
+  }
 }
