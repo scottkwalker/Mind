@@ -3,17 +3,18 @@ package nodes.legalNeighbours
 import com.tzavellas.sse.guice.ScalaModule
 import models.common.Scope
 import nodes.helpers._
-import org.mockito.Mockito._
+import org.mockito.Matchers.any
+import org.mockito.Mockito.{times, verify, when}
 import utils.helpers.UnitSpec
 
 final class LegalNeighboursMemoImplSpec extends UnitSpec {
 
-  private val fT1 = {
+  private val fakeFactoryDoesNotTerminate1 = {
     val factory = mock[ICreateChildNodes]
     when(factory.neighbourIds).thenReturn(Seq.empty)
     factory
   }
-  private val fT2 = {
+  private val fakeFactoryDoesNotTerminate2 = {
     val factory = mock[ICreateChildNodes]
     when(factory.neighbourIds).thenReturn(Seq.empty)
     factory
@@ -25,29 +26,37 @@ final class LegalNeighboursMemoImplSpec extends UnitSpec {
 
   private val fakeFactoryTerminates2Id = 2
 
-  private final class StubFactoryIdToFactory extends ScalaModule {
+  private final class StubFactoryIdToFactory(factoryIdToFactory: FactoryIdToFactory) extends ScalaModule {
 
     def configure(): Unit = {
       val fNot: ICreateChildNodes = {
-        val factory = mock[ICreateChildNodes]
-        when(factory.neighbourIds).thenReturn(Seq(fakeFactoryDoesNotTerminateId))
-        factory
+        val fakeFactoryDoesNotTerminate = mock[ICreateChildNodes]
+        when(fakeFactoryDoesNotTerminate.neighbourIds).thenReturn(Seq(fakeFactoryDoesNotTerminateId))
+        fakeFactoryDoesNotTerminate
       }
-
-      val factoryIdToFactory = mock[FactoryIdToFactory]
       when(factoryIdToFactory.convert(fakeFactoryDoesNotTerminateId)).thenReturn(fNot)
-      when(factoryIdToFactory.convert(fakeFactoryTerminates1Id)).thenReturn(fT1)
-      when(factoryIdToFactory.convert(fakeFactoryTerminates2Id)).thenReturn(fT2)
+      when(factoryIdToFactory.convert(fakeFactoryTerminates1Id)).thenReturn(fakeFactoryDoesNotTerminate1)
+      when(factoryIdToFactory.convert(fakeFactoryTerminates2Id)).thenReturn(fakeFactoryDoesNotTerminate2)
       bind(classOf[FactoryIdToFactory]).toInstance(factoryIdToFactory)
     }
   }
 
   "fetch with neighbours" should {
-    "call FactoryIdToFactory.convert(factory)" in pending
+    "call FactoryIdToFactory.convert(factory)" in {
+      val scope = Scope(height = 3)
+      val factoryIdToFactory = mock[FactoryIdToFactory]
+      val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory)) // Override an implementation returned by IoC with a stubbed version.
+      val legalNeighboursImpl = injector.getInstance(classOf[LegalNeighboursMemo])
+
+      legalNeighboursImpl.fetch(scope = scope, neighbours = Seq(fakeFactoryTerminates1Id))
+
+      verify(factoryIdToFactory, times(2)).convert(fakeFactoryTerminates1Id)
+    }
 
     "returns only the neighbours that can terminate" in {
       val scope = Scope(height = 3)
-      val injector = testInjector(new StubFactoryIdToFactory) // Override an implementation returned by IoC with a stubbed version.
+      val factoryIdToFactory = mock[FactoryIdToFactory]
+      val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory)) // Override an implementation returned by IoC with a stubbed version.
       val legalNeighboursImpl = injector.getInstance(classOf[LegalNeighboursMemo])
 
       val result = legalNeighboursImpl.fetch(scope = scope,
@@ -57,7 +66,7 @@ final class LegalNeighboursMemoImplSpec extends UnitSpec {
           fakeFactoryTerminates2Id)
       )
 
-      result should equal(Seq(fT1, fT2))
+      result should equal(Seq(fakeFactoryDoesNotTerminate1, fakeFactoryDoesNotTerminate2))
     }
   }
 
