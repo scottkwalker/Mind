@@ -1,9 +1,12 @@
 package controllers
 
+import com.tzavellas.sse.guice.ScalaModule
 import models.common.IScope
 import models.common.Scope.Form._
 import nodes.NodeTreeFactoryImpl
 import nodes.legalNeighbours.LegalNeighboursMemo
+import org.mockito.Matchers.any
+import org.mockito.Mockito.{times, verify, when}
 import play.api.libs.json.Json
 import play.api.test.Helpers.{BAD_REQUEST, OK}
 import play.api.test.{FakeRequest, WithApplication}
@@ -49,19 +52,26 @@ final class LegalNeighboursUnitSpec extends UnitSpec {
       }
     }
 
-    "call LegalNeighboursMemo.fetch when submission is valid" in pending /*new WithApplication {
-      val mockLegalNeighboursMemo = mock[LegalNeighboursMemo]
+    "call LegalNeighboursMemo.fetch when submission is valid" in new WithApplication {
+      val legalNeighboursMemo = mock[LegalNeighboursMemo]
       val validRequest = requestWithDefaults(height = "0")
 
-      stub a scalaModule
-      use testInjector
-      get sut
+      final class StubLegalNeighboursMemo extends ScalaModule {
+
+        def configure(): Unit = {
+          when(legalNeighboursMemo.fetch(any[IScope], any[Seq[Int]])).thenReturn(Seq.empty)
+          bind(classOf[LegalNeighboursMemo]).toInstance(legalNeighboursMemo)
+        }
+      }
+
+      val injector = testInjector(new StubLegalNeighboursMemo)
+      val sut = injector.getInstance(classOf[LegalNeighbours])
 
       val result = sut.calculate(validRequest)
       whenReady(result) { r =>
-        verify(mockLegalNeighboursMemo , times(1)).fetch(any[IScope], any[Seq[Int]])
+        verify(legalNeighboursMemo, times(1)).fetch(any[IScope], any[Seq[Int]])
       }
-    }*/
+    }
   }
 
   private val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
