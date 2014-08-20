@@ -18,4 +18,9 @@ final class LegalNeighboursMemoImpl @Inject()(factoryIdToFactory: FactoryIdToFac
       filter(neighbour => memo.apply(key1 = scope, key2 = neighbour)). // Remove neighbours that cannot terminate at this scope.
       map(factoryIdToFactory.convert)
   }
+
+  override def fetch(scope: IScope, currentNode: Int): Seq[Int] = {
+    fetch(scope=scope, neighbours= Seq(currentNode)).
+      map(factoryIdToFactory.convert)
+  }
 }

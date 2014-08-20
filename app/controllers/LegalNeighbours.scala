@@ -19,8 +19,8 @@ final class LegalNeighbours @Inject()(legalNeighboursMemo: LegalNeighboursMemo, 
         BadRequest(s"form errors: ${invalidForm.errors}")
       },
       validForm => {
-        val result = legalNeighboursMemo.fetch(scope = validForm, neighbours = Seq.empty).
-          map(factoryIdToFactory.convert)
+        // TODO neighbours should be a single id coming in on the form.
+        val result = legalNeighboursMemo.fetch(scope = validForm, currentNode = 1)
         Ok(toJson(result))
       }
     )

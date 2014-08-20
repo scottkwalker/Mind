@@ -59,7 +59,7 @@ final class LegalNeighboursUnitSpec extends UnitSpec {
       final class StubLegalNeighboursMemo extends ScalaModule {
 
         def configure(): Unit = {
-          when(legalNeighboursMemo.fetch(any[IScope], any[Seq[Int]])).thenReturn(Seq.empty)
+          when(legalNeighboursMemo.fetch(any[IScope], any[Int])).thenReturn(Seq.empty)
           bind(classOf[LegalNeighboursMemo]).toInstance(legalNeighboursMemo)
         }
       }
@@ -69,9 +69,12 @@ final class LegalNeighboursUnitSpec extends UnitSpec {
 
       val result = sut.calculate(validRequest)
       whenReady(result) { r =>
-        verify(legalNeighboursMemo, times(1)).fetch(any[IScope], any[Seq[Int]])
+        verify(legalNeighboursMemo, times(1)).fetch(any[IScope], any[Int])
       }
     }
+
+    "return empty result when submission is valid but no legal moves are found" in pending
+    "return expected result when submission is valid and legal moves are found" in pending
   }
 
   private val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
