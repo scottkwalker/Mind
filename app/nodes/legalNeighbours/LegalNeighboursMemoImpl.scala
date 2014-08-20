@@ -20,7 +20,8 @@ final class LegalNeighboursMemoImpl @Inject()(factoryIdToFactory: FactoryIdToFac
   }
 
   override def fetch(scope: IScope, currentNode: Int): Seq[Int] = {
-    fetch(scope=scope, neighbours= Seq(currentNode)).
+    val factory = factoryIdToFactory.convert(currentNode)
+    fetch(scope = scope, neighbours = factory.neighbourIds).
       map(factoryIdToFactory.convert)
   }
 }

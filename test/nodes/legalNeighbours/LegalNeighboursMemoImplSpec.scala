@@ -1,75 +1,68 @@
 package nodes.legalNeighbours
 
-import models.common.{IScope, Node, Scope}
+import com.tzavellas.sse.guice.ScalaModule
+import models.common.Scope
 import nodes.helpers._
 import org.mockito.Mockito._
 import utils.helpers.UnitSpec
 
 final class LegalNeighboursMemoImplSpec extends UnitSpec {
 
-  private val fNot: ICreateChildNodes = {
+  private val fT1 = {
     val factory = mock[ICreateChildNodes]
-    when(factory.neighbourIds).thenReturn(Seq(FakeFactoryDoesNotTerminate.id))
+    when(factory.neighbourIds).thenReturn(Seq.empty)
     factory
   }
-  private val fT1 = FakeFactoryTerminates1()
-  private val fT2 = FakeFactoryTerminates2()
-  private val legalNeighboursImpl = {
-    val factoryIdToFactory = mock[FactoryIdToFactory]
-    when(factoryIdToFactory.convert(FakeFactoryDoesNotTerminate.id)).thenReturn(fNot)
-    when(factoryIdToFactory.convert(FakeFactoryTerminates1.id)).thenReturn(fT1)
-    when(factoryIdToFactory.convert(FakeFactoryTerminates2.id)).thenReturn(fT2)
-    new LegalNeighboursMemoImpl(factoryIdToFactory = factoryIdToFactory)
+  private val fT2 = {
+    val factory = mock[ICreateChildNodes]
+    when(factory.neighbourIds).thenReturn(Seq.empty)
+    factory
   }
 
-  case class FakeFactoryDoesNotTerminate() extends ICreateChildNodes with UpdateScopeNoChange {
+  private val fakeFactoryDoesNotTerminateId = 0
 
-    override val neighbourIds: Seq[Int] = Seq(FakeFactoryDoesNotTerminate.id)
+  private val fakeFactoryTerminates1Id = 1
 
-    override def create(scope: IScope): Node = ???
+  private val fakeFactoryTerminates2Id = 2
+
+  private final class StubFactoryIdToFactory extends ScalaModule {
+
+    def configure(): Unit = {
+      val fNot: ICreateChildNodes = {
+        val factory = mock[ICreateChildNodes]
+        when(factory.neighbourIds).thenReturn(Seq(fakeFactoryDoesNotTerminateId))
+        factory
+      }
+
+      val factoryIdToFactory = mock[FactoryIdToFactory]
+      when(factoryIdToFactory.convert(fakeFactoryDoesNotTerminateId)).thenReturn(fNot)
+      when(factoryIdToFactory.convert(fakeFactoryTerminates1Id)).thenReturn(fT1)
+      when(factoryIdToFactory.convert(fakeFactoryTerminates2Id)).thenReturn(fT2)
+      bind(classOf[FactoryIdToFactory]).toInstance(factoryIdToFactory)
+    }
   }
 
-  case class FakeFactoryTerminates1() extends ICreateChildNodes with UpdateScopeNoChange {
+  "fetch with neighbours" should {
+    "call FactoryIdToFactory.convert(factory)" in pending
 
-    override val neighbourIds: Seq[Int] = Seq.empty
-
-    override def create(scope: IScope): Node = ???
-  }
-
-  case class FakeFactoryTerminates2() extends ICreateChildNodes with UpdateScopeNoChange {
-
-    override val neighbourIds: Seq[Int] = Seq.empty
-
-    override def create(scope: IScope): Node = ???
-  }
-
-  object FakeFactoryDoesNotTerminate {
-
-    val id = 0
-  }
-
-  object FakeFactoryTerminates1 {
-
-    val id = 1
-  }
-
-  object FakeFactoryTerminates2 {
-
-    val id = 2
-  }
-
-  "fetchLegalNeighbours" should {
     "returns only the neighbours that can terminate" in {
       val scope = Scope(height = 3)
+      val injector = testInjector(new StubFactoryIdToFactory) // Override an implementation returned by IoC with a stubbed version.
+      val legalNeighboursImpl = injector.getInstance(classOf[LegalNeighboursMemo])
 
       val result = legalNeighboursImpl.fetch(scope = scope,
-        neighbours = Seq(FakeFactoryDoesNotTerminate.id,
-          FakeFactoryTerminates1.id,
-          FakeFactoryDoesNotTerminate.id,
-          FakeFactoryTerminates2.id)
+        neighbours = Seq(fakeFactoryDoesNotTerminateId,
+          fakeFactoryTerminates1Id,
+          fakeFactoryDoesNotTerminateId,
+          fakeFactoryTerminates2Id)
       )
 
       result should equal(Seq(fT1, fT2))
     }
+  }
+
+  "fetch with current node" should {
+    "call FactoryIdToFactory.convert(id)" in pending
+    "returns only the neighbours that can terminate" in pending
   }
 }
