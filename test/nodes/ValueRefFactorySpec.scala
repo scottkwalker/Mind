@@ -1,11 +1,11 @@
 package nodes
 
 import com.google.inject.Injector
+import composition.TestComposition
 import models.common.IScope
 import models.domain.scala.ValueRef
 import modules.ai.legalGamer.LegalGamerModule
 import org.mockito.Mockito._
-import composition.TestComposition
 
 final class ValueRefFactorySpec extends TestComposition {
 

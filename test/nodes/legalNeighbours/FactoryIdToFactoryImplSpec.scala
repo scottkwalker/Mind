@@ -1,8 +1,8 @@
 package nodes.legalNeighbours
 
+import composition.TestComposition
 import nodes._
 import nodes.helpers.ICreateChildNodes
-import composition.TestComposition
 
 final class FactoryIdToFactoryImplSpec extends TestComposition {
 

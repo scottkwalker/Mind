@@ -1,13 +1,13 @@
 package nodes.memoization
 
 import java.util.concurrent.CountDownLatch
+import composition.TestComposition
 import models.common.Scope
 import nodes.legalNeighbours.FactoryIdToFactory
 import nodes.memoization.MemoizeScopeToNeighbours.readsMemoizeScopeToNeighbours
 import nodes.{AddOperatorFactoryImpl, ValueRefFactoryImpl}
 import org.mockito.Mockito._
 import play.api.libs.json._
-import composition.TestComposition
 
 class MemoizeScopeToNeighboursSpec extends TestComposition {
 

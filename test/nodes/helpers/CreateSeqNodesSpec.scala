@@ -2,10 +2,10 @@ package nodes.helpers
 
 import ai.aco.Aco
 import ai.{IRandomNumberGenerator, SelectionStrategy}
+import composition.TestComposition
 import models.common.{IScope, Node, Scope}
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
-import composition.TestComposition
 
 final class CreateSeqNodesSpec extends TestComposition {
 

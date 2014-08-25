@@ -1,8 +1,8 @@
 package nodes.legalNeighbours
 
+import composition.TestComposition
 import nodes.helpers.{BinarySerializer, JsonDeserialiser}
 import play.api.libs.json.Json
-import composition.TestComposition
 import scala.collection.immutable.BitSet
 
 final class BitsetSpec extends TestComposition {

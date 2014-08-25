@@ -1,9 +1,9 @@
 package ai
 
 import ai.legalGamer.LegalGamer
+import composition.TestComposition
 import models.common.IScope
 import org.mockito.Mockito._
-import composition.TestComposition
 
 final class SelectionStrategySpec extends TestComposition {
 

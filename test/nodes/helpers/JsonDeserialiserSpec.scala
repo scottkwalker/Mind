@@ -1,9 +1,9 @@
 package nodes.helpers
 
+import composition.TestComposition
 import models.common.JsonValidationException
 import nodes.legalNeighbours.BitSetAdapter.readJsonBitMaskToBitset
 import play.api.libs.json.Json
-import composition.TestComposition
 import scala.collection.immutable.BitSet
 
 final class JsonDeserialiserSpec extends TestComposition {

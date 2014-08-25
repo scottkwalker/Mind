@@ -1,9 +1,9 @@
 package nodes
 
+import composition.TestComposition
 import models.common.IScope
 import models.domain.scala.IntegerM
 import modules.ai.legalGamer.LegalGamerModule
-import composition.TestComposition
 
 final class IntegerMFactorySpec extends TestComposition {
 

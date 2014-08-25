@@ -1,10 +1,10 @@
 package nodes.helpers
 
 import ai.SelectionStrategy
+import composition.TestComposition
 import models.common.{IScope, Node}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import composition.TestComposition
 
 final class CreateSeqNodeScalaTestSpec extends TestComposition {
 

@@ -4,10 +4,10 @@ import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.{CountDownLatch, TimeUnit}
 import com.twitter.conversions.time._
 import com.twitter.util._
+import composition.TestComposition
 import org.mockito.Mockito._
 import play.api.libs.json.Json._
 import play.api.libs.json._
-import composition.TestComposition
 import scala.annotation.tailrec
 
 final class Memoize1ImplSpec extends TestComposition {

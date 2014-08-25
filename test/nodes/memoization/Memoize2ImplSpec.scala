@@ -4,11 +4,11 @@ import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.{CountDownLatch, TimeUnit}
 import com.twitter.conversions.time._
 import com.twitter.util._
+import composition.TestComposition
 import models.common.JsonValidationException
 import org.mockito.Mockito._
 import play.api.libs.json.Json.obj
 import play.api.libs.json._
-import composition.TestComposition
 
 final class Memoize2ImplSpec extends TestComposition {
 

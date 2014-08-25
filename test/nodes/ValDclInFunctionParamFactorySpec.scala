@@ -1,11 +1,11 @@
 package nodes
 
 import com.google.inject.Injector
+import composition.TestComposition
 import models.common.{IScope, Scope}
 import models.domain.scala.{IntegerM, ValDclInFunctionParam}
 import modules.ai.legalGamer.LegalGamerModule
 import org.mockito.Mockito._
-import composition.TestComposition
 
 final class ValDclInFunctionParamFactorySpec extends TestComposition {
 

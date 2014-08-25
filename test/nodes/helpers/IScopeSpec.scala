@@ -1,8 +1,8 @@
 package nodes.helpers
 
+import composition.TestComposition
 import models.common.{IScope, Scope}
 import play.api.libs.json.{JsNumber, JsObject, Json}
-import composition.TestComposition
 
 final class IScopeSpec extends TestComposition {
 

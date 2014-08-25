@@ -1,10 +1,10 @@
 package nodes.legalNeighbours
 
 import com.tzavellas.sse.guice.ScalaModule
+import composition.TestComposition
 import models.common.Scope
 import nodes.helpers._
 import org.mockito.Mockito.{times, verify, when}
-import composition.TestComposition
 
 final class LegalNeighboursMemoImplSpec extends TestComposition {
 

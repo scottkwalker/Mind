@@ -2,11 +2,11 @@ package nodes.helpers
 
 import java.util.concurrent.CountDownLatch
 import com.google.inject.Injector
+import composition.TestComposition
 import models.common.{IScope, Scope}
 import modules.ai.aco.AcoModule
 import play.api.libs.json.Json.obj
 import play.api.libs.json._
-import composition.TestComposition
 import scala.collection.immutable.BitSet
 
 final class ScopeSpec extends TestComposition {

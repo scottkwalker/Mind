@@ -1,8 +1,8 @@
 package nodes
 
+import composition.TestComposition
 import models.common.Scope
 import models.domain.scala.AddOperator
-import composition.TestComposition
 
 final class AddOperatorFactorySpec extends TestComposition {
 

@@ -2,11 +2,11 @@ package nodes
 
 import ai.IRandomNumberGenerator
 import com.tzavellas.sse.guice.ScalaModule
+import composition.TestComposition
 import models.common.{IScope, Scope}
 import models.domain.scala.ObjectDef
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import composition.TestComposition
 
 final class ObjectDefFactorySpec extends TestComposition {
 

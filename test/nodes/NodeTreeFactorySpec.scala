@@ -2,12 +2,12 @@ package nodes
 
 import ai.IRandomNumberGenerator
 import com.tzavellas.sse.guice.ScalaModule
+import composition.TestComposition
 import models.common.{IScope, Node, Scope}
 import models.domain.scala.NodeTree
 import nodes.helpers._
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import composition.TestComposition
 
 final class NodeTreeFactorySpec extends TestComposition {
 
