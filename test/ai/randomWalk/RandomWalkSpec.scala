@@ -4,11 +4,11 @@ import ai.{IRandomNumberGenerator, SelectionStrategy}
 import com.google.inject.Injector
 import com.tzavellas.sse.guice.ScalaModule
 import composition.TestComposition
+import factory.ICreateChildNodes
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.{FunctionM, IntegerM, NodeTree, ObjectDef, _}
 import modules.ai.randomWalk.RandomWalkModule
-import nodes.helpers._
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 

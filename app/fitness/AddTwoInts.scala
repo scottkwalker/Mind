@@ -1,7 +1,7 @@
 package fitness
 
-import models.common.Node
 import composition.Eval
+import models.domain.Node
 
 final class AddTwoInts(val nodeTree: Node) extends Fitness {
 

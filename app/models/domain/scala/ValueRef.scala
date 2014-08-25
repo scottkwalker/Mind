@@ -1,8 +1,9 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import models.common.{IScope, Node}
-import nodes.helpers.UpdateScopeNoChange
+import factory.UpdateScopeNoChange
+import models.common.IScope
+import models.domain.Node
 
 final case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
 

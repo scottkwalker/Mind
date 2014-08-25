@@ -2,7 +2,8 @@ package models.domain.scala
 
 import com.google.inject.Injector
 import composition.TestComposition
-import models.common.{IScope, Node, Scope}
+import models.common.{IScope, Scope}
+import models.domain.Node
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 

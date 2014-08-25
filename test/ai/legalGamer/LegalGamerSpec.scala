@@ -2,10 +2,10 @@ package ai.legalGamer
 
 import ai.{IRandomNumberGenerator, SelectionStrategy}
 import composition.TestComposition
+import factory.ICreateChildNodes
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.{Empty, FunctionM, IntegerM, NodeTree, ObjectDef, ValDclInFunctionParam}
-import nodes.helpers.ICreateChildNodes
 
 final class LegalGamerSpec extends TestComposition {
 

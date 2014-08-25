@@ -1,7 +1,7 @@
 package ai
 
+import factory.ICreateChildNodes
 import models.common.IScope
-import nodes.helpers._
 
 trait SelectionStrategy {
 

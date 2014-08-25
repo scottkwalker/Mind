@@ -1,9 +1,9 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import models.common.{IScope, Node}
-import nodes._
-import nodes.helpers.UpdateScopeNoChange
+import factory.{UpdateScopeNoChange, ValueRefFactoryImpl}
+import models.common.IScope
+import models.domain.Node
 
 final case class AddOperator(left: Node, right: Node) extends Node with UpdateScopeNoChange {
 

@@ -1,7 +1,7 @@
 package fitness
 
 import composition.TestComposition
-import models.common.Node
+import models.domain.Node
 import models.domain.scala.{AddOperator, FunctionM, IntegerM, ObjectDef, _}
 import org.mockito.Mockito._
 

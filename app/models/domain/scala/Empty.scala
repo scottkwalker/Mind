@@ -1,8 +1,9 @@
 package models.domain.scala
 
 import com.google.inject.{Inject, Injector}
-import models.common.{IScope, Node}
-import nodes.helpers.UpdateScopeThrows
+import factory.UpdateScopeThrows
+import models.common.IScope
+import models.domain.Node
 
 final case class Empty @Inject()() extends Node with UpdateScopeThrows {
 

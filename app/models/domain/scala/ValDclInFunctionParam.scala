@@ -1,9 +1,9 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import models.common.{IScope, Node}
-import nodes.IntegerMFactoryImpl
-import nodes.helpers.UpdateScopeIncrementVals
+import factory.{IntegerMFactoryImpl, UpdateScopeIncrementVals}
+import models.common.IScope
+import models.domain.Node
 
 final case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node with UpdateScopeIncrementVals {
 

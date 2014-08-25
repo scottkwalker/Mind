@@ -2,9 +2,9 @@ package controllers
 
 import com.tzavellas.sse.guice.ScalaModule
 import composition.TestComposition
+import factory.NodeTreeFactoryImpl
+import memoization.LegalNeighboursMemo
 import models.common.{IScope, LegalNeighboursRequest, Scope}
-import nodes.NodeTreeFactoryImpl
-import nodes.legalNeighbours.LegalNeighboursMemo
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 import play.api.libs.json.Json

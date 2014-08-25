@@ -1,13 +1,13 @@
 package controllers
 
 import com.google.inject.Inject
+import memoization.LegalNeighboursMemo
 import models.common.LegalNeighboursRequest
-import nodes.legalNeighbours.{FactoryIdToFactory, LegalNeighboursMemo}
 import play.api.data.Form
 import play.api.libs.json.Json.toJson
 import play.api.mvc.{Action, Controller}
 
-final class LegalNeighbours @Inject()(legalNeighboursMemo: LegalNeighboursMemo, factoryIdToFactory: FactoryIdToFactory) extends Controller {
+final class LegalNeighbours @Inject()(legalNeighboursMemo: LegalNeighboursMemo) extends Controller {
 
   private[controllers] val form = Form(
     LegalNeighboursRequest.Form.Mapping

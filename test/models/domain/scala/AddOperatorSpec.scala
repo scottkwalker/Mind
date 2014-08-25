@@ -3,8 +3,9 @@ package models.domain.scala
 import com.google.inject.Injector
 import com.tzavellas.sse.guice.ScalaModule
 import composition.TestComposition
-import models.common.{IScope, Node, Scope}
-import nodes.{AddOperatorFactory, AddOperatorFactoryImpl}
+import factory.{AddOperatorFactory, AddOperatorFactoryImpl}
+import models.common.{IScope, Scope}
+import models.domain.Node
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
