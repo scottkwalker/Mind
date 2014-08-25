@@ -31,7 +31,7 @@ final class LegalNeighboursUnitSpec extends UnitSpec {
       }
     }
 
-    "return ok with seq of ids when submission is valid" in new WithApplication {
+    "return ok with seq of ids when submission is valid and legal moves are found" in new WithApplication {
       val validRequest = requestWithDefaults()
       val result = legalNeighbours.calculate(validRequest)
       whenReady(result) { r =>
@@ -72,9 +72,10 @@ final class LegalNeighboursUnitSpec extends UnitSpec {
       }
     }
 
-    "throw when submission contains unknown currentNode" in pending
-    "return empty result when submission is valid but no legal moves are found" in pending
-    "return expected result when submission is valid and legal moves are found" in pending
+    "throw when submission contains unknown currentNode" in new WithApplication {
+      val validRequest = requestWithDefaults(currentNode = -1)
+      a[RuntimeException] should be thrownBy legalNeighbours.calculate(validRequest)
+    }
   }
 
   private val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
