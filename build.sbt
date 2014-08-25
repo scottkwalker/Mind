@@ -33,3 +33,5 @@ ScoverageSbtPlugin.ScoverageKeys.excludedPackages in ScoverageSbtPlugin.scoverag
 CoverallsPlugin.coverallsSettings
 
 incOptions := incOptions.value.withNameHashing(nameHashing = true)
+
+showCurrentGitBranch // https://github.com/sbt/sbt-git

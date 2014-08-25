@@ -11,6 +11,8 @@ resolvers += "sonatype-releases" at "https://oss.sonatype.org/content/repositori
 
 resolvers += "Boundary Public Repo" at "http://maven.boundary.com/artifactory/repo"
 
+resolvers += "jgit-repo" at "http://download.eclipse.org/jgit/maven"
+
 // Use the Play sbt plugin for Play projects
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.3")
 
@@ -22,3 +24,5 @@ addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.3")
 addSbtPlugin("org.scoverage" %% "sbt-scoverage" % "0.98.2")
 
 addSbtPlugin("com.sksamuel.scoverage" %% "sbt-coveralls" % "0.0.5")
+
+addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.6.4")
