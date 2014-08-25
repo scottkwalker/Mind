@@ -1,9 +1,9 @@
 package nodes.helpers
 
 import nodes._
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class PopulateMemoizationMapsSpec extends UnitSpec {
+final class PopulateMemoizationMapsSpec extends TestComposition {
 /*
   private val addOperatorFactory = injector.getInstance(classOf[AddOperatorFactoryImpl])
   private val functionMFactory = injector.getInstance(classOf[FunctionMFactoryImpl])
@@ -13,22 +13,22 @@ final class PopulateMemoizationMapsSpec extends UnitSpec {
   private val valDclInFunctionParamFactory = injector.getInstance(classOf[ValDclInFunctionParamFactoryImpl])
   private val valueRefFactory = injector.getInstance(classOf[ValueRefFactoryImpl])
 */
-    "IoC" should {
+    "IoC" must {
       "init an instance of PopulateMemoizationMaps" in {
         // Act
         val instance = injector.getInstance(classOf[IPopulateMemoizationMaps])
 
         // Assert
-        instance shouldBe a[PopulateMemoizationMaps]
+        instance mustBe a[PopulateMemoizationMaps]
       }
     }
 
-  "memoizeCanTerminateInStepsRemaining" should {
+  "memoizeCanTerminateInStepsRemaining" must {
     "uncomment the below" in pending
   }
 
 /*
-    "memoizeCanTerminateInStepsRemaining" should {
+    "memoizeCanTerminateInStepsRemaining" must {
 
       "call canTerminateInStepsRemaining in factory" in {
         // Arrange
@@ -119,7 +119,7 @@ final class PopulateMemoizationMapsSpec extends UnitSpec {
       }
     }
 
-    "run" should {
+    "run" must {
       "populate map for each factory" in {
         val maxExpressionsInFunc = 1
         val maxFuncsInObject = 1

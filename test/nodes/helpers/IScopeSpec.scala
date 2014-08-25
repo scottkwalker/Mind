@@ -2,13 +2,13 @@ package nodes.helpers
 
 import models.common.{IScope, Scope}
 import play.api.libs.json.{JsNumber, JsObject, Json}
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class IScopeSpec extends UnitSpec {
+final class IScopeSpec extends TestComposition {
 
-  "serialize" should {
+  "serialize" must {
     "return expected json" in {
-      Json.toJson(asModel) should equal(
+      Json.toJson(asModel) must equal(
         JsObject(
           Seq(
             ("numVals", JsNumber(0)),
@@ -26,9 +26,9 @@ final class IScopeSpec extends UnitSpec {
     }
   }
 
-  "deserialize" should {
+  "deserialize" must {
     "return expected model" in {
-      JsonDeserialiser.deserialize[IScope](asJson) should equal(asModel)
+      JsonDeserialiser.deserialize[IScope](asJson) must equal(asModel)
     }
   }
 

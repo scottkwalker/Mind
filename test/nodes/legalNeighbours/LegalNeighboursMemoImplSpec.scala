@@ -4,11 +4,11 @@ import com.tzavellas.sse.guice.ScalaModule
 import models.common.Scope
 import nodes.helpers._
 import org.mockito.Mockito.{times, verify, when}
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class LegalNeighboursMemoImplSpec extends UnitSpec {
+final class LegalNeighboursMemoImplSpec extends TestComposition {
 
-  "fetch with neighbours" should {
+  "fetch with neighbours" must {
     "call FactoryIdToFactory.convert(factory) for only the nodes that can terminate" in {
       val scope = Scope(height = 3)
       val factoryIdToFactory = mock[FactoryIdToFactory]
@@ -33,11 +33,11 @@ final class LegalNeighboursMemoImplSpec extends UnitSpec {
           fakeFactoryTerminates2Id)
       )
 
-      result should equal(Seq(fakeFactoryTerminates1, fakeFactoryTerminates2))
+      result must equal(Seq(fakeFactoryTerminates1, fakeFactoryTerminates2))
     }
   }
 
-  "fetch with current node" should {
+  "fetch with current node" must {
     "call FactoryIdToFactory.convert(id) for only the nodes that can terminate" in {
       val scope = Scope(height = 3)
       val factoryIdToFactory = mock[FactoryIdToFactory]
@@ -58,7 +58,7 @@ final class LegalNeighboursMemoImplSpec extends UnitSpec {
 
       val result = legalNeighboursImpl.fetch(scope = scope, currentNode = fakeFactoryHasChildrenId)
 
-      result should equal(Seq(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
+      result must equal(Seq(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
     }
   }
 

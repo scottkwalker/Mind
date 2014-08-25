@@ -1,12 +1,12 @@
 package nodes.helpers
 
 import ai.SelectionStrategy
+import composition.TestComposition
 import models.common.Scope
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec2
 
-final class CreateNodeSpec extends UnitSpec2 {
+final class CreateNodeSpec extends TestComposition {
 
   "create" must {
     "calls chooseChild on ai" in {

@@ -3,17 +3,17 @@ package nodes
 import models.common.IScope
 import models.domain.scala.IntegerM
 import modules.ai.legalGamer.LegalGamerModule
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class IntegerMFactorySpec extends UnitSpec {
+final class IntegerMFactorySpec extends TestComposition {
 
-  "neighbours" should {
+  "neighbours" must {
     "have no possible children" in {
-      factory.neighbourIds.length should equal(0)
+      factory.neighbourIds.length must equal(0)
     }
   }
 
-  "create" should {
+  "create" must {
     "return instance of this type" in {
       // Arrange
       val s = mock[IScope]
@@ -22,7 +22,7 @@ final class IntegerMFactorySpec extends UnitSpec {
       val instance = factory.create(s)
 
       // Assert
-      instance shouldBe a[IntegerM]
+      instance mustBe a[IntegerM]
     }
   }
 

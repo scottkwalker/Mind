@@ -7,19 +7,19 @@ import com.twitter.util._
 import org.mockito.Mockito._
 import play.api.libs.json.Json._
 import play.api.libs.json._
-import utils.helpers.UnitSpec
+import composition.TestComposition
 import scala.annotation.tailrec
 
-final class Memoize1ImplSpec extends UnitSpec {
+final class Memoize1ImplSpec extends TestComposition {
 
-  "apply" should {
+  "apply" must {
     "return the same result when called twice" in {
       val memoizePlusOne = new Memoize1Impl[Int, Int] {
         def f(i: Int): Int = i + 1
       }
 
-      memoizePlusOne(1) should equal(2)
-      memoizePlusOne(1) should equal(2)
+      memoizePlusOne(1) must equal(2)
+      memoizePlusOne(1) must equal(2)
     }
 
     "only runs the function once for the same input (fibonacci recursive)" in {
@@ -39,12 +39,12 @@ final class Memoize1ImplSpec extends UnitSpec {
         def f(i: Int): Int = fib(i)
       }
 
-      memoizer(1) should equal(1)
-      memoizer(1) should equal(1)
-      memoizer(2) should equal(1)
-      memoizer(2) should equal(1)
-      memoizer(3) should equal(2)
-      memoizer(3) should equal(2)
+      memoizer(1) must equal(1)
+      memoizer(1) must equal(1)
+      memoizer(2) must equal(1)
+      memoizer(2) must equal(1)
+      memoizer(3) must equal(2)
+      memoizer(3) must equal(2)
 
       verify(fib, times(1))(1)
       verify(fib, times(1))(2)
@@ -67,12 +67,12 @@ final class Memoize1ImplSpec extends UnitSpec {
         def f(i: Int): Int = fib(i)
       }
 
-      memoizer(1) should equal(1)
-      memoizer(1) should equal(1)
-      memoizer(2) should equal(1)
-      memoizer(2) should equal(1)
-      memoizer(3) should equal(2)
-      memoizer(3) should equal(2)
+      memoizer(1) must equal(1)
+      memoizer(1) must equal(1)
+      memoizer(2) must equal(1)
+      memoizer(2) must equal(1)
+      memoizer(3) must equal(2)
+      memoizer(3) must equal(2)
 
       verify(fib, times(1))(1)
       verify(fib, times(1))(2)
@@ -92,10 +92,10 @@ final class Memoize1ImplSpec extends UnitSpec {
         def f(i: Int): Int = adder(i)
       }
 
-      memoizePlusOne(1) should equal(2)
-      memoizePlusOne(1) should equal(2)
-      memoizePlusOne(2) should equal(3)
-      memoizePlusOne(2) should equal(3)
+      memoizePlusOne(1) must equal(2)
+      memoizePlusOne(1) must equal(2)
+      memoizePlusOne(2) must equal(3)
+      memoizePlusOne(2) must equal(3)
 
       verify(adder, times(1))(1)
       verify(adder, times(1))(2)
@@ -141,12 +141,12 @@ final class Memoize1ImplSpec extends UnitSpec {
       results foreach {
         item =>
           val result = results(0)
-          result should equal(item)
-          result should be theSameInstanceAs item
+          result must equal(item)
+          result must be theSameInstanceAs item
       }
 
       // The effects happen exactly once
-      callCount.get() should equal(1)
+      callCount.get() must equal(1)
     }
 
     "handles exceptions during computations" in {
@@ -159,14 +159,14 @@ final class Memoize1ImplSpec extends UnitSpec {
         override def apply(i: Int) = {
           // Ensure that all of the callers have been started
           startUpLatch.await(200, TimeUnit.MILLISECONDS)
-          // This effect should happen once per exception plus once for
+          // This effect must happen once per exception plus once for
           // all successes
           val n = callCount.incrementAndGet()
           if (n == 1) throw TheException else i + 1
         }
       }
 
-      // A computation that should fail the first time, and then
+      // A computation that must fail the first time, and then
       // succeed for all subsequent attempts.
       val failFirstTime = spy(new FailFirstTime)
       val memoizeFailFirstTime = new Memoize1Impl[Int, Int] {
@@ -190,18 +190,18 @@ final class Memoize1ImplSpec extends UnitSpec {
         }
 
       // One of the times, the computation must have failed.
-      failures should equal(List(Throw(TheException)))
+      failures must equal(List(Throw(TheException)))
 
       // Another time, it must have succeeded, and then the stored
       // result will be reused for the other calls.
-      successes should equal(List.fill(ConcurrencyLevel - 1)(Return(6)))
+      successes must equal(List.fill(ConcurrencyLevel - 1)(Return(6)))
 
       // The exception plus another successful call:
-      callCount.get() should equal(2)
+      callCount.get() must equal(2)
     }
   }
 
-  "write" should {
+  "write" must {
     "turn map into Json" in {
       val memoizeFib = new Memoize1Impl[Int, Int] {
         def f(i: Int): Int = i match {
@@ -211,11 +211,11 @@ final class Memoize1ImplSpec extends UnitSpec {
         }
       }
 
-      memoizeFib(1) should equal(1)
-      memoizeFib(2) should equal(1)
-      memoizeFib(3) should equal(2)
+      memoizeFib(1) must equal(1)
+      memoizeFib(2) must equal(1)
+      memoizeFib(3) must equal(2)
 
-      memoizeFib.write should equal(
+      memoizeFib.write must equal(
         JsObject(
           Seq(
             ("1",
@@ -256,7 +256,7 @@ final class Memoize1ImplSpec extends UnitSpec {
   private implicit val eitherLatchOrIntToJson = new Writes[Either[CountDownLatch, Int]] {
     def writes(o: Either[CountDownLatch, Int]): JsValue = obj(
       o.fold(
-        countDownLatchContent => ???, // Should be filtered out at a higher level so that we do not store incomplete calculations.
+        countDownLatchContent => ???, // must be filtered out at a higher level so that we do not store incomplete calculations.
         intContent => "intContent" -> Json.toJson(intContent)
       )
     )
@@ -275,7 +275,7 @@ final class Memoize1ImplSpec extends UnitSpec {
   private implicit val eitherLatchOrStringToJson = new Writes[Either[CountDownLatch, String]] {
     def writes(o: Either[CountDownLatch, String]): JsValue = obj(
       o.fold(
-        countDownLatchContent => ???, // Should be filtered out at a higher level so that we do not store incomplete calculations.
+        countDownLatchContent => ???, // must be filtered out at a higher level so that we do not store incomplete calculations.
         intContent => "strContent" -> Json.toJson(intContent.toString)
       )
     )

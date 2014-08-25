@@ -5,22 +5,22 @@ import models.common.IScope
 import models.domain.scala.ValueRef
 import modules.ai.legalGamer.LegalGamerModule
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class ValueRefFactorySpec extends UnitSpec {
+final class ValueRefFactorySpec extends TestComposition {
 
-  "create" should {
+  "create" must {
     "return instance of this type" in {
       val instance = factory.create(scope = scope)
 
-      instance shouldBe a[ValueRef]
+      instance mustBe a[ValueRef]
     }
 
     "return expected given scope with 0 vals" in {
       val instance = factory.create(scope = scope)
 
       instance match {
-        case ValueRef(name) => name should equal("v0")
+        case ValueRef(name) => name must equal("v0")
       }
     }
 
@@ -28,23 +28,23 @@ final class ValueRefFactorySpec extends UnitSpec {
       val instance = factory.create(scope = scope)
 
       instance match {
-        case ValueRef(name) => name should equal("v0")
+        case ValueRef(name) => name must equal("v0")
         case _ => fail("wrong type")
       }
     }
   }
 
-  "neighbours" should {
+  "neighbours" must {
     "be empty" in {
-      factory.neighbourIds.length should equal(0)
+      factory.neighbourIds.length must equal(0)
     }
   }
 
-  "updateScope" should {
+  "updateScope" must {
     "return unchanged" in {
       val result = factory.updateScope(scope)
 
-      result should equal(scope)
+      result must equal(scope)
     }
   }
 

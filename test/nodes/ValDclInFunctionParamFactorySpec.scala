@@ -5,17 +5,17 @@ import models.common.{IScope, Scope}
 import models.domain.scala.{IntegerM, ValDclInFunctionParam}
 import modules.ai.legalGamer.LegalGamerModule
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class ValDclInFunctionParamFactorySpec extends UnitSpec {
+final class ValDclInFunctionParamFactorySpec extends TestComposition {
 
-  "create" should {
+  "create" must {
     "returns instance of this type" in {
       val s = Scope(height = 10, maxParamsInFunc = 1)
 
       val instance = factory.create(scope = s)
 
-      instance shouldBe a[ValDclInFunctionParam]
+      instance mustBe a[ValDclInFunctionParam]
     }
 
     "returns expected given scope with 0 vals" in {
@@ -25,8 +25,8 @@ final class ValDclInFunctionParamFactorySpec extends UnitSpec {
 
       instance match {
         case ValDclInFunctionParam(name, primitiveType) =>
-          name should equal("v0")
-          primitiveType shouldBe a[IntegerM]
+          name must equal("v0")
+          primitiveType mustBe a[IntegerM]
         case _ => fail("wrong type")
       }
     }
@@ -38,14 +38,14 @@ final class ValDclInFunctionParamFactorySpec extends UnitSpec {
 
       instance match {
         case ValDclInFunctionParam(name, primitiveType) =>
-          name should equal("v1")
-          primitiveType shouldBe a[IntegerM]
+          name must equal("v1")
+          primitiveType mustBe a[IntegerM]
         case _ => fail("wrong type")
       }
     }
   }
 
-  "updateScope" should {
+  "updateScope" must {
     "calls increments vals once" in {
       val s = mock[IScope]
 

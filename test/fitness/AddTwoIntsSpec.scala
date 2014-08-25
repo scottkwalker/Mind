@@ -1,11 +1,11 @@
 package fitness
 
+import composition.TestComposition
 import models.common.Node
 import models.domain.scala.{AddOperator, FunctionM, IntegerM, ObjectDef, _}
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec2
 
-final class AddTwoIntsSpec extends UnitSpec2 {
+final class AddTwoIntsSpec extends TestComposition {
 
   "Addition" must {
     "1 add 1 equals 2 with NodeTree that returns hard coded raw Scala" in {

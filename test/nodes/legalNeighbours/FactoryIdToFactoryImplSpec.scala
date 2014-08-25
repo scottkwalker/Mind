@@ -2,58 +2,58 @@ package nodes.legalNeighbours
 
 import nodes._
 import nodes.helpers.ICreateChildNodes
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class FactoryIdToFactoryImplSpec extends UnitSpec {
+final class FactoryIdToFactoryImplSpec extends TestComposition {
 
-  "convert id to factory" should {
+  "convert id to factory" must {
     "throw when id is not in the list" in {
-      a[RuntimeException] should be thrownBy sut.convert(-1)
+      a[RuntimeException] must be thrownBy sut.convert(-1)
     }
 
     "return expected factory" in {
-      factoryIdToFactory.convert(NodeTreeFactoryImpl.id) should equal(nodeTreeFactory)
+      factoryIdToFactory.convert(NodeTreeFactoryImpl.id) must equal(nodeTreeFactory)
     }
   }
 
-  "convert factory to id" should {
+  "convert factory to id" must {
     "throw when id is not in the list" in {
-      a[RuntimeException] should be thrownBy sut.convert(mock[ICreateChildNodes])
+      a[RuntimeException] must be thrownBy sut.convert(mock[ICreateChildNodes])
     }
 
     "return expected id for AddOperatorFactory" in {
       val factory = injector.getInstance(classOf[AddOperatorFactory])
-      sut.convert(factory) should equal(AddOperatorFactoryImpl.id)
+      sut.convert(factory) must equal(AddOperatorFactoryImpl.id)
     }
 
     "return expected id for FunctionMFactory" in {
       val factory = injector.getInstance(classOf[FunctionMFactory])
-      sut.convert(factory) should equal(FunctionMFactoryImpl.id)
+      sut.convert(factory) must equal(FunctionMFactoryImpl.id)
     }
 
     "return expected id for IntegerMFactory" in {
       val factory = injector.getInstance(classOf[IntegerMFactory])
-      sut.convert(factory) should equal(IntegerMFactoryImpl.id)
+      sut.convert(factory) must equal(IntegerMFactoryImpl.id)
     }
 
     "return expected id for NodeTreeFactory" in {
       val factory = injector.getInstance(classOf[NodeTreeFactory])
-      sut.convert(factory) should equal(NodeTreeFactoryImpl.id)
+      sut.convert(factory) must equal(NodeTreeFactoryImpl.id)
     }
 
     "return expected id for ObjectDefFactory" in {
       val factory = injector.getInstance(classOf[ObjectDefFactory])
-      sut.convert(factory) should equal(ObjectDefFactoryImpl.id)
+      sut.convert(factory) must equal(ObjectDefFactoryImpl.id)
     }
 
     "return expected id for ValDclInFunctionParamFactory" in {
       val factory = injector.getInstance(classOf[ValDclInFunctionParamFactory])
-      sut.convert(factory) should equal(ValDclInFunctionParamFactoryImpl.id)
+      sut.convert(factory) must equal(ValDclInFunctionParamFactoryImpl.id)
     }
 
     "return expected id for ValueRefFactory" in {
       val factory = injector.getInstance(classOf[ValueRefFactory])
-      sut.convert(factory) should equal(ValueRefFactoryImpl.id)
+      sut.convert(factory) must equal(ValueRefFactoryImpl.id)
     }
   }
 

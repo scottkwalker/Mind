@@ -10,18 +10,18 @@ import modules.ai.aco.AcoModule
 import nodes.helpers._
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class AcoSpec extends UnitSpec {
+final class AcoSpec extends TestComposition {
 
-  "chooseChild" should {
+  "chooseChild" must {
     "returns expected instance given only one valid choice" in {
       val rng = mock[IRandomNumberGenerator]
       val sut = Aco(rng)
       val v = mock[ICreateChildNodes]
       val possibleChildren = Seq(v)
 
-      sut.chooseChild(possibleChildren) shouldBe a[ICreateChildNodes]
+      sut.chooseChild(possibleChildren) mustBe a[ICreateChildNodes]
     }
 
     "return code that can be compiled and evaluated" in {
@@ -49,20 +49,20 @@ final class AcoSpec extends UnitSpec {
         }
       }
       catch {
-        case e: Throwable => fail("Should not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
+        case e: Throwable => fail("must not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
       }
     }
 
     "throw when sequence is empty" in {
       val sut = injector.getInstance(classOf[SelectionStrategy])
-      a[RuntimeException] should be thrownBy sut.chooseChild(possibleChildren = Seq.empty)
+      a[RuntimeException] must be thrownBy sut.chooseChild(possibleChildren = Seq.empty)
     }
   }
 
-  "chooseIndex" should {
+  "chooseIndex" must {
     "throw when length is zero" in {
       val sut = injector.getInstance(classOf[SelectionStrategy])
-      a[RuntimeException] should be thrownBy sut.chooseIndex(seqLength = 0)
+      a[RuntimeException] must be thrownBy sut.chooseIndex(seqLength = 0)
     }
 
     "call random number generator nextInt" in {

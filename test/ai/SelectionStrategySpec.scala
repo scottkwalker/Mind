@@ -3,14 +3,14 @@ package ai
 import ai.legalGamer.LegalGamer
 import models.common.IScope
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class SelectionStrategySpec extends UnitSpec {
+final class SelectionStrategySpec extends TestComposition {
 
-  "chooseChild" should {
+  "chooseChild" must {
     "throw when seq is empty" in {
       val scope = mock[IScope]
-      a[RuntimeException] should be thrownBy selectionStrategy.chooseChild(Seq.empty, scope)
+      a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(Seq.empty, scope)
     }
   }
 

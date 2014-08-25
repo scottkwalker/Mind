@@ -4,11 +4,11 @@ import ai.SelectionStrategy
 import models.common.{IScope, Node}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class CreateSeqNodeScalaTestSpec extends UnitSpec {
+final class CreateSeqNodeScalaTestSpec extends TestComposition {
 
-  "create" should {
+  "create" must {
     "call a factory once given only space for 1 func in obj and mocked rng the same" in {
       val expected = 1
 

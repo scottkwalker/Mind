@@ -1,10 +1,10 @@
 package models.domain.scala
 
 import com.google.inject.Injector
+import composition.TestComposition
 import models.common.{IScope, Scope}
-import utils.helpers.UnitSpec2
 
-final class ValueRefSpec extends UnitSpec2 {
+final class ValueRefSpec extends TestComposition {
 
   "toRawScala" must {
     "return name" in {

@@ -6,17 +6,17 @@ import models.common.{IScope, Scope}
 import models.domain.scala.ObjectDef
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class ObjectDefFactorySpec extends UnitSpec {
+final class ObjectDefFactorySpec extends TestComposition {
 
-  "create" should {
+  "create" must {
     "returns instance of this type" in {
       val s = Scope(height = 10)
 
       val instance = factory.create(scope = s)
 
-      instance shouldBe an[ObjectDef]
+      instance mustBe an[ObjectDef]
     }
 
     "returns expected given scope with 0 functions" in {
@@ -25,7 +25,7 @@ final class ObjectDefFactorySpec extends UnitSpec {
       val instance = factory.create(scope = s)
 
       instance match {
-        case ObjectDef(_, name) => name should equal("o0")
+        case ObjectDef(_, name) => name must equal("o0")
         case _ => fail("wrong type")
       }
     }
@@ -36,7 +36,7 @@ final class ObjectDefFactorySpec extends UnitSpec {
       val instance = factory.create(scope = s)
 
       instance match {
-        case ObjectDef(_, name) => name should equal("o1")
+        case ObjectDef(_, name) => name must equal("o1")
         case _ => fail("wrong type")
       }
     }
@@ -47,13 +47,13 @@ final class ObjectDefFactorySpec extends UnitSpec {
       val instance = factory.create(scope = s)
 
       instance match {
-        case ObjectDef(child, _) => child.length should equal(3)
+        case ObjectDef(child, _) => child.length must equal(3)
         case _ => fail("wrong type")
       }
     }
   }
 
-  "updateScope" should {
+  "updateScope" must {
     "call increment objects" in {
       val s = mock[IScope]
 

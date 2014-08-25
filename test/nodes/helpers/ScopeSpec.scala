@@ -6,97 +6,97 @@ import models.common.{IScope, Scope}
 import modules.ai.aco.AcoModule
 import play.api.libs.json.Json.obj
 import play.api.libs.json._
-import utils.helpers.UnitSpec
+import composition.TestComposition
 import scala.collection.immutable.BitSet
 
-final class ScopeSpec extends UnitSpec {
+final class ScopeSpec extends TestComposition {
 
-  "constructor" should {
+  "constructor" must {
     "set default values to zero" in {
       Scope() match {
         case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
-          numVals should equal(0)
-          numFuncs should equal(0)
-          numObjects should equal(0)
-          height should equal(0)
-          maxExpressionsInFunc should equal(0)
-          maxFuncs should equal(0)
-          maxParamsInFunc should equal(0)
-          maxObjectsInTree should equal(0)
-        case _ => fail("should have matched")
+          numVals must equal(0)
+          numFuncs must equal(0)
+          numObjects must equal(0)
+          height must equal(0)
+          maxExpressionsInFunc must equal(0)
+          maxFuncs must equal(0)
+          maxParamsInFunc must equal(0)
+          maxObjectsInTree must equal(0)
+        case _ => fail("must have matched")
       }
     }
   }
 
-  "incrementVals" should {
+  "incrementVals" must {
     "return expected" in {
       Scope().incrementVals match {
         case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
-          numVals should equal(1)
-          numFuncs should equal(0)
-          numObjects should equal(0)
-          height should equal(0)
-          maxExpressionsInFunc should equal(0)
-          maxFuncs should equal(0)
-          maxParamsInFunc should equal(0)
-          maxObjectsInTree should equal(0)
-        case _ => fail("should have matched")
+          numVals must equal(1)
+          numFuncs must equal(0)
+          numObjects must equal(0)
+          height must equal(0)
+          maxExpressionsInFunc must equal(0)
+          maxFuncs must equal(0)
+          maxParamsInFunc must equal(0)
+          maxObjectsInTree must equal(0)
+        case _ => fail("must have matched")
       }
     }
   }
 
-  "incrementFuncs" should {
+  "incrementFuncs" must {
     "return expected" in {
       Scope().incrementFuncs match {
         case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
-          numVals should equal(0)
-          numFuncs should equal(1)
-          numObjects should equal(0)
-          height should equal(0)
-          maxExpressionsInFunc should equal(0)
-          maxFuncs should equal(0)
-          maxParamsInFunc should equal(0)
-          maxObjectsInTree should equal(0)
-        case _ => fail("should have matched")
+          numVals must equal(0)
+          numFuncs must equal(1)
+          numObjects must equal(0)
+          height must equal(0)
+          maxExpressionsInFunc must equal(0)
+          maxFuncs must equal(0)
+          maxParamsInFunc must equal(0)
+          maxObjectsInTree must equal(0)
+        case _ => fail("must have matched")
       }
     }
   }
 
-  "incrementObjects" should {
+  "incrementObjects" must {
     "return expected" in {
       Scope().incrementObjects match {
         case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
-          numVals should equal(0)
-          numFuncs should equal(0)
-          numObjects should equal(1)
-          height should equal(0)
-          maxExpressionsInFunc should equal(0)
-          maxFuncs should equal(0)
-          maxParamsInFunc should equal(0)
-          maxObjectsInTree should equal(0)
-        case _ => fail("should have matched")
+          numVals must equal(0)
+          numFuncs must equal(0)
+          numObjects must equal(1)
+          height must equal(0)
+          maxExpressionsInFunc must equal(0)
+          maxFuncs must equal(0)
+          maxParamsInFunc must equal(0)
+          maxObjectsInTree must equal(0)
+        case _ => fail("must have matched")
       }
     }
   }
 
-  "decrementHeight" should {
+  "decrementHeight" must {
     "return expected" in {
       Scope(height = 2).decrementHeight match {
         case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
-          numVals should equal(0)
-          numFuncs should equal(0)
-          numObjects should equal(0)
-          height should equal(1)
-          maxExpressionsInFunc should equal(0)
-          maxFuncs should equal(0)
-          maxParamsInFunc should equal(0)
-          maxObjectsInTree should equal(0)
-        case _ => fail("should have matched")
+          numVals must equal(0)
+          numFuncs must equal(0)
+          numObjects must equal(0)
+          height must equal(1)
+          maxExpressionsInFunc must equal(0)
+          maxFuncs must equal(0)
+          maxParamsInFunc must equal(0)
+          maxObjectsInTree must equal(0)
+        case _ => fail("must have matched")
       }
     }
   }
 
-  "fluent interface" should {
+  "fluent interface" must {
     "return expected" in {
       Scope(height = 2).
         incrementVals.
@@ -104,32 +104,32 @@ final class ScopeSpec extends UnitSpec {
         incrementObjects.
         decrementHeight match {
         case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
-          numVals should equal(1)
-          numFuncs should equal(1)
-          numObjects should equal(1)
-          height should equal(1)
-          maxExpressionsInFunc should equal(0)
-          maxFuncs should equal(0)
-          maxParamsInFunc should equal(0)
-          maxObjectsInTree should equal(0)
-        case _ => fail("should have matched")
+          numVals must equal(1)
+          numFuncs must equal(1)
+          numObjects must equal(1)
+          height must equal(1)
+          maxExpressionsInFunc must equal(0)
+          maxFuncs must equal(0)
+          maxParamsInFunc must equal(0)
+          maxObjectsInTree must equal(0)
+        case _ => fail("must have matched")
       }
     }
   }
 
-  "IoC create" should {
+  "IoC create" must {
     "return a new instance with injected values" in {
       val injector: Injector = testInjector(new AcoModule)
       val sut = injector.getInstance(classOf[IScope])
 
-      sut.maxFuncsInObject should equal(10)
-      sut.maxExpressionsInFunc should equal(2)
+      sut.maxFuncsInObject must equal(10)
+      sut.maxExpressionsInFunc must equal(2)
     }
   }
 
-  "serialize" should {
+  "serialize" must {
     "return expected json" in {
-      Json.toJson(scopeAsModel) should equal(JsObject(Seq(
+      Json.toJson(scopeAsModel) must equal(JsObject(Seq(
         ("numVals", JsNumber(0)),
         ("numFuncs", JsNumber(0)),
         ("numObjects", JsNumber(0)),
@@ -143,15 +143,15 @@ final class ScopeSpec extends UnitSpec {
     }
   }
 
-  "deserialize" should {
+  "deserialize" must {
     "return expected mode" in {
-      JsonDeserialiser.deserialize[Scope](scopeAsJsonString) should equal(scopeAsModel)
+      JsonDeserialiser.deserialize[Scope](scopeAsJsonString) must equal(scopeAsModel)
     }
   }
 
-  "experiment with json serialization" should {
+  "experiment with json serialization" must {
     "Seq[Int]" in {
-      Json.toJson(Seq[Int](0, 1, 2)) should equal(JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2))))
+      Json.toJson(Seq[Int](0, 1, 2)) must equal(JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2))))
     }
 
     "Either[String, Int]" in {
@@ -164,8 +164,8 @@ final class ScopeSpec extends UnitSpec {
         )
       }
 
-      Json.toJson(Left("test")) should equal(JsObject(Seq(("stringContent", JsString("test")))))
-      Json.toJson(Right(123)) should equal(JsObject(Seq(("intContent", JsNumber(123)))))
+      Json.toJson(Left("test")) must equal(JsObject(Seq(("stringContent", JsString("test")))))
+      Json.toJson(Right(123)) must equal(JsObject(Seq(("intContent", JsNumber(123)))))
     }
 
     "Either[IScope, Int]" in {
@@ -178,7 +178,7 @@ final class ScopeSpec extends UnitSpec {
         )
       }
 
-      Json.toJson(Left(scopeAsModel)) should equal(
+      Json.toJson(Left(scopeAsModel)) must equal(
         JsObject(
           Seq(
             ("scopeContent",
@@ -199,7 +199,7 @@ final class ScopeSpec extends UnitSpec {
           )
         )
       )
-      Json.toJson(Right(123)) should equal(JsObject(Seq(("intContent", JsNumber(123)))))
+      Json.toJson(Right(123)) must equal(JsObject(Seq(("intContent", JsNumber(123)))))
     }
 
     "Either[IScope, Seq[Int]]" in {
@@ -212,7 +212,7 @@ final class ScopeSpec extends UnitSpec {
         )
       }
 
-      Json.toJson(Left(scopeAsModel)) should equal(
+      Json.toJson(Left(scopeAsModel)) must equal(
         JsObject(
           Seq(
             ("scopeContent",
@@ -233,7 +233,7 @@ final class ScopeSpec extends UnitSpec {
           )
         )
       )
-      Json.toJson(Right(Seq[Int](0, 1, 2))) should equal(
+      Json.toJson(Right(Seq[Int](0, 1, 2))) must equal(
         JsObject(
           Seq(
             ("intContent", JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2))))
@@ -247,7 +247,7 @@ final class ScopeSpec extends UnitSpec {
         def writes(o: Map[String, Int]): JsValue = Json.toJson(o)
       }
 
-      Json.toJson(Map[String, Int]("a" -> 1)) should equal(JsObject(Seq(
+      Json.toJson(Map[String, Int]("a" -> 1)) must equal(JsObject(Seq(
         ("a", JsNumber(1))
       )))
     }
@@ -260,7 +260,7 @@ final class ScopeSpec extends UnitSpec {
         }
       }
 
-      Json.toJson(Map[Int, Int](0 -> 1)) should equal(
+      Json.toJson(Map[Int, Int](0 -> 1)) must equal(
         JsObject(
           Seq(
             ("0", JsNumber(1))
@@ -277,7 +277,7 @@ final class ScopeSpec extends UnitSpec {
         }
       }
 
-      Json.toJson(Map[IScope, Int](Scope() -> 1)) should equal(
+      Json.toJson(Map[IScope, Int](Scope() -> 1)) must equal(
         JsObject(
           Seq(
             ("Scope(0,0,0,0,0,0,0,0)", JsNumber(1))
@@ -294,7 +294,7 @@ final class ScopeSpec extends UnitSpec {
         }
       }
 
-      Json.toJson(Map[Int, BitSet](1 -> (BitSet.empty + 1 + 2))) should equal(
+      Json.toJson(Map[Int, BitSet](1 -> (BitSet.empty + 1 + 2))) must equal(
         JsObject(
           Seq(
             ("1", JsString("6"))
@@ -316,7 +316,7 @@ final class ScopeSpec extends UnitSpec {
         def writes(o: Map[String, Either[IScope, Seq[Int]]]): JsValue = Json.toJson(o)
       }
 
-      Json.toJson(Map("key" -> Left(scopeAsModel))) should equal(
+      Json.toJson(Map("key" -> Left(scopeAsModel))) must equal(
         JsObject(
           Seq(
             ("key",
@@ -344,7 +344,7 @@ final class ScopeSpec extends UnitSpec {
         )
       )
 
-      Json.toJson(Map("key" -> Right(Seq[Int](0, 1, 2)))) should equal(
+      Json.toJson(Map("key" -> Right(Seq[Int](0, 1, 2)))) must equal(
         JsObject(
           Seq(
             ("key",
@@ -375,9 +375,9 @@ final class ScopeSpec extends UnitSpec {
       }
       val countdownLatchModel = new CountDownLatch(1)
 
-      Json.toJson(Map("keyLeft" -> Left(countdownLatchModel))) should equal(JsObject(Seq.empty))
+      Json.toJson(Map("keyLeft" -> Left(countdownLatchModel))) must equal(JsObject(Seq.empty))
 
-      Json.toJson(Map("keyRight" -> Right(1))) should equal(
+      Json.toJson(Map("keyRight" -> Right(1))) must equal(
         JsObject(
           Seq(
             ("keyRight",
@@ -395,7 +395,7 @@ final class ScopeSpec extends UnitSpec {
         "keyLeft" -> Left(countdownLatchModel),
         "keyRight" -> Right(1)
       )
-      ) should equal(
+      ) must equal(
         JsObject(
           Seq(
             ("keyRight",
@@ -426,9 +426,9 @@ final class ScopeSpec extends UnitSpec {
       }
       val countdownLatchModel = new CountDownLatch(1)
 
-      Json.toJson(Map("keyLeft" -> Left(countdownLatchModel))) should equal(JsObject(Seq.empty))
+      Json.toJson(Map("keyLeft" -> Left(countdownLatchModel))) must equal(JsObject(Seq.empty))
 
-      Json.toJson(Map("keyRight" -> Right(Seq[Int](0, 1, 2)))) should equal(
+      Json.toJson(Map("keyRight" -> Right(Seq[Int](0, 1, 2)))) must equal(
         JsObject(
           Seq(
             ("keyRight",
@@ -446,7 +446,7 @@ final class ScopeSpec extends UnitSpec {
         "keyLeft" -> Left(countdownLatchModel),
         "keyRight" -> Right(Seq[Int](0, 1, 2))
       )
-      ) should equal(
+      ) must equal(
         JsObject(
           Seq(
             ("keyRight",
@@ -481,9 +481,9 @@ final class ScopeSpec extends UnitSpec {
       }
       val countdownLatchModel = new CountDownLatch(1)
 
-      Json.toJson(Map(1 -> Left(countdownLatchModel))) should equal(JsObject(Seq.empty))
+      Json.toJson(Map(1 -> Left(countdownLatchModel))) must equal(JsObject(Seq.empty))
 
-      Json.toJson(Map(2 -> Right(Seq[Int](0, 1, 2)))) should equal(
+      Json.toJson(Map(2 -> Right(Seq[Int](0, 1, 2)))) must equal(
         JsObject(
           Seq(
             ("2",
@@ -501,7 +501,7 @@ final class ScopeSpec extends UnitSpec {
         1 -> Left(countdownLatchModel),
         2 -> Right(Seq[Int](0, 1, 2))
       )
-      ) should equal(
+      ) must equal(
         JsObject(
           Seq(
             ("2",
@@ -548,15 +548,15 @@ final class ScopeSpec extends UnitSpec {
         )
       )
 
-      Json.toJson(Map[IScope, Either[CountDownLatch, Seq[Int]]](Scope() -> left)) should equal(JsObject(Seq.empty))
+      Json.toJson(Map[IScope, Either[CountDownLatch, Seq[Int]]](Scope() -> left)) must equal(JsObject(Seq.empty))
 
-      Json.toJson(Map[IScope, Either[CountDownLatch, Seq[Int]]](Scope(height = 1) -> right)) should equal(expected)
+      Json.toJson(Map[IScope, Either[CountDownLatch, Seq[Int]]](Scope(height = 1) -> right)) must equal(expected)
 
       Json.toJson(Map[IScope, Either[CountDownLatch, Seq[Int]]](
         Scope() -> left,
         Scope(height = 1) -> right
       )
-      ) should equal(expected)
+      ) must equal(expected)
     }
   }
 

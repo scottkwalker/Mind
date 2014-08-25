@@ -5,18 +5,18 @@ import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.{Empty, FunctionM, IntegerM, NodeTree, ObjectDef, ValDclInFunctionParam}
 import nodes.helpers.ICreateChildNodes
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class LegalGamerSpec extends UnitSpec {
+final class LegalGamerSpec extends TestComposition {
 
-  "chooseChild" should {
+  "chooseChild" must {
     "return expected type given only one valid choice" in {
       val rng = mock[IRandomNumberGenerator]
       val sut = LegalGamer(rng)
       val v = mock[ICreateChildNodes]
       val possibleChildren = Seq(v)
 
-      sut.chooseChild(possibleChildren) shouldBe a[ICreateChildNodes]
+      sut.chooseChild(possibleChildren) mustBe a[ICreateChildNodes]
     }
 
     "return code that can be compiled and evaluated" in {
@@ -42,25 +42,25 @@ final class LegalGamerSpec extends UnitSpec {
         f.fitness
       }
       catch {
-        case e: Throwable => fail("Should not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
+        case e: Throwable => fail("must not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
       }
     }
 
     "throw when sequence is empty" in {
       val sut = injector.getInstance(classOf[SelectionStrategy])
-      a[RuntimeException] should be thrownBy sut.chooseChild(possibleChildren = Seq.empty)
+      a[RuntimeException] must be thrownBy sut.chooseChild(possibleChildren = Seq.empty)
     }
   }
 
-  "chooseIndex" should {
+  "chooseIndex" must {
     "throw when length is zero" in {
       val sut = injector.getInstance(classOf[SelectionStrategy])
-      a[RuntimeException] should be thrownBy sut.chooseIndex(seqLength = 0)
+      a[RuntimeException] must be thrownBy sut.chooseIndex(seqLength = 0)
     }
 
     "always returns zero" in {
       val sut = injector.getInstance(classOf[SelectionStrategy])
-      sut.chooseIndex(2) should equal(0)
+      sut.chooseIndex(2) must equal(0)
     }
   }
 }

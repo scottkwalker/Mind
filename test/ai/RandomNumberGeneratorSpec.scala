@@ -1,12 +1,12 @@
 package ai
 
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class RandomNumberGeneratorSpec extends UnitSpec {
+final class RandomNumberGeneratorSpec extends TestComposition {
 
-  "nextBoolean" should {
+  "nextBoolean" must {
     "return a boolean when called" in {
-      rng.nextBoolean shouldBe a[java.lang.Boolean]
+      rng.nextBoolean mustBe a[java.lang.Boolean]
     }
   }
 

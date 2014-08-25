@@ -6,17 +6,17 @@ import models.common.{IScope, Scope}
 import models.domain.scala.FunctionM
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class FunctionMFactorySpec extends UnitSpec {
+final class FunctionMFactorySpec extends TestComposition {
 
-  "create" should {
+  "create" must {
     "return instance of this type" in {
       val s = Scope(height = 10)
 
       val instance = factory.create(scope = s)
 
-      instance shouldBe a[FunctionM]
+      instance mustBe a[FunctionM]
     }
 
     "return expected given scope with 0 functions" in {
@@ -25,7 +25,7 @@ final class FunctionMFactorySpec extends UnitSpec {
       val instance = factory.create(scope = s)
 
       instance match {
-        case FunctionM(_, _, name) => name should equal("f0")
+        case FunctionM(_, _, name) => name must equal("f0")
         case _ => fail("wrong type")
       }
     }
@@ -36,7 +36,7 @@ final class FunctionMFactorySpec extends UnitSpec {
       val instance = factory.create(scope = s)
 
       instance match {
-        case FunctionM(_, _, name) => name should equal("f1")
+        case FunctionM(_, _, name) => name must equal("f1")
         case _ => fail("wrong type")
       }
     }
@@ -47,13 +47,13 @@ final class FunctionMFactorySpec extends UnitSpec {
       val instance = factory.create(scope = s)
 
       instance match {
-        case FunctionM(_, children, _) => children.length should equal(3)
+        case FunctionM(_, children, _) => children.length must equal(3)
         case _ => fail("wrong type")
       }
     }
   }
 
-  "updateScope" should {
+  "updateScope" must {
     "call increment functions" in {
       val s = mock[IScope]
 

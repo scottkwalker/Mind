@@ -1,10 +1,10 @@
 package models.domain.scala
 
 import com.google.inject.Injector
+import composition.TestComposition
 import models.common.IScope
-import utils.helpers.UnitSpec2
 
-final class IntegerMSpec extends UnitSpec2 {
+final class IntegerMSpec extends TestComposition {
 
   "toRawScala" must {
     "return expected" in {

@@ -1,8 +1,8 @@
 package fitness
 
-import utils.helpers.UnitSpec2
+import composition.TestComposition
 
-final class GeneratorSpec extends UnitSpec2 {
+final class GeneratorSpec extends TestComposition {
 
   "run" must {
     "get ai instance" in pending

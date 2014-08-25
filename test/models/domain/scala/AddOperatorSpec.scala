@@ -2,13 +2,13 @@ package models.domain.scala
 
 import com.google.inject.Injector
 import com.tzavellas.sse.guice.ScalaModule
+import composition.TestComposition
 import models.common.{IScope, Node, Scope}
 import nodes.{AddOperatorFactory, AddOperatorFactoryImpl}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec2
 
-final class AddOperatorSpec extends UnitSpec2 {
+final class AddOperatorSpec extends TestComposition {
 
   "toRawScala" must {
     "return expected" in {

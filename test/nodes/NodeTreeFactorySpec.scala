@@ -7,22 +7,22 @@ import models.domain.scala.NodeTree
 import nodes.helpers._
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class NodeTreeFactorySpec extends UnitSpec {
+final class NodeTreeFactorySpec extends TestComposition {
 
-  "create" should {
+  "create" must {
     "returns instance of this type" in {
       val instance = factory.create(s)
 
-      instance shouldBe a[NodeTree]
+      instance mustBe a[NodeTree]
     }
 
     "returns 3 children given scope with 3 maxFuncsInObject (and rng mocked)" in {
       val instance = factory.create(scope = s)
 
       instance match {
-        case NodeTree(child) => child.length should equal(3)
+        case NodeTree(child) => child.length must equal(3)
         case _ => fail("wrong type")
       }
     }
@@ -36,8 +36,8 @@ final class NodeTreeFactorySpec extends UnitSpec {
 
       instance match {
         case NodeTree(child) =>
-          child.length should equal(4) // 3 generated and 1 premade
-          child(3) should equal(n)
+          child.length must equal(4) // 3 generated and 1 premade
+          child(3) must equal(n)
         case _ => fail("wrong type")
       }
     }
@@ -45,7 +45,7 @@ final class NodeTreeFactorySpec extends UnitSpec {
     "throw if you ask updateScope" in {
       val s = mock[IScope]
 
-      a[RuntimeException] should be thrownBy factory.updateScope(s)
+      a[RuntimeException] must be thrownBy factory.updateScope(s)
     }
   }
 

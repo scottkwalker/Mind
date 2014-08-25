@@ -1,10 +1,10 @@
 package controllers
 
+import composition.TestComposition
 import models.common.LegalNeighboursRequest.Form.currentNodeId
 import models.common.Scope.Form._
-import utils.helpers.UnitSpec2
 
-final class LegalNeighboursFormSpec extends UnitSpec2 {
+final class LegalNeighboursFormSpec extends TestComposition {
 
   "form" must {
     "reject when submission is empty" in {

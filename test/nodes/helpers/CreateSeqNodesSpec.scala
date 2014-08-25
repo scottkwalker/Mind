@@ -5,11 +5,11 @@ import ai.{IRandomNumberGenerator, SelectionStrategy}
 import models.common.{IScope, Node, Scope}
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class CreateSeqNodesSpec extends UnitSpec {
+final class CreateSeqNodesSpec extends TestComposition {
 
-  "createSeq" should {
+  "createSeq" must {
     "calls create on factory once given only space for 1 func in obj and mocked rng the same" in {
       val s = mock[IScope]
       when(s.maxFuncsInObject).thenReturn(1)
@@ -30,7 +30,7 @@ final class CreateSeqNodesSpec extends UnitSpec {
       )
 
       verify(cn, times(1)).create(Seq(v), s)
-      nodes.length should equal(1)
+      nodes.length must equal(1)
     }
 
     "calls create on factory twice given space for 2 func in obj and mocked rng the same" in {
@@ -54,7 +54,7 @@ final class CreateSeqNodesSpec extends UnitSpec {
       )
 
       verify(cn, times(2)).create(Seq(v), s)
-      nodes.length should equal(2)
+      nodes.length must equal(2)
     }
 
     "calls create on factory once given space for 2 func in obj but rng mocked to 1" in {
@@ -78,7 +78,7 @@ final class CreateSeqNodesSpec extends UnitSpec {
       )
 
       verify(cn, times(1)).create(Seq(v), s)
-      nodes.length should equal(1)
+      nodes.length must equal(1)
     }
 
     "calls create on factory once given space for 2 func in obj and a rng mocked to 2 but 1 pre-made node already added" in {
@@ -103,7 +103,7 @@ final class CreateSeqNodesSpec extends UnitSpec {
       )
 
       verify(cn, times(1)).create(Seq(v), s)
-      nodes.length should equal(2)
+      nodes.length must equal(2)
     }
   }
 }

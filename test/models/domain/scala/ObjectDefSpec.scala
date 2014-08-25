@@ -1,12 +1,12 @@
 package models.domain.scala
 
 import com.google.inject.Injector
+import composition.TestComposition
 import models.common.{IScope, Node, Scope}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec2
 
-final class ObjectDefSpec extends UnitSpec2 {
+final class ObjectDefSpec extends TestComposition {
 
   "validate" must {
     "true given it can terminates in under N steps" in {

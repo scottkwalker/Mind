@@ -2,34 +2,34 @@ package nodes.legalNeighbours
 
 import nodes.helpers.{BinarySerializer, JsonDeserialiser}
 import play.api.libs.json.Json
-import utils.helpers.UnitSpec
+import composition.TestComposition
 import scala.collection.immutable.BitSet
 
-final class BitsetSpec extends UnitSpec {
+final class BitsetSpec extends TestComposition {
 
-  "serialize" should {
+  "serialize" must {
     "to json" in {
       import nodes.legalNeighbours.BitSetAdapter.writeJsonBitsetAsBitMask
-      Json.toJson(dataAsBitSet).toString should equal(bitMaskAsJson)
+      Json.toJson(dataAsBitSet).toString must equal(bitMaskAsJson)
     }
 
     "to binary" in {
       val input = BitSet.empty + 3 + 4 + 4 + 100 + 101
       val asBinary = binarySerialize.write(input)
-      asBinary should equal(dataAsArrayByte)
+      asBinary must equal(dataAsArrayByte)
     }
   }
 
-  "deserialize" should {
+  "deserialize" must {
     "from json" in {
       import nodes.legalNeighbours.BitSetAdapter.readJsonBitMaskToBitset
       val deserialized = JsonDeserialiser.deserialize(bitMaskAsJson)
-      deserialized should equal(dataAsBitSet)
+      deserialized must equal(dataAsBitSet)
     }
 
     "to binary" in {
       val result: BitSet = binarySerialize.read(dataAsArrayByte)
-      result should equal(dataAsBitSet)
+      result must equal(dataAsBitSet)
     }
   }
 

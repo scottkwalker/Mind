@@ -1,10 +1,10 @@
 package models.domain.scala
 
 import com.google.inject.Injector
+import composition.TestComposition
 import models.common.{IScope, Scope}
-import utils.helpers.UnitSpec2
 
-final class EmptySpec extends UnitSpec2 {
+final class EmptySpec extends TestComposition {
 
   "toRaw" must {
     "throw if you ask toRawScala" in {

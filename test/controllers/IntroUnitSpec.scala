@@ -1,10 +1,10 @@
 package controllers
 
+import composition.TestComposition
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{OK, contentAsString, status}
-import utils.helpers.UnitSpec2
 
-final class IntroUnitSpec extends UnitSpec2 {
+final class IntroUnitSpec extends TestComposition {
 
   "present" must {
     "return http status OK" in {

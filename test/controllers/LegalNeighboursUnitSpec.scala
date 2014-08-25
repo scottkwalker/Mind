@@ -1,6 +1,7 @@
 package controllers
 
 import com.tzavellas.sse.guice.ScalaModule
+import composition.TestComposition
 import models.common.{IScope, LegalNeighboursRequest, Scope}
 import nodes.NodeTreeFactoryImpl
 import nodes.legalNeighbours.LegalNeighboursMemo
@@ -9,12 +10,11 @@ import org.mockito.Mockito.{times, verify, when}
 import play.api.libs.json.Json
 import play.api.test.Helpers.{BAD_REQUEST, OK}
 import play.api.test.{FakeRequest, WithApplication}
-import utils.helpers.UnitSpec2
 import scala.concurrent.ExecutionContext.Implicits.global
 
-final class LegalNeighboursUnitSpec extends UnitSpec2 {
+final class LegalNeighboursUnitSpec extends TestComposition {
 
-  "calculate" should {
+  "calculate" must {
     "return bad request when submission is empty" in new WithApplication {
       val emptyRequest = FakeRequest().withFormUrlEncodedBody()
       val result = legalNeighbours.calculate(emptyRequest)

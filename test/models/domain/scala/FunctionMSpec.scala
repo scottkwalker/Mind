@@ -4,18 +4,18 @@ import com.google.inject.Injector
 import models.common.{IScope, Node, Scope}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec
+import composition.TestComposition
 
-final class FunctionMSpec extends UnitSpec {
+final class FunctionMSpec extends TestComposition {
 
-  "validate" should {
+  "validate" must {
     "false given an empty name" in {
       val s = Scope(height = 10)
       val v = mock[Node]
       when(v.validate(any[Scope])).thenReturn(true)
       FunctionM(params = params,
         nodes = Seq(v, v),
-        name = "").validate(s) should equal(false)
+        name = "").validate(s) must equal(false)
     }
 
     "true given it can terminate in under N steps" in {
@@ -25,7 +25,7 @@ final class FunctionMSpec extends UnitSpec {
 
       FunctionM(params = params,
         nodes = Seq(v, v),
-        name = name).validate(s) should equal(true)
+        name = name).validate(s) must equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
@@ -35,7 +35,7 @@ final class FunctionMSpec extends UnitSpec {
 
       FunctionM(params = params,
         nodes = Seq(v, v),
-        name = name).validate(s) should equal(false)
+        name = name).validate(s) must equal(false)
     }
 
     "false given it cannot terminate in under N steps" in {
@@ -45,7 +45,7 @@ final class FunctionMSpec extends UnitSpec {
 
       FunctionM(params = params,
         nodes = Seq(v, v),
-        name = name).validate(s) should equal(false)
+        name = name).validate(s) must equal(false)
     }
 
     "true given no empty nodes" in {
@@ -55,7 +55,7 @@ final class FunctionMSpec extends UnitSpec {
 
       FunctionM(params = params,
         nodes = Seq(v, v),
-        name = name).validate(s) should equal(true)
+        name = name).validate(s) must equal(true)
     }
 
     "false given an empty node" in {
@@ -65,18 +65,18 @@ final class FunctionMSpec extends UnitSpec {
 
       FunctionM(params = params,
         nodes = Seq(v, Empty()),
-        name = name).validate(s) should equal(false)
+        name = name).validate(s) must equal(false)
     }
   }
 
-  "toRawScala" should {
+  "toRawScala" must {
     "returns expected" in {
       val a = mock[Node]
       when(a.toRaw).thenReturn("STUB")
 
       FunctionM(params = params,
         nodes = Seq(a),
-        name = name).toRaw should equal("def f0(a: Int, b: Int) = { STUB }")
+        name = name).toRaw must equal("def f0(a: Int, b: Int) = { STUB }")
     }
 
     "throws if has no name" in {
@@ -86,11 +86,11 @@ final class FunctionMSpec extends UnitSpec {
         nodes = Seq(a),
         name = "")
 
-      an[IllegalArgumentException] should be thrownBy sut.toRaw
+      an[IllegalArgumentException] must be thrownBy sut.toRaw
     }
   }
 
-  "replaceEmpty" should {
+  "replaceEmpty" must {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
@@ -119,7 +119,7 @@ final class FunctionMSpec extends UnitSpec {
         nodes = Seq(v),
         name = name)
 
-      instance.replaceEmpty(s) should equal(instance)
+      instance.replaceEmpty(s) must equal(instance)
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -138,23 +138,23 @@ final class FunctionMSpec extends UnitSpec {
       result match {
         case FunctionM(p2, n2, n) =>
           p2 match {
-            case Seq(pSeq) => pSeq shouldBe a[ValDclInFunctionParam]
+            case Seq(pSeq) => pSeq mustBe a[ValDclInFunctionParam]
           }
           n2 match {
-            case Seq(nSeq) => nSeq shouldBe a[AddOperator]
+            case Seq(nSeq) => nSeq mustBe a[AddOperator]
           }
-          n should equal(name)
+          n must equal(name)
       }
     }
 
-    "getMaxDepth" should {
+    "getMaxDepth" must {
       "returns 1 + child getMaxDepth" in {
         val v = mock[Node]
         when(v.getMaxDepth) thenReturn 2
 
         FunctionM(params = params,
           nodes = Seq(v, v),
-          name = name).getMaxDepth should equal(3)
+          name = name).getMaxDepth must equal(3)
       }
 
       "returns 1 + child getMaxDepth when children have different depths" in {
@@ -165,7 +165,7 @@ final class FunctionMSpec extends UnitSpec {
 
         FunctionM(params = params,
           nodes = Seq(v, v2),
-          name = name).getMaxDepth should equal(3)
+          name = name).getMaxDepth must equal(3)
       }
     }
   }
