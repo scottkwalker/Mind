@@ -1,10 +1,10 @@
 package fitness
 
-import utils.helpers.UnitSpec
+import utils.helpers.UnitSpec2
 
-final class GeneratorSpec extends UnitSpec {
+final class GeneratorSpec extends UnitSpec2 {
 
-  "run" should {
+  "run" must {
     "get ai instance" in pending
 
     "return best solution and its fitness" in pending

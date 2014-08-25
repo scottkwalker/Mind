@@ -2,19 +2,19 @@ package controllers
 
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{OK, contentAsString, status}
-import utils.helpers.UnitSpec
+import utils.helpers.UnitSpec2
 
-final class HealthCheckUnitSpec extends UnitSpec {
+final class HealthCheckUnitSpec extends UnitSpec2 {
 
-  "respond" should {
+  "respond" must {
     "return http status OK" in {
       val result = healthCheck.respond(FakeRequest())
-      status(result) should equal(OK)
+      status(result) must equal(OK)
     }
 
     "contain expected text" in {
       val result = healthCheck.respond(FakeRequest())
-      contentAsString(result) should include("Health check")
+      contentAsString(result) must include("Health check")
     }
   }
 

@@ -4,11 +4,11 @@ import ai.SelectionStrategy
 import models.common.Scope
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec
+import utils.helpers.UnitSpec2
 
-final class CreateNodeSpec extends UnitSpec {
+final class CreateNodeSpec extends UnitSpec2 {
 
-  "create" should {
+  "create" must {
     "calls chooseChild on ai" in {
       val scope = Scope(height = 10)
       val v = mock[ICreateChildNodes]

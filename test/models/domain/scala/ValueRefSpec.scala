@@ -2,57 +2,57 @@ package models.domain.scala
 
 import com.google.inject.Injector
 import models.common.{IScope, Scope}
-import utils.helpers.UnitSpec
+import utils.helpers.UnitSpec2
 
-final class ValueRefSpec extends UnitSpec {
+final class ValueRefSpec extends UnitSpec2 {
 
-  "toRawScala" should {
+  "toRawScala" must {
     "return name" in {
       val name = "a"
 
-      ValueRef(name).toRaw should equal(name)
+      ValueRef(name).toRaw must equal(name)
     }
   }
 
-  "validate" should {
+  "validate" must {
     "false given it cannot terminate in under N steps" in {
       val s = Scope(height = 0)
       val name = "a"
 
-      ValueRef(name).validate(s) should equal(false)
+      ValueRef(name).validate(s) must equal(false)
     }
 
     "true given a non-empty name" in {
       val s = Scope(height = 10)
       val name = "a"
 
-      ValueRef(name).validate(s) should equal(true)
+      ValueRef(name).validate(s) must equal(true)
     }
 
     "false given an empty name" in {
       val s = Scope(height = 10)
       val name = ""
 
-      ValueRef(name).validate(s) should equal(false)
+      ValueRef(name).validate(s) must equal(false)
     }
   }
 
-  "replaceEmpty" should {
+  "replaceEmpty" must {
     "returns same when no empty nodes" in {
       val s = mock[IScope]
       val name = "a"
       implicit val injector = mock[Injector]
       val instance = ValueRef(name)
 
-      instance.replaceEmpty(s) should equal(instance)
+      instance.replaceEmpty(s) must equal(instance)
     }
   }
 
-  "getMaxDepth" should {
+  "getMaxDepth" must {
     "returns 1" in {
       val name = "a"
 
-      ValueRef(name).getMaxDepth should equal(1)
+      ValueRef(name).getMaxDepth must equal(1)
     }
   }
 }

@@ -1,10 +1,10 @@
 package modules
 
-import utils.helpers.UnitSpec
+import utils.helpers.UnitSpec2
 
-final class DevModuleSpec extends UnitSpec {
+final class DevModuleSpec extends UnitSpec2 {
 
-  "configure" should {
+  "configure" must {
     "create an empty memoization map when saved file does not exist" in pending
 
     "create an empty memoization map when saved file exist but versioning does not match" in pending

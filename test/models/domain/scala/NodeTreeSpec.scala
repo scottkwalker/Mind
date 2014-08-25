@@ -4,17 +4,17 @@ import com.google.inject.Injector
 import models.common.{IScope, Node, Scope}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec
+import utils.helpers.UnitSpec2
 
-final class NodeTreeSpec extends UnitSpec {
+final class NodeTreeSpec extends UnitSpec2 {
 
-  "validate" should {
+  "validate" must {
     "true given it can terminates in under N steps" in {
       val s = Scope(height = 10)
       val f = ObjectDef(nodes = Seq.empty, name = "o0")
       val nodeTree = new NodeTree(Seq(f))
 
-      nodeTree.validate(s) should equal(true)
+      nodeTree.validate(s) must equal(true)
     }
 
     "false given it cannot terminate in under N steps" in {
@@ -23,7 +23,7 @@ final class NodeTreeSpec extends UnitSpec {
       when(f.validate(any[Scope])).thenReturn(false)
       val nodeTree = new NodeTree(Seq(f))
 
-      nodeTree.validate(s) should equal(false)
+      nodeTree.validate(s) must equal(false)
     }
 
     "true given none empty" in {
@@ -31,13 +31,13 @@ final class NodeTreeSpec extends UnitSpec {
       val f = ObjectDef(nodes = Seq.empty, name = "o0")
       val nodeTree = new NodeTree(Seq(f))
 
-      nodeTree.validate(s) should equal(true)
+      nodeTree.validate(s) must equal(true)
     }
 
     "false given empty root node" in {
       val s = Scope(height = 10)
       val nodeTree = new NodeTree(Seq(Empty()))
-      nodeTree.validate(s) should equal(false)
+      nodeTree.validate(s) must equal(false)
     }
 
     "false when hasHeightRemaining returns false" in {
@@ -46,11 +46,11 @@ final class NodeTreeSpec extends UnitSpec {
       val f = mock[Node]
       val nodeTree = new NodeTree(Seq(f))
 
-      nodeTree.validate(s) should equal(false)
+      nodeTree.validate(s) must equal(false)
     }
   }
 
-  "replaceEmpty" should {
+  "replaceEmpty" must {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
@@ -70,7 +70,7 @@ final class NodeTreeSpec extends UnitSpec {
       when(f.replaceEmpty(any[Scope])(any[Injector])).thenReturn(f)
       val instance = new NodeTree(Seq(f))
 
-      instance.replaceEmpty(s) should equal(instance)
+      instance.replaceEmpty(s) must equal(instance)
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -87,7 +87,7 @@ final class NodeTreeSpec extends UnitSpec {
       result match {
         case NodeTree(nodes) =>
           nodes match {
-            case Seq(n2) => n2 shouldBe an[ObjectDef]
+            case Seq(n2) => n2 mustBe an[ObjectDef]
             case _ => fail("not a seq")
           }
         case _ => fail("wrong type")
@@ -95,13 +95,13 @@ final class NodeTreeSpec extends UnitSpec {
     }
   }
 
-  "getMaxDepth" should {
+  "getMaxDepth" must {
     "returns 1 + child getMaxDepth when has one child" in {
       val f = mock[Node]
       when(f.getMaxDepth).thenReturn(2)
       val nodeTree = new NodeTree(Seq(f))
 
-      nodeTree.getMaxDepth should equal(3)
+      nodeTree.getMaxDepth must equal(3)
     }
 
     "returns 1 + child getMaxDepth when has two children" in {
@@ -111,7 +111,7 @@ final class NodeTreeSpec extends UnitSpec {
       when(f2.getMaxDepth).thenReturn(2)
       val nodeTree = new NodeTree(Seq(f, f2))
 
-      nodeTree.getMaxDepth should equal(3)
+      nodeTree.getMaxDepth must equal(3)
     }
 
     "returns correct value for realistic tree" in {
@@ -125,7 +125,7 @@ final class NodeTreeSpec extends UnitSpec {
               ), name = "f0")),
             name = "o0")))
 
-      nodeTree.getMaxDepth should equal(5)
+      nodeTree.getMaxDepth must equal(5)
     }
   }
 }

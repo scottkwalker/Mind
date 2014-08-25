@@ -6,28 +6,28 @@ import models.common.{IScope, Node, Scope}
 import nodes.{ValDclInFunctionParamFactory, ValDclInFunctionParamFactoryImpl}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec
+import utils.helpers.UnitSpec2
 
-final class ValDclInFunctionParamSpec extends UnitSpec {
+final class ValDclInFunctionParamSpec extends UnitSpec2 {
 
-  "toRawScala" should {
+  "toRawScala" must {
     "return expected" in {
       val p = mock[Node]
       when(p.toRaw).thenReturn("Int")
       val name = "a"
 
-      ValDclInFunctionParam(name, p).toRaw should equal("a: Int")
+      ValDclInFunctionParam(name, p).toRaw must equal("a: Int")
     }
   }
 
-  "validate" should {
+  "validate" must {
     "false given it cannot terminate in under N steps" in {
       val s = mock[IScope]
       when(s.hasHeightRemaining).thenReturn(false)
       val name = "a"
       val p = mock[Node]
 
-      ValDclInFunctionParam(name, p).validate(s) should equal(false)
+      ValDclInFunctionParam(name, p).validate(s) must equal(false)
     }
 
     "false given an empty name" in {
@@ -36,7 +36,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
       val name = ""
       val p = mock[Node]
 
-      ValDclInFunctionParam(name, p).validate(s) should equal(false)
+      ValDclInFunctionParam(name, p).validate(s) must equal(false)
     }
 
     "false given an invalid child" in {
@@ -46,7 +46,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
       val p = mock[Node]
       when(p.validate(any[Scope])).thenReturn(false)
 
-      ValDclInFunctionParam(name, p).validate(s) should equal(false)
+      ValDclInFunctionParam(name, p).validate(s) must equal(false)
     }
 
     "true given it can terminate, has a non-empty name and valid child" in {
@@ -55,11 +55,11 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
       val name = "a"
       val p = IntegerM()
 
-      ValDclInFunctionParam(name, p).validate(s) should equal(true)
+      ValDclInFunctionParam(name, p).validate(s) must equal(true)
     }
   }
 
-  "replaceEmpty" should {
+  "replaceEmpty" must {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
       when(s.incrementVals).thenReturn(s)
@@ -87,7 +87,7 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
 
       val result = instance.replaceEmpty(s)
 
-      result should equal(instance)
+      result must equal(instance)
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -111,20 +111,20 @@ final class ValDclInFunctionParamSpec extends UnitSpec {
 
       result match {
         case ValDclInFunctionParam(name2, primitiveType) =>
-          name2 should equal("a")
-          primitiveType shouldBe an[IntegerM]
+          name2 must equal("a")
+          primitiveType mustBe an[IntegerM]
         case _ => fail("wrong type")
       }
     }
   }
 
-  "getMaxDepth" should {
+  "getMaxDepth" must {
     "returns 1 + child getMaxDepth" in {
       val name = "a"
       val p = mock[Node]
       when(p.getMaxDepth).thenReturn(1)
 
-      ValDclInFunctionParam(name, p).getMaxDepth should equal(2)
+      ValDclInFunctionParam(name, p).getMaxDepth must equal(2)
     }
   }
 }

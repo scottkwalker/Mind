@@ -9,17 +9,17 @@ import org.mockito.Mockito.{times, verify, when}
 import play.api.libs.json.Json
 import play.api.test.Helpers.{BAD_REQUEST, OK}
 import play.api.test.{FakeRequest, WithApplication}
-import utils.helpers.UnitSpec
+import utils.helpers.UnitSpec2
 import scala.concurrent.ExecutionContext.Implicits.global
 
-final class LegalNeighboursUnitSpec extends UnitSpec {
+final class LegalNeighboursUnitSpec extends UnitSpec2 {
 
   "calculate" should {
     "return bad request when submission is empty" in new WithApplication {
       val emptyRequest = FakeRequest().withFormUrlEncodedBody()
       val result = legalNeighbours.calculate(emptyRequest)
       whenReady(result) { r =>
-        r.header.status should equal(BAD_REQUEST)
+        r.header.status must equal(BAD_REQUEST)
       }
     }
 
@@ -27,7 +27,7 @@ final class LegalNeighboursUnitSpec extends UnitSpec {
       val validRequest = requestWithDefaults()
       val result = legalNeighbours.calculate(validRequest)
       whenReady(result) { r =>
-        r.header.status should equal(OK)
+        r.header.status must equal(OK)
       }
     }
 
@@ -36,7 +36,7 @@ final class LegalNeighboursUnitSpec extends UnitSpec {
       val result = legalNeighbours.calculate(validRequest)
       whenReady(result) { r =>
         r.body.map { b =>
-          Json.parse(b) should equal(Seq(NodeTreeFactoryImpl.id))
+          Json.parse(b) must equal(Seq(NodeTreeFactoryImpl.id))
         }
       }
     }
@@ -46,7 +46,7 @@ final class LegalNeighboursUnitSpec extends UnitSpec {
       val result = legalNeighbours.calculate(validRequest)
       whenReady(result) { r =>
         r.body.map { b =>
-          Json.parse(b) should equal(Seq.empty)
+          Json.parse(b) must equal(Seq.empty)
         }
       }
     }
@@ -74,7 +74,7 @@ final class LegalNeighboursUnitSpec extends UnitSpec {
 
     "throw when submission contains unknown currentNode" in new WithApplication {
       val validRequest = requestWithDefaults(currentNode = -1)
-      a[RuntimeException] should be thrownBy legalNeighbours.calculate(validRequest)
+      a[RuntimeException] must be thrownBy legalNeighbours.calculate(validRequest)
     }
   }
 

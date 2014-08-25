@@ -1,15 +1,15 @@
 package controllers
 
-import models.common.Scope.Form._
-import utils.helpers.UnitSpec
 import models.common.LegalNeighboursRequest.Form.currentNodeId
+import models.common.Scope.Form._
+import utils.helpers.UnitSpec2
 
-final class LegalNeighboursFormSpec extends UnitSpec {
+final class LegalNeighboursFormSpec extends UnitSpec2 {
 
-  "form" should {
+  "form" must {
     "reject when submission is empty" in {
       val errors = legalNeighbours.form.bind(Map("" -> "")).errors
-      errors.length should equal(9)
+      errors.length must equal(9)
     }
 
     "reject when submission contains wrong types" in {
@@ -25,20 +25,20 @@ final class LegalNeighboursFormSpec extends UnitSpec {
         currentNode = "INVALID"
       ).errors
 
-      errors.length should equal(9)
+      errors.length must equal(9)
 
-      errors(0).key should equal(s"$scopeId.$numValsId")
-      errors(1).key should equal(s"$scopeId.$numFuncsId")
-      errors(2).key should equal(s"$scopeId.$numObjectsId")
-      errors(3).key should equal(s"$scopeId.$heightId")
-      errors(4).key should equal(s"$scopeId.$maxExpressionsInFuncId")
-      errors(5).key should equal(s"$scopeId.$maxFuncsInObjectId")
-      errors(6).key should equal(s"$scopeId.$maxParamsInFuncId")
-      errors(7).key should equal(s"$scopeId.$maxObjectsInTreeId")
-      errors(8).key should equal(currentNodeId)
+      errors(0).key must equal(s"$scopeId.$numValsId")
+      errors(1).key must equal(s"$scopeId.$numFuncsId")
+      errors(2).key must equal(s"$scopeId.$numObjectsId")
+      errors(3).key must equal(s"$scopeId.$heightId")
+      errors(4).key must equal(s"$scopeId.$maxExpressionsInFuncId")
+      errors(5).key must equal(s"$scopeId.$maxFuncsInObjectId")
+      errors(6).key must equal(s"$scopeId.$maxParamsInFuncId")
+      errors(7).key must equal(s"$scopeId.$maxObjectsInTreeId")
+      errors(8).key must equal(currentNodeId)
 
       for (i <- 0 until errors.length) {
-        errors(i).messages should equal(List("error.number"))
+        errors(i).messages must equal(List("error.number"))
       }
     }
 
@@ -63,18 +63,20 @@ final class LegalNeighboursFormSpec extends UnitSpec {
         maxObjectsInTree.toString,
         currentNode.toString
       )
-      result.errors.length should equal(0)
+      result.errors.length must equal(0)
       val model = result.get
-      model.scope.numVals should equal(numVals)
-      model.scope.numFuncs should equal(numFuncs)
-      model.scope.numObjects should equal(numObjects)
-      model.scope.height should equal(height)
-      model.scope.maxExpressionsInFunc should equal(maxExpressionsInFunc)
-      model.scope.maxFuncsInObject should equal(maxFuncsInObject)
-      model.scope.maxParamsInFunc should equal(maxParamsInFunc)
-      model.scope.maxObjectsInTree should equal(maxObjectsInTree)
+      model.scope.numVals must equal(numVals)
+      model.scope.numFuncs must equal(numFuncs)
+      model.scope.numObjects must equal(numObjects)
+      model.scope.height must equal(height)
+      model.scope.maxExpressionsInFunc must equal(maxExpressionsInFunc)
+      model.scope.maxFuncsInObject must equal(maxFuncsInObject)
+      model.scope.maxParamsInFunc must equal(maxParamsInFunc)
+      model.scope.maxObjectsInTree must equal(maxObjectsInTree)
     }
   }
+
+  private val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
 
   private def formWithValidDefaults(numVals: String,
                                     numFuncs: String,
@@ -99,6 +101,4 @@ final class LegalNeighboursFormSpec extends UnitSpec {
       )
     )
   }
-
-  private val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
 }

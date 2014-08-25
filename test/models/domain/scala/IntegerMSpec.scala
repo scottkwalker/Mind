@@ -2,36 +2,36 @@ package models.domain.scala
 
 import com.google.inject.Injector
 import models.common.IScope
-import utils.helpers.UnitSpec
+import utils.helpers.UnitSpec2
 
-final class IntegerMSpec extends UnitSpec {
+final class IntegerMSpec extends UnitSpec2 {
 
-  "toRawScala" should {
+  "toRawScala" must {
     "return expected" in {
-      IntegerM().toRaw should equal("Int")
+      IntegerM().toRaw must equal("Int")
     }
   }
 
-  "validate" should {
+  "validate" must {
     "returns true" in {
       val s = mock[IScope]
-      IntegerM().validate(s) should equal(true)
+      IntegerM().validate(s) must equal(true)
     }
   }
 
-  "replaceEmpty" should {
+  "replaceEmpty" must {
     "return same when no empty nodes" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
       val instance = IntegerM()
 
-      instance.replaceEmpty(s) should equal(instance)
+      instance.replaceEmpty(s) must equal(instance)
     }
   }
 
-  "getMaxDepth" should {
+  "getMaxDepth" must {
     "return 1" in {
-      IntegerM().getMaxDepth should equal(1)
+      IntegerM().getMaxDepth must equal(1)
     }
   }
 }

@@ -4,11 +4,11 @@ import com.google.inject.Injector
 import models.common.{IScope, Node, Scope}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import utils.helpers.UnitSpec
+import utils.helpers.UnitSpec2
 
-final class ObjectDefSpec extends UnitSpec {
+final class ObjectDefSpec extends UnitSpec2 {
 
-  "validate" should {
+  "validate" must {
     "true given it can terminates in under N steps" in {
       val s = Scope(height = 4)
       val f = FunctionM(params = Seq.empty,
@@ -16,7 +16,7 @@ final class ObjectDefSpec extends UnitSpec {
         name = "f0")
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.validate(s) should equal(true)
+      objectM.validate(s) must equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
@@ -25,7 +25,7 @@ final class ObjectDefSpec extends UnitSpec {
       when(f.validate(any[Scope])).thenThrow(new RuntimeException)
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.validate(s) should equal(false)
+      objectM.validate(s) must equal(false)
     }
 
     "false given it cannot terminate in under N steps" in {
@@ -34,7 +34,7 @@ final class ObjectDefSpec extends UnitSpec {
       when(f.validate(any[Scope])).thenReturn(false)
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.validate(s) should equal(false)
+      objectM.validate(s) must equal(false)
     }
 
     "true given no empty nodes" in {
@@ -44,13 +44,13 @@ final class ObjectDefSpec extends UnitSpec {
         name = "f0")
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.validate(s) should equal(true)
+      objectM.validate(s) must equal(true)
     }
 
     "false given single empty method node" in {
       val s = Scope(height = 10)
       val objectM = ObjectDef(Seq(Empty()), name)
-      objectM.validate(s) should equal(false)
+      objectM.validate(s) must equal(false)
     }
 
     "false given empty method node in a sequence" in {
@@ -59,21 +59,21 @@ final class ObjectDefSpec extends UnitSpec {
       when(f.validate(any[Scope])).thenReturn(true)
       val objectM = ObjectDef(Seq(f, Empty()), name)
 
-      objectM.validate(s) should equal(false)
+      objectM.validate(s) must equal(false)
     }
   }
 
-  "toRawScala" should {
+  "toRawScala" must {
     "return expected" in {
       val f = mock[Node]
       when(f.toRaw).thenReturn("STUB")
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.toRaw should equal("object o0 { STUB }")
+      objectM.toRaw must equal("object o0 { STUB }")
     }
   }
 
-  "replaceEmpty" should {
+  "replaceEmpty" must {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
@@ -93,7 +93,7 @@ final class ObjectDefSpec extends UnitSpec {
       when(f.replaceEmpty(any[Scope])(any[Injector])).thenReturn(f)
       val instance = ObjectDef(Seq(f), name)
 
-      instance.replaceEmpty(s) should equal(instance)
+      instance.replaceEmpty(s) must equal(instance)
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -111,22 +111,22 @@ final class ObjectDefSpec extends UnitSpec {
       result match {
         case ObjectDef(n2, name2) =>
           n2 match {
-            case Seq(nSeq) => nSeq shouldBe a[FunctionM]
+            case Seq(nSeq) => nSeq mustBe a[FunctionM]
             case _ => fail("not a Seq")
           }
-          name2 should equal(name)
+          name2 must equal(name)
         case _ => fail("wrong type")
       }
     }
   }
 
-  "getMaxDepth" should {
+  "getMaxDepth" must {
     "getMaxDepth returns 1 + child getMaxDepth when has 1 child" in {
       val f = mock[Node]
       when(f.getMaxDepth).thenReturn(2)
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.getMaxDepth should equal(3)
+      objectM.getMaxDepth must equal(3)
     }
 
     "getMaxDepth returns 1 + child getMaxDepth when has 2 children" in {
@@ -136,7 +136,7 @@ final class ObjectDefSpec extends UnitSpec {
       when(f2.getMaxDepth).thenReturn(2)
       val objectM = ObjectDef(Seq(f, f2), name)
 
-      objectM.getMaxDepth should equal(3)
+      objectM.getMaxDepth must equal(3)
     }
   }
 
