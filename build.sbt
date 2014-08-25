@@ -15,13 +15,13 @@ libraryDependencies ++= Seq(
   //cache,
   //ws
   filters,
-  "org.mockito" % "mockito-all" % "1.9.5" % "test" withSources() withJavadoc(),
-  "com.twitter" % "util-eval_2.10" % "6.19.0",
+  "org.mockito" % "mockito-core" % "1.9.5" % "test" withSources() withJavadoc(),
+  "com.twitter" %% "util-eval" % "6.20.0",
   "com.google.inject" % "guice" % "4.0-beta4",
   "com.tzavellas" % "sse-guice" % "0.7.1",
-  "org.scalatest" %% "scalatest" % "2.2.0" % "test",
-  "com.twitter" % "util-core_2.10" % "6.20.0",
-  "org.scalatestplus" % "play_2.10" % "1.2.0" % "test"
+  "org.scalatest" %% "scalatest" % "2.2.1" % "test",
+  "org.scalatestplus" %% "play" % "1.2.0" % "test",
+  "com.twitter" %% "util-core" % "6.20.0"
 )
 
 scalacOptions ++= Seq("-feature")
