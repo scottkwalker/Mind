@@ -20,7 +20,7 @@ libraryDependencies ++= Seq(
   "com.google.inject" % "guice" % "4.0-beta4",
   "com.tzavellas" % "sse-guice" % "0.7.1",
   "org.scalatest" %% "scalatest" % "2.2.0" % "test",
-  "com.twitter" % "util-core_2.10" % "6.18.0",
+  "com.twitter" % "util-core_2.10" % "6.20.0",
   "org.scalatestplus" % "play_2.10" % "1.2.0" % "test"
 )
 
