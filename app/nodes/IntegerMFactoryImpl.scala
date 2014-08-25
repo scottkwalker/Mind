@@ -5,7 +5,9 @@ import models.common.{IScope, Node}
 import models.domain.scala.IntegerM
 import nodes.helpers._
 
-case class IntegerMFactoryImpl @Inject()() extends ICreateChildNodes with UpdateScopeNoChange {
+trait IntegerMFactory extends ICreateChildNodes
+
+case class IntegerMFactoryImpl @Inject()() extends IntegerMFactory with UpdateScopeNoChange {
 
   override val neighbourIds = Seq.empty
 

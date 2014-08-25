@@ -4,7 +4,7 @@ import nodes._
 import utils.helpers.UnitSpec
 
 final class PopulateMemoizationMapsSpec extends UnitSpec {
-
+/*
   private val addOperatorFactory = injector.getInstance(classOf[AddOperatorFactoryImpl])
   private val functionMFactory = injector.getInstance(classOf[FunctionMFactoryImpl])
   private val integerMFactory = injector.getInstance(classOf[IntegerMFactoryImpl])
@@ -12,16 +12,21 @@ final class PopulateMemoizationMapsSpec extends UnitSpec {
   private val objectDefFactory = injector.getInstance(classOf[ObjectDefFactoryImpl])
   private val valDclInFunctionParamFactory = injector.getInstance(classOf[ValDclInFunctionParamFactoryImpl])
   private val valueRefFactory = injector.getInstance(classOf[ValueRefFactoryImpl])
-
+*/
     "IoC" should {
-      "init an instance of PopulateMemoizationMaps" in pending /*{
+      "init an instance of PopulateMemoizationMaps" in {
         // Act
         val instance = injector.getInstance(classOf[IPopulateMemoizationMaps])
 
         // Assert
         instance shouldBe a[PopulateMemoizationMaps]
-      }*/
+      }
     }
+
+  "memoizeCanTerminateInStepsRemaining" should {
+    "uncomment the below" in pending
+  }
+
 /*
     "memoizeCanTerminateInStepsRemaining" should {
 
@@ -82,7 +87,6 @@ final class PopulateMemoizationMapsSpec extends UnitSpec {
         assert(store(s) == expected)
       }
 
-      /*
       "call canTerminateInStepsRemaining once for every combination" in {
         // Arrange
         val numVals = 0
@@ -112,7 +116,7 @@ final class PopulateMemoizationMapsSpec extends UnitSpec {
           // Assert
           assert(memoizeDi.store.size == expected)
         }
-      }*/
+      }
     }
 
     "run" should {

@@ -6,7 +6,7 @@ import nodes.helpers.ICreateChildNodes
 
 final class FactoryIdToFactoryImpl @Inject()(addOperatorFactory: AddOperatorFactory,
                                              functionMFactory: FunctionMFactory,
-                                             integerMFactory: IntegerMFactoryImpl,
+                                             integerMFactory: IntegerMFactory,
                                              nodeTreeFactory: NodeTreeFactory,
                                              objectDefFactory: ObjectDefFactory,
                                              valDclInFunctionParamFactory: ValDclInFunctionParamFactory,
