@@ -13,10 +13,14 @@ final class LegalNeighbours @Inject()(legalNeighboursMemo: LegalNeighboursMemo) 
     LegalNeighboursRequest.Form.Mapping
   )
 
+  def present = Action { implicit request =>
+    Ok(views.html.legalNeighbours(form))
+  }
+
   def calculate = Action { implicit request =>
     form.bindFromRequest.fold(
       invalidForm => {
-        BadRequest(s"form errors: ${invalidForm.errors}")
+        BadRequest(views.html.legalNeighbours(invalidForm)) // TODO display the error messages in the page.
       },
       validForm => {
         // TODO neighbours should be a single id coming in on the form.

@@ -1,0 +1,22 @@
+@(currentForm: Form[models.common.LegalNeighboursRequest])(implicit lang: Lang)
+
+@import views.LegalNeighbours.SubmitId
+@import views.html.helper.form
+@import views.html.errorsSummary
+
+<html>
+    <head>
+        <title>Mind - Legal neighbours calculator</title>
+    </head>
+
+    <body>
+        @errorsSummary(Some(currentForm))
+
+        @form(action = controllers.routes.LegalNeighbours.calculate()) {
+            <div class="form-steps">
+                <button id="@SubmitId" type="submit" name="action" class="button">@Messages("legalNeighbours.submit")</button>
+            </div>
+        }
+        <p>Please see the GitHub page for this project: https://github.com/scottkwalker/Mind</p>
+    </body>
+</html>

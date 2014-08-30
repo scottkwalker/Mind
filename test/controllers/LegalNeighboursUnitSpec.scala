@@ -8,11 +8,23 @@ import models.common.{IScope, LegalNeighboursRequest, Scope}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 import play.api.libs.json.Json
-import play.api.test.Helpers.{BAD_REQUEST, OK}
+import play.api.test.Helpers.{BAD_REQUEST, OK, contentAsString}
 import play.api.test.{FakeRequest, WithApplication}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 final class LegalNeighboursUnitSpec extends TestComposition {
+
+  "present" must {
+    "return 200" in new WithApplication {
+      whenReady(present) { r =>
+        r.header.status must equal(OK)
+      }
+    }
+
+    "contain a form that POSTs to the expected action" in new WithApplication {
+      contentAsString(present)(timeout) must include( """form action="/mind/legal-neighbours" method="POST"""")
+    }
+  }
 
   "calculate" must {
     "return bad request when submission is empty" in new WithApplication {
@@ -76,9 +88,15 @@ final class LegalNeighboursUnitSpec extends TestComposition {
       val validRequest = requestWithDefaults(currentNode = -1)
       a[RuntimeException] must be thrownBy legalNeighbours.calculate(validRequest)
     }
+
+    "csrf" in pending
   }
 
   private val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
+  private val present = {
+    val emptyRequest = FakeRequest()
+    legalNeighbours.present(emptyRequest)
+  }
   private val scopeDefault = Scope(
     numVals = 1,
     numFuncs = 2,
