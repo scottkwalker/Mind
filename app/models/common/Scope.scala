@@ -43,6 +43,7 @@ object Scope {
     val maxFuncsInObjectId = "maxFuncsInObject"
     val maxParamsInFuncId = "maxParamsInFunc"
     val maxObjectsInTreeId = "maxObjectsInTree"
+    final val MaxLength = 2 // TODO make custom max length for each field above.
 
     final val Mapping = mapping(
       s"$numValsId" -> number,

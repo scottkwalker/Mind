@@ -1,0 +1,57 @@
+@(field: play.api.data.Field, args: Map[Symbol, Any] = Map.empty)(implicit handler: helper.FieldConstructor, lang: Lang)
+
+@import views.html.helper.input
+@import views.html.widgets.inputText
+@import models.common.Scope.Form.{numValsId, numFuncsId, numObjectsId, heightId, maxExpressionsInFuncId, maxFuncsInObjectId, maxParamsInFuncId, maxObjectsInTreeId, MaxLength}
+
+@input(field, args.toSeq:_*) { (id, name, value, htmlArgs) =>
+    <fieldset>
+            @inputText(field(numValsId), args =
+                    Map('_label -> Messages(s"$id.$numValsId"),
+                        '_showConstraints -> false,
+                        'autofocus -> false,
+                        'maxLength -> MaxLength))
+
+            @inputText(field(numFuncsId), args =
+                    Map('_label -> Messages(s"$id.$numFuncsId"),
+                        '_showConstraints -> false,
+                        'autofocus -> false,
+                        'maxLength -> MaxLength))
+
+            @inputText(field(numObjectsId), args =
+                    Map('_label -> Messages(s"$id.$numObjectsId"),
+                        '_showConstraints -> false,
+                        'autofocus -> false,
+                        'maxLength -> MaxLength))
+
+            @inputText(field(heightId), args =
+                    Map('_label -> Messages(s"$id.$heightId"),
+                        '_showConstraints -> false,
+                        'autofocus -> false,
+                        'maxLength -> MaxLength))
+
+            @inputText(field(maxExpressionsInFuncId), args =
+                    Map('_label -> Messages(s"$id.$maxExpressionsInFuncId"),
+                        '_showConstraints -> false,
+                        'autofocus -> false,
+                        'maxLength -> MaxLength))
+
+            @inputText(field(maxFuncsInObjectId), args =
+                    Map('_label -> Messages(s"$id.$maxFuncsInObjectId"),
+                        '_showConstraints -> false,
+                        'autofocus -> false,
+                        'maxLength -> MaxLength))
+
+            @inputText(field(maxParamsInFuncId), args =
+                    Map('_label -> Messages(s"$id.$maxParamsInFuncId"),
+                        '_showConstraints -> false,
+                        'autofocus -> false,
+                        'maxLength -> MaxLength))
+
+            @inputText(field(maxObjectsInTreeId), args =
+                    Map('_label -> Messages(s"$id.$maxObjectsInTreeId"),
+                        '_showConstraints -> false,
+                        'autofocus -> false,
+                        'maxLength -> MaxLength))
+    </fieldset>
+}

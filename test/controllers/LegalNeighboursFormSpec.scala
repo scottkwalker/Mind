@@ -1,7 +1,7 @@
 package controllers
 
 import composition.TestComposition
-import models.common.LegalNeighboursRequest.Form.currentNodeId
+import models.common.LegalNeighboursRequest.Form.CurrentNodeId
 import models.common.Scope.Form._
 
 final class LegalNeighboursFormSpec extends TestComposition {
@@ -35,7 +35,7 @@ final class LegalNeighboursFormSpec extends TestComposition {
       errors(5).key must equal(s"$scopeId.$maxFuncsInObjectId")
       errors(6).key must equal(s"$scopeId.$maxParamsInFuncId")
       errors(7).key must equal(s"$scopeId.$maxObjectsInTreeId")
-      errors(8).key must equal(currentNodeId)
+      errors(8).key must equal(CurrentNodeId)
 
       for (i <- 0 until errors.length) {
         errors(i).messages must equal(List("error.number"))
@@ -97,7 +97,7 @@ final class LegalNeighboursFormSpec extends TestComposition {
         s"$scopeId.$maxFuncsInObjectId" -> maxFuncsInObject,
         s"$scopeId.$maxParamsInFuncId" -> maxParamsInFunc,
         s"$scopeId.$maxObjectsInTreeId" -> maxObjectsInTree,
-        currentNodeId -> currentNode
+        CurrentNodeId -> currentNode
       )
     )
   }

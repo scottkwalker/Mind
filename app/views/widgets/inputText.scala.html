@@ -1,0 +1,16 @@
+@(field: play.api.data.Field, hintText: Option[String] = None, args: Map[Symbol, Any] = Map.empty)(implicit handler: helper.FieldConstructor, lang: Lang)
+
+@import views.html.helper.input
+@import play.api.templates.PlayMagic.toHtmlArgs
+
+@input(field, args.toSeq:_*) { (id, name, value, htmlArgs) =>
+
+    <input 
+        id="@id"
+        name="@name"
+        value="@value"
+        @{if(field.constraints.find(_._1 == "constraint.required")) "aria-required=true" else ""} @* TODO move this into an extension method and write unit tests *@
+        @{if(field.hasErrors) "aria-invalid=true" else ""} @* TODO move this into an extension method and write unit tests *@
+        @toHtmlArgs(htmlArgs)
+    >
+}
