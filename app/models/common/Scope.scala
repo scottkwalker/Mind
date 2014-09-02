@@ -34,26 +34,26 @@ object Scope {
   object Form {
 
     // TODO May need to move to a view
-    val scopeId = "scope"
-    val numValsId = "numVals"
-    val numFuncsId = "numFuncs"
-    val numObjectsId = "numObjects"
-    val heightId = "height"
-    val maxExpressionsInFuncId = "maxExpressionsInFunc"
-    val maxFuncsInObjectId = "maxFuncsInObject"
-    val maxParamsInFuncId = "maxParamsInFunc"
-    val maxObjectsInTreeId = "maxObjectsInTree"
+    final val ScopeId = "scope"
+    final val NumValsId = "numVals"
+    final val NumFuncsId = "numFuncs"
+    final val NumObjectsId = "numObjects"
+    final val HeightId = "height"
+    final val MaxExpressionsInFuncId = "maxExpressionsInFunc"
+    final val MaxFuncsInObjectId = "maxFuncsInObject"
+    final val MaxParamsInFuncId = "maxParamsInFunc"
+    final val MaxObjectsInTreeId = "maxObjectsInTree"
     final val MaxLength = 2 // TODO make custom max length for each field above.
 
     final val Mapping = mapping(
-      s"$numValsId" -> number,
-      s"$numFuncsId" -> number,
-      s"$numObjectsId" -> number,
-      s"$heightId" -> number,
-      s"$maxExpressionsInFuncId" -> number,
-      s"$maxFuncsInObjectId" -> number,
-      s"$maxParamsInFuncId" -> number,
-      s"$maxObjectsInTreeId" -> number
+      s"$NumValsId" -> number,
+      s"$NumFuncsId" -> number,
+      s"$NumObjectsId" -> number,
+      s"$HeightId" -> number,
+      s"$MaxExpressionsInFuncId" -> number,
+      s"$MaxFuncsInObjectId" -> number,
+      s"$MaxParamsInFuncId" -> number,
+      s"$MaxObjectsInTreeId" -> number
     )(Scope.apply)(Scope.unapply)
   }
 

@@ -27,14 +27,14 @@ final class LegalNeighboursFormSpec extends TestComposition {
 
       errors.length must equal(9)
 
-      errors(0).key must equal(s"$scopeId.$numValsId")
-      errors(1).key must equal(s"$scopeId.$numFuncsId")
-      errors(2).key must equal(s"$scopeId.$numObjectsId")
-      errors(3).key must equal(s"$scopeId.$heightId")
-      errors(4).key must equal(s"$scopeId.$maxExpressionsInFuncId")
-      errors(5).key must equal(s"$scopeId.$maxFuncsInObjectId")
-      errors(6).key must equal(s"$scopeId.$maxParamsInFuncId")
-      errors(7).key must equal(s"$scopeId.$maxObjectsInTreeId")
+      errors(0).key must equal(s"$ScopeId.$NumValsId")
+      errors(1).key must equal(s"$ScopeId.$NumFuncsId")
+      errors(2).key must equal(s"$ScopeId.$NumObjectsId")
+      errors(3).key must equal(s"$ScopeId.$HeightId")
+      errors(4).key must equal(s"$ScopeId.$MaxExpressionsInFuncId")
+      errors(5).key must equal(s"$ScopeId.$MaxFuncsInObjectId")
+      errors(6).key must equal(s"$ScopeId.$MaxParamsInFuncId")
+      errors(7).key must equal(s"$ScopeId.$MaxObjectsInTreeId")
       errors(8).key must equal(CurrentNodeId)
 
       for (i <- 0 until errors.length) {
@@ -89,14 +89,14 @@ final class LegalNeighboursFormSpec extends TestComposition {
                                     currentNode: String) = {
     legalNeighbours.form.bind(
       Map(
-        s"$scopeId.$numValsId" -> numVals,
-        s"$scopeId.$numFuncsId" -> numFuncs,
-        s"$scopeId.$numObjectsId" -> numObjects,
-        s"$scopeId.$heightId" -> height,
-        s"$scopeId.$maxExpressionsInFuncId" -> maxExpressionsInFunc,
-        s"$scopeId.$maxFuncsInObjectId" -> maxFuncsInObject,
-        s"$scopeId.$maxParamsInFuncId" -> maxParamsInFunc,
-        s"$scopeId.$maxObjectsInTreeId" -> maxObjectsInTree,
+        s"$ScopeId.$NumValsId" -> numVals,
+        s"$ScopeId.$NumFuncsId" -> numFuncs,
+        s"$ScopeId.$NumObjectsId" -> numObjects,
+        s"$ScopeId.$HeightId" -> height,
+        s"$ScopeId.$MaxExpressionsInFuncId" -> maxExpressionsInFunc,
+        s"$ScopeId.$MaxFuncsInObjectId" -> maxFuncsInObject,
+        s"$ScopeId.$MaxParamsInFuncId" -> maxParamsInFunc,
+        s"$ScopeId.$MaxObjectsInTreeId" -> maxObjectsInTree,
         CurrentNodeId -> currentNode
       )
     )

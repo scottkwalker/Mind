@@ -1,12 +1,12 @@
 @(currentForm: Form[models.common.LegalNeighboursRequest])(implicit lang: Lang)
 
-@import models.common.LegalNeighboursRequest.Form.{CurrentNodeId, CurrentNodeMaxLength}
 @import views.LegalNeighbours.SubmitId
 @import views.html.errorsSummary
 @import views.html.helper.form
-@import views.html.widgets.inputText
+@import views.html.widgets.currentNode
 @import views.html.widgets.scope
-@import models.common.Scope.Form.scopeId
+@import models.common.Scope.Form.ScopeId
+@import models.common.LegalNeighboursRequest.Form.CurrentNodeId
 
 <html>
     <head>
@@ -18,13 +18,9 @@
 
         @form(action = controllers.routes.LegalNeighbours.calculate()) {
 
-            @inputText(currentForm(CurrentNodeId), args =
-                    Map('_label -> Messages(CurrentNodeId),
-                        '_showConstraints -> false,
-                        'autofocus -> true,
-                        'maxLength -> CurrentNodeMaxLength))
+            @currentNode(currentForm(CurrentNodeId))
 
-            @scope(currentForm(scopeId))
+            @scope(currentForm(ScopeId))
 
             <button id="@SubmitId" type="submit" name="action" class="button">@Messages("submit")</button>
         }
