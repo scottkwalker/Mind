@@ -25,5 +25,5 @@ case class ValDclInFunctionParamFactoryImpl @Inject()(
 
 object ValDclInFunctionParamFactoryImpl {
 
-  final val id = 6
+  val id = 6
 }

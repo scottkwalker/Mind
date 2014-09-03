@@ -38,5 +38,5 @@ case class NodeTreeFactoryImpl @Inject()(
 
 object NodeTreeFactoryImpl {
 
-  final val id = 4
+  val id = 4
 }

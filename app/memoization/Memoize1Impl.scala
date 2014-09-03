@@ -38,7 +38,7 @@ abstract class Memoize1Impl[-TKey, +TOutput]()
 
   override def apply(key: TKey): TOutput =
   // Look in the (possibly stale) memo table. If the value is present, then
-  // it is guaranteed to be the final value.
+  // it is guaranteed to be the value.
   // Else it is absent, call missing() to determine what to do.
     cache.get(key) match {
       case Some(Right(b)) => b

@@ -12,7 +12,7 @@ abstract class Memoize2Impl[TKey1, TKey2, TOutput](private var cache: Map[String
 
   def apply(implicit key1: TKey1, key2: TKey2): TOutput =
   // Look in the (possibly stale) memo table. If the value is present, then
-  // it is guaranteed to be the final value.
+  // it is guaranteed to be the value.
   // Else it is absent, call missing() to determine what to do.
     cache.get(combineKeys) match {
       case Some(Right(b)) => b

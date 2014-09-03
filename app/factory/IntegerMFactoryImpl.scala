@@ -14,5 +14,5 @@ case class IntegerMFactoryImpl @Inject()() extends IntegerMFactory with UpdateSc
 
 object IntegerMFactoryImpl {
 
-  final val id = 3
+  val id = 3
 }

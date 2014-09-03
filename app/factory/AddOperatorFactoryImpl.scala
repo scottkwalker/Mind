@@ -24,5 +24,5 @@ case class AddOperatorFactoryImpl @Inject()(
 
 object AddOperatorFactoryImpl {
 
-  final val id = 1
+  val id = 1
 }

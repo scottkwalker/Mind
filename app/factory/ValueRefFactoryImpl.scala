@@ -18,5 +18,5 @@ final case class ValueRefFactoryImpl @Inject()(ai: SelectionStrategy) extends Va
 
 object ValueRefFactoryImpl {
 
-  final val id = 7
+  val id = 7
 }

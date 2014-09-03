@@ -12,10 +12,10 @@ object LegalNeighboursRequest {
 
   object Form {
 
-    final val CurrentNodeId = "currentNode"
-    final val CurrentNodeMaxLength = 2
+    val CurrentNodeId = "currentNode"
+    val CurrentNodeMaxLength = 2
 
-    final val Mapping = mapping(
+    val Mapping = mapping(
       ScopeId -> Scope.Form.Mapping,
       CurrentNodeId -> number
     )(LegalNeighboursRequest.apply)(LegalNeighboursRequest.unapply)
