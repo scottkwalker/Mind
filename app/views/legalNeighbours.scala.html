@@ -1,16 +1,15 @@
 @(currentForm: Form[models.common.LegalNeighboursRequest])(implicit lang: Lang)
 
+@import models.common.LegalNeighboursRequest.Form.CurrentNodeId
+@import models.common.Scope.Form.ScopeId
 @import views.LegalNeighbours.SubmitId
 @import views.html.errorsSummary
 @import views.html.helper.form
-@import views.html.widgets.currentNode
-@import views.html.widgets.scope
-@import models.common.Scope.Form.ScopeId
-@import models.common.LegalNeighboursRequest.Form.CurrentNodeId
+@import views.html.widgets.{currentNode, scope}
 
 <html>
     <head>
-        <title>Mind - Legal neighbours calculator</title>
+        <title>@Messages("title")</title>
     </head>
 
     <body>
@@ -24,6 +23,6 @@
 
             <button id="@SubmitId" type="submit" name="action" class="button">@Messages("submit")</button>
         }
-        <p>Please see the GitHub page for this project: https://github.com/scottkwalker/Mind</p>
+        <p>@Messages("footer")</p>
     </body>
 </html>

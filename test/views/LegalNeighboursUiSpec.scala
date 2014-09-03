@@ -4,6 +4,7 @@ import factory.AddOperatorFactoryImpl
 import models.common.LegalNeighboursRequest.Form.CurrentNodeId
 import models.common.Scope.Form.{HeightId, MaxExpressionsInFuncId, MaxFuncsInObjectId, MaxObjectsInTreeId, MaxParamsInFuncId, NumFuncsId, NumObjectsId, NumValsId, ScopeId}
 import org.scalatestplus.play._
+import play.api.Play
 import play.api.libs.json.{JsArray, JsNumber}
 import views.LegalNeighbours.SubmitId
 
@@ -22,9 +23,18 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
   //  }
 
   "go to page" must {
-    "display the page " in {
+    "display the page in English when no language cookie exists" in {
       go to s"http://localhost:$port/mind/legal-neighbours"
       pageTitle mustBe "Mind - Legal neighbours calculator"
+    }
+
+    "display the page in Welsh when language cookie contains 'cy'" in {
+      go to s"http://localhost:$port"
+      val key = Play.langCookieName
+      val value = "cy" // Code for Welsh
+      add cookie(key, value)
+      go to s"http://localhost:$port/mind/legal-neighbours"
+      pageTitle mustBe "Mind - Cyfrifiannell cymdogion Cyfreithiol"
     }
   }
 

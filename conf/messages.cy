@@ -1,4 +1,4 @@
-title = Mind - Legal neighbours calculator
+title = Mind - Cyfrifiannell cymdogion Cyfreithiol
 errorSummary.title = Error summary
 currentNode = Current node identifier:
 submit = Submit
@@ -12,3 +12,4 @@ scope.maxExpressionsInFunc = Max expressions in a function:
 scope.maxFuncsInObject = Max functions in an Object:
 scope.maxParamsInFunc = Max params on a function:
 scope.maxObjectsInTree = Max Objects in a tree:
+footer = Please see the GitHub page for this project: https://github.com/scottkwalker/Mind

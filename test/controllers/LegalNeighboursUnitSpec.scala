@@ -88,8 +88,6 @@ final class LegalNeighboursUnitSpec extends TestComposition {
       val validRequest = requestWithDefaults(currentNode = -1)
       a[RuntimeException] must be thrownBy legalNeighbours.calculate(validRequest)
     }
-
-    "csrf" in pending
   }
 
   private val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
