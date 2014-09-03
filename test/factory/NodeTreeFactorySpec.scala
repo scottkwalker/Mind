@@ -1,6 +1,6 @@
 package factory
 
-import ai.IRandomNumberGenerator
+import ai.RandomNumberGenerator
 import com.tzavellas.sse.guice.ScalaModule
 import composition.TestComposition
 import models.common.{IScope, Scope}
@@ -53,10 +53,10 @@ final class NodeTreeFactorySpec extends TestComposition {
     final class StubRng extends ScalaModule {
 
       def configure(): Unit = {
-        val rng = mock[IRandomNumberGenerator]
+        val rng = mock[RandomNumberGenerator]
         when(rng.nextInt(any[Int])).thenReturn(2)
         when(rng.nextBoolean).thenReturn(true)
-        bind(classOf[IRandomNumberGenerator]).toInstance(rng)
+        bind(classOf[RandomNumberGenerator]).toInstance(rng)
 
         bind(classOf[IScope]).toInstance(Scope(height = 10, maxExpressionsInFunc = 2, maxFuncsInObject = 3, maxParamsInFunc = 2, maxObjectsInTree = 3))
       }

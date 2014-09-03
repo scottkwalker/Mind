@@ -1,12 +1,8 @@
 package ai
 
-import scala.util.Random
+trait RandomNumberGenerator {
 
-final class RandomNumberGenerator extends IRandomNumberGenerator {
+  def nextBoolean: Boolean
 
-  private val rng: Random = new Random
-
-  def nextBoolean: Boolean = rng.nextBoolean()
-
-  def nextInt(n: Int) = rng.nextInt(n)
+  def nextInt(n: Int): Int
 }

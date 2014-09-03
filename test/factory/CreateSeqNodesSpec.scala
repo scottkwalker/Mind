@@ -1,7 +1,7 @@
 package factory
 
 import ai.aco.Aco
-import ai.{IRandomNumberGenerator, SelectionStrategy}
+import ai.{RandomNumberGenerator, SelectionStrategy}
 import composition.TestComposition
 import models.common.{IScope, Scope}
 import models.domain.Node
@@ -18,7 +18,7 @@ final class CreateSeqNodesSpec extends TestComposition {
       val v = mock[ICreateChildNodes]
       when(v.updateScope(s)).thenReturn(s)
       when(v.create(any[Scope])).thenReturn(n)
-      val rng = mock[IRandomNumberGenerator]
+      val rng = mock[RandomNumberGenerator]
       when(rng.nextBoolean).thenReturn(true)
       val ai: SelectionStrategy = Aco(rng)
       val cn = mock[ICreateNode]
@@ -43,7 +43,7 @@ final class CreateSeqNodesSpec extends TestComposition {
       when(v.create(any[Scope])).thenReturn(n)
       val cn = mock[ICreateNode]
       when(cn.create(any[Seq[ICreateChildNodes]], any[Scope])).thenReturn((s, n))
-      val rng = mock[IRandomNumberGenerator]
+      val rng = mock[RandomNumberGenerator]
       when(rng.nextInt(any[Int])).thenReturn(2)
       when(rng.nextBoolean).thenReturn(true)
       val ai: SelectionStrategy = Aco(rng)
@@ -67,7 +67,7 @@ final class CreateSeqNodesSpec extends TestComposition {
       when(v.create(any[Scope])).thenReturn(n)
       val cn = mock[ICreateNode]
       when(cn.create(any[Seq[ICreateChildNodes]], any[Scope])).thenReturn((s, n))
-      val rng = mock[IRandomNumberGenerator]
+      val rng = mock[RandomNumberGenerator]
       when(rng.nextInt(any[Int])).thenReturn(1)
       when(rng.nextBoolean).thenReturn(false, true)
       val ai: SelectionStrategy = Aco(rng)
@@ -91,7 +91,7 @@ final class CreateSeqNodesSpec extends TestComposition {
       when(v.create(any[Scope])).thenReturn(n)
       val cn = mock[ICreateNode]
       when(cn.create(any[Seq[ICreateChildNodes]], any[Scope])).thenReturn((s, n))
-      val rng = mock[IRandomNumberGenerator]
+      val rng = mock[RandomNumberGenerator]
       when(rng.nextInt(any[Int])).thenReturn(2)
       when(rng.nextBoolean).thenReturn(true)
       val ai: SelectionStrategy = Aco(rng)

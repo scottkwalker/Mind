@@ -1,6 +1,6 @@
 package modules
 
-import _root_.ai.{IRandomNumberGenerator, RandomNumberGenerator}
+import _root_.ai.{RandomNumberGenerator, RandomNumberGeneratorImpl}
 import com.tzavellas.sse.guice.ScalaModule
 import factory._
 import memoization._
@@ -17,7 +17,7 @@ final class DevModule() extends ScalaModule {
     bind(classOf[IScope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1))
     bind(classOf[ICreateNode]).to(classOf[CreateNode]).asEagerSingleton()
     bind(classOf[ICreateSeqNodes]).to(classOf[CreateSeqNodes]).asEagerSingleton()
-    bind(classOf[IRandomNumberGenerator]).to(classOf[RandomNumberGenerator]).asEagerSingleton()
+    bind(classOf[RandomNumberGenerator]).to(classOf[RandomNumberGeneratorImpl]).asEagerSingleton()
     bind(classOf[FactoryLookup]).to(classOf[FactoryLookupImpl]).asEagerSingleton()
     bind(classOf[LegalNeighboursMemo]).to(classOf[LegalNeighboursMemoImpl]).asEagerSingleton()
     bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl]).asEagerSingleton()

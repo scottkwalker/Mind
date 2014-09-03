@@ -1,6 +1,6 @@
 package ai.legalGamer
 
-import ai.{IRandomNumberGenerator, SelectionStrategy}
+import ai.{RandomNumberGenerator, SelectionStrategy}
 import composition.TestComposition
 import factory.ICreateChildNodes
 import fitness.AddTwoInts
@@ -11,7 +11,7 @@ final class LegalGamerSpec extends TestComposition {
 
   "chooseChild" must {
     "return expected type given only one valid choice" in {
-      val rng = mock[IRandomNumberGenerator]
+      val rng = mock[RandomNumberGenerator]
       val sut = LegalGamer(rng)
       val v = mock[ICreateChildNodes]
       val possibleChildren = Seq(v)

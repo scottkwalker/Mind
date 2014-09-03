@@ -15,7 +15,7 @@ final class SelectionStrategySpec extends TestComposition {
   }
 
   private val selectionStrategy = {
-    val rng = mock[IRandomNumberGenerator]
+    val rng = mock[RandomNumberGenerator]
     when(rng.nextBoolean).thenReturn(true)
     new LegalGamer(rng)
   }

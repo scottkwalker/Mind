@@ -1,6 +1,6 @@
 package ai.aco
 
-import ai.{IRandomNumberGenerator, SelectionStrategy}
+import ai.{RandomNumberGenerator, SelectionStrategy}
 import com.google.inject.Injector
 import com.tzavellas.sse.guice.ScalaModule
 import composition.TestComposition
@@ -16,7 +16,7 @@ final class AcoSpec extends TestComposition {
 
   "chooseChild" must {
     "returns expected instance given only one valid choice" in {
-      val rng = mock[IRandomNumberGenerator]
+      val rng = mock[RandomNumberGenerator]
       val sut = Aco(rng)
       val v = mock[ICreateChildNodes]
       val possibleChildren = Seq(v)
@@ -67,13 +67,13 @@ final class AcoSpec extends TestComposition {
 
     "call random number generator nextInt" in {
       val expected = 2
-      val rng = mock[IRandomNumberGenerator]
+      val rng = mock[RandomNumberGenerator]
 
       final class StubRng extends ScalaModule {
 
         def configure(): Unit = {
           when(rng.nextInt(any[Int])).thenReturn(2)
-          bind(classOf[IRandomNumberGenerator]).toInstance(rng)
+          bind(classOf[RandomNumberGenerator]).toInstance(rng)
         }
       }
       val injector = testInjector(new AcoModule, new StubRng)

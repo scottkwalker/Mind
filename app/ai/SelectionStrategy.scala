@@ -5,7 +5,7 @@ import models.common.IScope
 
 trait SelectionStrategy {
 
-  protected val rng: IRandomNumberGenerator
+  protected val rng: RandomNumberGenerator
 
   def chooseChild(possibleChildren: Seq[ICreateChildNodes]): ICreateChildNodes
 

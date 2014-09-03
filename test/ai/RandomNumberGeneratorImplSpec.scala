@@ -2,7 +2,7 @@ package ai
 
 import composition.TestComposition
 
-final class RandomNumberGeneratorSpec extends TestComposition {
+final class RandomNumberGeneratorImplSpec extends TestComposition {
 
   "nextBoolean" must {
     "return a boolean when called" in {
@@ -10,5 +10,5 @@ final class RandomNumberGeneratorSpec extends TestComposition {
     }
   }
 
-  private val rng = new RandomNumberGenerator()
+  private val rng = injector.getInstance(classOf[RandomNumberGenerator])
 }
