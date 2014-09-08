@@ -33,17 +33,31 @@ object Scope {
 
   object Form {
 
-    // TODO May need to move to a view
     val ScopeId = "scope"
+
     val NumValsId = "numVals"
+    val NumValsMaxLength = 2
+
     val NumFuncsId = "numFuncs"
+    val NumFuncsMaxLength = 2
+
     val NumObjectsId = "numObjects"
+    val NumObjectsMaxLength = 2
+
     val HeightId = "height"
+    val HeightMaxLength = 2
+
     val MaxExpressionsInFuncId = "maxExpressionsInFunc"
+    val MaxExpressionsInFuncMaxLength = 2
+
     val MaxFuncsInObjectId = "maxFuncsInObject"
+    val MaxFuncsInObjectMaxLength = 2
+
     val MaxParamsInFuncId = "maxParamsInFunc"
+    val MaxParamsInFuncMaxLength = 2
+
     val MaxObjectsInTreeId = "maxObjectsInTree"
-    val MaxLength = 2 // TODO make custom max length for each field above.
+    val MaxObjectsInTreeMaxLength = 2
 
     val Mapping = mapping(
       s"$NumValsId" -> number,
