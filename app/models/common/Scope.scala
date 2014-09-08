@@ -1,7 +1,11 @@
 package models.common
 
-import play.api.data.Forms.{mapping, _}
+import play.api.data.Forms.{mapping, number}
+import play.api.data.validation.Constraints
 import play.api.libs.json.Json
+import play.api.data._
+import play.api.data.Forms._
+import play.api.data.validation.Constraints._
 
 final case class Scope(numVals: Int = 0,
                        numFuncs: Int = 0,
@@ -38,41 +42,49 @@ object Scope {
     val NumValsId = "numVals"
     val NumValsMin = 0
     val NumValsMax = 99
+    val NumValsMinLength = 1
     val NumValsMaxLength = 2
 
     val NumFuncsId = "numFuncs"
     val NumFuncsMin = 0
     val NumFuncsMax = 99
+    val NumFuncsMinLength = 1
     val NumFuncsMaxLength = 2
 
     val NumObjectsId = "numObjects"
     val NumObjectsMin = 0
     val NumObjectsMax = 99
+    val NumObjectsMinLength = 1
     val NumObjectsMaxLength = 2
 
     val HeightId = "height"
     val HeightMin = 0
     val HeightMax = 99
+    val HeightMinLength = 1
     val HeightMaxLength = 2
 
     val MaxExpressionsInFuncId = "maxExpressionsInFunc"
     val MaxExpressionsInFuncMin = 0
     val MaxExpressionsInFuncMax = 99
+    val MaxExpressionsInFuncMinLength = 1
     val MaxExpressionsInFuncMaxLength = 2
 
     val MaxFuncsInObjectId = "maxFuncsInObject"
     val MaxFuncsInObjectMin = 0
     val MaxFuncsInObjectMax = 99
+    val MaxFuncsInObjectMinLength = 1
     val MaxFuncsInObjectMaxLength = 2
 
     val MaxParamsInFuncId = "maxParamsInFunc"
     val MaxParamsInFuncMin = 0
     val MaxParamsInFuncMax = 99
+    val MaxParamsInFuncMinLength = 1
     val MaxParamsInFuncMaxLength = 2
 
     val MaxObjectsInTreeId = "maxObjectsInTree"
     val MaxObjectsInTreeMin = 0
     val MaxObjectsInTreeMax = 99
+    val MaxObjectsInTreeMinLength = 1
     val MaxObjectsInTreeMaxLength = 2
 
     val Mapping = mapping(

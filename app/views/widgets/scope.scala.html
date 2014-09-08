@@ -4,54 +4,71 @@
 @import views.html.widgets.inputText
 @import models.common.Scope.Form._
 
-@input(field, args.toSeq:_*) { (id, name, value, htmlArgs) =>
+@input(field, args.toSeq: _*) { (id, name, value, htmlArgs) =>
     <fieldset>
-            @inputText(field(NumValsId), args =
-                    Map('_label -> Messages(s"$id.$NumValsId"),
-                        '_showConstraints -> false,
-                        'autofocus -> false,
-                        'maxLength -> NumValsMaxLength))
+        @inputText(field(NumValsId), args =
+                Map('_label -> Messages(s"$id.$NumValsId"),
+                    '_showConstraints -> false,
+                    'autofocus -> false,
+                    'pattern -> s".{$NumValsMinLength,$NumValsMaxLength}"
 
-            @inputText(field(NumFuncsId), args =
-                    Map('_label -> Messages(s"$id.$NumFuncsId"),
-                        '_showConstraints -> false,
-                        'autofocus -> false,
-                        'maxLength -> NumFuncsMaxLength))
+                )
+        )
 
-            @inputText(field(NumObjectsId), args =
-                    Map('_label -> Messages(s"$id.$NumObjectsId"),
-                        '_showConstraints -> false,
-                        'autofocus -> false,
-                        'maxLength -> NumObjectsMaxLength))
+        @inputText(field(NumFuncsId), args =
+                Map('_label -> Messages(s"$id.$NumFuncsId"),
+                    '_showConstraints -> false,
+                    'autofocus -> false,
+                    'pattern -> s".{$NumFuncsMinLength,$NumFuncsMaxLength}"
+                )
+        )
 
-            @inputText(field(HeightId), args =
-                    Map('_label -> Messages(s"$id.$HeightId"),
-                        '_showConstraints -> false,
-                        'autofocus -> false,
-                        'maxLength -> HeightMaxLength))
+        @inputText(field(NumObjectsId), args =
+                Map('_label -> Messages(s"$id.$NumObjectsId"),
+                    '_showConstraints -> false,
+                    'autofocus -> false,
+                    'pattern -> s".{$NumObjectsMinLength,$NumObjectsMaxLength}"
+                )
+        )
 
-            @inputText(field(MaxExpressionsInFuncId), args =
-                    Map('_label -> Messages(s"$id.$MaxExpressionsInFuncId"),
-                        '_showConstraints -> false,
-                        'autofocus -> false,
-                        'maxLength -> MaxExpressionsInFuncMaxLength))
+        @inputText(field(HeightId), args =
+                Map('_label -> Messages(s"$id.$HeightId"),
+                    '_showConstraints -> false,
+                    'autofocus -> false,
+                    'pattern -> s".{$HeightMinLength,$HeightMaxLength}"
+                )
+        )
 
-            @inputText(field(MaxFuncsInObjectId), args =
-                    Map('_label -> Messages(s"$id.$MaxFuncsInObjectId"),
-                        '_showConstraints -> false,
-                        'autofocus -> false,
-                        'maxLength -> MaxFuncsInObjectMaxLength))
+        @inputText(field(MaxExpressionsInFuncId), args =
+                Map('_label -> Messages(s"$id.$MaxExpressionsInFuncId"),
+                    '_showConstraints -> false,
+                    'autofocus -> false,
+                    'pattern -> s".{$MaxExpressionsInFuncMinLength,$MaxExpressionsInFuncMaxLength}"
+                )
+        )
 
-            @inputText(field(MaxParamsInFuncId), args =
-                    Map('_label -> Messages(s"$id.$MaxParamsInFuncId"),
-                        '_showConstraints -> false,
-                        'autofocus -> false,
-                        'maxLength -> MaxParamsInFuncMaxLength))
+        @inputText(field(MaxFuncsInObjectId), args =
+                Map('_label -> Messages(s"$id.$MaxFuncsInObjectId"),
+                    '_showConstraints -> false,
+                    'autofocus -> false,
+                    'pattern -> s".{$MaxFuncsInObjectMinLength,$MaxFuncsInObjectMaxLength}"
+                )
+        )
 
-            @inputText(field(MaxObjectsInTreeId), args =
-                    Map('_label -> Messages(s"$id.$MaxObjectsInTreeId"),
-                        '_showConstraints -> false,
-                        'autofocus -> false,
-                        'maxLength -> MaxObjectsInTreeMaxLength))
+        @inputText(field(MaxParamsInFuncId), args =
+                Map('_label -> Messages(s"$id.$MaxParamsInFuncId"),
+                    '_showConstraints -> false,
+                    'autofocus -> false,
+                    'pattern -> s".{$MaxParamsInFuncMinLength,$MaxParamsInFuncMaxLength}"
+                )
+        )
+
+        @inputText(field(MaxObjectsInTreeId), args =
+                Map('_label -> Messages(s"$id.$MaxObjectsInTreeId"),
+                    '_showConstraints -> false,
+                    'autofocus -> false,
+                    'pattern -> s".{$MaxObjectsInTreeMinLength,$MaxObjectsInTreeMaxLength}"
+                )
+        )
     </fieldset>
 }
