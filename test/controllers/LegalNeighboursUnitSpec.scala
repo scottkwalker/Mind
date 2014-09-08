@@ -85,7 +85,7 @@ final class LegalNeighboursUnitSpec extends TestComposition {
     }
 
     "throw when submission contains unknown currentNode" in new WithApplication {
-      val validRequest = requestWithDefaults(currentNode = -1)
+      val validRequest = requestWithDefaults(currentNode = 99)
       a[RuntimeException] must be thrownBy legalNeighbours.calculate(validRequest)
     }
   }
