@@ -15,6 +15,7 @@ object LegalNeighboursRequest {
     val CurrentNodeId = "currentNode"
     val CurrentNodeMin = 0
     val CurrentNodeMax = 99
+    val CurrentNodeMinLength = 1
     val CurrentNodeMaxLength = 2
 
     val Mapping = mapping(
