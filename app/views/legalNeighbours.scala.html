@@ -15,7 +15,7 @@
     <body>
         @errorsSummary(Some(currentForm))
 
-        @form(action = controllers.routes.LegalNeighbours.calculate()) {
+        @form(action = controllers.routes.LegalNeighbours.calculate(), args = ('novalidate, "novalidate")) {
 
             @currentNode(currentForm(CurrentNodeId))
 

@@ -42,7 +42,7 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
       val expected = JsArray(Seq(JsNumber(7))).toString()
       go to LegalNeighboursPage.url(port)
       // Fill in the fields
-      textField(CurrentNodeId).value = AddOperatorFactoryImpl.id.toString
+      currentNode.value = AddOperatorFactoryImpl.id.toString
       numVals.value = "1"
       numFuncs.value = "1"
       numObjects.value = "1"
@@ -58,11 +58,11 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
       }
     }
 
-    //TODO this test fails possibly because of HTML5 validation. In html do Play.IsTest and add to the "form" itself the attribute novalidate="novalidate"
-//    "display validation error messages when no data is submitted " in {
-//      go to LegalNeighboursPage.url(port)
-//      submit()
-//      pageSource must include(validationSummary)
-//    }
+    "display validation error messages when no data is submitted " in {
+      go to LegalNeighboursPage.url(port)
+      numVals.value = "-1"
+      submit()
+      pageSource must include(validationSummary)
+    }
   }
 }

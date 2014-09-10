@@ -1,5 +1,6 @@
 package views
 
+import models.common.LegalNeighboursRequest.Form.CurrentNodeId
 import models.common.Scope.Form._
 import org.openqa.selenium.WebDriver
 import org.scalatest.selenium.WebBrowser
@@ -11,6 +12,8 @@ object LegalNeighboursPage extends WebBrowser {
   val validationSummary = """<div id="validation-summary">"""
 
   def url(port: Int) = s"http://localhost:$port/mind/legal-neighbours"
+
+  def currentNode(implicit driver: WebDriver) = textField(CurrentNodeId)
 
   def numVals(implicit driver: WebDriver) = textField(s"$ScopeId.$NumValsId")
 
