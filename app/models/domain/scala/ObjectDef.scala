@@ -10,14 +10,13 @@ final case class ObjectDef(nodes: Seq[Node], name: String) extends Node with Upd
 
   override def toRaw: String = s"object $name ${nodes.map(f => f.toRaw).mkString("{ ", " ", " }")}"
 
-  override def hasNoEmpty(scope: IScope): Boolean = if (scope.hasHeightRemaining) {
+  override def hasNoEmpty(scope: IScope): Boolean = scope.hasHeightRemaining && {
     nodes.forall {
       case n: FunctionM => n.hasNoEmpty(scope.decrementHeight)
       case _: Empty => false
       case _ => false
     }
   }
-  else false
 
   override def replaceEmpty(scope: IScope)(implicit injector: Injector): Node = {
     def funcCreateNodes(scope: IScope, premade: Seq[Node]): (IScope, Seq[Node]) = {

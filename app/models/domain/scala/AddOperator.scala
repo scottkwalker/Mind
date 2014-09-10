@@ -18,8 +18,7 @@ final case class AddOperator(left: Node, right: Node) extends Node with UpdateSc
       }
     }
 
-    if (scope.hasHeightRemaining) validate(left, scope) && validate(right, scope)
-    else false
+    scope.hasHeightRemaining && validate(left, scope) && validate(right, scope)
   }
 
   override def replaceEmpty(scope: IScope)(implicit injector: Injector): Node = {

@@ -15,9 +15,9 @@ final case class FunctionM(params: Seq[Node],
     s"def $name${params.map(f => f.toRaw).mkString("(", ", ", ")")} = ${nodes.map(f => f.toRaw).mkString("{ ", " ", " }")}"
   }
 
-  override def hasNoEmpty(scope: IScope): Boolean = if (scope.hasHeightRemaining) !name.isEmpty &&
+  override def hasNoEmpty(scope: IScope): Boolean = scope.hasHeightRemaining &&
+    !name.isEmpty &&
     nodes.forall(n => n.hasNoEmpty(scope.decrementHeight))
-  else false
 
   override def replaceEmpty(scope: IScope)(implicit injector: Injector): Node = {
     def funcCreateParams(scope: IScope, premade: Seq[Node]): (IScope, Seq[Node]) = {
