@@ -10,7 +10,7 @@ import org.mockito.Mockito._
 
 final class CreateSeqNodesImplSpec extends TestComposition {
 
-  "createSeq" must {
+  "create" must {
     "calls create on factory once given only space for 1 func in obj and mocked rng the same" in {
       val s = mock[IScope]
       when(s.maxFuncsInObject).thenReturn(1)
@@ -25,7 +25,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       when(cn.create(any[Seq[ReplaceEmpty]], any[Scope])).thenReturn((s, n))
       val sut = CreateSeqNodesImpl(cn, ai)
 
-      val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
+      val (_, nodes) = sut.create(possibleChildren = Seq(v),
         scope = s,
         factoryLimit = s.maxFuncsInObject
       )
@@ -49,7 +49,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val ai: SelectionStrategy = Aco(rng)
       val sut = CreateSeqNodesImpl(cn, ai)
 
-      val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
+      val (_, nodes) = sut.create(possibleChildren = Seq(v),
         scope = s,
         factoryLimit = s.maxFuncsInObject
       )
@@ -73,7 +73,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val ai: SelectionStrategy = Aco(rng)
       val sut = CreateSeqNodesImpl(cn, ai)
 
-      val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
+      val (_, nodes) = sut.create(possibleChildren = Seq(v),
         scope = s,
         factoryLimit = s.maxFuncsInObject
       )
@@ -97,7 +97,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val ai: SelectionStrategy = Aco(rng)
       val sut = CreateSeqNodesImpl(cn, ai)
 
-      val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
+      val (_, nodes) = sut.create(possibleChildren = Seq(v),
         scope = s,
         acc = Seq(n),
         factoryLimit = s.maxFuncsInObject

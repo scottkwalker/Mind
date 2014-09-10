@@ -9,7 +9,7 @@ import scala.annotation.tailrec
 final case class CreateSeqNodesImpl @Inject()(createNode: CreateNode, ai: SelectionStrategy) extends CreateSeqNodes {
 
   @tailrec
-  def createSeq(possibleChildren: => Seq[ReplaceEmpty],
+  def create(possibleChildren: => Seq[ReplaceEmpty],
                 scope: IScope,
                 saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
                 acc: Seq[Node] = Seq.empty, // Default the accumulator to empty.
@@ -17,7 +17,7 @@ final case class CreateSeqNodesImpl @Inject()(createNode: CreateNode, ai: Select
                  ): (IScope, Seq[Node]) = {
     if (ai.canAddAnother(acc.length, factoryLimit)) {
       val (updatedScope, child) = createNode.create(possibleChildren, scope)
-      createSeq(possibleChildren,
+      create(possibleChildren,
         updatedScope,
         saveAccLengthInScope,
         acc :+ child,

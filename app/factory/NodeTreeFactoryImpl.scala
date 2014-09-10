@@ -21,7 +21,7 @@ case class NodeTreeFactoryImpl @Inject()(
   }
 
   def createNodes(scope: IScope, acc: Seq[Node] = Seq()): (IScope, Seq[Node]) = {
-    creator.createSeq(
+    creator.create(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,
       saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumFuncs(accLength)),

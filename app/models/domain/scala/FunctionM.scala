@@ -57,3 +57,10 @@ final case class FunctionM(params: Seq[Node],
     }
   }
 }
+
+object FunctionM {
+
+  def apply(params: Seq[Node],
+            nodes: Seq[Node],
+            count: Int): FunctionM = FunctionM(params, nodes, "f" + count)
+}

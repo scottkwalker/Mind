@@ -21,11 +21,11 @@ case class FunctionMFactoryImpl @Inject()(
 
     FunctionM(params = params,
       nodes = nodes,
-      name = "f" + scope.numFuncs)
+      count = scope.numFuncs)
   }
 
   def createParams(scope: IScope, acc: Seq[Node] = Seq.empty) = {
-    creator.createSeq(
+    creator.create(
       possibleChildren = legalNeighbours.fetch(scope, paramsNeighbours),
       scope = scope,
       saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumVals(accLength)),
@@ -35,7 +35,7 @@ case class FunctionMFactoryImpl @Inject()(
   }
 
   def createNodes(scope: IScope, acc: Seq[Node] = Seq.empty) = {
-    creator.createSeq(
+    creator.create(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,
       acc = acc,

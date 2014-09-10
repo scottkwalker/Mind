@@ -5,7 +5,7 @@ import models.domain.Node
 
 trait CreateSeqNodes {
 
-  def createSeq(possibleChildren: => Seq[ReplaceEmpty],
+  def create(possibleChildren: => Seq[ReplaceEmpty],
                 scope: IScope,
                 saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
                 acc: Seq[Node] = Seq.empty,
