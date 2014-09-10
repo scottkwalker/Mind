@@ -30,9 +30,9 @@ final class EmptySpec extends TestComposition {
     }
   }
 
-  "getMaxDepth" must {
+  "height" must {
     "return 0" in {
-      Empty().getMaxDepth must equal(0)
+      Empty().height must equal(0)
     }
   }
 }

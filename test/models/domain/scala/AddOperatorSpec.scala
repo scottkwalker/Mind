@@ -126,12 +126,12 @@ final class AddOperatorSpec extends TestComposition {
     }
   }
 
-  "getMaxDepth" must {
-    "return 1 + child getMaxDepth" in {
+  "height" must {
+    "return 1 + child height" in {
       val v = mock[Node]
-      when(v.getMaxDepth).thenReturn(1)
+      when(v.height).thenReturn(1)
 
-      AddOperator(v, v).getMaxDepth must equal(2)
+      AddOperator(v, v).height must equal(2)
     }
   }
 }

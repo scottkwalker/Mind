@@ -36,9 +36,9 @@ final case class FunctionM(params: Seq[Node],
     FunctionM(p, n, name)
   }
 
-  override def getMaxDepth: Int = {
-    def getMaxDepth(n: Seq[Node]): Int = n.map(_.getMaxDepth).reduceLeft(math.max)
-    1 + math.max(getMaxDepth(params), getMaxDepth(nodes))
+  override def height: Int = {
+    def height(n: Seq[Node]): Int = n.map(_.height).reduceLeft(math.max)
+    1 + math.max(height(params), height(nodes))
   }
 
   @tailrec

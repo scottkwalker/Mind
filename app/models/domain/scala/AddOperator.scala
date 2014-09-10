@@ -34,5 +34,5 @@ final case class AddOperator(left: Node, right: Node) extends Node with UpdateSc
     AddOperator(l, r)
   }
 
-  override def getMaxDepth: Int = 1 + math.max(left.getMaxDepth, right.getMaxDepth)
+  override def height: Int = 1 + math.max(left.height, right.height)
 }

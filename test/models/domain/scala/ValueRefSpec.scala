@@ -48,11 +48,11 @@ final class ValueRefSpec extends TestComposition {
     }
   }
 
-  "getMaxDepth" must {
+  "height" must {
     "returns 1" in {
       val name = "a"
 
-      ValueRef(name).getMaxDepth must equal(1)
+      ValueRef(name).height must equal(1)
     }
   }
 }

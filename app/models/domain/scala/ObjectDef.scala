@@ -48,5 +48,5 @@ final case class ObjectDef(nodes: Seq[Node], name: String) extends Node with Upd
     ObjectDef(n, name)
   }
 
-  override def getMaxDepth: Int = 1 + nodes.map(_.getMaxDepth).reduceLeft(math.max)
+  override def height: Int = 1 + nodes.map(_.height).reduceLeft(math.max)
 }

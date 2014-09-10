@@ -24,5 +24,5 @@ final case class ValDclInFunctionParam(name: String, primitiveType: Node) extend
     ValDclInFunctionParam(name, pt)
   }
 
-  override def getMaxDepth: Int = 1 + primitiveType.getMaxDepth
+  override def height: Int = 1 + primitiveType.height
 }

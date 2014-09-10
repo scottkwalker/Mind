@@ -96,23 +96,23 @@ final class NodeTreeSpec extends TestComposition {
     }
   }
 
-  "getMaxDepth" must {
-    "returns 1 + child getMaxDepth when has one child" in {
+  "height" must {
+    "returns 1 + child height when has one child" in {
       val f = mock[Node]
-      when(f.getMaxDepth).thenReturn(2)
+      when(f.height).thenReturn(2)
       val nodeTree = new NodeTree(Seq(f))
 
-      nodeTree.getMaxDepth must equal(3)
+      nodeTree.height must equal(3)
     }
 
-    "returns 1 + child getMaxDepth when has two children" in {
+    "returns 1 + child height when has two children" in {
       val f = mock[Node]
-      when(f.getMaxDepth).thenReturn(1)
+      when(f.height).thenReturn(1)
       val f2 = mock[Node]
-      when(f2.getMaxDepth).thenReturn(2)
+      when(f2.height).thenReturn(2)
       val nodeTree = new NodeTree(Seq(f, f2))
 
-      nodeTree.getMaxDepth must equal(3)
+      nodeTree.height must equal(3)
     }
 
     "returns correct value for realistic tree" in {
@@ -126,7 +126,7 @@ final class NodeTreeSpec extends TestComposition {
               ), name = "f0")),
             name = "o0")))
 
-      nodeTree.getMaxDepth must equal(5)
+      nodeTree.height must equal(5)
     }
   }
 }

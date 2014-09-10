@@ -119,13 +119,13 @@ final class ValDclInFunctionParamSpec extends TestComposition {
     }
   }
 
-  "getMaxDepth" must {
-    "returns 1 + child getMaxDepth" in {
+  "height" must {
+    "returns 1 + child height" in {
       val name = "a"
       val p = mock[Node]
-      when(p.getMaxDepth).thenReturn(1)
+      when(p.height).thenReturn(1)
 
-      ValDclInFunctionParam(name, p).getMaxDepth must equal(2)
+      ValDclInFunctionParam(name, p).height must equal(2)
     }
   }
 }

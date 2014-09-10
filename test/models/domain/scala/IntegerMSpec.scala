@@ -29,9 +29,9 @@ final class IntegerMSpec extends TestComposition {
     }
   }
 
-  "getMaxDepth" must {
+  "height" must {
     "return 1" in {
-      IntegerM().getMaxDepth must equal(1)
+      IntegerM().height must equal(1)
     }
   }
 }

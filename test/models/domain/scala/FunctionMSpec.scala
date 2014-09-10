@@ -148,25 +148,25 @@ final class FunctionMSpec extends TestComposition {
       }
     }
 
-    "getMaxDepth" must {
-      "returns 1 + child getMaxDepth" in {
+    "height" must {
+      "returns 1 + child height" in {
         val v = mock[Node]
-        when(v.getMaxDepth) thenReturn 2
+        when(v.height) thenReturn 2
 
         FunctionM(params = params,
           nodes = Seq(v, v),
-          name = name).getMaxDepth must equal(3)
+          name = name).height must equal(3)
       }
 
-      "returns 1 + child getMaxDepth when children have different depths" in {
+      "returns 1 + child height when children have different depths" in {
         val v = mock[Node]
-        when(v.getMaxDepth) thenReturn 1
+        when(v.height) thenReturn 1
         val v2 = mock[Node]
-        when(v2.getMaxDepth) thenReturn 2
+        when(v2.height) thenReturn 2
 
         FunctionM(params = params,
           nodes = Seq(v, v2),
-          name = name).getMaxDepth must equal(3)
+          name = name).height must equal(3)
       }
     }
   }

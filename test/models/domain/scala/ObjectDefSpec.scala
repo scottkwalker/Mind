@@ -121,23 +121,23 @@ final class ObjectDefSpec extends TestComposition {
     }
   }
 
-  "getMaxDepth" must {
-    "getMaxDepth returns 1 + child getMaxDepth when has 1 child" in {
+  "height" must {
+    "height returns 1 + child height when has 1 child" in {
       val f = mock[Node]
-      when(f.getMaxDepth).thenReturn(2)
+      when(f.height).thenReturn(2)
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.getMaxDepth must equal(3)
+      objectM.height must equal(3)
     }
 
-    "getMaxDepth returns 1 + child getMaxDepth when has 2 children" in {
+    "height returns 1 + child height when has 2 children" in {
       val f = mock[Node]
-      when(f.getMaxDepth).thenReturn(1)
+      when(f.height).thenReturn(1)
       val f2 = mock[Node]
-      when(f2.getMaxDepth).thenReturn(2)
+      when(f2.height).thenReturn(2)
       val objectM = ObjectDef(Seq(f, f2), name)
 
-      objectM.getMaxDepth must equal(3)
+      objectM.height must equal(3)
     }
   }
 

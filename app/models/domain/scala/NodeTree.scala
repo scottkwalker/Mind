@@ -48,5 +48,5 @@ final case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows 
     NodeTree(n)
   }
 
-  override def getMaxDepth: Int = 1 + nodes.map(_.getMaxDepth).reduceLeft(math.max)
+  override def height: Int = 1 + nodes.map(_.height).reduceLeft(math.max)
 }
