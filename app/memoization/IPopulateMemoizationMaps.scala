@@ -1,14 +1,14 @@
 package memoization
 
-import factory.ICreateChildNodes
+import factory.ReplaceEmpty
 import models.common.IScope
 
 trait IPopulateMemoizationMaps {
 
-  def memoizeCanTerminateInStepsRemaining(that: ICreateChildNodes,
+  def memoizeCanTerminateInStepsRemaining(that: ReplaceEmpty,
                                           scope: IScope)
 
-  def memoizeCanTerminateInStepsRemaining(that: ICreateChildNodes,
+  def memoizeCanTerminateInStepsRemaining(that: ReplaceEmpty,
                                           maxExpressionsInFunc: Int,
                                           maxFuncsInObject: Int,
                                           maxParamsInFunc: Int,

@@ -1,3 +1,3 @@
 package factory
 
-trait ValDclInFunctionParamFactory extends ICreateChildNodes
+trait ValDclInFunctionParamFactory extends ReplaceEmpty

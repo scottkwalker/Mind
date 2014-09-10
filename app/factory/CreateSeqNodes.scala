@@ -9,7 +9,7 @@ import scala.annotation.tailrec
 final case class CreateSeqNodes @Inject()(createNode: ICreateNode, ai: SelectionStrategy) extends ICreateSeqNodes {
 
   @tailrec
-  def createSeq(possibleChildren: => Seq[ICreateChildNodes],
+  def createSeq(possibleChildren: => Seq[ReplaceEmpty],
                 scope: IScope,
                 saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
                 acc: Seq[Node] = Seq.empty, // Default the accumulator to empty.

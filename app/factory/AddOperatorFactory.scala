@@ -1,3 +1,3 @@
 package factory
 
-trait AddOperatorFactory extends ICreateChildNodes
+trait AddOperatorFactory extends ReplaceEmpty

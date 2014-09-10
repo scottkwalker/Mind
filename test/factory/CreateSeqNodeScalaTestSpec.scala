@@ -15,7 +15,7 @@ final class CreateSeqNodeScalaTestSpec extends TestComposition {
 
       val s = mock[IScope]
       val n = mock[Node]
-      val v = mock[ICreateChildNodes]
+      val v = mock[ReplaceEmpty]
       val cn = mock[ICreateNode]
       val ai = mock[SelectionStrategy]
 
@@ -25,7 +25,7 @@ final class CreateSeqNodeScalaTestSpec extends TestComposition {
       when(ai.canAddAnother(anyInt(),
         anyInt())).thenReturn(true, false)
 
-      when(cn.create(anyObject[Seq[ICreateChildNodes]],
+      when(cn.create(anyObject[Seq[ReplaceEmpty]],
         anyObject[IScope])).thenReturn((s, n))
 
       // Act
@@ -43,14 +43,14 @@ final class CreateSeqNodeScalaTestSpec extends TestComposition {
 
       val s = mock[IScope]
       val n = mock[Node]
-      val v = mock[ICreateChildNodes]
+      val v = mock[ReplaceEmpty]
       val cn = mock[ICreateNode]
       val ai = mock[SelectionStrategy]
 
       val sut = CreateSeqNodes(cn, ai)
       when(s.maxFuncsInObject).thenReturn(2)
       when(ai.canAddAnother(anyInt(), anyInt())).thenReturn(true, true, false)
-      when(cn.create(anyObject[Seq[ICreateChildNodes]], anyObject[IScope])).thenReturn((s, n))
+      when(cn.create(anyObject[Seq[ReplaceEmpty]], anyObject[IScope])).thenReturn((s, n))
 
       // Act
       val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
@@ -67,7 +67,7 @@ final class CreateSeqNodeScalaTestSpec extends TestComposition {
 
       val s = mock[IScope]
       val n = mock[Node]
-      val v = mock[ICreateChildNodes]
+      val v = mock[ReplaceEmpty]
       val cn = mock[ICreateNode]
       val ai = mock[SelectionStrategy]
 
@@ -77,7 +77,7 @@ final class CreateSeqNodeScalaTestSpec extends TestComposition {
       when(ai.canAddAnother(anyInt(),
         anyInt())).thenReturn(true, false)
 
-      when(cn.create(anyObject[Seq[ICreateChildNodes]],
+      when(cn.create(anyObject[Seq[ReplaceEmpty]],
         anyObject[IScope])).thenReturn((s, n))
 
       // Act
@@ -95,7 +95,7 @@ final class CreateSeqNodeScalaTestSpec extends TestComposition {
 
       val s = mock[IScope]
       val n = mock[Node]
-      val v = mock[ICreateChildNodes]
+      val v = mock[ReplaceEmpty]
       val cn = mock[ICreateNode]
       val ai = mock[SelectionStrategy]
 
@@ -104,7 +104,7 @@ final class CreateSeqNodeScalaTestSpec extends TestComposition {
       when(s.maxFuncsInObject).thenReturn(2)
       when(ai.canAddAnother(anyInt(), anyInt())).thenReturn(true, false)
 
-      when(cn.create(anyObject[Seq[ICreateChildNodes]],
+      when(cn.create(anyObject[Seq[ReplaceEmpty]],
         anyObject[IScope])).thenReturn((s, n))
 
       // Act

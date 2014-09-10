@@ -3,7 +3,7 @@ package factory
 import models.common.IScope
 import models.domain.Node
 
-trait ICreateChildNodes {
+trait ReplaceEmpty {
 
   val neighbourIds: Seq[Int] // TODO should the collection type be Array?
 

@@ -17,7 +17,7 @@ final class FactoryLookupImplSpec extends TestComposition {
 
   "convert factory to id" must {
     "throw when id is not in the list" in {
-      a[RuntimeException] must be thrownBy sut.convert(mock[ICreateChildNodes])
+      a[RuntimeException] must be thrownBy sut.convert(mock[ReplaceEmpty])
     }
 
     "return expected id for AddOperatorFactory" in {

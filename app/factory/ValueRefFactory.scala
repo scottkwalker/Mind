@@ -1,3 +1,3 @@
 package factory
 
-trait ValueRefFactory extends ICreateChildNodes
+trait ValueRefFactory extends ReplaceEmpty

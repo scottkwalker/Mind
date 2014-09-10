@@ -11,7 +11,7 @@ final class LegalNeighboursMemoImpl @Inject()(factoryIdToFactory: FactoryLookup)
     new MemoizeScopeToNeighbours(versioning = versioning, factoryIdToFactory = factoryIdToFactory)
   }
 
-  override def fetch(scope: IScope, neighbours: Seq[Int]): Seq[ICreateChildNodes] = {
+  override def fetch(scope: IScope, neighbours: Seq[Int]): Seq[ReplaceEmpty] = {
     neighbours.
       filter(neighbour => memo.apply(key1 = scope, key2 = neighbour)). // Remove neighbours that cannot terminate at this scope.
       map(factoryIdToFactory.convert)

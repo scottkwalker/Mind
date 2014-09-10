@@ -27,7 +27,7 @@ final class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFac
           maxParamsInFunc: Int,
           height: Int,
           maxObjectsInTree: Int): Unit = {
-    val factories: Seq[ICreateChildNodes] = Seq(
+    val factories: Seq[ReplaceEmpty] = Seq(
       addOperatorFactory,
       functionMFactory,
       integerMFactory,
@@ -45,7 +45,7 @@ final class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFac
     }
   }
 
-  def memoizeCanTerminateInStepsRemaining(that: ICreateChildNodes,
+  def memoizeCanTerminateInStepsRemaining(that: ReplaceEmpty,
                                           maxExpressionsInFunc: Int,
                                           maxFuncsInObject: Int,
                                           maxParamsInFunc: Int,
@@ -66,7 +66,7 @@ final class PopulateMemoizationMaps @Inject()(addOperatorFactory: AddOperatorFac
     }
   }
 
-  def memoizeCanTerminateInStepsRemaining(that: ICreateChildNodes,
+  def memoizeCanTerminateInStepsRemaining(that: ReplaceEmpty,
                                           scope: IScope): Unit = {
     //that.mapOfCanTerminateInStepsRemaining getOrElseUpdate(scope, that.canTerminateInStepsRemaining(scope))
   }

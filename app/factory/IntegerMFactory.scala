@@ -1,3 +1,3 @@
 package factory
 
-trait IntegerMFactory extends ICreateChildNodes
+trait IntegerMFactory extends ReplaceEmpty

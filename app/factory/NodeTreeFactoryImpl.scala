@@ -13,7 +13,7 @@ case class NodeTreeFactoryImpl @Inject()(
 
   override val neighbourIds = Seq(ObjectDefFactoryImpl.id)
 
-  def create(scope: IScope, premadeChildren: Seq[ICreateChildNodes]): Node = {
+  def create(scope: IScope, premadeChildren: Seq[ReplaceEmpty]): Node = {
     val (_, generated) = createNodes(scope)
     val nodes = generated ++ premadeChildren.map(p => p.create(scope))
 

@@ -11,7 +11,7 @@ final class FactoryLookupImpl @Inject()(addOperatorFactory: AddOperatorFactory,
                                         valDclInFunctionParamFactory: ValDclInFunctionParamFactory,
                                         valueRefFactory: ValueRefFactory) extends FactoryLookup {
 
-  override def convert(id: Int): ICreateChildNodes = id match {
+  override def convert(id: Int): ReplaceEmpty = id match {
     case AddOperatorFactoryImpl.id => addOperatorFactory
     case FunctionMFactoryImpl.id => functionMFactory
     case IntegerMFactoryImpl.id => integerMFactory
@@ -22,7 +22,7 @@ final class FactoryLookupImpl @Inject()(addOperatorFactory: AddOperatorFactory,
     case _ => throw new RuntimeException("Unknown id for factory")
   }
 
-  override def convert(factory: ICreateChildNodes): Int = factory match {
+  override def convert(factory: ReplaceEmpty): Int = factory match {
     case `addOperatorFactory` => AddOperatorFactoryImpl.id
     case `functionMFactory` => FunctionMFactoryImpl.id
     case `integerMFactory` => IntegerMFactoryImpl.id

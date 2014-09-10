@@ -4,7 +4,7 @@ import ai.{RandomNumberGenerator, SelectionStrategy}
 import com.google.inject.Injector
 import com.tzavellas.sse.guice.ScalaModule
 import composition.TestComposition
-import factory.ICreateChildNodes
+import factory.ReplaceEmpty
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.{FunctionM, IntegerM, NodeTree, ObjectDef, _}
@@ -18,10 +18,10 @@ final class RandomWalkSpec extends TestComposition {
     "return expected type given only one valid choice" in {
       val rng = mock[RandomNumberGenerator]
       val sut = RandomGamer(rng)
-      val v = mock[ICreateChildNodes]
+      val v = mock[ReplaceEmpty]
       val possibleChildren = Seq(v)
 
-      sut.chooseChild(possibleChildren) mustBe a[ICreateChildNodes]
+      sut.chooseChild(possibleChildren) mustBe a[ReplaceEmpty]
     }
 
     "return code that can be compiled and evaluated" in {

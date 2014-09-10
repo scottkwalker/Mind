@@ -11,10 +11,10 @@ final class CreateNodeSpec extends TestComposition {
   "create" must {
     "calls chooseChild on ai" in {
       val scope = Scope(height = 10)
-      val v = mock[ICreateChildNodes]
+      val v = mock[ReplaceEmpty]
       when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
-      when(ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope])).thenReturn(v)
+      when(ai.chooseChild(any[Seq[ReplaceEmpty]], any[Scope])).thenReturn(v)
       val sut = CreateNode(ai)
 
       val (_, _) = sut.create(Seq(v), scope)
@@ -24,10 +24,10 @@ final class CreateNodeSpec extends TestComposition {
 
     "calls updateScope" in {
       val scope = Scope(height = 10)
-      val v = mock[ICreateChildNodes]
+      val v = mock[ReplaceEmpty]
       when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
-      when(ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope])).thenReturn(v)
+      when(ai.chooseChild(any[Seq[ReplaceEmpty]], any[Scope])).thenReturn(v)
       val sut = CreateNode(ai)
 
       val (_, _) = sut.create(Seq(v), scope)
@@ -37,10 +37,10 @@ final class CreateNodeSpec extends TestComposition {
 
     "calls create on factory" in {
       val scope = Scope(height = 10)
-      val v = mock[ICreateChildNodes]
+      val v = mock[ReplaceEmpty]
       when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
-      when(ai.chooseChild(any[Seq[ICreateChildNodes]], any[Scope])).thenReturn(v)
+      when(ai.chooseChild(any[Seq[ReplaceEmpty]], any[Scope])).thenReturn(v)
       val sut = CreateNode(ai)
 
       val (_, _) = sut.create(Seq(v), scope)

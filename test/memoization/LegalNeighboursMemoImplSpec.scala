@@ -2,7 +2,7 @@ package memoization
 
 import com.tzavellas.sse.guice.ScalaModule
 import composition.TestComposition
-import factory.ICreateChildNodes
+import factory.ReplaceEmpty
 import models.common.Scope
 import org.mockito.Mockito.{times, verify, when}
 
@@ -63,12 +63,12 @@ final class LegalNeighboursMemoImplSpec extends TestComposition {
   }
 
   private val fakeFactoryTerminates1 = {
-    val factory = mock[ICreateChildNodes]
+    val factory = mock[ReplaceEmpty]
     when(factory.neighbourIds).thenReturn(Seq.empty)
     factory
   }
   private val fakeFactoryTerminates2 = {
-    val factory = mock[ICreateChildNodes]
+    val factory = mock[ReplaceEmpty]
     when(factory.neighbourIds).thenReturn(Seq.empty)
     factory
   }
@@ -81,13 +81,13 @@ final class LegalNeighboursMemoImplSpec extends TestComposition {
   private final class StubFactoryIdToFactory(factoryIdToFactory: FactoryLookup) extends ScalaModule {
 
     def configure(): Unit = {
-      val fNot: ICreateChildNodes = {
-        val fakeFactoryDoesNotTerminate = mock[ICreateChildNodes]
+      val fNot: ReplaceEmpty = {
+        val fakeFactoryDoesNotTerminate = mock[ReplaceEmpty]
         when(fakeFactoryDoesNotTerminate.neighbourIds).thenReturn(Seq(fakeFactoryDoesNotTerminateId))
         fakeFactoryDoesNotTerminate
       }
-      val fakeFactoryHasChildren: ICreateChildNodes = {
-        val fakeFactoryDoesNotTerminate = mock[ICreateChildNodes]
+      val fakeFactoryHasChildren: ReplaceEmpty = {
+        val fakeFactoryDoesNotTerminate = mock[ReplaceEmpty]
         when(fakeFactoryDoesNotTerminate.neighbourIds).thenReturn(Seq(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
         fakeFactoryDoesNotTerminate
       }

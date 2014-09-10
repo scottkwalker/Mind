@@ -1,10 +1,10 @@
 package memoization
 
-import factory.ICreateChildNodes
+import factory.ReplaceEmpty
 
 trait FactoryLookup {
 
-  def convert(id: Int): ICreateChildNodes
+  def convert(id: Int): ReplaceEmpty
 
-  def convert(factory: ICreateChildNodes): Int
+  def convert(factory: ReplaceEmpty): Int
 }

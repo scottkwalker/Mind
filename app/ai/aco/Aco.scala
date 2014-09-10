@@ -2,11 +2,11 @@ package ai.aco
 
 import ai.{RandomNumberGenerator, SelectionStrategy}
 import com.google.inject.Inject
-import factory.ICreateChildNodes
+import factory.ReplaceEmpty
 
 final case class Aco @Inject()(rng: RandomNumberGenerator) extends SelectionStrategy {
 
-  override def chooseChild(possibleChildren: Seq[ICreateChildNodes]): ICreateChildNodes = {
+  override def chooseChild(possibleChildren: Seq[ReplaceEmpty]): ReplaceEmpty = {
     require(possibleChildren.length > 0, "Sequence must not be empty otherwise we cannot pick an node from it")
     val index = rng.nextInt(possibleChildren.length)
     possibleChildren(index)

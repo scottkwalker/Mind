@@ -29,7 +29,7 @@ final class NodeTreeFactorySpec extends TestComposition {
 
     "returns 4 children given 1 premade and scope with 3 maxFuncsInObject (and rng mocked)" in {
       val n = mock[Node]
-      val c = mock[ICreateChildNodes]
+      val c = mock[ReplaceEmpty]
       when(c.create(any[IScope])).thenReturn(n)
 
       val instance = factory.create(scope = s, premadeChildren = Seq(c))

@@ -15,14 +15,14 @@ final class CreateSeqNodesSpec extends TestComposition {
       val s = mock[IScope]
       when(s.maxFuncsInObject).thenReturn(1)
       val n = mock[Node]
-      val v = mock[ICreateChildNodes]
+      val v = mock[ReplaceEmpty]
       when(v.updateScope(s)).thenReturn(s)
       when(v.create(any[Scope])).thenReturn(n)
       val rng = mock[RandomNumberGenerator]
       when(rng.nextBoolean).thenReturn(true)
       val ai: SelectionStrategy = Aco(rng)
       val cn = mock[ICreateNode]
-      when(cn.create(any[Seq[ICreateChildNodes]], any[Scope])).thenReturn((s, n))
+      when(cn.create(any[Seq[ReplaceEmpty]], any[Scope])).thenReturn((s, n))
       val sut = CreateSeqNodes(cn, ai)
 
       val (_, nodes) = sut.createSeq(possibleChildren = Seq(v),
@@ -38,11 +38,11 @@ final class CreateSeqNodesSpec extends TestComposition {
       val s = mock[IScope]
       when(s.maxFuncsInObject).thenReturn(2)
       val n = mock[Node]
-      val v = mock[ICreateChildNodes]
+      val v = mock[ReplaceEmpty]
       when(v.updateScope(s)).thenReturn(s)
       when(v.create(any[Scope])).thenReturn(n)
       val cn = mock[ICreateNode]
-      when(cn.create(any[Seq[ICreateChildNodes]], any[Scope])).thenReturn((s, n))
+      when(cn.create(any[Seq[ReplaceEmpty]], any[Scope])).thenReturn((s, n))
       val rng = mock[RandomNumberGenerator]
       when(rng.nextInt(any[Int])).thenReturn(2)
       when(rng.nextBoolean).thenReturn(true)
@@ -62,11 +62,11 @@ final class CreateSeqNodesSpec extends TestComposition {
       val s = mock[IScope]
       when(s.maxFuncsInObject).thenReturn(2)
       val n = mock[Node]
-      val v = mock[ICreateChildNodes]
+      val v = mock[ReplaceEmpty]
       when(v.updateScope(s)).thenReturn(s)
       when(v.create(any[Scope])).thenReturn(n)
       val cn = mock[ICreateNode]
-      when(cn.create(any[Seq[ICreateChildNodes]], any[Scope])).thenReturn((s, n))
+      when(cn.create(any[Seq[ReplaceEmpty]], any[Scope])).thenReturn((s, n))
       val rng = mock[RandomNumberGenerator]
       when(rng.nextInt(any[Int])).thenReturn(1)
       when(rng.nextBoolean).thenReturn(false, true)
@@ -86,11 +86,11 @@ final class CreateSeqNodesSpec extends TestComposition {
       val s = mock[IScope]
       when(s.maxFuncsInObject).thenReturn(2)
       val n = mock[Node]
-      val v = mock[ICreateChildNodes]
+      val v = mock[ReplaceEmpty]
       when(v.updateScope(s)).thenReturn(s)
       when(v.create(any[Scope])).thenReturn(n)
       val cn = mock[ICreateNode]
-      when(cn.create(any[Seq[ICreateChildNodes]], any[Scope])).thenReturn((s, n))
+      when(cn.create(any[Seq[ReplaceEmpty]], any[Scope])).thenReturn((s, n))
       val rng = mock[RandomNumberGenerator]
       when(rng.nextInt(any[Int])).thenReturn(2)
       when(rng.nextBoolean).thenReturn(true)
