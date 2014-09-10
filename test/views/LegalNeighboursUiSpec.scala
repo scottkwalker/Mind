@@ -40,17 +40,18 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
   "submit button" must {
     "return expected json when valid data is submitted" in {
       val expected = JsArray(Seq(JsNumber(7))).toString()
+      val valid = "1"
       go to LegalNeighboursPage.url(port)
       // Fill in the fields
       currentNode.value = AddOperatorFactoryImpl.id.toString
-      numVals.value = "1"
-      numFuncs.value = "1"
-      numObjects.value = "1"
-      height.value = "1"
-      maxExpressionsInFunc.value = "1"
-      maxFuncsInObject.value = "1"
-      maxParamsInFunc.value = "1"
-      maxObjectsInTree.value = "1"
+      numVals.value = valid
+      numFuncs.value = valid
+      numObjects.value = valid
+      height.value = valid
+      maxExpressionsInFunc.value = valid
+      maxFuncsInObject.value = valid
+      maxParamsInFunc.value = valid
+      maxObjectsInTree.value = valid
       submit()
 
       eventually {
@@ -59,8 +60,9 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
     }
 
     "display validation error messages when no data is submitted " in {
+      val invalid = "-1"
       go to LegalNeighboursPage.url(port)
-      numVals.value = "-1"
+      numVals.value = invalid
       submit()
       pageSource must include(validationSummary)
     }
