@@ -1,11 +1,9 @@
 package views
 
 import factory.AddOperatorFactoryImpl
-import models.common.LegalNeighboursRequest.Form.CurrentNodeId
 import org.scalatestplus.play._
 import play.api.Play
 import play.api.libs.json.{JsArray, JsNumber}
-import views.LegalNeighboursPage._
 
 final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
 
@@ -20,38 +18,41 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
   //    }
   //  }
   //  }
-
+  
   "go to page" must {
     "display the page in English when no language cookie exists" in {
-      go to LegalNeighboursPage.url(port)
-      pageTitle mustBe LegalNeighboursPage.title
+      val page = new LegalNeighboursPage
+      go to page.url(port)
+      pageTitle mustBe page.title
     }
 
     "display the page in Welsh when language cookie contains 'cy'" in {
+      val page = new LegalNeighboursPage
       go to s"http://localhost:$port"
       val key = Play.langCookieName
       val value = "cy" // Code for Welsh
       add cookie(key, value)
-      go to LegalNeighboursPage.url(port)
-      pageTitle mustBe LegalNeighboursPage.titleCy
+      go to page.url(port)
+      pageTitle mustBe page.titleCy
     }
   }
 
   "submit button" must {
     "return expected json when valid data is submitted" in {
+      val page = new LegalNeighboursPage
       val expected = JsArray(Seq(JsNumber(7))).toString()
       val valid = "1"
-      go to LegalNeighboursPage.url(port)
+      go to page.url(port)
       // Fill in the fields
-      currentNode.value = AddOperatorFactoryImpl.id.toString
-      numVals.value = valid
-      numFuncs.value = valid
-      numObjects.value = valid
-      height.value = valid
-      maxExpressionsInFunc.value = valid
-      maxFuncsInObject.value = valid
-      maxParamsInFunc.value = valid
-      maxObjectsInTree.value = valid
+      page.currentNode.value = AddOperatorFactoryImpl.id.toString
+      page.numVals.value = valid
+      page.numFuncs.value = valid
+      page.numObjects.value = valid
+      page.height.value = valid
+      page.maxExpressionsInFunc.value = valid
+      page.maxFuncsInObject.value = valid
+      page.maxParamsInFunc.value = valid
+      page.maxObjectsInTree.value = valid
       submit()
 
       eventually {
@@ -60,11 +61,12 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
     }
 
     "display validation error messages when no data is submitted " in {
+      val page = new LegalNeighboursPage
       val invalid = "-1"
-      go to LegalNeighboursPage.url(port)
-      numVals.value = invalid
+      go to page.url(port)
+      page.numVals.value = invalid
       submit()
-      pageSource must include(validationSummary)
+      pageSource must include(page.validationSummary)
     }
   }
 }
