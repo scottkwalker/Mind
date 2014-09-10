@@ -9,9 +9,9 @@ final case class ValDclInFunctionParam(name: String, primitiveType: Node) extend
 
   override def toRaw: String = s"$name: ${primitiveType.toRaw}"
 
-  override def validate(scope: IScope): Boolean = scope.hasHeightRemaining && !name.isEmpty && {
+  override def hasNoEmpty(scope: IScope): Boolean = scope.hasHeightRemaining && !name.isEmpty && {
     primitiveType match {
-      case p: IntegerM => p.validate(scope)
+      case p: IntegerM => p.hasNoEmpty(scope)
       case _ => false
     }
   }

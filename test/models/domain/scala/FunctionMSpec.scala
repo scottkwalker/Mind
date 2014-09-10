@@ -9,64 +9,64 @@ import org.mockito.Mockito._
 
 final class FunctionMSpec extends TestComposition {
 
-  "validate" must {
+  "hasNoEmpty" must {
     "false given an empty name" in {
       val s = Scope(height = 10)
       val v = mock[Node]
-      when(v.validate(any[Scope])).thenReturn(true)
+      when(v.hasNoEmpty(any[Scope])).thenReturn(true)
       FunctionM(params = params,
         nodes = Seq(v, v),
-        name = "").validate(s) must equal(false)
+        name = "").hasNoEmpty(s) must equal(false)
     }
 
     "true given it can terminate in under N steps" in {
       val s = Scope(height = 3)
       val v = mock[Node]
-      when(v.validate(any[Scope])).thenReturn(true)
+      when(v.hasNoEmpty(any[Scope])).thenReturn(true)
 
       FunctionM(params = params,
         nodes = Seq(v, v),
-        name = name).validate(s) must equal(true)
+        name = name).hasNoEmpty(s) must equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
       val s = Scope(height = 0)
       val v = mock[Node]
-      when(v.validate(any[Scope])).thenThrow(new RuntimeException)
+      when(v.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException)
 
       FunctionM(params = params,
         nodes = Seq(v, v),
-        name = name).validate(s) must equal(false)
+        name = name).hasNoEmpty(s) must equal(false)
     }
 
     "false given it cannot terminate in under N steps" in {
       val s = Scope(height = 2)
       val v = mock[Node]
-      when(v.validate(any[Scope])).thenReturn(false)
+      when(v.hasNoEmpty(any[Scope])).thenReturn(false)
 
       FunctionM(params = params,
         nodes = Seq(v, v),
-        name = name).validate(s) must equal(false)
+        name = name).hasNoEmpty(s) must equal(false)
     }
 
     "true given no empty nodes" in {
       val s = Scope(height = 10)
       val v = mock[Node]
-      when(v.validate(any[Scope])).thenReturn(true)
+      when(v.hasNoEmpty(any[Scope])).thenReturn(true)
 
       FunctionM(params = params,
         nodes = Seq(v, v),
-        name = name).validate(s) must equal(true)
+        name = name).hasNoEmpty(s) must equal(true)
     }
 
     "false given an empty node" in {
       val s = Scope(height = 10)
       val v = mock[Node]
-      when(v.validate(any[Scope])).thenReturn(true)
+      when(v.hasNoEmpty(any[Scope])).thenReturn(true)
 
       FunctionM(params = params,
         nodes = Seq(v, Empty()),
-        name = name).validate(s) must equal(false)
+        name = name).hasNoEmpty(s) must equal(false)
     }
   }
 

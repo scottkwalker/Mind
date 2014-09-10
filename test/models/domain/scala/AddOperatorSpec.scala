@@ -22,57 +22,57 @@ final class AddOperatorSpec extends TestComposition {
     }
   }
 
-  "validate" must {
+  "hasNoEmpty" must {
     "true given child nodes can terminate in under N steps" in {
       val s = Scope(height = 2)
       val v = ValueRef("v")
 
-      AddOperator(v, v).validate(s) must equal(true)
+      AddOperator(v, v).hasNoEmpty(s) must equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
       val s = Scope(height = 0)
       val v = mock[Node]
-      when(v.validate(any[Scope])).thenThrow(new RuntimeException)
+      when(v.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException)
 
-      AddOperator(v, v).validate(s) must equal(false)
+      AddOperator(v, v).hasNoEmpty(s) must equal(false)
     }
 
     "false given child nodes cannot terminate in under N steps" in {
       val s = Scope(height = 10)
       val v = mock[Node]
-      when(v.validate(any[Scope])).thenReturn(false)
+      when(v.hasNoEmpty(any[Scope])).thenReturn(false)
 
-      AddOperator(v, v).validate(s) must equal(false)
+      AddOperator(v, v).hasNoEmpty(s) must equal(false)
     }
 
     "true given none empty" in {
       val s = Scope(height = 10)
       val v = ValueRef("v")
 
-      AddOperator(v, v).validate(s) must equal(true)
+      AddOperator(v, v).hasNoEmpty(s) must equal(true)
     }
 
     "false when left node is empty" in {
       val s = Scope(height = 10)
       val v = ValueRef("stub")
 
-      AddOperator(Empty(), v).validate(s) must equal(false)
+      AddOperator(Empty(), v).hasNoEmpty(s) must equal(false)
     }
 
     "false when right node is empty" in {
       val s = Scope(height = 10)
       val v = ValueRef("stub")
 
-      AddOperator(v, Empty()).validate(s) must equal(false)
+      AddOperator(v, Empty()).hasNoEmpty(s) must equal(false)
     }
 
     "false given contains a node that is not valid for this level" in {
       val s = Scope(height = 10)
       val v = mock[Node]
-      when(v.validate(any[Scope])).thenReturn(true)
+      when(v.hasNoEmpty(any[Scope])).thenReturn(true)
 
-      AddOperator(v, ObjectDef(Seq.empty, "ObjectM0")).validate(s) must equal(false)
+      AddOperator(v, ObjectDef(Seq.empty, "ObjectM0")).hasNoEmpty(s) must equal(false)
     }
   }
 

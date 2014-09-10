@@ -9,10 +9,10 @@ final case class AddOperator(left: Node, right: Node) extends Node with UpdateSc
 
   override def toRaw: String = s"${left.toRaw} + ${right.toRaw}"
 
-  override def validate(scope: IScope): Boolean = {
+  override def hasNoEmpty(scope: IScope): Boolean = {
     def validate(n: Node, scope: IScope) = {
       n match {
-        case _: ValueRef => n.validate(scope.decrementHeight)
+        case _: ValueRef => n.hasNoEmpty(scope.decrementHeight)
         case _: Empty => false
         case _ => false
       }

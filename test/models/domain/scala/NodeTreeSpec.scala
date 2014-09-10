@@ -9,22 +9,22 @@ import org.mockito.Mockito._
 
 final class NodeTreeSpec extends TestComposition {
 
-  "validate" must {
+  "hasNoEmpty" must {
     "true given it can terminates in under N steps" in {
       val s = Scope(height = 10)
       val f = ObjectDef(nodes = Seq.empty, name = "o0")
       val nodeTree = new NodeTree(Seq(f))
 
-      nodeTree.validate(s) must equal(true)
+      nodeTree.hasNoEmpty(s) must equal(true)
     }
 
     "false given it cannot terminate in under N steps" in {
       val s = Scope(height = 10)
       val f = mock[Node]
-      when(f.validate(any[Scope])).thenReturn(false)
+      when(f.hasNoEmpty(any[Scope])).thenReturn(false)
       val nodeTree = new NodeTree(Seq(f))
 
-      nodeTree.validate(s) must equal(false)
+      nodeTree.hasNoEmpty(s) must equal(false)
     }
 
     "true given none empty" in {
@@ -32,13 +32,13 @@ final class NodeTreeSpec extends TestComposition {
       val f = ObjectDef(nodes = Seq.empty, name = "o0")
       val nodeTree = new NodeTree(Seq(f))
 
-      nodeTree.validate(s) must equal(true)
+      nodeTree.hasNoEmpty(s) must equal(true)
     }
 
     "false given empty root node" in {
       val s = Scope(height = 10)
       val nodeTree = new NodeTree(Seq(Empty()))
-      nodeTree.validate(s) must equal(false)
+      nodeTree.hasNoEmpty(s) must equal(false)
     }
 
     "false when hasHeightRemaining returns false" in {
@@ -47,7 +47,7 @@ final class NodeTreeSpec extends TestComposition {
       val f = mock[Node]
       val nodeTree = new NodeTree(Seq(f))
 
-      nodeTree.validate(s) must equal(false)
+      nodeTree.hasNoEmpty(s) must equal(false)
     }
   }
 

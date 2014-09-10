@@ -9,7 +9,7 @@ final case class Empty @Inject()() extends Node with UpdateScopeThrows {
 
   override def toRaw: String = throw new scala.RuntimeException
 
-  override def validate(scope: IScope): Boolean = false
+  override def hasNoEmpty(scope: IScope): Boolean = false
 
   override def replaceEmpty(scope: IScope)(implicit injector: Injector): Node = throw new scala.RuntimeException
 

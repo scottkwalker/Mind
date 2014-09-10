@@ -12,10 +12,10 @@ final class EmptySpec extends TestComposition {
     }
   }
 
-  "validate" must {
+  "hasNoEmpty" must {
     "return false" in {
       val s = Scope(height = 10)
-      Empty().validate(s) must equal(false)
+      Empty().hasNoEmpty(s) must equal(false)
     }
   }
 

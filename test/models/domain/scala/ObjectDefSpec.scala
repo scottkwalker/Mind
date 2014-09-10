@@ -9,7 +9,7 @@ import org.mockito.Mockito._
 
 final class ObjectDefSpec extends TestComposition {
 
-  "validate" must {
+  "hasNoEmpty" must {
     "true given it can terminates in under N steps" in {
       val s = Scope(height = 4)
       val f = FunctionM(params = Seq.empty,
@@ -17,25 +17,25 @@ final class ObjectDefSpec extends TestComposition {
         name = "f0")
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.validate(s) must equal(true)
+      objectM.hasNoEmpty(s) must equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
       val s = Scope(height = 0)
       val f = mock[Node]
-      when(f.validate(any[Scope])).thenThrow(new RuntimeException)
+      when(f.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException)
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.validate(s) must equal(false)
+      objectM.hasNoEmpty(s) must equal(false)
     }
 
     "false given it cannot terminate in under N steps" in {
       val s = Scope(height = 3)
       val f = mock[Node]
-      when(f.validate(any[Scope])).thenReturn(false)
+      when(f.hasNoEmpty(any[Scope])).thenReturn(false)
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.validate(s) must equal(false)
+      objectM.hasNoEmpty(s) must equal(false)
     }
 
     "true given no empty nodes" in {
@@ -45,22 +45,22 @@ final class ObjectDefSpec extends TestComposition {
         name = "f0")
       val objectM = ObjectDef(Seq(f), name)
 
-      objectM.validate(s) must equal(true)
+      objectM.hasNoEmpty(s) must equal(true)
     }
 
     "false given single empty method node" in {
       val s = Scope(height = 10)
       val objectM = ObjectDef(Seq(Empty()), name)
-      objectM.validate(s) must equal(false)
+      objectM.hasNoEmpty(s) must equal(false)
     }
 
     "false given empty method node in a sequence" in {
       val s = Scope(height = 10)
       val f = mock[Node]
-      when(f.validate(any[Scope])).thenReturn(true)
+      when(f.hasNoEmpty(any[Scope])).thenReturn(true)
       val objectM = ObjectDef(Seq(f, Empty()), name)
 
-      objectM.validate(s) must equal(false)
+      objectM.hasNoEmpty(s) must equal(false)
     }
   }
 

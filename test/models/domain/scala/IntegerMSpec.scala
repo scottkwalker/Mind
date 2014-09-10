@@ -12,10 +12,10 @@ final class IntegerMSpec extends TestComposition {
     }
   }
 
-  "validate" must {
+  "hasNoEmpty" must {
     "returns true" in {
       val s = mock[IScope]
-      IntegerM().validate(s) must equal(true)
+      IntegerM().hasNoEmpty(s) must equal(true)
     }
   }
 

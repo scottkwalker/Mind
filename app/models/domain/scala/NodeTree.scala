@@ -10,9 +10,9 @@ final case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows 
 
   override def toRaw: String = nodes.map(f => f.toRaw).mkString(" ")
 
-  override def validate(scope: IScope): Boolean = if (scope.hasHeightRemaining) {
+  override def hasNoEmpty(scope: IScope): Boolean = if (scope.hasHeightRemaining) {
     nodes.forall {
-      case n: ObjectDef => n.validate(scope.decrementHeight)
+      case n: ObjectDef => n.hasNoEmpty(scope.decrementHeight)
       case _: Empty => false
       case _ => false
     }

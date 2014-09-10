@@ -21,14 +21,14 @@ final class ValDclInFunctionParamSpec extends TestComposition {
     }
   }
 
-  "validate" must {
+  "hasNoEmpty" must {
     "false given it cannot terminate in under N steps" in {
       val s = mock[IScope]
       when(s.hasHeightRemaining).thenReturn(false)
       val name = "a"
       val p = mock[Node]
 
-      ValDclInFunctionParam(name, p).validate(s) must equal(false)
+      ValDclInFunctionParam(name, p).hasNoEmpty(s) must equal(false)
     }
 
     "false given an empty name" in {
@@ -37,7 +37,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val name = ""
       val p = mock[Node]
 
-      ValDclInFunctionParam(name, p).validate(s) must equal(false)
+      ValDclInFunctionParam(name, p).hasNoEmpty(s) must equal(false)
     }
 
     "false given an invalid child" in {
@@ -45,9 +45,9 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       when(s.hasHeightRemaining).thenReturn(true)
       val name = "a"
       val p = mock[Node]
-      when(p.validate(any[Scope])).thenReturn(false)
+      when(p.hasNoEmpty(any[Scope])).thenReturn(false)
 
-      ValDclInFunctionParam(name, p).validate(s) must equal(false)
+      ValDclInFunctionParam(name, p).hasNoEmpty(s) must equal(false)
     }
 
     "true given it can terminate, has a non-empty name and valid child" in {
@@ -56,7 +56,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val name = "a"
       val p = IntegerM()
 
-      ValDclInFunctionParam(name, p).validate(s) must equal(true)
+      ValDclInFunctionParam(name, p).hasNoEmpty(s) must equal(true)
     }
   }
 
