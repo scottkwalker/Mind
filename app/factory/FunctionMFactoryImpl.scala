@@ -7,7 +7,7 @@ import models.domain.Node
 import models.domain.scala.FunctionM
 
 case class FunctionMFactoryImpl @Inject()(
-                                           creator: ICreateSeqNodes,
+                                           creator: CreateSeqNodes,
                                            legalNeighbours: LegalNeighboursMemo
                                            ) extends FunctionMFactory with UpdateScopeIncrementFuncs {
 

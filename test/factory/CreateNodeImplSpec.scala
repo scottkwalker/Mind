@@ -6,7 +6,7 @@ import models.common.Scope
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
 
-final class CreateNodeSpec extends TestComposition {
+final class CreateNodeImplSpec extends TestComposition {
 
   "create" must {
     "calls chooseChild on ai" in {
@@ -15,7 +15,7 @@ final class CreateNodeSpec extends TestComposition {
       when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
       when(ai.chooseChild(any[Seq[ReplaceEmpty]], any[Scope])).thenReturn(v)
-      val sut = CreateNode(ai)
+      val sut = CreateNodeImpl(ai)
 
       val (_, _) = sut.create(Seq(v), scope)
 
@@ -28,7 +28,7 @@ final class CreateNodeSpec extends TestComposition {
       when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
       when(ai.chooseChild(any[Seq[ReplaceEmpty]], any[Scope])).thenReturn(v)
-      val sut = CreateNode(ai)
+      val sut = CreateNodeImpl(ai)
 
       val (_, _) = sut.create(Seq(v), scope)
 
@@ -41,7 +41,7 @@ final class CreateNodeSpec extends TestComposition {
       when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
       when(ai.chooseChild(any[Seq[ReplaceEmpty]], any[Scope])).thenReturn(v)
-      val sut = CreateNode(ai)
+      val sut = CreateNodeImpl(ai)
 
       val (_, _) = sut.create(Seq(v), scope)
 

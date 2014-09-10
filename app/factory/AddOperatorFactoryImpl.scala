@@ -7,7 +7,7 @@ import models.domain.Node
 import models.domain.scala.AddOperator
 
 case class AddOperatorFactoryImpl @Inject()(
-                                             creator: ICreateNode,
+                                             creator: CreateNode,
                                              legalNeighbours: LegalNeighboursMemo
                                              ) extends AddOperatorFactory with UpdateScopeNoChange {
 

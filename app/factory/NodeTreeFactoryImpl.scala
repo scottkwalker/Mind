@@ -7,7 +7,7 @@ import models.domain.Node
 import models.domain.scala.NodeTree
 
 case class NodeTreeFactoryImpl @Inject()(
-                                          creator: ICreateSeqNodes,
+                                          creator: CreateSeqNodes,
                                           legalNeighbours: LegalNeighboursMemo
                                           ) extends NodeTreeFactory with UpdateScopeThrows {
 

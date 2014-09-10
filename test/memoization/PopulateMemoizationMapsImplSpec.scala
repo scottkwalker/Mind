@@ -2,7 +2,7 @@ package memoization
 
 import composition.TestComposition
 
-final class PopulateMemoizationMapsSpec extends TestComposition {
+final class PopulateMemoizationMapsImplSpec extends TestComposition {
 
   /*
     private val addOperatorFactory = injector.getInstance(classOf[AddOperatorFactoryImpl])
@@ -16,10 +16,10 @@ final class PopulateMemoizationMapsSpec extends TestComposition {
   "IoC" must {
     "init an instance of PopulateMemoizationMaps" in {
       // Act
-      val instance = injector.getInstance(classOf[IPopulateMemoizationMaps])
+      val instance = injector.getInstance(classOf[PopulateMemoizationMaps])
 
       // Assert
-      instance mustBe a[PopulateMemoizationMaps]
+      instance mustBe a[PopulateMemoizationMapsImpl]
     }
   }
 

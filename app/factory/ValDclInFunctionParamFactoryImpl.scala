@@ -7,7 +7,7 @@ import models.domain.Node
 import models.domain.scala.ValDclInFunctionParam
 
 case class ValDclInFunctionParamFactoryImpl @Inject()(
-                                                       creator: ICreateNode,
+                                                       creator: CreateNode,
                                                        legalNeighbours: LegalNeighboursMemo
                                                        ) extends ValDclInFunctionParamFactory with UpdateScopeIncrementVals {
 

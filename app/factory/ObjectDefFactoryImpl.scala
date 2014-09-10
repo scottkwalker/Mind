@@ -7,7 +7,7 @@ import models.domain.Node
 import models.domain.scala.ObjectDef
 
 case class ObjectDefFactoryImpl @Inject()(
-                                           creator: ICreateSeqNodes,
+                                           creator: CreateSeqNodes,
                                            legalNeighbours: LegalNeighboursMemo
                                            ) extends ObjectDefFactory with UpdateScopeIncrementObjects {
 
