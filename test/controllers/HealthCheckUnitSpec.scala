@@ -2,21 +2,30 @@ package controllers
 
 import composition.TestComposition
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{OK, contentAsString, status}
+import play.api.test.Helpers.{OK, charset, contentAsString, contentType, status}
 
 final class HealthCheckUnitSpec extends TestComposition {
 
   "respond" must {
     "return http status OK" in {
-      val result = healthCheck.respond(FakeRequest())
-      status(result) must equal(OK)
+      status(healthCheckResponse) must equal(OK)
+    }
+
+    "return html content type" in {
+      contentType(healthCheckResponse) mustEqual Some("text/html")
+    }
+
+    "return UTF-8 encoding" in {
+      charset(healthCheckResponse) mustEqual Some("utf-8")
     }
 
     "contain expected text" in {
-      val result = healthCheck.respond(FakeRequest())
-      contentAsString(result) must include("Health check")
+      contentAsString(healthCheckResponse) must include("Health check")
     }
   }
 
-  val healthCheck = injector.getInstance(classOf[HealthCheck])
+  val healthCheckResponse = {
+    val healthCheck = injector.getInstance(classOf[HealthCheck])
+    healthCheck.respond(FakeRequest())
+  }
 }
