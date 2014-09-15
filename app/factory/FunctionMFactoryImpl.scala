@@ -21,7 +21,7 @@ case class FunctionMFactoryImpl @Inject()(
 
     FunctionM(params = params,
       nodes = nodes,
-      count = scope.numFuncs)
+      index = scope.numFuncs)
   }
 
   def createParams(scope: IScope, acc: Seq[Node] = Seq.empty) = {

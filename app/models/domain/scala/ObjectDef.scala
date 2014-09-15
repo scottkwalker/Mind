@@ -50,3 +50,11 @@ final case class ObjectDef(nodes: Seq[Node], name: String) extends Node with Upd
 
   override def height: Int = 1 + nodes.map(_.height).reduceLeft(math.max)
 }
+
+object ObjectDef {
+
+  def apply(nodes: Seq[Node], index: Int): ObjectDef = ObjectDef(
+    nodes = nodes,
+    name = s"o$index"
+  )
+}

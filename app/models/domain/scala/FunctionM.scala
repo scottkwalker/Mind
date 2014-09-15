@@ -62,5 +62,5 @@ object FunctionM {
 
   def apply(params: Seq[Node],
             nodes: Seq[Node],
-            count: Int): FunctionM = FunctionM(params, nodes, "f" + count)
+            index: Int): FunctionM = FunctionM(params, nodes, name = s"f$index")
 }

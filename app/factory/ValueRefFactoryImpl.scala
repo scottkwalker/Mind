@@ -10,10 +10,7 @@ final case class ValueRefFactoryImpl @Inject()(ai: SelectionStrategy) extends Va
 
   override val neighbourIds = Seq.empty
 
-  override def create(scope: IScope): Node = {
-    val name = "v" + ai.chooseIndex(scope.numVals)
-    ValueRef(name = name)
-  }
+  override def create(scope: IScope): Node = ValueRef(index = ai.chooseIndex(scope.numVals))
 }
 
 object ValueRefFactoryImpl {

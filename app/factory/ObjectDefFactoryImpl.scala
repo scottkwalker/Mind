@@ -17,7 +17,7 @@ case class ObjectDefFactoryImpl @Inject()(
     val (_, nodes) = createNodes(scope)
 
     ObjectDef(nodes = nodes,
-      name = "o" + scope.numObjects)
+      index = scope.numObjects)
   }
 
   def createNodes(scope: IScope, acc: Seq[Node] = Seq()) = {

@@ -15,3 +15,7 @@ final case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
 
   override def height: Int = 1
 }
+
+object ValueRef {
+  def apply(index: Int): ValueRef = ValueRef(name = s"v$index")
+}
