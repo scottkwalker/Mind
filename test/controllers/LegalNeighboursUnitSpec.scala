@@ -43,7 +43,7 @@ final class LegalNeighboursUnitSpec extends TestComposition {
       }
     }
 
-    "return ok with seq of ids when submission is valid and legal moves are found" in new WithApplication {
+    "return seq of ids when submission is valid and legal moves are found" in new WithApplication {
       val validRequest = requestWithDefaults()
       val result = legalNeighbours.calculate(validRequest)
       whenReady(result) { r =>
