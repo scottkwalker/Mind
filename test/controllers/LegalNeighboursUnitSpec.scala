@@ -1,6 +1,6 @@
 package controllers
 
-import com.tzavellas.sse.guice.ScalaModule
+import com.google.inject.AbstractModule
 import composition.TestComposition
 import factory.NodeTreeFactoryImpl
 import memoization.LegalNeighboursMemo
@@ -67,7 +67,7 @@ final class LegalNeighboursUnitSpec extends TestComposition {
       val legalNeighboursMemo = mock[LegalNeighboursMemo]
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
 
-      final class StubLegalNeighboursMemo extends ScalaModule {
+      final class StubLegalNeighboursMemo extends AbstractModule {
 
         def configure(): Unit = {
           when(legalNeighboursMemo.fetch(any[IScope], any[Int])).thenReturn(Seq.empty)

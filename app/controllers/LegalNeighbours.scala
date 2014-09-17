@@ -20,12 +20,11 @@ final class LegalNeighbours @Inject()(legalNeighboursMemo: LegalNeighboursMemo) 
   def calculate = Action { implicit request =>
     form.bindFromRequest.fold(
       invalidForm => {
-        BadRequest(views.html.legalNeighbours(invalidForm)) // TODO display the error messages in the page.
+        BadRequest(views.html.legalNeighbours(invalidForm))
       },
       validForm => {
-        // TODO neighbours should be a single id coming in on the form.
         val result = legalNeighboursMemo.fetch(scope = validForm.scope, currentNode = validForm.currentNode)
-        Ok(toJson(result))
+        Ok(toJson(result)).as(JSON)
       }
     )
   }

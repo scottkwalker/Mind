@@ -1,7 +1,8 @@
 package factory
 
 import ai.RandomNumberGenerator
-import com.tzavellas.sse.guice.ScalaModule
+import com.google.inject.AbstractModule
+
 import composition.TestComposition
 import models.common.{IScope, Scope}
 import models.domain.scala.ObjectDef
@@ -64,7 +65,7 @@ final class ObjectDefFactorySpec extends TestComposition {
   }
 
   override lazy val injector = {
-    final class StubRng extends ScalaModule {
+    final class StubRng extends AbstractModule {
 
       def configure(): Unit = {
         val rng = mock[RandomNumberGenerator]

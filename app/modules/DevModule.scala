@@ -1,13 +1,13 @@
 package modules
 
 import _root_.ai.{RandomNumberGenerator, RandomNumberGeneratorImpl}
-import com.tzavellas.sse.guice.ScalaModule
+import com.google.inject.AbstractModule
 import factory._
 import memoization._
 import models.common.{IScope, Scope}
 import models.domain.scala.Empty
 
-final class DevModule() extends ScalaModule {
+final class DevModule() extends AbstractModule {
 
   def configure(): Unit = {
     bind(classOf[Empty]).asEagerSingleton()

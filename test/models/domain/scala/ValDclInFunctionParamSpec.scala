@@ -1,7 +1,7 @@
 package models.domain.scala
 
-import com.google.inject.Injector
-import com.tzavellas.sse.guice.ScalaModule
+import com.google.inject.{AbstractModule, Injector}
+
 import composition.TestComposition
 import factory.{ValDclInFunctionParamFactory, ValDclInFunctionParamFactoryImpl}
 import models.common.{IScope, Scope}
@@ -92,7 +92,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
     }
 
     "returns without empty nodes given there were empty nodes" in {
-      final class StubFactoryCreate extends ScalaModule {
+      final class StubFactoryCreate extends AbstractModule {
 
         def configure(): Unit = {
           val n: Node = mock[Node]

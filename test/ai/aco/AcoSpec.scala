@@ -1,8 +1,7 @@
 package ai.aco
 
 import ai.{RandomNumberGenerator, SelectionStrategy}
-import com.google.inject.Injector
-import com.tzavellas.sse.guice.ScalaModule
+import com.google.inject.{AbstractModule, Injector}
 import composition.TestComposition
 import factory.ReplaceEmpty
 import fitness.AddTwoInts
@@ -69,7 +68,7 @@ final class AcoSpec extends TestComposition {
       val expected = 2
       val rng = mock[RandomNumberGenerator]
 
-      final class StubRng extends ScalaModule {
+      final class StubRng extends AbstractModule {
 
         def configure(): Unit = {
           when(rng.nextInt(any[Int])).thenReturn(2)

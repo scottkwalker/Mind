@@ -1,6 +1,6 @@
 package memoization
 
-import com.tzavellas.sse.guice.ScalaModule
+import com.google.inject.AbstractModule
 import composition.TestComposition
 import factory.ReplaceEmpty
 import models.common.Scope
@@ -78,7 +78,7 @@ final class LegalNeighboursMemoImplSpec extends TestComposition {
   private val fakeFactoryTerminates2Id = 2
   private val fakeFactoryHasChildrenId = 3
 
-  private final class StubFactoryIdToFactory(factoryIdToFactory: FactoryLookup) extends ScalaModule {
+  private final class StubFactoryIdToFactory(factoryIdToFactory: FactoryLookup) extends AbstractModule {
 
     def configure(): Unit = {
       val fNot: ReplaceEmpty = {
