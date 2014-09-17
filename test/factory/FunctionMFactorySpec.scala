@@ -3,7 +3,7 @@ package factory
 import ai.RandomNumberGenerator
 import com.google.inject.AbstractModule
 
-import composition.TestComposition
+import composition.{StubRng, TestComposition}
 import models.common.{IScope, Scope}
 import models.domain.scala.FunctionM
 import org.mockito.Matchers._
@@ -64,18 +64,5 @@ final class FunctionMFactorySpec extends TestComposition {
     }
   }
 
-  override lazy val injector = {
-    final class StubRng extends AbstractModule {
-
-      def configure(): Unit = {
-        val rng = mock[RandomNumberGenerator]
-        when(rng.nextInt(any[Int])).thenReturn(2)
-        when(rng.nextBoolean).thenReturn(true)
-        bind(classOf[RandomNumberGenerator]).toInstance(rng)
-      }
-    }
-
-    testInjector(new StubRng)
-  }
-  private val factory = injector.getInstance(classOf[FunctionMFactoryImpl])
+  private val factory = testInjector(new StubRng).getInstance(classOf[FunctionMFactoryImpl])
 }

@@ -2,7 +2,7 @@ package ai.aco
 
 import ai.{RandomNumberGenerator, SelectionStrategy}
 import com.google.inject.{AbstractModule, Injector}
-import composition.TestComposition
+import composition.{StubRng, TestComposition}
 import factory.ReplaceEmpty
 import fitness.AddTwoInts
 import models.common.Scope
@@ -67,15 +67,7 @@ final class AcoSpec extends TestComposition {
     "call random number generator nextInt" in {
       val expected = 2
       val rng = mock[RandomNumberGenerator]
-
-      final class StubRng extends AbstractModule {
-
-        def configure(): Unit = {
-          when(rng.nextInt(any[Int])).thenReturn(2)
-          bind(classOf[RandomNumberGenerator]).toInstance(rng)
-        }
-      }
-      val injector = testInjector(new AcoModule, new StubRng)
+      val injector = testInjector(new AcoModule, new StubRng(rng))
       val sut = injector.getInstance(classOf[SelectionStrategy])
 
       sut.chooseIndex(expected)
