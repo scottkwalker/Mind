@@ -1,7 +1,7 @@
 package controllers
 
 import com.google.inject.AbstractModule
-import composition.TestComposition
+import composition.{StubLegalNeighboursMemo, TestComposition}
 import factory.NodeTreeFactoryImpl
 import memoization.LegalNeighboursMemo
 import models.common.{IScope, LegalNeighboursRequest, Scope}
@@ -66,16 +66,7 @@ final class LegalNeighboursUnitSpec extends TestComposition {
     "call LegalNeighboursMemo.fetch when submission is valid" in new WithApplication {
       val legalNeighboursMemo = mock[LegalNeighboursMemo]
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
-
-      final class StubLegalNeighboursMemo extends AbstractModule {
-
-        def configure(): Unit = {
-          when(legalNeighboursMemo.fetch(any[IScope], any[Int])).thenReturn(Seq.empty)
-          bind(classOf[LegalNeighboursMemo]).toInstance(legalNeighboursMemo)
-        }
-      }
-
-      val injector = testInjector(new StubLegalNeighboursMemo)
+      val injector = testInjector(new StubLegalNeighboursMemo(legalNeighboursMemo))
       val sut = injector.getInstance(classOf[LegalNeighbours])
 
       val result = sut.calculate(validRequest)
