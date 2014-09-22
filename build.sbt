@@ -11,7 +11,7 @@ sources in doc in Compile := List()
 
 // For Travis-CI the log file has a limit of 4MB. We broke a build with the amount of debug that sbt produces loading a
 // project from scratch, so now only output when there is a warning or error.
-logLevel in compile := Level.Warn
+logLevel in Global := Level.Warn
 
 libraryDependencies ++= Seq(
   //jdbc,
