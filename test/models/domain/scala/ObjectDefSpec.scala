@@ -1,7 +1,7 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import composition.TestComposition
+import composition.{StubReplaceEmpty, TestComposition}
 import models.common.{IScope, Scope}
 import models.domain.Node
 import org.mockito.Matchers._
@@ -104,10 +104,11 @@ final class ObjectDefSpec extends TestComposition {
         height = 5,
         maxObjectsInTree = 1)
       val empty = Empty()
+      val i = testInjector(new StubReplaceEmpty)
       val instance = ObjectDef(nodes = Seq(empty),
         name = name)
 
-      val result = instance.replaceEmpty(s)(injector)
+      val result = instance.replaceEmpty(s)(i)
 
       result match {
         case ObjectDef(n2, name2) =>

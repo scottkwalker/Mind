@@ -2,7 +2,7 @@ package models.domain.scala
 
 import com.google.inject.{AbstractModule, Injector}
 
-import composition.TestComposition
+import composition.{StubReplaceEmpty, TestComposition}
 import factory.{ValDclInFunctionParamFactory, ValDclInFunctionParamFactoryImpl}
 import models.common.{IScope, Scope}
 import models.domain.Node
@@ -92,23 +92,13 @@ final class ValDclInFunctionParamSpec extends TestComposition {
     }
 
     "returns without empty nodes given there were empty nodes" in {
-      final class StubFactoryCreate extends AbstractModule {
-
-        def configure(): Unit = {
-          val n: Node = mock[Node]
-          val f = mock[ValDclInFunctionParamFactoryImpl]
-          when(f.create(any[Scope])).thenReturn(n)
-          bind(classOf[ValDclInFunctionParamFactory]).toInstance(f)
-        }
-      }
-
       val s = mock[IScope]
       val name = "a"
       val primitiveTypeEmpty = Empty()
-      implicit val injector: Injector = testInjector(new StubFactoryCreate)
+      val i = testInjector(new StubReplaceEmpty)
       val instance = ValDclInFunctionParam(name, primitiveTypeEmpty)
 
-      val result = instance.replaceEmpty(s)
+      val result = instance.replaceEmpty(s)(i)
 
       result match {
         case ValDclInFunctionParam(name2, primitiveType) =>
