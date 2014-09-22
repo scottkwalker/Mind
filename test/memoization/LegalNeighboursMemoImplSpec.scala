@@ -1,10 +1,9 @@
 package memoization
 
-import com.google.inject.AbstractModule
-import composition.TestComposition
-import factory.ReplaceEmpty
+import composition.StubFactoryIdToFactory._
+import composition.{StubFactoryIdToFactory, TestComposition}
 import models.common.Scope
-import org.mockito.Mockito.{times, verify, when}
+import org.mockito.Mockito.{times, verify}
 
 final class LegalNeighboursMemoImplSpec extends TestComposition {
 
@@ -61,47 +60,4 @@ final class LegalNeighboursMemoImplSpec extends TestComposition {
       result must equal(Seq(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
     }
   }
-
-  private val fakeFactoryTerminates1 = {
-    val factory = mock[ReplaceEmpty]
-    when(factory.neighbourIds).thenReturn(Seq.empty)
-    factory
-  }
-  private val fakeFactoryTerminates2 = {
-    val factory = mock[ReplaceEmpty]
-    when(factory.neighbourIds).thenReturn(Seq.empty)
-    factory
-  }
-
-  private val fakeFactoryDoesNotTerminateId = 0
-  private val fakeFactoryTerminates1Id = 1
-  private val fakeFactoryTerminates2Id = 2
-  private val fakeFactoryHasChildrenId = 3
-
-  private final class StubFactoryIdToFactory(factoryIdToFactory: FactoryLookup) extends AbstractModule {
-
-    def configure(): Unit = {
-      val fNot: ReplaceEmpty = {
-        val fakeFactoryDoesNotTerminate = mock[ReplaceEmpty]
-        when(fakeFactoryDoesNotTerminate.neighbourIds).thenReturn(Seq(fakeFactoryDoesNotTerminateId))
-        fakeFactoryDoesNotTerminate
-      }
-      val fakeFactoryHasChildren: ReplaceEmpty = {
-        val fakeFactoryDoesNotTerminate = mock[ReplaceEmpty]
-        when(fakeFactoryDoesNotTerminate.neighbourIds).thenReturn(Seq(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
-        fakeFactoryDoesNotTerminate
-      }
-      // Id -> factory
-      when(factoryIdToFactory.convert(fakeFactoryDoesNotTerminateId)).thenReturn(fNot)
-      when(factoryIdToFactory.convert(fakeFactoryTerminates1Id)).thenReturn(fakeFactoryTerminates1)
-      when(factoryIdToFactory.convert(fakeFactoryTerminates2Id)).thenReturn(fakeFactoryTerminates2)
-      when(factoryIdToFactory.convert(fakeFactoryHasChildrenId)).thenReturn(fakeFactoryHasChildren)
-      // Factory -> Id
-      when(factoryIdToFactory.convert(fakeFactoryTerminates1)).thenReturn(fakeFactoryTerminates1Id)
-      when(factoryIdToFactory.convert(fakeFactoryTerminates2)).thenReturn(fakeFactoryTerminates2Id)
-
-      bind(classOf[FactoryLookup]).toInstance(factoryIdToFactory)
-    }
-  }
-
 }
