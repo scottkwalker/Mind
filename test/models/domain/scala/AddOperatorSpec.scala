@@ -2,8 +2,8 @@ package models.domain.scala
 
 import com.google.inject.{AbstractModule, Injector}
 
-import composition.TestComposition
-import factory.{AddOperatorFactory, AddOperatorFactoryImpl}
+import composition.{StubReplaceEmpty, TestComposition}
+import factory.{ReplaceEmpty, AddOperatorFactory, AddOperatorFactoryImpl}
 import models.common.{IScope, Scope}
 import models.domain.Node
 import org.mockito.Matchers._
@@ -91,7 +91,7 @@ final class AddOperatorSpec extends TestComposition {
 
     "returns same when no empty nodes" in {
       val s = mock[IScope]
-      implicit val i = mock[Injector]
+      val i = mock[Injector]
       val v = mock[Node]
       when(v.replaceEmpty(any[Scope])(any[Injector])).thenReturn(v)
       val instance = AddOperator(v, v)
@@ -100,23 +100,13 @@ final class AddOperatorSpec extends TestComposition {
     }
 
     "returns without empty nodes given there were empty nodes" in {
-      final class StubFactoryCreate extends AbstractModule {
-
-        def configure(): Unit = {
-          val n: Node = mock[Node]
-          val f = mock[AddOperatorFactoryImpl]
-          when(f.create(any[Scope])).thenReturn(n)
-          bind(classOf[AddOperatorFactory]).toInstance(f)
-        }
-      }
-
       val s = mock[IScope]
       when(s.numVals).thenReturn(1)
       val empty: Node = Empty()
-      implicit val injector = testInjector(new StubFactoryCreate)
+      val i = testInjector(new StubReplaceEmpty)
       val instance = AddOperator(empty, empty)
 
-      val result = instance.replaceEmpty(s)
+      val result = instance.replaceEmpty(s)(i)
 
       result match {
         case AddOperator(left, right) =>
