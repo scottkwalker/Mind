@@ -3,7 +3,7 @@ package factory
 import ai.RandomNumberGenerator
 import com.google.inject.AbstractModule
 
-import composition.{StubRng, TestComposition}
+import composition.{StubIScope, StubRng, TestComposition}
 import models.common.{IScope, Scope}
 import models.domain.Node
 import models.domain.scala.NodeTree
@@ -45,21 +45,11 @@ final class NodeTreeFactorySpec extends TestComposition {
 
     "throw if you ask updateScope" in {
       val s = mock[IScope]
-
       a[RuntimeException] must be thrownBy factory.updateScope(s)
     }
   }
 
-  override lazy val injector = {
-    final class StubScope extends AbstractModule {
-
-      def configure(): Unit = {
-        bind(classOf[IScope]).toInstance(Scope(height = 10, maxExpressionsInFunc = 2, maxFuncsInObject = 3, maxParamsInFunc = 2, maxObjectsInTree = 3))
-      }
-    }
-
-    testInjector(new StubRng, new StubScope)
-  }
+  override lazy val injector = testInjector(new StubRng, new StubIScope)
   private val factory = injector.getInstance(classOf[NodeTreeFactoryImpl])
   private val s = injector.getInstance(classOf[IScope])
 }
