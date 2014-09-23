@@ -63,4 +63,6 @@ final class LegalGamerSpec extends TestComposition {
       sut.chooseIndex(2) must equal(0)
     }
   }
+
+  val injector = testInjector()
 }

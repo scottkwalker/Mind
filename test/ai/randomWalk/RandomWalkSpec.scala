@@ -77,5 +77,5 @@ final class RandomWalkSpec extends TestComposition {
     }
   }
 
-  override lazy val injector: Injector = testInjector(new RandomWalkModule)
+  lazy val injector: Injector = testInjector(new RandomWalkModule)
 }

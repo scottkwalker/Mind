@@ -49,7 +49,7 @@ final class NodeTreeFactorySpec extends TestComposition {
     }
   }
 
-  override lazy val injector = testInjector(new StubRng, new StubIScope)
+  lazy val injector = testInjector(new StubRng, new StubIScope)
   private val factory = injector.getInstance(classOf[NodeTreeFactoryImpl])
   private val s = injector.getInstance(classOf[IScope])
 }

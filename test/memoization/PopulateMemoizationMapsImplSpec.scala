@@ -16,7 +16,7 @@ final class PopulateMemoizationMapsImplSpec extends TestComposition {
   "IoC" must {
     "init an instance of PopulateMemoizationMaps" in {
       // Act
-      val instance = injector.getInstance(classOf[PopulateMemoizationMaps])
+      val instance = testInjector().getInstance(classOf[PopulateMemoizationMaps])
 
       // Assert
       instance mustBe a[PopulateMemoizationMapsImpl]

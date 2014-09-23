@@ -18,5 +18,5 @@ final class IntroUnitSpec extends TestComposition {
     }
   }
 
-  val intro = injector.getInstance(classOf[Intro])
+  val intro = testInjector().getInstance(classOf[Intro])
 }

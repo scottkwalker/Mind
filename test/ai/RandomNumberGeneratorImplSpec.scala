@@ -10,5 +10,5 @@ final class RandomNumberGeneratorImplSpec extends TestComposition {
     }
   }
 
-  private val rng = injector.getInstance(classOf[RandomNumberGenerator])
+  private val rng = testInjector().getInstance(classOf[RandomNumberGenerator])
 }

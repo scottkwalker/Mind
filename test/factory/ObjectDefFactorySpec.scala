@@ -64,6 +64,6 @@ final class ObjectDefFactorySpec extends TestComposition {
     }
   }
 
-  override lazy val injector = testInjector(new StubRng)
+  lazy val injector = testInjector(new StubRng)
   private val factory = injector.getInstance(classOf[ObjectDefFactoryImpl])
 }

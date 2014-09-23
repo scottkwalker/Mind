@@ -81,7 +81,7 @@ final class LegalNeighboursUnitSpec extends TestComposition {
     }
   }
 
-  private val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
+  private val legalNeighbours = testInjector().getInstance(classOf[LegalNeighbours])
   private val present = {
     val emptyRequest = FakeRequest()
     legalNeighbours.present(emptyRequest)

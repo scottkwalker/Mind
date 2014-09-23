@@ -48,7 +48,7 @@ final class ValueRefFactorySpec extends TestComposition {
     }
   }
 
-  override lazy val injector: Injector = testInjector(new LegalGamerModule)
+  lazy val injector: Injector = testInjector(new LegalGamerModule)
   private val factory = injector.getInstance(classOf[ValueRefFactoryImpl])
   private val scope = {
     val stub = mock[IScope]

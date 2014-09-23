@@ -74,5 +74,6 @@ final class FactoryLookupImplSpec extends TestComposition {
       valueRefFactory
     )
   }
+  private val injector = testInjector()
   private val sut = injector.getInstance(classOf[FactoryLookup])
 }

@@ -76,5 +76,5 @@ final class AcoSpec extends TestComposition {
     }
   }
 
-  override lazy val injector: Injector = testInjector(new AcoModule)
+  lazy val injector: Injector = testInjector(new AcoModule)
 }

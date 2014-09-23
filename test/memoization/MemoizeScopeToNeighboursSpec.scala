@@ -117,6 +117,7 @@ class MemoizeScopeToNeighboursSpec extends TestComposition {
   }
 
   private val scope = Scope(height = 1)
+  private val injector = testInjector()
   private val addOperatorFactoryImpl = injector.getInstance(classOf[AddOperatorFactoryImpl])
   private val valueRefFactoryImpl = injector.getInstance(classOf[ValueRefFactoryImpl])
 

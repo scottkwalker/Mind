@@ -136,7 +136,7 @@ final class LegalNeighboursFormSpec extends TestComposition {
     }
   }
 
-  private val legalNeighbours = injector.getInstance(classOf[LegalNeighbours])
+  private val legalNeighbours = testInjector().getInstance(classOf[LegalNeighbours])
 
   private def formWithValidDefaults(numVals: String,
                                     numFuncs: String,

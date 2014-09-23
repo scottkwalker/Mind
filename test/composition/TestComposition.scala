@@ -10,7 +10,7 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import scala.concurrent.duration.{FiniteDuration, SECONDS}
 
-abstract class TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with Composition {
+abstract class TestComposition extends PlaySpec with MockitoSugar with ScalaFutures {
 
   protected implicit val timeout = Timeout(FiniteDuration(1, SECONDS))
 
