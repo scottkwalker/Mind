@@ -1,22 +1,21 @@
 package ai.aco
 
 import ai.{RandomNumberGenerator, SelectionStrategy}
-import com.google.inject.{AbstractModule, Injector}
+import com.google.inject.Injector
 import composition.{StubRng, TestComposition}
 import factory.ReplaceEmpty
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.{Empty, FunctionM, IntegerM, NodeTree, ObjectDef, ValDclInFunctionParam}
 import modules.ai.aco.AcoModule
-import org.mockito.Matchers._
-import org.mockito.Mockito._
+import org.mockito.Mockito.{times, verify}
 
 final class AcoSpec extends TestComposition {
 
   "chooseChild" must {
     "returns expected instance given only one valid choice" in {
       val rng = mock[RandomNumberGenerator]
-      val sut = Aco(rng)
+      val sut = testInjector(new AcoModule, new StubRng(rng)).getInstance(classOf[SelectionStrategy])
       val v = mock[ReplaceEmpty]
       val possibleChildren = Seq(v)
 
@@ -53,14 +52,12 @@ final class AcoSpec extends TestComposition {
     }
 
     "throw when sequence is empty" in {
-      val sut = injector.getInstance(classOf[SelectionStrategy])
       a[RuntimeException] must be thrownBy sut.chooseChild(possibleChildren = Seq.empty)
     }
   }
 
   "chooseIndex" must {
     "throw when length is zero" in {
-      val sut = injector.getInstance(classOf[SelectionStrategy])
       a[RuntimeException] must be thrownBy sut.chooseIndex(seqLength = 0)
     }
 
@@ -76,5 +73,6 @@ final class AcoSpec extends TestComposition {
     }
   }
 
-  lazy val injector: Injector = testInjector(new AcoModule)
+  private lazy val injector: Injector = testInjector(new AcoModule)
+  private val sut = injector.getInstance(classOf[SelectionStrategy])
 }

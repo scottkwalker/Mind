@@ -1,18 +1,20 @@
 package ai.legalGamer
 
 import ai.{RandomNumberGenerator, SelectionStrategy}
-import composition.TestComposition
+import composition.{StubRng, TestComposition}
 import factory.ReplaceEmpty
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.{Empty, FunctionM, IntegerM, NodeTree, ObjectDef, ValDclInFunctionParam}
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 
 final class LegalGamerSpec extends TestComposition {
 
   "chooseChild" must {
     "return expected type given only one valid choice" in {
       val rng = mock[RandomNumberGenerator]
-      val sut = LegalGamer(rng)
+      val sut = testInjector(new StubRng(rng)).getInstance(classOf[SelectionStrategy])
       val v = mock[ReplaceEmpty]
       val possibleChildren = Seq(v)
 
@@ -64,5 +66,5 @@ final class LegalGamerSpec extends TestComposition {
     }
   }
 
-  val injector = testInjector()
+  private lazy val injector = testInjector()
 }

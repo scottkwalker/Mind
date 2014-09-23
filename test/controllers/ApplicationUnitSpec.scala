@@ -15,5 +15,5 @@ final class ApplicationUnitSpec extends TestComposition {
     }
   }
 
-  val application = testInjector().getInstance(classOf[Application])
+  private val application = testInjector().getInstance(classOf[Application])
 }

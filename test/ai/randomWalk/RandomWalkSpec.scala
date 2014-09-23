@@ -17,7 +17,7 @@ final class RandomWalkSpec extends TestComposition {
   "chooseChild" must {
     "return expected type given only one valid choice" in {
       val rng = mock[RandomNumberGenerator]
-      val sut = RandomGamer(rng)
+      val sut = testInjector(new RandomWalkModule, new StubRng(rng)).getInstance(classOf[SelectionStrategy])
       val v = mock[ReplaceEmpty]
       val possibleChildren = Seq(v)
 
@@ -54,14 +54,12 @@ final class RandomWalkSpec extends TestComposition {
     }
 
     "throw when sequence is empty" in {
-      val sut = injector.getInstance(classOf[SelectionStrategy])
       a[RuntimeException] must be thrownBy sut.chooseChild(possibleChildren = Seq.empty)
     }
   }
 
   "chooseIndex" must {
     "throw when length is zero" in {
-      val sut = injector.getInstance(classOf[SelectionStrategy])
       a[RuntimeException] must be thrownBy sut.chooseIndex(seqLength = 0)
     }
 
@@ -77,5 +75,6 @@ final class RandomWalkSpec extends TestComposition {
     }
   }
 
-  lazy val injector: Injector = testInjector(new RandomWalkModule)
+  private val injector: Injector = testInjector(new RandomWalkModule)
+  private val sut = injector.getInstance(classOf[SelectionStrategy])
 }
