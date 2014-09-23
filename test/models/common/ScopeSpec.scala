@@ -119,7 +119,7 @@ final class ScopeSpec extends TestComposition {
 
   "IoC create" must {
     "return a new instance with injected values" in {
-      val injector: Injector = testInjector(new AcoModule)
+      val injector = testInjector()
       val sut = injector.getInstance(classOf[IScope])
 
       sut.maxFuncsInObject must equal(10)

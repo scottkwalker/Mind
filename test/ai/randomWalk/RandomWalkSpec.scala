@@ -75,6 +75,6 @@ final class RandomWalkSpec extends TestComposition {
     }
   }
 
-  private val injector: Injector = testInjector(new RandomWalkModule)
+  private val injector = testInjector(new RandomWalkModule)
   private val sut = injector.getInstance(classOf[SelectionStrategy])
 }

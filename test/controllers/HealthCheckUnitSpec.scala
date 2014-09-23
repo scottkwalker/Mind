@@ -24,7 +24,7 @@ final class HealthCheckUnitSpec extends TestComposition {
     }
   }
 
-  val healthCheckResponse = {
+  private val healthCheckResponse = {
     val healthCheck = testInjector().getInstance(classOf[HealthCheck])
     healthCheck.respond(FakeRequest())
   }

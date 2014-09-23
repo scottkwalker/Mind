@@ -73,6 +73,6 @@ final class AcoSpec extends TestComposition {
     }
   }
 
-  private lazy val injector: Injector = testInjector(new AcoModule)
+  private val injector = testInjector(new AcoModule)
   private val sut = injector.getInstance(classOf[SelectionStrategy])
 }

@@ -26,6 +26,6 @@ final class IntegerMFactorySpec extends TestComposition {
     }
   }
 
-  lazy val injector = testInjector(new LegalGamerModule)
+  private val injector = testInjector()
   private val factory = injector.getInstance(classOf[IntegerMFactoryImpl])
 }

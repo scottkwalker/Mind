@@ -55,6 +55,6 @@ final class ValDclInFunctionParamFactorySpec extends TestComposition {
     }
   }
 
-  lazy val injector: Injector = testInjector(new LegalGamerModule)
+  private val injector = testInjector()
   private val factory = injector.getInstance(classOf[ValDclInFunctionParamFactoryImpl])
 }

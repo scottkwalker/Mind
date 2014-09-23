@@ -66,5 +66,5 @@ final class LegalGamerSpec extends TestComposition {
     }
   }
 
-  private lazy val injector = testInjector()
+  private val injector = testInjector()
 }
