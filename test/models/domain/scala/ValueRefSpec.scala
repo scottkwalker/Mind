@@ -41,10 +41,10 @@ final class ValueRefSpec extends TestComposition {
     "returns same when no empty nodes" in {
       val s = mock[IScope]
       val name = "a"
-      implicit val injector = mock[Injector]
+      val i = mock[Injector]
       val instance = ValueRef(name)
 
-      instance.replaceEmpty(s) must equal(instance)
+      instance.replaceEmpty(s)(i) must equal(instance)
     }
   }
 

@@ -1,7 +1,6 @@
 package ai.aco
 
 import ai.{RandomNumberGenerator, SelectionStrategy}
-import com.google.inject.Injector
 import composition.{StubRng, TestComposition}
 import factory.ReplaceEmpty
 import fitness.AddTwoInts

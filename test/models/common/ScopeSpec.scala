@@ -1,9 +1,7 @@
 package models.common
 
 import java.util.concurrent.CountDownLatch
-import com.google.inject.Injector
 import composition.TestComposition
-import modules.ai.aco.AcoModule
 import play.api.libs.json.Json.obj
 import play.api.libs.json._
 import serialization.JsonDeserialiser

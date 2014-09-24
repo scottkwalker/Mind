@@ -1,10 +1,7 @@
 package factory
 
-import ai.RandomNumberGenerator
-import com.google.inject.AbstractModule
-
 import composition.{StubIScope, StubRng, TestComposition}
-import models.common.{IScope, Scope}
+import models.common.IScope
 import models.domain.Node
 import models.domain.scala.NodeTree
 import org.mockito.Matchers._
@@ -14,13 +11,13 @@ final class NodeTreeFactorySpec extends TestComposition {
 
   "create" must {
     "returns instance of this type" in {
-      val instance = factory.create(s)
+      val instance = factory.create(scope)
 
       instance mustBe a[NodeTree]
     }
 
     "returns 3 children given scope with 3 maxFuncsInObject (and rng mocked)" in {
-      val instance = factory.create(scope = s)
+      val instance = factory.create(scope = scope)
 
       instance match {
         case NodeTree(child) => child.length must equal(3)
@@ -33,7 +30,7 @@ final class NodeTreeFactorySpec extends TestComposition {
       val c = mock[ReplaceEmpty]
       when(c.create(any[IScope])).thenReturn(n)
 
-      val instance = factory.create(scope = s, premadeChildren = Seq(c))
+      val instance = factory.create(scope = scope, premadeChildren = Seq(c))
 
       instance match {
         case NodeTree(child) =>
@@ -51,5 +48,5 @@ final class NodeTreeFactorySpec extends TestComposition {
 
   private val injector = testInjector(new StubRng, new StubIScope)
   private val factory = injector.getInstance(classOf[NodeTreeFactoryImpl])
-  private val s = injector.getInstance(classOf[IScope])
+  private val scope = injector.getInstance(classOf[IScope])
 }

@@ -1,12 +1,8 @@
 package factory
 
-import ai.RandomNumberGenerator
-import com.google.inject.AbstractModule
-
 import composition.{StubRng, TestComposition}
 import models.common.{IScope, Scope}
 import models.domain.scala.FunctionM
-import org.mockito.Matchers._
 import org.mockito.Mockito._
 
 final class FunctionMFactorySpec extends TestComposition {

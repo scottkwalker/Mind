@@ -18,7 +18,7 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
   //    }
   //  }
   //  }
-  
+
   "go to page" must {
     "display the page in English when no language cookie exists" in {
       val page = new LegalNeighboursPage

@@ -1,16 +1,13 @@
 package ai.randomWalk
 
 import ai.{RandomNumberGenerator, SelectionStrategy}
-import com.google.inject.{AbstractModule, Injector}
-
 import composition.{StubRng, TestComposition}
 import factory.ReplaceEmpty
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.{FunctionM, IntegerM, NodeTree, ObjectDef, _}
 import modules.ai.randomWalk.RandomWalkModule
-import org.mockito.Matchers.any
-import org.mockito.Mockito.{times, verify, when}
+import org.mockito.Mockito.{times, verify}
 
 final class RandomWalkSpec extends TestComposition {
 

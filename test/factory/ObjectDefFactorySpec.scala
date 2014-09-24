@@ -1,12 +1,8 @@
 package factory
 
-import ai.RandomNumberGenerator
-import com.google.inject.AbstractModule
-
 import composition.{StubRng, TestComposition}
 import models.common.{IScope, Scope}
 import models.domain.scala.ObjectDef
-import org.mockito.Matchers._
 import org.mockito.Mockito._
 
 final class ObjectDefFactorySpec extends TestComposition {
@@ -64,6 +60,5 @@ final class ObjectDefFactorySpec extends TestComposition {
     }
   }
 
-  private val injector = testInjector(new StubRng)
-  private val factory = injector.getInstance(classOf[ObjectDefFactoryImpl])
+  private val factory = testInjector(new StubRng).getInstance(classOf[ObjectDefFactoryImpl])
 }

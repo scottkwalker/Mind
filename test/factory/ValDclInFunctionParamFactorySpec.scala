@@ -1,10 +1,8 @@
 package factory
 
-import com.google.inject.Injector
 import composition.TestComposition
 import models.common.{IScope, Scope}
 import models.domain.scala.{IntegerM, ValDclInFunctionParam}
-import modules.ai.legalGamer.LegalGamerModule
 import org.mockito.Mockito._
 
 final class ValDclInFunctionParamFactorySpec extends TestComposition {
@@ -55,6 +53,5 @@ final class ValDclInFunctionParamFactorySpec extends TestComposition {
     }
   }
 
-  private val injector = testInjector()
-  private val factory = injector.getInstance(classOf[ValDclInFunctionParamFactoryImpl])
+  private val factory = testInjector().getInstance(classOf[ValDclInFunctionParamFactoryImpl])
 }

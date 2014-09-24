@@ -3,7 +3,6 @@ package factory
 import composition.TestComposition
 import models.common.IScope
 import models.domain.scala.IntegerM
-import modules.ai.legalGamer.LegalGamerModule
 
 final class IntegerMFactorySpec extends TestComposition {
 
@@ -26,6 +25,5 @@ final class IntegerMFactorySpec extends TestComposition {
     }
   }
 
-  private val injector = testInjector()
-  private val factory = injector.getInstance(classOf[IntegerMFactoryImpl])
+  private val factory = testInjector().getInstance(classOf[IntegerMFactoryImpl])
 }

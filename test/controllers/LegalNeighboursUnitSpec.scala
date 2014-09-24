@@ -1,12 +1,11 @@
 package controllers
 
-import com.google.inject.AbstractModule
 import composition.{StubLegalNeighboursMemo, TestComposition}
 import factory.NodeTreeFactoryImpl
 import memoization.LegalNeighboursMemo
 import models.common.{IScope, LegalNeighboursRequest, Scope}
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{times, verify, when}
+import org.mockito.Mockito.{times, verify}
 import play.api.libs.json.Json
 import play.api.test.Helpers.{BAD_REQUEST, OK, contentAsString}
 import play.api.test.{FakeRequest, WithApplication}
@@ -64,8 +63,8 @@ final class LegalNeighboursUnitSpec extends TestComposition {
     }
 
     "call LegalNeighboursMemo.fetch when submission is valid" in new WithApplication {
-      val legalNeighboursMemo = mock[LegalNeighboursMemo]
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
+      val legalNeighboursMemo = mock[LegalNeighboursMemo]
       val injector = testInjector(new StubLegalNeighboursMemo(legalNeighboursMemo))
       val sut = injector.getInstance(classOf[LegalNeighbours])
 

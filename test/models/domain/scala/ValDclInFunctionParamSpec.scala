@@ -1,9 +1,7 @@
 package models.domain.scala
 
-import com.google.inject.{AbstractModule, Injector}
-
+import com.google.inject.Injector
 import composition.{StubReplaceEmpty, TestComposition}
-import factory.{ValDclInFunctionParamFactory, ValDclInFunctionParamFactoryImpl}
 import models.common.{IScope, Scope}
 import models.domain.Node
 import org.mockito.Matchers._

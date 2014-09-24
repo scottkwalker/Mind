@@ -6,8 +6,6 @@ import factory.ReplaceEmpty
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.{Empty, FunctionM, IntegerM, NodeTree, ObjectDef, ValDclInFunctionParam}
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
 
 final class LegalGamerSpec extends TestComposition {
 

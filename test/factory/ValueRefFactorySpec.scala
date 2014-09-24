@@ -1,10 +1,8 @@
 package factory
 
-import com.google.inject.Injector
 import composition.TestComposition
 import models.common.IScope
 import models.domain.scala.ValueRef
-import modules.ai.legalGamer.LegalGamerModule
 import org.mockito.Mockito._
 
 final class ValueRefFactorySpec extends TestComposition {
@@ -48,8 +46,7 @@ final class ValueRefFactorySpec extends TestComposition {
     }
   }
 
-  private val injector = testInjector()
-  private val factory = injector.getInstance(classOf[ValueRefFactoryImpl])
+  private val factory = testInjector().getInstance(classOf[ValueRefFactoryImpl])
   private val scope = {
     val stub = mock[IScope]
     when(stub.numVals).thenReturn(1)
