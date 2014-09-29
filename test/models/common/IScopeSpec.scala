@@ -45,7 +45,6 @@ final class IScopeSpec extends TestComposition {
       ("maxExpressionsInFunc", JsNumber(0)),
       ("maxFuncsInObject", JsNumber(0)),
       ("maxParamsInFunc", JsNumber(0)),
-      ("height", JsNumber(0)),
       ("maxObjectsInTree", JsNumber(0))
     )
   )

@@ -127,23 +127,13 @@ final class ScopeSpec extends TestComposition {
 
   "serialize" must {
     "return expected json" in {
-      Json.toJson(scopeAsModel) must equal(JsObject(Seq(
-        ("numVals", JsNumber(0)),
-        ("numFuncs", JsNumber(0)),
-        ("numObjects", JsNumber(0)),
-        ("height", JsNumber(0)),
-        ("maxExpressionsInFunc", JsNumber(0)),
-        ("maxFuncsInObject", JsNumber(0)),
-        ("maxParamsInFunc", JsNumber(0)),
-        ("height", JsNumber(0)),
-        ("maxObjectsInTree", JsNumber(0))
-      )))
+      Json.toJson(asModel) must equal(asJson)
     }
   }
 
   "deserialize" must {
     "return expected mode" in {
-      JsonDeserialiser.deserialize[Scope](scopeAsJsonString) must equal(scopeAsModel)
+      JsonDeserialiser.deserialize[Scope](asJsonString) must equal(asModel)
     }
   }
 
@@ -176,27 +166,7 @@ final class ScopeSpec extends TestComposition {
         )
       }
 
-      Json.toJson(Left(scopeAsModel)) must equal(
-        JsObject(
-          Seq(
-            ("scopeContent",
-              JsObject(
-                Seq(
-                  ("numVals", JsNumber(0)),
-                  ("numFuncs", JsNumber(0)),
-                  ("numObjects", JsNumber(0)),
-                  ("height", JsNumber(0)),
-                  ("maxExpressionsInFunc", JsNumber(0)),
-                  ("maxFuncsInObject", JsNumber(0)),
-                  ("maxParamsInFunc", JsNumber(0)),
-                  ("height", JsNumber(0)),
-                  ("maxObjectsInTree", JsNumber(0))
-                )
-              )
-              )
-          )
-        )
-      )
+      Json.toJson(Left(asModel)) must equal(asJsonWithType)
       Json.toJson(Right(123)) must equal(JsObject(Seq(("intContent", JsNumber(123)))))
     }
 
@@ -210,27 +180,7 @@ final class ScopeSpec extends TestComposition {
         )
       }
 
-      Json.toJson(Left(scopeAsModel)) must equal(
-        JsObject(
-          Seq(
-            ("scopeContent",
-              JsObject(// Objects are the mapping type in JSON.
-                Seq(
-                  ("numVals", JsNumber(0)),
-                  ("numFuncs", JsNumber(0)),
-                  ("numObjects", JsNumber(0)),
-                  ("height", JsNumber(0)),
-                  ("maxExpressionsInFunc", JsNumber(0)),
-                  ("maxFuncsInObject", JsNumber(0)),
-                  ("maxParamsInFunc", JsNumber(0)),
-                  ("height", JsNumber(0)),
-                  ("maxObjectsInTree", JsNumber(0))
-                )
-              )
-              )
-          )
-        )
-      )
+      Json.toJson(Left(asModel)) must equal(asJsonWithType)
       Json.toJson(Right(Seq[Int](0, 1, 2))) must equal(
         JsObject(
           Seq(
@@ -314,30 +264,10 @@ final class ScopeSpec extends TestComposition {
         def writes(o: Map[String, Either[IScope, Seq[Int]]]): JsValue = Json.toJson(o)
       }
 
-      Json.toJson(Map("key" -> Left(scopeAsModel))) must equal(
+      Json.toJson(Map("key" -> Left(asModel))) must equal(
         JsObject(
           Seq(
-            ("key",
-              JsObject(
-                Seq(
-                  ("scopeContent",
-                    JsObject(// Objects are the mapping type in JSON.
-                      Seq(
-                        ("numVals", JsNumber(0)),
-                        ("numFuncs", JsNumber(0)),
-                        ("numObjects", JsNumber(0)),
-                        ("height", JsNumber(0)),
-                        ("maxExpressionsInFunc", JsNumber(0)),
-                        ("maxFuncsInObject", JsNumber(0)),
-                        ("maxParamsInFunc", JsNumber(0)),
-                        ("height", JsNumber(0)),
-                        ("maxObjectsInTree", JsNumber(0))
-                      )
-                    )
-                    )
-                )
-              )
-              )
+            ("key", asJsonWithType)
           )
         )
       )
@@ -345,13 +275,12 @@ final class ScopeSpec extends TestComposition {
       Json.toJson(Map("key" -> Right(Seq[Int](0, 1, 2)))) must equal(
         JsObject(
           Seq(
-            ("key",
-              JsObject(
+            ("key", JsObject(
                 Seq(
                   ("intContent", JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2))))
                 )
               )
-              )
+            )
           )
         )
       )
@@ -558,6 +487,32 @@ final class ScopeSpec extends TestComposition {
     }
   }
 
-  private val scopeAsJsonString = """{"numVals":0,"numFuncs":0,"numObjects":0,"height":0,"maxExpressionsInFunc":0,"maxFuncsInObject":0,"maxParamsInFunc":0,"maxObjectsInTree":0}"""
-  private val scopeAsModel: IScope = Scope()
+  private val asJson = JsObject(
+    fields = Seq(
+      ("numVals", JsNumber(1)),
+      ("numFuncs", JsNumber(2)),
+      ("numObjects", JsNumber(3)),
+      ("height", JsNumber(4)),
+      ("maxExpressionsInFunc", JsNumber(5)),
+      ("maxFuncsInObject", JsNumber(6)),
+      ("maxParamsInFunc", JsNumber(7)),
+      ("maxObjectsInTree", JsNumber(8))
+    )
+  )
+  private val asJsonString = Json.stringify(asJson)
+  private val asModel: IScope = Scope(
+    numVals = 1,
+    numFuncs = 2,
+    numObjects = 3,
+    height = 4,
+    maxExpressionsInFunc = 5,
+    maxFuncsInObject = 6,
+    maxParamsInFunc = 7,
+    maxObjectsInTree = 8
+  )
+  private val asJsonWithType = JsObject(
+    Seq(
+      ("scopeContent", asJson)
+    )
+  )
 }
