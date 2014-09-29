@@ -15,11 +15,11 @@ final class ValueRefSpec extends TestComposition {
   }
 
   "hasNoEmpty" must {
-    "false given it cannot terminate in under N steps" in {
+    "true when it has a non-empty name and height is 0" in {
       val s = Scope(height = 0)
       val name = "a"
 
-      ValueRef(name).hasNoEmpty(s) must equal(false)
+      ValueRef(name).hasNoEmpty(s) must equal(true)
     }
 
     "true given a non-empty name" in {
