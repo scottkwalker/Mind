@@ -70,7 +70,7 @@ Scott Walker
 ============
 Hello! I'm a software developer based in London. I have a lot of experience working in Agile, TDD environments. I really enjoy functional programming and have put together this Scala application as a way to practice techniques.
 
-A few of the big government projects ([Carer's Allowance](https://github.com/Department-for-Work-and-Pensions/carers-allowance-prototype) and [DVLA](https://github.com/dvla)) are in the process of being open sourced.
+A few of the big government projects ([Carer's Allowance](https://github.com/Department-for-Work-and-Pensions/ClaimCapture) and [DVLA](https://github.com/dvla)) are in the process of being regularly open sourced.
 
 LinkedIn
 --------
