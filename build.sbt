@@ -1,6 +1,6 @@
 import sbt.Keys.testOnly
 
-name := """Mind"""
+name := "Mind"
 
 version := "1.0-SNAPSHOT"
 

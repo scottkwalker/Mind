@@ -14,7 +14,7 @@ resolvers += "Boundary Public Repo" at "http://maven.boundary.com/artifactory/re
 resolvers += "jgit-repo" at "http://download.eclipse.org/jgit/maven"
 
 // Use the Play sbt plugin for Play projects
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.3")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.4")
 
 //addSbtPlugin("de.johoop" % "jacoco4sbt" % "2.1.5")
 
