@@ -195,8 +195,8 @@ final class ScopeSpec extends TestComposition {
         def writes(o: Map[String, Int]): JsValue = Json.toJson(o)
       }
 
-      Json.toJson(Map[String, Int]("a" -> 1)) must equal(JsObject(Seq(
-        ("a", JsNumber(1))
+      Json.toJson(Map[String, Int]("a" -> 123)) must equal(JsObject(Seq(
+        ("a", JsNumber(123))
       )))
     }
 
@@ -208,10 +208,10 @@ final class ScopeSpec extends TestComposition {
         }
       }
 
-      Json.toJson(Map[Int, Int](0 -> 1)) must equal(
+      Json.toJson(Map[Int, Int](0 -> 123)) must equal(
         JsObject(
           Seq(
-            ("0", JsNumber(1))
+            ("0", JsNumber(123))
           )
         )
       )
@@ -225,10 +225,10 @@ final class ScopeSpec extends TestComposition {
         }
       }
 
-      Json.toJson(Map[IScope, Int](Scope() -> 1)) must equal(
+      Json.toJson(Map[IScope, Int](Scope() -> 123)) must equal(
         JsObject(
           Seq(
-            ("Scope(0,0,0,0,0,0,0,0)", JsNumber(1))
+            ("Scope(0,0,0,0,0,0,0,0)", JsNumber(123))
           )
         )
       )
