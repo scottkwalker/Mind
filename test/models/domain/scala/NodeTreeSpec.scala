@@ -10,7 +10,7 @@ import org.mockito.Mockito._
 final class NodeTreeSpec extends TestComposition {
 
   "hasNoEmpty" must {
-    "true given it can terminates in under N steps" in {
+    "return true given it can terminates in under N steps" in {
       val s = Scope(height = 10)
       val f = ObjectDef(nodes = Seq.empty, name = "o0")
       val nodeTree = new NodeTree(Seq(f))
@@ -18,7 +18,7 @@ final class NodeTreeSpec extends TestComposition {
       nodeTree.hasNoEmpty(s) must equal(true)
     }
 
-    "false given it cannot terminate in under N steps" in {
+    "return false given it cannot terminate in under N steps" in {
       val s = Scope(height = 10)
       val f = mock[Instruction]
       when(f.hasNoEmpty(any[Scope])).thenReturn(false)
@@ -27,7 +27,7 @@ final class NodeTreeSpec extends TestComposition {
       nodeTree.hasNoEmpty(s) must equal(false)
     }
 
-    "true given none empty" in {
+    "return true given none empty" in {
       val s = Scope(height = 10)
       val f = ObjectDef(nodes = Seq.empty, name = "o0")
       val nodeTree = new NodeTree(Seq(f))
@@ -35,13 +35,13 @@ final class NodeTreeSpec extends TestComposition {
       nodeTree.hasNoEmpty(s) must equal(true)
     }
 
-    "false given empty root node" in {
+    "return false given empty root node" in {
       val s = Scope(height = 10)
       val nodeTree = new NodeTree(Seq(Empty()))
       nodeTree.hasNoEmpty(s) must equal(false)
     }
 
-    "false when hasHeightRemaining returns false" in {
+    "return false when hasHeightRemaining returns false" in {
       val s = mock[IScope]
       when(s.hasHeightRemaining).thenReturn(false)
       val f = mock[Instruction]
@@ -64,7 +64,7 @@ final class NodeTreeSpec extends TestComposition {
       verify(f, times(1)).replaceEmpty(any[Scope])(any[Injector])
     }
 
-    "returns same when no empty nodes" in {
+    "return same when no empty nodes" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
       val f = mock[Instruction]
@@ -74,7 +74,7 @@ final class NodeTreeSpec extends TestComposition {
       instance.replaceEmpty(s) must equal(instance)
     }
 
-    "returns without empty nodes given there were empty nodes" in {
+    "return without empty nodes given there were empty nodes" in {
       val s = Scope(maxExpressionsInFunc = 1,
         maxFuncsInObject = 1,
         maxParamsInFunc = 1,
@@ -98,7 +98,7 @@ final class NodeTreeSpec extends TestComposition {
   }
 
   "height" must {
-    "returns 1 + child height when has one child" in {
+    "return 1 + child height when has one child" in {
       val f = mock[Instruction]
       when(f.height).thenReturn(2)
       val nodeTree = new NodeTree(Seq(f))
@@ -106,7 +106,7 @@ final class NodeTreeSpec extends TestComposition {
       nodeTree.height must equal(3)
     }
 
-    "returns 1 + child height when has two children" in {
+    "return 1 + child height when has two children" in {
       val f = mock[Instruction]
       when(f.height).thenReturn(1)
       val f2 = mock[Instruction]
@@ -116,7 +116,7 @@ final class NodeTreeSpec extends TestComposition {
       nodeTree.height must equal(3)
     }
 
-    "returns correct value for realistic tree" in {
+    "return correct value for realistic tree" in {
       val nodeTree = new NodeTree(
         Seq(
           ObjectDef(Seq(

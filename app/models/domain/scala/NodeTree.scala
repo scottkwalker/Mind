@@ -48,5 +48,5 @@ final case class NodeTree(nodes: Seq[Instruction]) extends Instruction with Upda
     NodeTree(n)
   }
 
-  override def height: Int = 1 + nodes.map(_.height).reduceLeft(math.max)
+  override def height: Int = 1 + nodes.map(_.height).max
 }
