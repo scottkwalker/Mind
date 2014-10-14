@@ -8,8 +8,8 @@ import factory.ReplaceEmpty
 final case class LegalGamer @Inject()(rng: RandomNumberGenerator) extends SelectionStrategy {
 
   override def chooseChild(possibleChildren: Seq[ReplaceEmpty]): ReplaceEmpty = {
-    require(possibleChildren.length > 0, "Sequence must not be empty otherwise we cannot pick an node from it")
-    possibleChildren(0)
+    val index = chooseIndex(possibleChildren.length)
+    possibleChildren(index)
   }
 
   override def canAddAnother(accLength: Int,
