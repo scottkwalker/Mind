@@ -1,9 +1,9 @@
 package fitness
 
 import composition.Eval
-import models.domain.Node
+import models.domain.Instruction
 
-final class AddTwoInts(val nodeTree: Node) extends Fitness {
+final class AddTwoInts(val nodeTree: Instruction) extends Fitness {
 
   override val maxFitness = 1.0d
 

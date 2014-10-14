@@ -3,7 +3,7 @@ package replaceEmpty
 import com.google.inject.Inject
 import memoization.LegalNeighboursMemo
 import models.common.IScope
-import models.domain.Node
+import models.domain.Instruction
 import models.domain.scala.ObjectDef
 
 case class ObjectDefFactoryImpl @Inject()(
@@ -13,14 +13,14 @@ case class ObjectDefFactoryImpl @Inject()(
 
   override val neighbourIds = Seq(FunctionMFactoryImpl.id)
 
-  override def create(scope: IScope): Node = {
+  override def create(scope: IScope): Instruction = {
     val (_, nodes) = createNodes(scope)
 
     ObjectDef(nodes = nodes,
       index = scope.numObjects)
   }
 
-  def createNodes(scope: IScope, acc: Seq[Node] = Seq()) = {
+  def createNodes(scope: IScope, acc: Seq[Instruction] = Seq()) = {
     creator.create(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,

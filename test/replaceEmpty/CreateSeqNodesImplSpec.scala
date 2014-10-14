@@ -4,7 +4,7 @@ import ai.aco.Aco
 import ai.{RandomNumberGenerator, SelectionStrategy}
 import composition.TestComposition
 import models.common.{IScope, Scope}
-import models.domain.Node
+import models.domain.Instruction
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
 
@@ -14,7 +14,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
     "calls create on factory once given only space for 1 func in obj and mocked rng the same" in {
       val s = mock[IScope]
       when(s.maxFuncsInObject).thenReturn(1)
-      val n = mock[Node]
+      val n = mock[Instruction]
       val v = mock[ReplaceEmpty]
       when(v.updateScope(s)).thenReturn(s)
       when(v.create(any[Scope])).thenReturn(n)
@@ -37,7 +37,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
     "calls create on factory twice given space for 2 func in obj and mocked rng the same" in {
       val s = mock[IScope]
       when(s.maxFuncsInObject).thenReturn(2)
-      val n = mock[Node]
+      val n = mock[Instruction]
       val v = mock[ReplaceEmpty]
       when(v.updateScope(s)).thenReturn(s)
       when(v.create(any[Scope])).thenReturn(n)
@@ -61,7 +61,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
     "calls create on factory once given space for 2 func in obj but rng mocked to 1" in {
       val s = mock[IScope]
       when(s.maxFuncsInObject).thenReturn(2)
-      val n = mock[Node]
+      val n = mock[Instruction]
       val v = mock[ReplaceEmpty]
       when(v.updateScope(s)).thenReturn(s)
       when(v.create(any[Scope])).thenReturn(n)
@@ -85,7 +85,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
     "calls create on factory once given space for 2 func in obj and a rng mocked to 2 but 1 pre-made node already added" in {
       val s = mock[IScope]
       when(s.maxFuncsInObject).thenReturn(2)
-      val n = mock[Node]
+      val n = mock[Instruction]
       val v = mock[ReplaceEmpty]
       when(v.updateScope(s)).thenReturn(s)
       when(v.create(any[Scope])).thenReturn(n)

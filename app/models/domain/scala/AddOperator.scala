@@ -3,14 +3,14 @@ package models.domain.scala
 import com.google.inject.Injector
 import replaceEmpty.{UpdateScopeNoChange, ValueRefFactoryImpl}
 import models.common.IScope
-import models.domain.Node
+import models.domain.Instruction
 
-final case class AddOperator(left: Node, right: Node) extends Node with UpdateScopeNoChange {
+final case class AddOperator(left: Instruction, right: Instruction) extends Instruction with UpdateScopeNoChange {
 
   override def toRaw: String = s"${left.toRaw} + ${right.toRaw}"
 
   override def hasNoEmpty(scope: IScope): Boolean = {
-    def validate(n: Node, scope: IScope) = {
+    def validate(n: Instruction, scope: IScope) = {
       n match {
         case _: ValueRef => n.hasNoEmpty(scope.decrementHeight)
         case _: Empty => false
@@ -21,11 +21,11 @@ final case class AddOperator(left: Node, right: Node) extends Node with UpdateSc
     scope.hasHeightRemaining && validate(left, scope) && validate(right, scope)
   }
 
-  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Node = {
-    def replaceEmpty(scope: IScope, n: Node): Node = {
+  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Instruction = {
+    def replaceEmpty(scope: IScope, n: Instruction): Instruction = {
       n match {
         case _: Empty => injector.getInstance(classOf[ValueRefFactoryImpl]).create(scope)
-        case n: Node => n.replaceEmpty(scope.decrementHeight)
+        case n: Instruction => n.replaceEmpty(scope.decrementHeight)
       }
     }
 

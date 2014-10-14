@@ -3,10 +3,10 @@ package models.domain.scala
 import com.google.inject.Injector
 import replaceEmpty.{NodeTreeFactoryImpl, UpdateScopeThrows}
 import models.common.IScope
-import models.domain.Node
+import models.domain.Instruction
 import scala.annotation.tailrec
 
-final case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows {
+final case class NodeTree(nodes: Seq[Instruction]) extends Instruction with UpdateScopeThrows {
 
   override def toRaw: String = nodes.map(f => f.toRaw).mkString(" ")
 
@@ -18,23 +18,23 @@ final case class NodeTree(nodes: Seq[Node]) extends Node with UpdateScopeThrows 
     }
   }
 
-  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Node = {
-    def funcCreateNodes(scope: IScope, premade: Seq[Node]): (IScope, Seq[Node]) = {
+  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Instruction = {
+    def funcCreateNodes(scope: IScope, premade: Seq[Instruction]): (IScope, Seq[Instruction]) = {
       val factory = injector.getInstance(classOf[NodeTreeFactoryImpl])
       factory.createNodes(scope = scope, acc = premade.init)
     }
 
     @tailrec
     def replaceEmptyInSeq(scope: IScope,
-                          n: Seq[Node],
-                          f: ((IScope, Seq[Node]) => (IScope, Seq[Node])),
-                          acc: Seq[Node] = Seq.empty)(implicit injector: Injector): (IScope, Seq[Node]) = {
+                          n: Seq[Instruction],
+                          f: ((IScope, Seq[Instruction]) => (IScope, Seq[Instruction])),
+                          acc: Seq[Instruction] = Seq.empty)(implicit injector: Injector): (IScope, Seq[Instruction]) = {
       n match {
         case x :: xs =>
           val (updatedScope, replaced) = x match {
             case _: Empty =>
               f(scope, n)
-            case n: Node =>
+            case n: Instruction =>
               val r = n.replaceEmpty(scope)
               val u = r.updateScope(scope)
               (u, Seq(r))

@@ -3,7 +3,7 @@ package replaceEmpty
 import com.google.inject.Inject
 import memoization.LegalNeighboursMemo
 import models.common.IScope
-import models.domain.Node
+import models.domain.Instruction
 import models.domain.scala.NodeTree
 
 case class NodeTreeFactoryImpl @Inject()(
@@ -13,14 +13,14 @@ case class NodeTreeFactoryImpl @Inject()(
 
   override val neighbourIds = Seq(ObjectDefFactoryImpl.id)
 
-  def create(scope: IScope, premadeChildren: Seq[ReplaceEmpty]): Node = {
+  def create(scope: IScope, premadeChildren: Seq[ReplaceEmpty]): Instruction = {
     val (_, generated) = createNodes(scope)
     val nodes = generated ++ premadeChildren.map(p => p.create(scope))
 
     NodeTree(nodes)
   }
 
-  def createNodes(scope: IScope, acc: Seq[Node] = Seq()): (IScope, Seq[Node]) = {
+  def createNodes(scope: IScope, acc: Seq[Instruction] = Seq()): (IScope, Seq[Instruction]) = {
     creator.create(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,
@@ -30,7 +30,7 @@ case class NodeTreeFactoryImpl @Inject()(
     )
   }
 
-  override def create(scope: IScope): Node = {
+  override def create(scope: IScope): Instruction = {
     val (_, nodes) = createNodes(scope)
     NodeTree(nodes)
   }

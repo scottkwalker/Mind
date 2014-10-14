@@ -3,16 +3,16 @@ package models.domain.scala
 import com.google.inject.Injector
 import replaceEmpty.UpdateScopeNoChange
 import models.common.IScope
-import models.domain.Node
+import models.domain.Instruction
 
-final case class ValueRef(name: String) extends Node with UpdateScopeNoChange {
+final case class ValueRef(name: String) extends Instruction with UpdateScopeNoChange {
 
   override def toRaw: String = name
 
 //  override def hasNoEmpty(scope: IScope): Boolean = scope.hasHeightRemaining && !name.isEmpty
   override def hasNoEmpty(scope: IScope): Boolean = !name.isEmpty
 
-  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Node = this
+  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Instruction = this
 
   override def height: Int = 1
 }

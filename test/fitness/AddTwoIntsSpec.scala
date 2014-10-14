@@ -1,7 +1,7 @@
 package fitness
 
 import composition.TestComposition
-import models.domain.Node
+import models.domain.Instruction
 import models.domain.scala.{AddOperator, FunctionM, IntegerM, ObjectDef, _}
 import org.mockito.Mockito._
 
@@ -9,7 +9,7 @@ final class AddTwoIntsSpec extends TestComposition {
 
   "Addition" must {
     "1 add 1 equals 2 with NodeTree that returns hard coded raw Scala" in {
-      val nodeTree = mock[Node]
+      val nodeTree = mock[Instruction]
       when(nodeTree.toRaw).thenReturn("object o0 { def f0(a: Int, b: Int) = a + b }")
       val f = new AddTwoInts(nodeTree)
       f.fitness must equal(f.maxFitness)

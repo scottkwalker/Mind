@@ -3,7 +3,7 @@ package models.domain.scala
 import com.google.inject.Injector
 import composition.{StubReplaceEmpty, TestComposition}
 import models.common.{IScope, Scope}
-import models.domain.Node
+import models.domain.Instruction
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
@@ -11,7 +11,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
 
   "toRawScala" must {
     "return expected" in {
-      val p = mock[Node]
+      val p = mock[Instruction]
       when(p.toRaw).thenReturn("Int")
       val name = "a"
 
@@ -24,7 +24,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val s = mock[IScope]
       when(s.hasHeightRemaining).thenReturn(false)
       val name = "a"
-      val p = mock[Node]
+      val p = mock[Instruction]
 
       ValDclInFunctionParam(name, p).hasNoEmpty(s) must equal(false)
     }
@@ -33,7 +33,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val s = mock[IScope]
       when(s.hasHeightRemaining).thenReturn(true)
       val name = ""
-      val p = mock[Node]
+      val p = mock[Instruction]
 
       ValDclInFunctionParam(name, p).hasNoEmpty(s) must equal(false)
     }
@@ -42,7 +42,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val s = mock[IScope]
       when(s.hasHeightRemaining).thenReturn(true)
       val name = "a"
-      val p = mock[Node]
+      val p = mock[Instruction]
       when(p.hasNoEmpty(any[Scope])).thenReturn(false)
 
       ValDclInFunctionParam(name, p).hasNoEmpty(s) must equal(false)
@@ -65,7 +65,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       when(s.decrementHeight).thenReturn(s)
       val name = "a"
       implicit val i = mock[Injector]
-      val p = mock[Node]
+      val p = mock[Instruction]
       when(p.replaceEmpty(any[Scope])(any[Injector])).thenReturn(p)
       val instance = ValDclInFunctionParam(name, p)
 
@@ -80,7 +80,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       when(s.decrementHeight).thenReturn(s)
       val name = "a"
       implicit val i = mock[Injector]
-      val p = mock[Node]
+      val p = mock[Instruction]
       when(p.replaceEmpty(any[Scope])(any[Injector])).thenReturn(p)
       val instance = ValDclInFunctionParam(name, p)
 
@@ -110,7 +110,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
   "height" must {
     "returns 1 + child height" in {
       val name = "a"
-      val p = mock[Node]
+      val p = mock[Instruction]
       when(p.height).thenReturn(1)
 
       ValDclInFunctionParam(name, p).height must equal(2)

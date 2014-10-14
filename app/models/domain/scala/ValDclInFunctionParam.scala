@@ -3,9 +3,9 @@ package models.domain.scala
 import com.google.inject.Injector
 import replaceEmpty.{IntegerMFactoryImpl, UpdateScopeIncrementVals}
 import models.common.IScope
-import models.domain.Node
+import models.domain.Instruction
 
-final case class ValDclInFunctionParam(name: String, primitiveType: Node) extends Node with UpdateScopeIncrementVals {
+final case class ValDclInFunctionParam(name: String, primitiveType: Instruction) extends Instruction with UpdateScopeIncrementVals {
 
   override def toRaw: String = s"$name: ${primitiveType.toRaw}"
 
@@ -16,10 +16,10 @@ final case class ValDclInFunctionParam(name: String, primitiveType: Node) extend
     }
   }
 
-  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Node = {
+  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Instruction = {
     val pt = primitiveType match {
       case _: Empty => injector.getInstance(classOf[IntegerMFactoryImpl]).create(scope)
-      case node: Node => node.replaceEmpty(updateScope(scope.decrementHeight))
+      case node: Instruction => node.replaceEmpty(updateScope(scope.decrementHeight))
     }
     ValDclInFunctionParam(name, pt)
   }

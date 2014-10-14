@@ -3,7 +3,7 @@ package models.domain.scala
 import com.google.inject.Injector
 import composition.{StubReplaceEmpty, TestComposition}
 import models.common.{IScope, Scope}
-import models.domain.Node
+import models.domain.Instruction
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
@@ -20,7 +20,7 @@ final class NodeTreeSpec extends TestComposition {
 
     "false given it cannot terminate in under N steps" in {
       val s = Scope(height = 10)
-      val f = mock[Node]
+      val f = mock[Instruction]
       when(f.hasNoEmpty(any[Scope])).thenReturn(false)
       val nodeTree = new NodeTree(Seq(f))
 
@@ -44,7 +44,7 @@ final class NodeTreeSpec extends TestComposition {
     "false when hasHeightRemaining returns false" in {
       val s = mock[IScope]
       when(s.hasHeightRemaining).thenReturn(false)
-      val f = mock[Node]
+      val f = mock[Instruction]
       val nodeTree = new NodeTree(Seq(f))
 
       nodeTree.hasNoEmpty(s) must equal(false)
@@ -55,7 +55,7 @@ final class NodeTreeSpec extends TestComposition {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
-      val f = mock[Node]
+      val f = mock[Instruction]
       when(f.replaceEmpty(any[Scope])(any[Injector])).thenReturn(f)
       val instance = NodeTree(Seq(f))
 
@@ -67,7 +67,7 @@ final class NodeTreeSpec extends TestComposition {
     "returns same when no empty nodes" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
-      val f = mock[Node]
+      val f = mock[Instruction]
       when(f.replaceEmpty(any[Scope])(any[Injector])).thenReturn(f)
       val instance = new NodeTree(Seq(f))
 
@@ -99,7 +99,7 @@ final class NodeTreeSpec extends TestComposition {
 
   "height" must {
     "returns 1 + child height when has one child" in {
-      val f = mock[Node]
+      val f = mock[Instruction]
       when(f.height).thenReturn(2)
       val nodeTree = new NodeTree(Seq(f))
 
@@ -107,9 +107,9 @@ final class NodeTreeSpec extends TestComposition {
     }
 
     "returns 1 + child height when has two children" in {
-      val f = mock[Node]
+      val f = mock[Instruction]
       when(f.height).thenReturn(1)
-      val f2 = mock[Node]
+      val f2 = mock[Instruction]
       when(f2.height).thenReturn(2)
       val nodeTree = new NodeTree(Seq(f, f2))
 

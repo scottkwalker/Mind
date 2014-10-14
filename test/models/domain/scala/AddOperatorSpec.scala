@@ -3,7 +3,7 @@ package models.domain.scala
 import com.google.inject.Injector
 import composition.{StubReplaceEmpty, TestComposition}
 import models.common.{IScope, Scope}
-import models.domain.Node
+import models.domain.Instruction
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
@@ -11,9 +11,9 @@ final class AddOperatorSpec extends TestComposition {
 
   "toRawScala" must {
     "return expected" in {
-      val a = mock[Node]
+      val a = mock[Instruction]
       when(a.toRaw).thenReturn("STUB_A")
-      val b = mock[Node]
+      val b = mock[Instruction]
       when(b.toRaw).thenReturn("STUB_B")
 
       AddOperator(a, b).toRaw must equal("STUB_A + STUB_B")
@@ -30,7 +30,7 @@ final class AddOperatorSpec extends TestComposition {
 
     "false given it cannot terminate in 0 steps" in {
       val s = Scope(height = 0)
-      val v = mock[Node]
+      val v = mock[Instruction]
       when(v.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException)
 
       AddOperator(v, v).hasNoEmpty(s) must equal(false)
@@ -38,7 +38,7 @@ final class AddOperatorSpec extends TestComposition {
 
     "false given child nodes cannot terminate in under N steps" in {
       val s = Scope(height = 10)
-      val v = mock[Node]
+      val v = mock[Instruction]
       when(v.hasNoEmpty(any[Scope])).thenReturn(false)
 
       AddOperator(v, v).hasNoEmpty(s) must equal(false)
@@ -67,7 +67,7 @@ final class AddOperatorSpec extends TestComposition {
 
     "false given contains a node that is not valid for this level" in {
       val s = Scope(height = 10)
-      val v = mock[Node]
+      val v = mock[Instruction]
       when(v.hasNoEmpty(any[Scope])).thenReturn(true)
 
       AddOperator(v, ObjectDef(Seq.empty, "ObjectM0")).hasNoEmpty(s) must equal(false)
@@ -78,7 +78,7 @@ final class AddOperatorSpec extends TestComposition {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
-      val v = mock[Node]
+      val v = mock[Instruction]
       when(v.replaceEmpty(any[Scope])(any[Injector])).thenReturn(v)
       val instance = AddOperator(v, v)
 
@@ -90,7 +90,7 @@ final class AddOperatorSpec extends TestComposition {
     "returns same when no empty nodes" in {
       val s = mock[IScope]
       val i = mock[Injector]
-      val v = mock[Node]
+      val v = mock[Instruction]
       when(v.replaceEmpty(any[Scope])(any[Injector])).thenReturn(v)
       val instance = AddOperator(v, v)
 
@@ -100,7 +100,7 @@ final class AddOperatorSpec extends TestComposition {
     "returns without empty nodes given there were empty nodes" in {
       val s = mock[IScope]
       when(s.numVals).thenReturn(1)
-      val empty: Node = Empty()
+      val empty: Instruction = Empty()
       val i = testInjector(new StubReplaceEmpty)
       val instance = AddOperator(empty, empty)
 
@@ -116,7 +116,7 @@ final class AddOperatorSpec extends TestComposition {
 
   "height" must {
     "return 1 + child height" in {
-      val v = mock[Node]
+      val v = mock[Instruction]
       when(v.height).thenReturn(1)
 
       AddOperator(v, v).height must equal(2)

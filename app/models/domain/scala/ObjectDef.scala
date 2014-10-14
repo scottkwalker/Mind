@@ -3,10 +3,10 @@ package models.domain.scala
 import com.google.inject.Injector
 import replaceEmpty.{ObjectDefFactoryImpl, UpdateScopeIncrementObjects}
 import models.common.IScope
-import models.domain.Node
+import models.domain.Instruction
 import scala.annotation.tailrec
 
-final case class ObjectDef(nodes: Seq[Node], name: String) extends Node with UpdateScopeIncrementObjects {
+final case class ObjectDef(nodes: Seq[Instruction], name: String) extends Instruction with UpdateScopeIncrementObjects {
 
   override def toRaw: String = s"object $name ${nodes.map(f => f.toRaw).mkString("{ ", " ", " }")}"
 
@@ -18,23 +18,23 @@ final case class ObjectDef(nodes: Seq[Node], name: String) extends Node with Upd
     }
   }
 
-  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Node = {
-    def funcCreateNodes(scope: IScope, premade: Seq[Node]): (IScope, Seq[Node]) = {
+  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Instruction = {
+    def funcCreateNodes(scope: IScope, premade: Seq[Instruction]): (IScope, Seq[Instruction]) = {
       val factory = injector.getInstance(classOf[ObjectDefFactoryImpl])
       factory.createNodes(scope = scope, acc = premade.init)
     }
 
     @tailrec
     def replaceEmptyInSeq(scope: IScope,
-                          n: Seq[Node],
-                          f: ((IScope, Seq[Node]) => (IScope, Seq[Node])),
-                          acc: Seq[Node] = Seq.empty)(implicit injector: Injector): (IScope, Seq[Node]) = {
+                          n: Seq[Instruction],
+                          f: ((IScope, Seq[Instruction]) => (IScope, Seq[Instruction])),
+                          acc: Seq[Instruction] = Seq.empty)(implicit injector: Injector): (IScope, Seq[Instruction]) = {
       n match {
         case x :: xs =>
           val (updatedScope, replaced) = x match {
             case _: Empty =>
               f(scope, n)
-            case n: Node =>
+            case n: Instruction =>
               val r = n.replaceEmpty(scope)
               val u = r.updateScope(scope)
               (u, Seq(r))
@@ -53,7 +53,7 @@ final case class ObjectDef(nodes: Seq[Node], name: String) extends Node with Upd
 
 object ObjectDef {
 
-  def apply(nodes: Seq[Node], index: Int): ObjectDef = ObjectDef(
+  def apply(nodes: Seq[Instruction], index: Int): ObjectDef = ObjectDef(
     nodes = nodes,
     name = s"o$index"
   )

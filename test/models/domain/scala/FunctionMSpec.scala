@@ -3,7 +3,7 @@ package models.domain.scala
 import com.google.inject.Injector
 import composition.{StubReplaceEmpty, TestComposition}
 import models.common.{IScope, Scope}
-import models.domain.Node
+import models.domain.Instruction
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
@@ -12,7 +12,7 @@ final class FunctionMSpec extends TestComposition {
   "hasNoEmpty" must {
     "false given an empty name" in {
       val s = Scope(height = 10)
-      val v = mock[Node]
+      val v = mock[Instruction]
       when(v.hasNoEmpty(any[Scope])).thenReturn(true)
       FunctionM(params = params,
         nodes = Seq(v, v),
@@ -21,7 +21,7 @@ final class FunctionMSpec extends TestComposition {
 
     "true given it can terminate in under N steps" in {
       val s = Scope(height = 3)
-      val v = mock[Node]
+      val v = mock[Instruction]
       when(v.hasNoEmpty(any[Scope])).thenReturn(true)
 
       FunctionM(params = params,
@@ -31,7 +31,7 @@ final class FunctionMSpec extends TestComposition {
 
     "false given it cannot terminate in 0 steps" in {
       val s = Scope(height = 0)
-      val v = mock[Node]
+      val v = mock[Instruction]
       when(v.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException)
 
       FunctionM(params = params,
@@ -41,7 +41,7 @@ final class FunctionMSpec extends TestComposition {
 
     "false given it cannot terminate in under N steps" in {
       val s = Scope(height = 2)
-      val v = mock[Node]
+      val v = mock[Instruction]
       when(v.hasNoEmpty(any[Scope])).thenReturn(false)
 
       FunctionM(params = params,
@@ -51,7 +51,7 @@ final class FunctionMSpec extends TestComposition {
 
     "true given no empty nodes" in {
       val s = Scope(height = 10)
-      val v = mock[Node]
+      val v = mock[Instruction]
       when(v.hasNoEmpty(any[Scope])).thenReturn(true)
 
       FunctionM(params = params,
@@ -61,7 +61,7 @@ final class FunctionMSpec extends TestComposition {
 
     "false given an empty node" in {
       val s = Scope(height = 10)
-      val v = mock[Node]
+      val v = mock[Instruction]
       when(v.hasNoEmpty(any[Scope])).thenReturn(true)
 
       FunctionM(params = params,
@@ -72,7 +72,7 @@ final class FunctionMSpec extends TestComposition {
 
   "toRawScala" must {
     "returns expected" in {
-      val a = mock[Node]
+      val a = mock[Instruction]
       when(a.toRaw).thenReturn("STUB")
 
       FunctionM(params = params,
@@ -81,7 +81,7 @@ final class FunctionMSpec extends TestComposition {
     }
 
     "throws if has no name" in {
-      val a = mock[Node]
+      val a = mock[Instruction]
       when(a.toRaw).thenReturn("STUB")
       val sut = FunctionM(params = params,
         nodes = Seq(a),
@@ -95,9 +95,9 @@ final class FunctionMSpec extends TestComposition {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
-      val p = mock[Node]
+      val p = mock[Instruction]
       when(p.replaceEmpty(any[Scope])(any[Injector])).thenReturn(p)
-      val v = mock[Node]
+      val v = mock[Instruction]
       when(v.replaceEmpty(any[Scope])(any[Injector])) thenReturn v
       val instance = FunctionM(params = Seq(p),
         nodes = Seq(v),
@@ -112,9 +112,9 @@ final class FunctionMSpec extends TestComposition {
     "returns same when no empty nodes" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
-      val p = mock[Node]
+      val p = mock[Instruction]
       when(p.replaceEmpty(any[Scope])(any[Injector])) thenReturn p
-      val v = mock[Node]
+      val v = mock[Instruction]
       when(v.replaceEmpty(any[Scope])(any[Injector])) thenReturn v
       val instance = FunctionM(params = Seq(p),
         nodes = Seq(v),
@@ -151,7 +151,7 @@ final class FunctionMSpec extends TestComposition {
 
     "height" must {
       "returns 1 + child height" in {
-        val v = mock[Node]
+        val v = mock[Instruction]
         when(v.height) thenReturn 2
 
         FunctionM(params = params,
@@ -160,9 +160,9 @@ final class FunctionMSpec extends TestComposition {
       }
 
       "returns 1 + child height when children have different depths" in {
-        val v = mock[Node]
+        val v = mock[Instruction]
         when(v.height) thenReturn 1
-        val v2 = mock[Node]
+        val v2 = mock[Instruction]
         when(v2.height) thenReturn 2
 
         FunctionM(params = params,

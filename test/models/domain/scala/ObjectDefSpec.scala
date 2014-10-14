@@ -3,7 +3,7 @@ package models.domain.scala
 import com.google.inject.Injector
 import composition.{StubReplaceEmpty, TestComposition}
 import models.common.{IScope, Scope}
-import models.domain.Node
+import models.domain.Instruction
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
@@ -22,7 +22,7 @@ final class ObjectDefSpec extends TestComposition {
 
     "false given it cannot terminate in 0 steps" in {
       val s = Scope(height = 0)
-      val f = mock[Node]
+      val f = mock[Instruction]
       when(f.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException)
       val objectM = ObjectDef(Seq(f), name)
 
@@ -31,7 +31,7 @@ final class ObjectDefSpec extends TestComposition {
 
     "false given it cannot terminate in under N steps" in {
       val s = Scope(height = 3)
-      val f = mock[Node]
+      val f = mock[Instruction]
       when(f.hasNoEmpty(any[Scope])).thenReturn(false)
       val objectM = ObjectDef(Seq(f), name)
 
@@ -56,7 +56,7 @@ final class ObjectDefSpec extends TestComposition {
 
     "false given empty method node in a sequence" in {
       val s = Scope(height = 10)
-      val f = mock[Node]
+      val f = mock[Instruction]
       when(f.hasNoEmpty(any[Scope])).thenReturn(true)
       val objectM = ObjectDef(Seq(f, Empty()), name)
 
@@ -66,7 +66,7 @@ final class ObjectDefSpec extends TestComposition {
 
   "toRawScala" must {
     "return expected" in {
-      val f = mock[Node]
+      val f = mock[Instruction]
       when(f.toRaw).thenReturn("STUB")
       val objectM = ObjectDef(Seq(f), name)
 
@@ -78,7 +78,7 @@ final class ObjectDefSpec extends TestComposition {
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
-      val f = mock[Node]
+      val f = mock[Instruction]
       when(f.replaceEmpty(any[Scope])(any[Injector])).thenReturn(f)
       val instance = ObjectDef(Seq(f), name = name)
 
@@ -90,7 +90,7 @@ final class ObjectDefSpec extends TestComposition {
     "returns same when no empty nodes" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
-      val f = mock[Node]
+      val f = mock[Instruction]
       when(f.replaceEmpty(any[Scope])(any[Injector])).thenReturn(f)
       val instance = ObjectDef(Seq(f), name)
 
@@ -124,7 +124,7 @@ final class ObjectDefSpec extends TestComposition {
 
   "height" must {
     "height returns 1 + child height when has 1 child" in {
-      val f = mock[Node]
+      val f = mock[Instruction]
       when(f.height).thenReturn(2)
       val objectM = ObjectDef(Seq(f), name)
 
@@ -132,9 +132,9 @@ final class ObjectDefSpec extends TestComposition {
     }
 
     "height returns 1 + child height when has 2 children" in {
-      val f = mock[Node]
+      val f = mock[Instruction]
       when(f.height).thenReturn(1)
-      val f2 = mock[Node]
+      val f2 = mock[Instruction]
       when(f2.height).thenReturn(2)
       val objectM = ObjectDef(Seq(f, f2), name)
 

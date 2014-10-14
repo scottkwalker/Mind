@@ -3,7 +3,7 @@ package replaceEmpty
 import ai.SelectionStrategy
 import com.google.inject.Inject
 import models.common.IScope
-import models.domain.Node
+import models.domain.Instruction
 import scala.annotation.tailrec
 
 final case class CreateSeqNodesImpl @Inject()(createNode: CreateNode, ai: SelectionStrategy) extends CreateSeqNodes {
@@ -12,9 +12,9 @@ final case class CreateSeqNodesImpl @Inject()(createNode: CreateNode, ai: Select
   def create(possibleChildren: => Seq[ReplaceEmpty],
                 scope: IScope,
                 saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
-                acc: Seq[Node] = Seq.empty, // Default the accumulator to empty.
+                acc: Seq[Instruction] = Seq.empty, // Default the accumulator to empty.
                 factoryLimit: Int
-                 ): (IScope, Seq[Node]) = {
+                 ): (IScope, Seq[Instruction]) = {
     if (ai.canAddAnother(acc.length, factoryLimit)) {
       val (updatedScope, child) = createNode.create(possibleChildren, scope)
       create(possibleChildren,

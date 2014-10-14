@@ -2,7 +2,7 @@ package replaceEmpty
 
 import composition.{StubIScope, StubRng, TestComposition}
 import models.common.IScope
-import models.domain.Node
+import models.domain.Instruction
 import models.domain.scala.NodeTree
 import org.mockito.Matchers._
 import org.mockito.Mockito._
@@ -26,7 +26,7 @@ final class NodeTreeFactorySpec extends TestComposition {
     }
 
     "returns 4 children given 1 premade and scope with 3 maxFuncsInObject (and rng mocked)" in {
-      val n = mock[Node]
+      val n = mock[Instruction]
       val c = mock[ReplaceEmpty]
       when(c.create(any[IScope])).thenReturn(n)
 
