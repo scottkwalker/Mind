@@ -2,7 +2,7 @@ package ai.legalGamer
 
 import ai.{RandomNumberGenerator, SelectionStrategy}
 import com.google.inject.Inject
-import factory.ReplaceEmpty
+import replaceEmpty.ReplaceEmpty
 
 // Always chooses the first legal move available
 final case class LegalGamer @Inject()(rng: RandomNumberGenerator) extends SelectionStrategy {

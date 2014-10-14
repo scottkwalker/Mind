@@ -1,6 +1,6 @@
 package memoization
 
-import factory.ReplaceEmpty
+import replaceEmpty.ReplaceEmpty
 
 trait FactoryLookup {
 

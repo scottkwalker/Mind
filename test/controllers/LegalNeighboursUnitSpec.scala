@@ -1,7 +1,7 @@
 package controllers
 
 import composition.{StubLegalNeighboursMemo, TestComposition}
-import factory.NodeTreeFactoryImpl
+import replaceEmpty.NodeTreeFactoryImpl
 import memoization.LegalNeighboursMemo
 import models.common.{IScope, LegalNeighboursRequest, Scope}
 import org.mockito.Matchers.any

@@ -1,6 +1,6 @@
 package ai
 
-import factory.ReplaceEmpty
+import replaceEmpty.ReplaceEmpty
 import models.common.IScope
 
 trait SelectionStrategy {

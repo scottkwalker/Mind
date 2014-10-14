@@ -1,7 +1,7 @@
 package memoization
 
 import com.google.inject.Inject
-import factory._
+import replaceEmpty._
 import models.common.IScope
 
 final class LegalNeighboursMemoImpl @Inject()(factoryIdToFactory: FactoryLookup) extends LegalNeighboursMemo {

@@ -2,7 +2,7 @@ package composition
 
 import com.google.inject.AbstractModule
 import composition.StubFactoryIdToFactory._
-import factory.ReplaceEmpty
+import replaceEmpty.ReplaceEmpty
 import memoization.FactoryLookup
 import org.mockito.Mockito.{mock, when}
 

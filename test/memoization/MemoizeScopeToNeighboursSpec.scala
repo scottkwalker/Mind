@@ -2,7 +2,7 @@ package memoization
 
 import java.util.concurrent.CountDownLatch
 import composition.TestComposition
-import factory.{AddOperatorFactoryImpl, ValueRefFactoryImpl}
+import replaceEmpty.{AddOperatorFactoryImpl, ValueRefFactoryImpl}
 import memoization.MemoizeScopeToNeighbours.readsMemoizeScopeToNeighbours
 import models.common.Scope
 import org.mockito.Mockito._

@@ -1,4 +1,4 @@
-package factory
+package replaceEmpty
 
 import composition.{StubIScope, StubRng, TestComposition}
 import models.common.IScope

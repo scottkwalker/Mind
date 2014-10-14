@@ -2,7 +2,7 @@ package ai.aco
 
 import ai.{RandomNumberGenerator, SelectionStrategy}
 import com.google.inject.Inject
-import factory.ReplaceEmpty
+import replaceEmpty.ReplaceEmpty
 
 // Ant Colony Optimisation
 // https://en.wikipedia.org/wiki/Ant_colony_optimization_algorithms

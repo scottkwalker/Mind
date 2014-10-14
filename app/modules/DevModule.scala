@@ -2,7 +2,7 @@ package modules
 
 import _root_.ai.{RandomNumberGenerator, RandomNumberGeneratorImpl}
 import com.google.inject.AbstractModule
-import factory._
+import replaceEmpty._
 import memoization._
 import models.common.{IScope, Scope}
 import models.domain.scala.Empty

@@ -1,7 +1,7 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import factory.UpdateScopeNoChange
+import replaceEmpty.UpdateScopeNoChange
 import models.common.IScope
 import models.domain.Node
 

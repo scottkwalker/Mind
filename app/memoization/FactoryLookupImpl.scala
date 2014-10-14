@@ -1,7 +1,7 @@
 package memoization
 
 import com.google.inject.Inject
-import factory._
+import replaceEmpty._
 
 final class FactoryLookupImpl @Inject()(addOperatorFactory: AddOperatorFactory,
                                         functionMFactory: FunctionMFactory,

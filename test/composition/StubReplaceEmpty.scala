@@ -1,7 +1,7 @@
 package composition
 
 import com.google.inject.AbstractModule
-import factory.ReplaceEmpty
+import replaceEmpty.ReplaceEmpty
 import models.common.Scope
 import models.domain.Node
 import org.mockito.Matchers.any

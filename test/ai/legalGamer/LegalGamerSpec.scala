@@ -2,7 +2,7 @@ package ai.legalGamer
 
 import ai.{RandomNumberGenerator, SelectionStrategy}
 import composition.{StubRng, TestComposition}
-import factory.ReplaceEmpty
+import replaceEmpty.ReplaceEmpty
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.{Empty, FunctionM, IntegerM, NodeTree, ObjectDef, ValDclInFunctionParam}

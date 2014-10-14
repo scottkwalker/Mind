@@ -1,3 +1,3 @@
-package factory
+package replaceEmpty
 
 trait FunctionMFactory extends ReplaceEmpty

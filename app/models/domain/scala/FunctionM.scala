@@ -1,7 +1,7 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import factory.{FunctionMFactoryImpl, UpdateScopeIncrementFuncs}
+import replaceEmpty.{FunctionMFactoryImpl, UpdateScopeIncrementFuncs}
 import models.common.IScope
 import models.domain.Node
 import scala.annotation.tailrec

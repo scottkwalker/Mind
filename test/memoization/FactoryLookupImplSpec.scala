@@ -1,7 +1,7 @@
 package memoization
 
 import composition.TestComposition
-import factory._
+import replaceEmpty._
 
 final class FactoryLookupImplSpec extends TestComposition {
 
