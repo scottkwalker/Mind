@@ -1,11 +1,11 @@
-package modules
+package composition
 
 import _root_.ai.{RandomNumberGenerator, RandomNumberGeneratorImpl}
 import com.google.inject.AbstractModule
-import replaceEmpty._
 import memoization._
 import models.common.{IScope, Scope}
 import models.domain.scala.Empty
+import replaceEmpty._
 
 final class DevModule() extends AbstractModule {
 

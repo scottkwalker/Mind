@@ -6,7 +6,7 @@ import replaceEmpty.ReplaceEmpty
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.{FunctionM, IntegerM, NodeTree, ObjectDef, _}
-import modules.ai.randomWalk.RandomWalkModule
+import composition.ai.randomWalk.RandomWalkModule
 import org.mockito.Mockito.{times, verify}
 
 final class RandomWalkSpec extends TestComposition {

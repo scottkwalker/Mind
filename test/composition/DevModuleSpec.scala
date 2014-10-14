@@ -1,6 +1,4 @@
-package modules
-
-import composition.TestComposition
+package composition
 
 final class DevModuleSpec extends TestComposition {
 

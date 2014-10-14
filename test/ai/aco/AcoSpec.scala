@@ -6,7 +6,7 @@ import replaceEmpty.ReplaceEmpty
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.{Empty, FunctionM, IntegerM, NodeTree, ObjectDef, ValDclInFunctionParam}
-import modules.ai.aco.AcoModule
+import composition.ai.aco.AcoModule
 import org.mockito.Mockito.{times, verify}
 
 final class AcoSpec extends TestComposition {

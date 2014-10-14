@@ -1,4 +1,4 @@
-package modules.ai.randomWalk
+package composition.ai.randomWalk
 
 import ai.SelectionStrategy
 import ai.randomWalk.RandomGamer

@@ -36,7 +36,7 @@ scalacOptions ++= Seq("-feature")
 
 instrumentSettings
 
-ScoverageKeys.excludedPackages in ScoverageCompile := "<empty>;Reverse.*;composition.Eval;views;views.html;views.html.widgets"
+ScoverageKeys.excludedPackages in ScoverageCompile := "<empty>;Reverse.*;fitness.Eval;views;views.html;views.html.widgets"
 
 ScoverageKeys.minimumCoverage := 80
 

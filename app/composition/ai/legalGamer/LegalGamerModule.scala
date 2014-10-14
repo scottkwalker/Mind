@@ -1,4 +1,4 @@
-package modules.ai.legalGamer
+package composition.ai.legalGamer
 
 import ai.SelectionStrategy
 import ai.legalGamer.LegalGamer

@@ -1,8 +1,8 @@
 package composition
 
 import com.google.inject.Guice
-import modules.DevModule
-import modules.ai.legalGamer.LegalGamerModule
+import composition.DevModule
+import composition.ai.legalGamer.LegalGamerModule
 import play.filters.gzip.GzipFilter
 
 trait Composition {

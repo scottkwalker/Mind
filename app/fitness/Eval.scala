@@ -1,4 +1,4 @@
-package composition
+package fitness
 
 /*
  * Existing release of util-eval from twitter is not compiling with Scala 2.11.2
@@ -264,8 +264,6 @@ class Eval(target: Option[File]) {
       throw new ClassNotFoundException("no such class: " + className)
     }
   }
-
-  import composition.Eval.jvmId
 
   private def uniqueId(code: String, idOpt: Option[Int] = Some(jvmId)): String = {
     val digest = MessageDigest.getInstance("SHA-1").digest(code.getBytes)

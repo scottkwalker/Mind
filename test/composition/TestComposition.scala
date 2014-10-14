@@ -3,8 +3,8 @@ package composition
 import akka.util.Timeout
 import com.google.inject.util.Modules.`override`
 import com.google.inject.{Guice, Module}
-import modules.DevModule
-import modules.ai.legalGamer.LegalGamerModule
+import composition.DevModule
+import composition.ai.legalGamer.LegalGamerModule
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mock.MockitoSugar
 import org.scalatestplus.play.PlaySpec

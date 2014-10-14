@@ -1,4 +1,4 @@
-package modules.ai.aco
+package composition.ai.aco
 
 import ai.SelectionStrategy
 import ai.aco.Aco
