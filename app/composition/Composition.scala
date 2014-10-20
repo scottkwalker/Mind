@@ -1,7 +1,6 @@
 package composition
 
 import com.google.inject.Guice
-import composition.DevModule
 import composition.ai.legalGamer.LegalGamerModule
 import play.filters.gzip.GzipFilter
 
