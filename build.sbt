@@ -26,7 +26,7 @@ libraryDependencies ++= Seq(
   //ws
   filters,
   "org.mockito" % "mockito-core" % "1.9.5" % "test" withSources() withJavadoc(),
-  "com.google.inject" % "guice" % "4.0-beta4",
+  "com.google.inject" % "guice" % "4.0-beta5",
   "org.scalatestplus" %% "play" % "1.2.0" % "test",
   "com.twitter" %% "util-core" % "6.20.0",
   "org.scala-lang" % "scala-compiler" % "2.11.2"
