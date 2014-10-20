@@ -1,6 +1,6 @@
 package composition
 
-import ai.RandomNumberGenerator
+import _root_.ai.RandomNumberGenerator
 import com.google.inject.AbstractModule
 import org.mockito.Mockito.mock
 

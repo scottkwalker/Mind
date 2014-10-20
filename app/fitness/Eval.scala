@@ -38,6 +38,7 @@ import scala.tools.nsc.io.{AbstractFile, VirtualDirectory}
 import scala.tools.nsc.reporters.AbstractReporter
 import scala.tools.nsc.{Global, Settings}
 import scala.util.matching.Regex
+import fitness.Eval.jvmId
 
 /**
  * Evaluate a file or string and return the result.
