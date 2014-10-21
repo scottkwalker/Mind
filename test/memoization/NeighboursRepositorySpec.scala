@@ -1,12 +1,11 @@
 package memoization
 
-import java.util.concurrent.CountDownLatch
 import composition.TestComposition
-import replaceEmpty._
 import memoization.NeighboursRepository.readsNeighboursRepository
 import models.common.Scope
 import org.mockito.Mockito._
 import play.api.libs.json._
+import replaceEmpty._
 
 class NeighboursRepositorySpec extends TestComposition {
 
@@ -128,10 +127,6 @@ class NeighboursRepositorySpec extends TestComposition {
   }
 
   private val scope = Scope(height = 1)
-  private val injector = testInjector()
-  private val addOperatorFactoryImpl = injector.getInstance(classOf[AddOperatorFactoryImpl])
-  private val valueRefFactoryImpl = injector.getInstance(classOf[ValueRefFactoryImpl])
-  private val version = s"${AddOperatorFactoryImpl.id}|${ValueRefFactoryImpl.id}"
 
   private def createSut() = {
     val factoryLookup = factoryLookupStub
@@ -139,7 +134,20 @@ class NeighboursRepositorySpec extends TestComposition {
     (sut, factoryLookup)
   }
 
+  private val version = s"${AddOperatorFactoryImpl.id}|${ValueRefFactoryImpl.id}"
+
   private def factoryLookupStub = {
+    val addOperatorFactoryImpl = {
+      val stub = mock[AddOperatorFactory]
+      when(stub.neighbourIds).thenReturn(Seq(ValueRefFactoryImpl.id))
+      stub
+    }
+    val valueRefFactoryImpl = {
+      val stub = mock[ValueRefFactory]
+      when(stub.neighbourIds).thenReturn(Seq.empty)
+      stub
+    }
+
     val stub = mock[FactoryLookup]
     when(stub.version).thenReturn(version)
     when(stub.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
