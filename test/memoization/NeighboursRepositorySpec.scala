@@ -122,7 +122,7 @@ class NeighboursRepositorySpec extends TestComposition {
 
   private def createSut(cache: Map[String, Either[CountDownLatch, Boolean]] = Map.empty[String, Either[CountDownLatch, Boolean]]) = {
     val factoryIdToFactory = factoryIdToFactoryStub
-    val sut = new NeighboursRepository(cache = cache, factoryIdToFactory = factoryIdToFactory)
+    val sut = new NeighboursRepository(cache = cache, factoryLookup = factoryIdToFactory)
     (sut, factoryIdToFactory)
   }
 

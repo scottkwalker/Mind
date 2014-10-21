@@ -7,7 +7,7 @@ import replaceEmpty._
 final class LookupNeighboursImpl @Inject()(factoryIdToFactory: FactoryLookup) extends LookupNeighbours {
 
   private val memo = {
-    new NeighboursRepository(factoryIdToFactory = factoryIdToFactory)
+    new NeighboursRepository(factoryLookup = factoryIdToFactory)
   }
 
   override def fetch(scope: IScope, neighbours: Seq[Int]): Seq[ReplaceEmpty] = {

@@ -7,12 +7,12 @@ import play.api.libs.json._
 import scala.language.implicitConversions
 
 class NeighboursRepository(private var cache: Map[String, Either[CountDownLatch, Boolean]] = Map.empty[String, Either[CountDownLatch, Boolean]],
-                               factoryIdToFactory: FactoryLookup)
-  extends Memoize2Impl[IScope, Int, Boolean](cache, factoryIdToFactory.version)(writesNeighboursRepository) {
+                               factoryLookup: FactoryLookup)
+  extends Memoize2Impl[IScope, Int, Boolean](cache, factoryLookup.version)(writesNeighboursRepository) {
 
   override def f(scope: IScope, neighbourId: Int): Boolean = {
     scope.hasHeightRemaining && {
-      val possibleNeighbourIds = factoryIdToFactory.convert(neighbourId).neighbourIds
+      val possibleNeighbourIds = factoryLookup.convert(neighbourId).neighbourIds
       possibleNeighbourIds.isEmpty ||
         possibleNeighbourIds.exists { possNeighbourId =>
           missing(key1 = scope.decrementHeight, key2 = possNeighbourId)
