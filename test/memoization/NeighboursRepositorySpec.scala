@@ -30,6 +30,63 @@ class NeighboursRepositorySpec extends TestComposition {
     }
   }
 
+  "write macro inception" must {
+    "write expected json for no computed values" in {
+      val cache = Map[String, Either[CountDownLatch, Boolean]]()
+      NeighboursRepository.writesNeighboursRepository.writes(cache) must equal(
+        JsObject(
+          Seq.empty
+        )
+      )
+    }
+
+    "write expected json for one computed value" in {
+      val cache = Map(
+        s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(true)
+      )
+      NeighboursRepository.writesNeighboursRepository.writes(cache) must equal(
+        JsObject(
+          Seq(
+            (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
+          )
+        )
+      )
+    }
+
+    "write expected json for many computed values" in {
+      val cache = Map(
+        s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}" -> Right(false),
+        s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(false),
+        s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(true)
+      )
+      NeighboursRepository.writesNeighboursRepository.writes(cache) must equal(
+        JsObject(
+          Seq(
+            (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
+            (s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
+            (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
+          )
+        )
+      )
+    }
+
+    "ignore values that have not finished computation" in {
+      val cache = Map(
+        s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}" -> Left(new CountDownLatch(0)), // This value is still being computed so should not appear in the output.
+        s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(false),
+        s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(true)
+      )
+      NeighboursRepository.writesNeighboursRepository.writes(cache) must equal(
+        JsObject(
+          Seq(
+            (s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
+            (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
+          )
+        )
+      )
+    }
+  }
+
   "write" must {
     "write expected json for no computed values" in {
       val (sut, _) = createSut()
@@ -80,22 +137,6 @@ class NeighboursRepositorySpec extends TestComposition {
                 (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
               )
             )
-          )
-        )
-      )
-    }
-
-    "ignore values that have not finished computation" in {
-      val cache = Map(
-        s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}" -> Left(new CountDownLatch(0)), // This value is still being computed so should not appear in the output.
-        s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(false),
-        s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(true)
-      )
-      NeighboursRepository.writesNeighboursRepository.writes(cache) must equal(
-        JsObject(
-          Seq(
-            (s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
-            (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
           )
         )
       )
