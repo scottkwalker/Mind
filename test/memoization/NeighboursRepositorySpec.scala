@@ -1,5 +1,6 @@
 package memoization
 
+import java.util.concurrent.CountDownLatch
 import composition.TestComposition
 import memoization.NeighboursRepository.readsNeighboursRepository
 import models.common.Scope
@@ -79,6 +80,22 @@ class NeighboursRepositorySpec extends TestComposition {
                 (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
               )
             )
+          )
+        )
+      )
+    }
+
+    "ignore values that have not finished computation" in {
+      val cache = Map(
+        s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}" -> Left(new CountDownLatch(0)), // This value is still being computed so should not appear in the output.
+        s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(false),
+        s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(true)
+      )
+      NeighboursRepository.writesNeighboursRepository.writes(cache) must equal(
+        JsObject(
+          Seq(
+            (s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
+            (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
           )
         )
       )

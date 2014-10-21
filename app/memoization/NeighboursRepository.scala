@@ -23,7 +23,7 @@ class NeighboursRepository @Inject() (factoryLookup: FactoryLookup)
 
 object NeighboursRepository {
 
-  private implicit val writesNeighboursRepository = new Writes[Map[String, Either[CountDownLatch, Boolean]]] {
+  private[memoization] implicit val writesNeighboursRepository = new Writes[Map[String, Either[CountDownLatch, Boolean]]] {
     def writes(cache: Map[String, Either[CountDownLatch, Boolean]]): JsValue = {
       val computedKeyValues = cache.flatMap {
         case (k, Right(v)) => Some(k -> v) // Only store the computed values (the 'right-side').
@@ -33,7 +33,7 @@ object NeighboursRepository {
     }
   }
 
-  implicit def readsNeighboursRepository(factoryLookup: FactoryLookup): Reads[NeighboursRepository] =
+  private[memoization] implicit def readsNeighboursRepository(factoryLookup: FactoryLookup): Reads[NeighboursRepository] =
     (__ \ "versioning").read[String].flatMap[NeighboursRepository] {
       case versioningFromFile =>
         require(versioningFromFile == factoryLookup.version, s"version info from file ($versioningFromFile) did not match the intended versioning (${factoryLookup.version})")
