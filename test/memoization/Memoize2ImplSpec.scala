@@ -231,17 +231,25 @@ final class Memoize2ImplSpec extends TestComposition {
     }
   }
 
-  private class ThrowIfNotMemoized(private var cache: Map[String, Either[CountDownLatch, Int]]) extends Memoize2Impl[Int, Int, Int](cache) {
+  class ThrowIfNotMemoized() extends Memoize2Impl[Int, Int, Int]() {
 
     def f(i: Int, j: Int): Int = throw new Exception("must not be called as the result must have been retrieved from the json")
+
+    def replaceCache(newCache: Map[String, Either[CountDownLatch, Int]]) = cache = newCache
   }
 
-  private implicit val adderFromJson: Reads[ThrowIfNotMemoized] =
-    (__ \ "cache").read[Map[String, Int]].map {
-      keyValueMap =>
-        val cache = keyValueMap.map {
-          case (k, v) => k -> Right[CountDownLatch, Int](v)
-        }
-        new ThrowIfNotMemoized(cache)
-    }
+  object ThrowIfNotMemoized {
+
+    implicit val readJson: Reads[ThrowIfNotMemoized] =
+      (__ \ "cache").read[Map[String, Int]].map {
+        keyValueMap =>
+          val cache = keyValueMap.map {
+            case (k, v) => k -> Right[CountDownLatch, Int](v)
+          }
+          val memo = new ThrowIfNotMemoized()
+          memo.replaceCache(cache)
+          memo
+      }
+  }
+
 }

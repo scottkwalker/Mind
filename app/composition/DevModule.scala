@@ -26,6 +26,5 @@ final class DevModule() extends AbstractModule {
     bind(classOf[IntegerMFactory]).to(classOf[IntegerMFactoryImpl]).asEagerSingleton()
     bind(classOf[ValDclInFunctionParamFactory]).to(classOf[ValDclInFunctionParamFactoryImpl]).asEagerSingleton()
     bind(classOf[PopulateMemoizationMaps]).to(classOf[PopulateMemoizationMapsImpl]).asEagerSingleton()
-    bind(classOf[PopulateMemoizationMaps]).to(classOf[PopulateMemoizationMapsImpl]).asEagerSingleton()
   }
 }

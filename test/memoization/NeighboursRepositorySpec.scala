@@ -31,7 +31,40 @@ class NeighboursRepositorySpec extends TestComposition {
   }
 
   "write" must {
-    "return the expected json" in {
+    "write expected json for no computed values" in {
+      val (sut, _) = createSut()
+
+      sut.write must equal(
+        JsObject(
+          Seq(
+            "versioning" -> JsString(version),
+            "cache" -> JsObject(
+              Seq.empty
+            )
+          )
+        )
+      )
+    }
+
+    "write expected json for one computed value" in {
+      val (sut, _) = createSut()
+      sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id) must equal(true)
+
+      sut.write must equal(
+        JsObject(
+          Seq(
+            "versioning" -> JsString(version),
+            "cache" -> JsObject(
+              Seq(
+                (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
+              )
+            )
+          )
+        )
+      )
+    }
+
+    "write expected json for many computed values" in {
       val (sut, _) = createSut()
       sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id) must equal(false)
       sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id) must equal(true)
@@ -45,26 +78,6 @@ class NeighboursRepositorySpec extends TestComposition {
                 (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
                 (s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
                 (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
-              )
-            )
-          )
-        )
-      )
-    }
-
-    "does not write values that haven't been computed" in {
-      val (sut, _) = createSut(cache = Map(
-        "in progress" -> Left(new CountDownLatch(1)),
-        s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}" -> Right(false)
-      ))
-
-      sut.write must equal(
-        JsObject(
-          Seq(
-            "versioning" -> JsString(version),
-            "cache" -> JsObject(
-              Seq(
-                (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false))
               )
             )
           )
@@ -120,9 +133,9 @@ class NeighboursRepositorySpec extends TestComposition {
   private val valueRefFactoryImpl = injector.getInstance(classOf[ValueRefFactoryImpl])
   private val version = s"${AddOperatorFactoryImpl.id}|${ValueRefFactoryImpl.id}"
 
-  private def createSut(cache: Map[String, Either[CountDownLatch, Boolean]] = Map.empty[String, Either[CountDownLatch, Boolean]]) = {
+  private def createSut() = {
     val factoryIdToFactory = factoryIdToFactoryStub
-    val sut = new NeighboursRepository(cache = cache, factoryLookup = factoryIdToFactory)
+    val sut = new NeighboursRepository(factoryLookup = factoryIdToFactory)
     (sut, factoryIdToFactory)
   }
 

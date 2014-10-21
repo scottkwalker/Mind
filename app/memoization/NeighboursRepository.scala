@@ -6,9 +6,8 @@ import models.common.IScope
 import play.api.libs.json._
 import scala.language.implicitConversions
 
-class NeighboursRepository(private var cache: Map[String, Either[CountDownLatch, Boolean]] = Map.empty[String, Either[CountDownLatch, Boolean]],
-                               factoryLookup: FactoryLookup)
-  extends Memoize2Impl[IScope, Int, Boolean](cache, factoryLookup.version)(writesNeighboursRepository) {
+class NeighboursRepository(factoryLookup: FactoryLookup)
+  extends Memoize2Impl[IScope, Int, Boolean](factoryLookup.version)(writesNeighboursRepository) {
 
   override def f(scope: IScope, neighbourId: Int): Boolean = {
     scope.hasHeightRemaining && {
@@ -43,7 +42,9 @@ object NeighboursRepository {
               case (k, v) => k -> Right[CountDownLatch, Boolean](v)
             }
 
-            new NeighboursRepository(cache, factoryIdToFactory)
+            val neighboursRepository =  new NeighboursRepository(factoryIdToFactory)
+            neighboursRepository.cache = cache // Overwrite the empty cache with values from the file.
+            neighboursRepository
         }
     }
 }
