@@ -3,12 +3,12 @@ package memoization
 import java.util.concurrent.CountDownLatch
 import composition.TestComposition
 import replaceEmpty.{AddOperatorFactoryImpl, ValueRefFactoryImpl}
-import memoization.MemoizeScopeToNeighbours.readsMemoizeScopeToNeighbours
+import memoization.NeighboursRepository.readsNeighboursRepository
 import models.common.Scope
 import org.mockito.Mockito._
 import play.api.libs.json._
 
-class MemoizeScopeToNeighboursSpec extends TestComposition {
+class NeighboursRepositorySpec extends TestComposition {
 
   "apply" must {
     "return true for ids that are valid for this scope" in {
@@ -88,8 +88,8 @@ class MemoizeScopeToNeighboursSpec extends TestComposition {
           )
         )
       )
-      val readsFromJson = readsMemoizeScopeToNeighbours(versioning, factoryIdToFactoryStub)
-      val asObj: MemoizeScopeToNeighbours = Memoize2Impl.read[MemoizeScopeToNeighbours](json)(readsFromJson)
+      val readsFromJson = readsNeighboursRepository(versioning, factoryIdToFactoryStub)
+      val asObj: NeighboursRepository = Memoize2Impl.read[NeighboursRepository](json)(readsFromJson)
 
       asObj.apply(scope, AddOperatorFactoryImpl.id) must equal(false)
       asObj.apply(scope, ValueRefFactoryImpl.id) must equal(true)
@@ -110,9 +110,9 @@ class MemoizeScopeToNeighboursSpec extends TestComposition {
           )
         )
       )
-      val readsFromJson = readsMemoizeScopeToNeighbours(versioningWithoutAddOp, factoryIdToFactoryStub)
+      val readsFromJson = readsNeighboursRepository(versioningWithoutAddOp, factoryIdToFactoryStub)
 
-      a[RuntimeException] must be thrownBy Memoize2Impl.read[MemoizeScopeToNeighbours](json)(readsFromJson)
+      a[RuntimeException] must be thrownBy Memoize2Impl.read[NeighboursRepository](json)(readsFromJson)
     }
   }
 
@@ -123,7 +123,7 @@ class MemoizeScopeToNeighboursSpec extends TestComposition {
 
   private def createSut(cache: Map[String, Either[CountDownLatch, Boolean]] = Map.empty[String, Either[CountDownLatch, Boolean]]) = {
     val factoryIdToFactory = factoryIdToFactoryStub
-    val sut = new MemoizeScopeToNeighbours(cache = cache, versioning = "test", factoryIdToFactory = factoryIdToFactory)
+    val sut = new NeighboursRepository(cache = cache, versioning = "test", factoryIdToFactory = factoryIdToFactory)
     (sut, factoryIdToFactory)
   }
 

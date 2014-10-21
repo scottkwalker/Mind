@@ -1,15 +1,15 @@
 package memoization
 
 import java.util.concurrent.CountDownLatch
-import memoization.MemoizeScopeToNeighbours.mapOfNeighboursToJson
+import memoization.NeighboursRepository.writesNeighboursRepository
 import models.common.IScope
 import play.api.libs.json._
 import scala.language.implicitConversions
 
-class MemoizeScopeToNeighbours(private var cache: Map[String, Either[CountDownLatch, Boolean]] = Map.empty[String, Either[CountDownLatch, Boolean]],
+class NeighboursRepository(private var cache: Map[String, Either[CountDownLatch, Boolean]] = Map.empty[String, Either[CountDownLatch, Boolean]],
                                private val versioning: String,
                                factoryIdToFactory: FactoryLookup)
-  extends Memoize2Impl[IScope, Int, Boolean](cache, versioning)(mapOfNeighboursToJson) {
+  extends Memoize2Impl[IScope, Int, Boolean](cache, versioning)(writesNeighboursRepository) {
 
   override def f(scope: IScope, neighbourId: Int): Boolean = {
     scope.hasHeightRemaining && {
@@ -22,9 +22,9 @@ class MemoizeScopeToNeighbours(private var cache: Map[String, Either[CountDownLa
   }
 }
 
-object MemoizeScopeToNeighbours {
+object NeighboursRepository {
 
-  private implicit val mapOfNeighboursToJson = new Writes[Map[String, Either[CountDownLatch, Boolean]]] {
+  private implicit val writesNeighboursRepository = new Writes[Map[String, Either[CountDownLatch, Boolean]]] {
     def writes(cache: Map[String, Either[CountDownLatch, Boolean]]): JsValue = {
       val computedKeyValues = cache.flatMap {
         case (k, Right(v)) => Some(k -> v) // Only store the computed values (the 'right-side').
@@ -34,8 +34,8 @@ object MemoizeScopeToNeighbours {
     }
   }
 
-  implicit def readsMemoizeScopeToNeighbours(versioning: String, factoryIdToFactory: FactoryLookup): Reads[MemoizeScopeToNeighbours] =
-    (__ \ "versioning").read[String].flatMap[MemoizeScopeToNeighbours] {
+  implicit def readsNeighboursRepository(versioning: String, factoryIdToFactory: FactoryLookup): Reads[NeighboursRepository] =
+    (__ \ "versioning").read[String].flatMap[NeighboursRepository] {
       case versioningFromFile =>
         require(versioningFromFile == versioning, "version info from file did not match the intended versioning")
         (__ \ "cache").read[Map[String, Boolean]].map {
@@ -44,7 +44,7 @@ object MemoizeScopeToNeighbours {
               case (k, v) => k -> Right[CountDownLatch, Boolean](v)
             }
 
-            new MemoizeScopeToNeighbours(cache, versioningFromFile, factoryIdToFactory)
+            new NeighboursRepository(cache, versioningFromFile, factoryIdToFactory)
         }
     }
 }

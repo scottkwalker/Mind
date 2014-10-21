@@ -8,7 +8,7 @@ final class LookupNeighboursImpl @Inject()(factoryIdToFactory: FactoryLookup) ex
 
   private val memo = {
     val versioning = s"${AddOperatorFactoryImpl.id}|${FunctionMFactoryImpl.id}|${IntegerMFactoryImpl.id}|${NodeTreeFactoryImpl.id}|${ObjectDefFactoryImpl.id}|${ValDclInFunctionParamFactoryImpl.id}|${ValueRefFactoryImpl.id}"
-    new MemoizeScopeToNeighbours(versioning = versioning, factoryIdToFactory = factoryIdToFactory)
+    new NeighboursRepository(versioning = versioning, factoryIdToFactory = factoryIdToFactory)
   }
 
   override def fetch(scope: IScope, neighbours: Seq[Int]): Seq[ReplaceEmpty] = {
