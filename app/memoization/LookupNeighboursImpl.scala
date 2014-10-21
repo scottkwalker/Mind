@@ -4,11 +4,7 @@ import com.google.inject.Inject
 import models.common.IScope
 import replaceEmpty._
 
-final class LookupNeighboursImpl @Inject()(factoryIdToFactory: FactoryLookup) extends LookupNeighbours {
-
-  private val neighboursRepository = {
-    new NeighboursRepository(factoryLookup = factoryIdToFactory)
-  }
+final class LookupNeighboursImpl @Inject()(factoryIdToFactory: FactoryLookup, neighboursRepository: NeighboursRepository) extends LookupNeighbours {
 
   override def fetch(scope: IScope, neighbours: Seq[Int]): Seq[ReplaceEmpty] = {
     neighbours.

@@ -100,7 +100,7 @@ class NeighboursRepositorySpec extends TestComposition {
           )
         )
       )
-      val readsFromJson = readsNeighboursRepository(factoryIdToFactoryStub)
+      val readsFromJson = readsNeighboursRepository(factoryLookupStub)
       val asObj: NeighboursRepository = Memoize2Impl.read[NeighboursRepository](json)(readsFromJson)
 
       asObj.apply(scope, AddOperatorFactoryImpl.id) must equal(false)
@@ -121,7 +121,7 @@ class NeighboursRepositorySpec extends TestComposition {
           )
         )
       )
-      val readsFromJson = readsNeighboursRepository(factoryIdToFactoryStub)
+      val readsFromJson = readsNeighboursRepository(factoryLookupStub)
 
       a[RuntimeException] must be thrownBy Memoize2Impl.read[NeighboursRepository](json)(readsFromJson)
     }
@@ -134,12 +134,12 @@ class NeighboursRepositorySpec extends TestComposition {
   private val version = s"${AddOperatorFactoryImpl.id}|${ValueRefFactoryImpl.id}"
 
   private def createSut() = {
-    val factoryIdToFactory = factoryIdToFactoryStub
-    val sut = new NeighboursRepository(factoryLookup = factoryIdToFactory)
-    (sut, factoryIdToFactory)
+    val factoryLookup = factoryLookupStub
+    val sut = new NeighboursRepository(factoryLookup = factoryLookup)
+    (sut, factoryLookup)
   }
 
-  private def factoryIdToFactoryStub = {
+  private def factoryLookupStub = {
     val stub = mock[FactoryLookup]
     when(stub.version).thenReturn(version)
     when(stub.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
