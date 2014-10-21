@@ -1,14 +1,14 @@
 package replaceEmpty
 
 import com.google.inject.Inject
-import memoization.LegalNeighboursMemo
+import memoization.LookupNeighbours
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.ValDclInFunctionParam
 
 case class ValDclInFunctionParamFactoryImpl @Inject()(
                                                        creator: CreateNode,
-                                                       legalNeighbours: LegalNeighboursMemo
+                                                       legalNeighbours: LookupNeighbours
                                                        ) extends ValDclInFunctionParamFactory with UpdateScopeIncrementVals {
 
   override val neighbourIds = Seq(IntegerMFactoryImpl.id)

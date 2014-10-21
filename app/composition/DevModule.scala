@@ -19,7 +19,7 @@ final class DevModule() extends AbstractModule {
     bind(classOf[CreateSeqNodes]).to(classOf[CreateSeqNodesImpl]).asEagerSingleton()
     bind(classOf[RandomNumberGenerator]).to(classOf[RandomNumberGeneratorImpl]).asEagerSingleton()
     bind(classOf[FactoryLookup]).to(classOf[FactoryLookupImpl]).asEagerSingleton()
-    bind(classOf[LegalNeighboursMemo]).to(classOf[LegalNeighboursMemoImpl]).asEagerSingleton()
+    bind(classOf[LookupNeighbours]).to(classOf[LookupNeighboursImpl]).asEagerSingleton()
     bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl]).asEagerSingleton()
     bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl]).asEagerSingleton()
     bind(classOf[IntegerMFactory]).to(classOf[IntegerMFactoryImpl]).asEagerSingleton()

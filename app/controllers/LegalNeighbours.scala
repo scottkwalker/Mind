@@ -1,13 +1,13 @@
 package controllers
 
 import com.google.inject.Inject
-import memoization.LegalNeighboursMemo
+import memoization.LookupNeighbours
 import models.common.LegalNeighboursRequest
 import play.api.data.Form
 import play.api.libs.json.Json.toJson
 import play.api.mvc.{Action, Controller}
 
-final class LegalNeighbours @Inject()(legalNeighboursMemo: LegalNeighboursMemo) extends Controller {
+final class LegalNeighbours @Inject()(lookupNeighbours: LookupNeighbours) extends Controller {
 
   private[controllers] val form = Form(
     LegalNeighboursRequest.Form.Mapping
@@ -23,7 +23,7 @@ final class LegalNeighbours @Inject()(legalNeighboursMemo: LegalNeighboursMemo) 
         BadRequest(views.html.legalNeighbours(invalidForm))
       },
       validForm => {
-        val result = legalNeighboursMemo.fetch(scope = validForm.scope, currentNode = validForm.currentNode)
+        val result = lookupNeighbours.fetch(scope = validForm.scope, currentNode = validForm.currentNode)
         Ok(toJson(result)).as(JSON)
       }
     )

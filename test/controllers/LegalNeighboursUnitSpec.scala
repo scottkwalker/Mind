@@ -1,8 +1,8 @@
 package controllers
 
-import composition.{StubLegalNeighboursMemo, TestComposition}
+import composition.{StubLookupNeighbours, TestComposition}
 import replaceEmpty.NodeTreeFactoryImpl
-import memoization.LegalNeighboursMemo
+import memoization.LookupNeighbours
 import models.common.{IScope, LegalNeighboursRequest, Scope}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify}
@@ -62,15 +62,15 @@ final class LegalNeighboursUnitSpec extends TestComposition {
       }
     }
 
-    "call LegalNeighboursMemo.fetch when submission is valid" in new WithApplication {
+    "call lookupNeighbours.fetch when submission is valid" in new WithApplication {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
-      val legalNeighboursMemo = mock[LegalNeighboursMemo]
-      val injector = testInjector(new StubLegalNeighboursMemo(legalNeighboursMemo))
+      val lookupNeighbours = mock[LookupNeighbours]
+      val injector = testInjector(new StubLookupNeighbours(lookupNeighbours))
       val sut = injector.getInstance(classOf[LegalNeighbours])
 
       val result = sut.calculate(validRequest)
       whenReady(result) { r =>
-        verify(legalNeighboursMemo, times(1)).fetch(any[IScope], any[Int])
+        verify(lookupNeighbours, times(1)).fetch(any[IScope], any[Int])
       }
     }
 

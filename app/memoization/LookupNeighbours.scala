@@ -3,7 +3,7 @@ package memoization
 import replaceEmpty.ReplaceEmpty
 import models.common.IScope
 
-trait LegalNeighboursMemo {
+trait LookupNeighbours {
 
   def fetch(scope: IScope, neighbours: Seq[Int]): Seq[ReplaceEmpty]
 

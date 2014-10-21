@@ -1,14 +1,14 @@
 package replaceEmpty
 
 import com.google.inject.Inject
-import memoization.LegalNeighboursMemo
+import memoization.LookupNeighbours
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.FunctionM
 
 case class FunctionMFactoryImpl @Inject()(
                                            creator: CreateSeqNodes,
-                                           legalNeighbours: LegalNeighboursMemo
+                                           legalNeighbours: LookupNeighbours
                                            ) extends FunctionMFactory with UpdateScopeIncrementFuncs {
 
   override val neighbourIds = Seq(AddOperatorFactoryImpl.id, ValueRefFactoryImpl.id)

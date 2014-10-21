@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import replaceEmpty._
 import models.common.IScope
 
-final class LegalNeighboursMemoImpl @Inject()(factoryIdToFactory: FactoryLookup) extends LegalNeighboursMemo {
+final class LookupNeighboursImpl @Inject()(factoryIdToFactory: FactoryLookup) extends LookupNeighbours {
 
   private val memo = {
     val versioning = s"${AddOperatorFactoryImpl.id}|${FunctionMFactoryImpl.id}|${IntegerMFactoryImpl.id}|${NodeTreeFactoryImpl.id}|${ObjectDefFactoryImpl.id}|${ValDclInFunctionParamFactoryImpl.id}|${ValueRefFactoryImpl.id}"

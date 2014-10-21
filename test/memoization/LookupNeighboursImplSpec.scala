@@ -5,14 +5,14 @@ import composition.{StubFactoryIdToFactory, TestComposition}
 import models.common.Scope
 import org.mockito.Mockito.{times, verify}
 
-final class LegalNeighboursMemoImplSpec extends TestComposition {
+final class LookupNeighboursImplSpec extends TestComposition {
 
   "fetch with neighbours" must {
     "call FactoryIdToFactory.convert(factory) for only the nodes that can terminate" in {
       val scope = Scope(height = 3)
       val factoryIdToFactory = mock[FactoryLookup]
       val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory)) // Override an implementation returned by IoC with a stubbed version.
-      val legalNeighboursImpl = injector.getInstance(classOf[LegalNeighboursMemo])
+      val legalNeighboursImpl = injector.getInstance(classOf[LookupNeighbours])
 
       legalNeighboursImpl.fetch(scope = scope, neighbours = Seq(fakeFactoryTerminates1Id))
 
@@ -23,7 +23,7 @@ final class LegalNeighboursMemoImplSpec extends TestComposition {
       val scope = Scope(height = 3)
       val factoryIdToFactory = mock[FactoryLookup]
       val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory)) // Override an implementation returned by IoC with a stubbed version.
-      val legalNeighboursImpl = injector.getInstance(classOf[LegalNeighboursMemo])
+      val legalNeighboursImpl = injector.getInstance(classOf[LookupNeighbours])
 
       val result = legalNeighboursImpl.fetch(scope = scope,
         neighbours = Seq(fakeFactoryDoesNotTerminateId,
@@ -41,7 +41,7 @@ final class LegalNeighboursMemoImplSpec extends TestComposition {
       val scope = Scope(height = 3)
       val factoryIdToFactory = mock[FactoryLookup]
       val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory))
-      val legalNeighboursImpl = injector.getInstance(classOf[LegalNeighboursMemo])
+      val legalNeighboursImpl = injector.getInstance(classOf[LookupNeighbours])
 
       legalNeighboursImpl.fetch(scope = scope, currentNode = fakeFactoryHasChildrenId)
 
@@ -53,7 +53,7 @@ final class LegalNeighboursMemoImplSpec extends TestComposition {
       val scope = Scope(height = 3)
       val factoryIdToFactory = mock[FactoryLookup]
       val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory))
-      val legalNeighboursImpl = injector.getInstance(classOf[LegalNeighboursMemo])
+      val legalNeighboursImpl = injector.getInstance(classOf[LookupNeighbours])
 
       val result = legalNeighboursImpl.fetch(scope = scope, currentNode = fakeFactoryHasChildrenId)
 
