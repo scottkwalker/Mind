@@ -1,14 +1,13 @@
 package memoization
 
 import com.google.inject.Inject
-import replaceEmpty._
 import models.common.IScope
+import replaceEmpty._
 
 final class LookupNeighboursImpl @Inject()(factoryIdToFactory: FactoryLookup) extends LookupNeighbours {
 
   private val memo = {
-    val versioning = s"${AddOperatorFactoryImpl.id}|${FunctionMFactoryImpl.id}|${IntegerMFactoryImpl.id}|${NodeTreeFactoryImpl.id}|${ObjectDefFactoryImpl.id}|${ValDclInFunctionParamFactoryImpl.id}|${ValueRefFactoryImpl.id}"
-    new NeighboursRepository(versioning = versioning, factoryIdToFactory = factoryIdToFactory)
+    new NeighboursRepository(factoryIdToFactory = factoryIdToFactory)
   }
 
   override def fetch(scope: IScope, neighbours: Seq[Int]): Seq[ReplaceEmpty] = {

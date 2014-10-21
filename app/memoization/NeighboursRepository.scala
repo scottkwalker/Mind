@@ -7,9 +7,8 @@ import play.api.libs.json._
 import scala.language.implicitConversions
 
 class NeighboursRepository(private var cache: Map[String, Either[CountDownLatch, Boolean]] = Map.empty[String, Either[CountDownLatch, Boolean]],
-                               private val versioning: String,
                                factoryIdToFactory: FactoryLookup)
-  extends Memoize2Impl[IScope, Int, Boolean](cache, versioning)(writesNeighboursRepository) {
+  extends Memoize2Impl[IScope, Int, Boolean](cache, factoryIdToFactory.version)(writesNeighboursRepository) {
 
   override def f(scope: IScope, neighbourId: Int): Boolean = {
     scope.hasHeightRemaining && {
@@ -34,17 +33,17 @@ object NeighboursRepository {
     }
   }
 
-  implicit def readsNeighboursRepository(versioning: String, factoryIdToFactory: FactoryLookup): Reads[NeighboursRepository] =
+  implicit def readsNeighboursRepository(factoryIdToFactory: FactoryLookup): Reads[NeighboursRepository] =
     (__ \ "versioning").read[String].flatMap[NeighboursRepository] {
       case versioningFromFile =>
-        require(versioningFromFile == versioning, "version info from file did not match the intended versioning")
+        require(versioningFromFile == factoryIdToFactory.version, s"version info from file ($versioningFromFile) did not match the intended versioning (${factoryIdToFactory.version})")
         (__ \ "cache").read[Map[String, Boolean]].map {
           keyValueMap =>
             val cache = keyValueMap.map {
               case (k, v) => k -> Right[CountDownLatch, Boolean](v)
             }
 
-            new NeighboursRepository(cache, versioningFromFile, factoryIdToFactory)
+            new NeighboursRepository(cache, factoryIdToFactory)
         }
     }
 }

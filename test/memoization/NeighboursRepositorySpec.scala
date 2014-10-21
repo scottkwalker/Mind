@@ -2,7 +2,7 @@ package memoization
 
 import java.util.concurrent.CountDownLatch
 import composition.TestComposition
-import replaceEmpty.{AddOperatorFactoryImpl, ValueRefFactoryImpl}
+import replaceEmpty._
 import memoization.NeighboursRepository.readsNeighboursRepository
 import models.common.Scope
 import org.mockito.Mockito._
@@ -39,7 +39,7 @@ class NeighboursRepositorySpec extends TestComposition {
       sut.write must equal(
         JsObject(
           Seq(
-            "versioning" -> JsString("test"),
+            "versioning" -> JsString(version),
             "cache" -> JsObject(
               Seq(
                 (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
@@ -61,7 +61,7 @@ class NeighboursRepositorySpec extends TestComposition {
       sut.write must equal(
         JsObject(
           Seq(
-            "versioning" -> JsString("test"),
+            "versioning" -> JsString(version),
             "cache" -> JsObject(
               Seq(
                 (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false))
@@ -75,10 +75,9 @@ class NeighboursRepositorySpec extends TestComposition {
 
   "read" must {
     "convert from json to usable object" in {
-      val versioning = s"${AddOperatorFactoryImpl.id}|${ValueRefFactoryImpl.id}"
       val json = JsObject(
         Seq(
-          "versioning" -> JsString(versioning),
+          "versioning" -> JsString(version),
           "cache" -> JsObject(
             Seq(
               (s"Scope(0,0,0,0,0,0,0,1,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
@@ -88,7 +87,7 @@ class NeighboursRepositorySpec extends TestComposition {
           )
         )
       )
-      val readsFromJson = readsNeighboursRepository(versioning, factoryIdToFactoryStub)
+      val readsFromJson = readsNeighboursRepository(factoryIdToFactoryStub)
       val asObj: NeighboursRepository = Memoize2Impl.read[NeighboursRepository](json)(readsFromJson)
 
       asObj.apply(scope, AddOperatorFactoryImpl.id) must equal(false)
@@ -96,11 +95,10 @@ class NeighboursRepositorySpec extends TestComposition {
     }
 
     "throw RuntimeException when versioning string doesn't match what we intend to use" in {
-      val versioning = s"${AddOperatorFactoryImpl.id}|${ValueRefFactoryImpl.id}"
       val versioningWithoutAddOp = s"${ValueRefFactoryImpl.id}"
       val json = JsObject(
         Seq(
-          "versioning" -> JsString(versioning),
+          "versioning" -> JsString(versioningWithoutAddOp),
           "cache" -> JsObject(
             Seq(
               (s"Scope(0,0,0,0,0,0,0,1,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
@@ -110,7 +108,7 @@ class NeighboursRepositorySpec extends TestComposition {
           )
         )
       )
-      val readsFromJson = readsNeighboursRepository(versioningWithoutAddOp, factoryIdToFactoryStub)
+      val readsFromJson = readsNeighboursRepository(factoryIdToFactoryStub)
 
       a[RuntimeException] must be thrownBy Memoize2Impl.read[NeighboursRepository](json)(readsFromJson)
     }
@@ -120,15 +118,17 @@ class NeighboursRepositorySpec extends TestComposition {
   private val injector = testInjector()
   private val addOperatorFactoryImpl = injector.getInstance(classOf[AddOperatorFactoryImpl])
   private val valueRefFactoryImpl = injector.getInstance(classOf[ValueRefFactoryImpl])
+  private val version = s"${AddOperatorFactoryImpl.id}|${ValueRefFactoryImpl.id}"
 
   private def createSut(cache: Map[String, Either[CountDownLatch, Boolean]] = Map.empty[String, Either[CountDownLatch, Boolean]]) = {
     val factoryIdToFactory = factoryIdToFactoryStub
-    val sut = new NeighboursRepository(cache = cache, versioning = "test", factoryIdToFactory = factoryIdToFactory)
+    val sut = new NeighboursRepository(cache = cache, factoryIdToFactory = factoryIdToFactory)
     (sut, factoryIdToFactory)
   }
 
   private def factoryIdToFactoryStub = {
     val stub = mock[FactoryLookup]
+    when(stub.version).thenReturn(version)
     when(stub.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
     when(stub.convert(ValueRefFactoryImpl.id)).thenReturn(valueRefFactoryImpl)
     stub
