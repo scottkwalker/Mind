@@ -1,7 +1,7 @@
 package ai
 
-import replaceEmpty.ReplaceEmpty
 import models.common.IScope
+import replaceEmpty.ReplaceEmpty
 
 trait SelectionStrategy {
 
@@ -12,7 +12,7 @@ trait SelectionStrategy {
   def chooseIndex(seqLength: Int): Int
 
   def chooseChild(possibleChildren: Seq[ReplaceEmpty], scope: IScope): ReplaceEmpty = {
-    require(possibleChildren.nonEmpty, "Sequence possibleChildren must not be empty otherwise we cannot pick a node from it")
+    require(possibleChildren.nonEmpty, s"Sequence possibleChildren must not be empty otherwise we cannot pick a node from it, contained: $possibleChildren")
     chooseChild(possibleChildren)
   }
 

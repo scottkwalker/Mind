@@ -1,7 +1,7 @@
 package memoization
 
-import replaceEmpty.ReplaceEmpty
 import models.common.IScope
+import replaceEmpty.ReplaceEmpty
 
 trait LookupNeighbours {
 

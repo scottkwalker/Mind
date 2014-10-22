@@ -7,24 +7,14 @@ import models.common.IScope
 import play.api.libs.json._
 import scala.async.Async.{async, await}
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
 import scala.language.implicitConversions
 
 class NeighboursRepository @Inject()(factoryLookup: FactoryLookup)
   extends Memoize2Impl[IScope, Int, Boolean](factoryLookup.version)(writesNeighboursRepository) {
 
-  override def f(scope: IScope, neighbourId: Int): Boolean = {
-    scope.hasHeightRemaining && {
-      val possibleNeighbourIds = factoryLookup.convert(neighbourId).neighbourIds
-      possibleNeighbourIds.isEmpty ||
-        possibleNeighbourIds.exists { possNeighbourId =>
-          missing(key1 = scope.decrementHeight, key2 = possNeighbourId)
-        }
-    }
-  }
-
-  // WIP
-  def fAsync(scope: IScope, neighbourId: Int): Future[Boolean] =
+  def f(scope: IScope, neighbourId: Int): Future[Boolean] =
     async {
       if (scope.hasHeightRemaining) {
         val possibleNeighbourIds = factoryLookup.convert(neighbourId).neighbourIds
@@ -32,10 +22,7 @@ class NeighboursRepository @Inject()(factoryLookup: FactoryLookup)
         else await {
           // TODO can this use Observable to turn it into a stream of futures and then it wouldn't need to Await for all the results to complete.
           val futures = possibleNeighbourIds.map { possNeighbourId =>
-            Future {
-              // TODO wrapping in a future is temp to make code compile
-              missing(key1 = scope.decrementHeight, key2 = possNeighbourId)
-            }
+            missing(key1 = scope.decrementHeight, key2 = possNeighbourId)
           }
           Future.sequence(futures).map(_.contains(true))
         }
@@ -46,10 +33,12 @@ class NeighboursRepository @Inject()(factoryLookup: FactoryLookup)
 
 object NeighboursRepository {
 
-  private[memoization] implicit val writesNeighboursRepository = new Writes[Map[String, Either[CountDownLatch, Boolean]]] {
-    def writes(cache: Map[String, Either[CountDownLatch, Boolean]]): JsValue = {
+  private[memoization] implicit val writesNeighboursRepository = new Writes[Map[String, Either[CountDownLatch, Future[Boolean]]]] {
+    def writes(cache: Map[String, Either[CountDownLatch, Future[Boolean]]]): JsValue = {
       val computedKeyValues = cache.flatMap {
-        case (k, Right(v)) => Some(k -> v) // Only store the computed values (the 'right-side').
+        case (k, Right(v)) if v.isCompleted =>
+          val computed = Await.result(v, Duration.Inf)
+          Some(k -> computed) // Only store the computed values (the 'right-side').
         case _ => None
       }
       Json.toJson(computedKeyValues)
@@ -63,7 +52,7 @@ object NeighboursRepository {
         (__ \ "cache").read[Map[String, Boolean]].map {
           keyValueMap =>
             val cache = keyValueMap.map {
-              case (k, v) => k -> Right[CountDownLatch, Boolean](v)
+              case (k, v) => k -> Right[CountDownLatch, Future[Boolean]](Future.successful(v))
             }
 
             val neighboursRepository = new NeighboursRepository(factoryLookup)

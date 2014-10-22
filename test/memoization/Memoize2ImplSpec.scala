@@ -9,15 +9,16 @@ import org.mockito.Mockito._
 import play.api.libs.json.Json.obj
 import play.api.libs.json._
 import serialization.JsonValidationException
+import scala.concurrent.duration.Duration
 
 final class Memoize2ImplSpec extends TestComposition {
 
   "apply" must {
     "return the same result when called twice" in {
       val memoizeAddTogether = new Memoize2Impl[Int, Int, Int] {
-        override def f(i: Int, j: Int): Int = i + j
-
-        override def fAsync(key: Int, key2: Int): scala.concurrent.Future[Int] = ???
+        override def f(i: Int, j: Int): scala.concurrent.Future[Int] = scala.concurrent.Future.successful {
+          i + j
+        }
       }
 
       memoizeAddTogether(1, 1) must equal(2)
@@ -28,16 +29,16 @@ final class Memoize2ImplSpec extends TestComposition {
     "only runs the function once for the same input (adder)" in {
       class F {
 
-        def apply(i: Int, j: Int): Int = invoke(i, j)
+        def apply(i: Int, j: Int) = scala.concurrent.Future.successful {
+          invoke(i, j)
+        }
 
         private def invoke(i: Int, j: Int) = i + j
       }
 
       val adder = spy(new F)
       val memoizer = new Memoize2Impl[Int, Int, Int] {
-        override def f(i: Int, j: Int): Int = adder(i, j)
-
-        override def fAsync(key: Int, key2: Int): scala.concurrent.Future[Int] = ???
+        override def f(i: Int, j: Int): scala.concurrent.Future[Int] = adder(i, j)
       }
 
       memoizer(1, 1) must equal(2)
@@ -55,11 +56,14 @@ final class Memoize2ImplSpec extends TestComposition {
     }
 
     "only executes the memoized computation once per input" in {
-      implicit val eitherLatchOrStringToJson = new Writes[Either[CountDownLatch, String]] {
-        def writes(o: Either[CountDownLatch, String]): JsValue = obj(
+      implicit val eitherLatchOrStringToJson = new Writes[Either[CountDownLatch, scala.concurrent.Future[String]]] {
+        def writes(o: Either[CountDownLatch, scala.concurrent.Future[String]]): JsValue = obj(
           o.fold(
             countDownLatchContent => ???, // must be filtered out at a higher level so that we do not store incomplete calculations.
-            right => stateKey -> Json.toJson(right)
+            right => {
+              val computed = scala.concurrent.Await.result(right, Duration.Inf)
+              stateKey -> Json.toJson(computed)
+            }
           )
         )
       }
@@ -67,9 +71,9 @@ final class Memoize2ImplSpec extends TestComposition {
       val callCount = new AtomicInteger(0)
       val startUpLatch = new CountDownLatch(1)
 
-      class Incrementer {
+      class IncrementerAsync {
 
-        def apply(i: Int, j: Int) = {
+        def apply(i: Int, j: Int) = scala.concurrent.Future.successful {
           // Wait for all of the threads to be started before
           // continuing. This gives races a chance to happen.
           startUpLatch.await()
@@ -84,11 +88,9 @@ final class Memoize2ImplSpec extends TestComposition {
         }
       }
 
-      val incrementer = spy(new Incrementer)
+      val incrementerAsync = spy(new IncrementerAsync)
       val memoizeIncrementer = new Memoize2Impl[Int, Int, String] {
-        override def f(i: Int, j: Int): String = incrementer(i, j)
-
-        override def fAsync(key: Int, key2: Int): scala.concurrent.Future[String] = ???
+        override def f(i: Int, j: Int): scala.concurrent.Future[String] = incrementerAsync(i, j)
       }
 
       val ConcurrencyLevel = 5
@@ -126,7 +128,7 @@ final class Memoize2ImplSpec extends TestComposition {
           // This effect must happen once per exception plus once for
           // all successes
           val n = callCount.incrementAndGet()
-          if (n == 1) throw TheException else i + j + 1
+          if (n == 1) scala.concurrent.Future.failed(throw TheException) else scala.concurrent.Future.successful(i + j + 1)
         }
       }
 
@@ -134,9 +136,7 @@ final class Memoize2ImplSpec extends TestComposition {
       // succeed for all subsequent attempts.
       val failFirstTime = spy(new FailFirstTime)
       val memoizeFailFirstTime = new Memoize2Impl[Int, Int, Int] {
-        override def f(i: Int, j: Int): Int = failFirstTime(i, j)
-
-        override def fAsync(key: Int, key2: Int): scala.concurrent.Future[Int] = ???
+        override def f(i: Int, j: Int): scala.concurrent.Future[Int] = failFirstTime(i, j)
       }
 
       val ConcurrencyLevel = 5
@@ -170,9 +170,9 @@ final class Memoize2ImplSpec extends TestComposition {
   "write" must {
     "turn map into Json" in {
       val memoizeAddTogether = new Memoize2Impl[Int, Int, Int](versioning = "test") {
-        override def f(i: Int, j: Int): Int = i + j
-
-        override def fAsync(key: Int, key2: Int): scala.concurrent.Future[Int] = ???
+        override def f(i: Int, j: Int): scala.concurrent.Future[Int] = scala.concurrent.Future.successful {
+          i + j
+        }
       }
       memoizeAddTogether(1, 1) must equal(2)
       memoizeAddTogether(1, 2) must equal(3)
@@ -229,10 +229,12 @@ final class Memoize2ImplSpec extends TestComposition {
 
   private val stateKey = "neighbours"
 
-  private implicit val mapOfStringToInt = new Writes[Map[String, Either[CountDownLatch, Int]]] {
-    def writes(cache: Map[String, Either[CountDownLatch, Int]]): JsValue = {
+  private implicit val mapOfStringToInt = new Writes[Map[String, Either[CountDownLatch, scala.concurrent.Future[Int]]]] {
+    def writes(cache: Map[String, Either[CountDownLatch, scala.concurrent.Future[Int]]]): JsValue = {
       val computedKeyValues = cache.flatMap {
-        case (k, Right(v)) => Some(k -> v) // Only store the computed values (the 'right-side').
+        case (k, Right(v)) if v.isCompleted =>
+          val computed = scala.concurrent.Await.result(v, Duration.Inf)
+          Some(k -> computed) // Only store the computed values (the 'right-side').
         case _ => None
       }
       Json.toJson(computedKeyValues)
@@ -241,11 +243,9 @@ final class Memoize2ImplSpec extends TestComposition {
 
   class ThrowIfNotMemoized() extends Memoize2Impl[Int, Int, Int]() {
 
-    def f(i: Int, j: Int): Int = throw new Exception("f must not be called as the result must have been retrieved from the json")
+    override def f(key: Int, key2: Int): scala.concurrent.Future[Int] = throw new Exception("fAsync must not be called as the result must have been retrieved from the json")
 
-    override def fAsync(key: Int, key2: Int): scala.concurrent.Future[Int] = throw new Exception("fAsync must not be called as the result must have been retrieved from the json")
-
-    def replaceCache(newCache: Map[String, Either[CountDownLatch, Int]]) = cache = newCache
+    def replaceCache(newCache: Map[String, Either[CountDownLatch, scala.concurrent.Future[Int]]]) = cache = newCache
   }
 
   object ThrowIfNotMemoized {
@@ -254,7 +254,7 @@ final class Memoize2ImplSpec extends TestComposition {
       (__ \ "cache").read[Map[String, Int]].map {
         keyValueMap =>
           val cache = keyValueMap.map {
-            case (k, v) => k -> Right[CountDownLatch, Int](v)
+            case (k, v) => k -> Right[CountDownLatch, scala.concurrent.Future[Int]](scala.concurrent.Future.successful(v))
           }
           val memo = new ThrowIfNotMemoized()
           memo.replaceCache(cache)
