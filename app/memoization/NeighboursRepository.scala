@@ -24,7 +24,7 @@ class NeighboursRepository @Inject()(factoryLookup: FactoryLookup)
   }
 
   // WIP
-  def fWithFutures(scope: IScope, neighbourId: Int): Future[Boolean] =
+  def fAsync(scope: IScope, neighbourId: Int): Future[Boolean] =
     async {
       if (scope.hasHeightRemaining) {
         val possibleNeighbourIds = factoryLookup.convert(neighbourId).neighbourIds
