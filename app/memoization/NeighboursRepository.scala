@@ -5,9 +5,12 @@ import com.google.inject.Inject
 import memoization.NeighboursRepository.writesNeighboursRepository
 import models.common.IScope
 import play.api.libs.json._
+import scala.async.Async.{async, await}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import scala.language.implicitConversions
 
-class NeighboursRepository @Inject() (factoryLookup: FactoryLookup)
+class NeighboursRepository @Inject()(factoryLookup: FactoryLookup)
   extends Memoize2Impl[IScope, Int, Boolean](factoryLookup.version)(writesNeighboursRepository) {
 
   override def f(scope: IScope, neighbourId: Int): Boolean = {
@@ -19,6 +22,26 @@ class NeighboursRepository @Inject() (factoryLookup: FactoryLookup)
         }
     }
   }
+
+  // WIP
+  def fWithFutures(scope: IScope, neighbourId: Int): Future[Boolean] =
+    async {
+      if (scope.hasHeightRemaining) {
+        val possibleNeighbourIds = factoryLookup.convert(neighbourId).neighbourIds
+        if (possibleNeighbourIds.isEmpty) true
+        else await {
+          // TODO can this use Observable to turn it into a stream of futures and then it wouldn't need to Await for all the results to complete.
+          val futures = possibleNeighbourIds.map { possNeighbourId =>
+            Future {
+              // TODO wrapping in a future is temp to make code compile
+              missing(key1 = scope.decrementHeight, key2 = possNeighbourId)
+            }
+          }
+          Future.sequence(futures).map(_.contains(true))
+        }
+      }
+      else false
+    }
 }
 
 object NeighboursRepository {
@@ -43,7 +66,7 @@ object NeighboursRepository {
               case (k, v) => k -> Right[CountDownLatch, Boolean](v)
             }
 
-            val neighboursRepository =  new NeighboursRepository(factoryLookup)
+            val neighboursRepository = new NeighboursRepository(factoryLookup)
             neighboursRepository.cache = cache // Overwrite the empty cache with values from the file.
             neighboursRepository
         }
