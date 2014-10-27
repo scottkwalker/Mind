@@ -3,7 +3,7 @@ package serialization
 final class BinarySerializer {
 
   def write[A](o: A): Array[Byte] = {
-    val ba = new java.io.ByteArrayOutputStream(512)
+    val ba = new java.io.ByteArrayOutputStream()
     val out = new java.io.ObjectOutputStream(ba)
     out.writeObject(o)
     out.close()
