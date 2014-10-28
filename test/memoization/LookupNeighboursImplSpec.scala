@@ -10,7 +10,7 @@ import scala.concurrent.Await
 final class LookupNeighboursImplSpec extends TestComposition {
 
   "fetch with neighbours" must {
-    "call FactoryIdToFactory.convert(factory) for only the nodes that can terminate" in {
+    "does not call FactoryIdToFactory as the repository already contains the ids" in {
       val scope = Scope(height = 3)
       val factoryIdToFactory = mock[FactoryLookup]
       val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory)) // Override an implementation returned by IoC with a stubbed version.
