@@ -14,12 +14,15 @@ final class LookupNeighboursImpl @Inject()(factoryIdToFactory: FactoryLookup, ne
       neighboursRepository.apply(key1 = scope, key2 = neighbourId). // Get value from repository
         map(value => neighbourId -> value) // Convert to ReplaceEmpty
     }
-    val a = Await.result(Future.sequence(neighbourValues), Duration.Inf)
-    a.filter{
-      case (key: Int, value: Boolean) => value
-    }.map {
-      case (key: Int, value: Boolean) => factoryIdToFactory.convert(key)
+
+    val result = Future.sequence(neighbourValues).map {
+      _.filter {
+        case (key: Int, value: Boolean) => value
+      }.map {
+        case (key: Int, value: Boolean) => factoryIdToFactory.convert(key)
+      }
     }
+    Await.result(result, Duration.Inf)
   }
 
   override def fetch(scope: IScope, currentNode: Int): Seq[Int] = {
