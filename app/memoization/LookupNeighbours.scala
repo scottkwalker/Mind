@@ -2,6 +2,7 @@ package memoization
 
 import models.common.IScope
 import replaceEmpty.ReplaceEmpty
+import scala.concurrent.Future
 
 trait LookupNeighbours {
 

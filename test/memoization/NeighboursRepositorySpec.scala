@@ -7,7 +7,7 @@ import models.common.Scope
 import org.mockito.Mockito._
 import play.api.libs.json._
 import replaceEmpty._
-import scala.concurrent.Future
+import scala.concurrent.{Await, Future}
 
 class NeighboursRepositorySpec extends TestComposition {
 
@@ -15,16 +15,16 @@ class NeighboursRepositorySpec extends TestComposition {
     "return true for ids that are valid for this scope" in {
       val (sut, _) = createSut()
 
-      sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id) must equal(false)
-      sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id) must equal(true)
+      Await.result(sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id), finiteTimeout) must equal(false)
+      Await.result(sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id), finiteTimeout) must equal(true)
     }
 
     "only runs the function once for the same input" in {
       val (sut, factoryIdToFactory) = createSut()
-      sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id) must equal(true)
-      sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id) must equal(true)
-      sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id) must equal(false)
-      sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id) must equal(false)
+      Await.result(sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id), finiteTimeout) must equal(true)
+      Await.result(sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id), finiteTimeout) must equal(true)
+      Await.result(sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id), finiteTimeout) must equal(false)
+      Await.result(sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id), finiteTimeout) must equal(false)
 
       verify(factoryIdToFactory, times(1)).convert(AddOperatorFactoryImpl.id)
       verify(factoryIdToFactory, times(1)).convert(ValueRefFactoryImpl.id)
@@ -106,7 +106,7 @@ class NeighboursRepositorySpec extends TestComposition {
 
     "write expected json for one computed value" in {
       val (sut, _) = createSut()
-      sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id) must equal(true)
+      Await.result(sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id), finiteTimeout) must equal(true)
 
       sut.write must equal(
         JsObject(
@@ -124,8 +124,8 @@ class NeighboursRepositorySpec extends TestComposition {
 
     "write expected json for many computed values" in {
       val (sut, _) = createSut()
-      sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id) must equal(false)
-      sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id) must equal(true)
+      Await.result(sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id), finiteTimeout) must equal(false)
+      Await.result(sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id), finiteTimeout) must equal(true)
 
       sut.write must equal(
         JsObject(
@@ -161,8 +161,8 @@ class NeighboursRepositorySpec extends TestComposition {
       val readsFromJson = readsNeighboursRepository(factoryLookupStub)
       val asObj: NeighboursRepository = Memoize2Impl.read[NeighboursRepository](json)(readsFromJson)
 
-      asObj.apply(scope, AddOperatorFactoryImpl.id) must equal(false)
-      asObj.apply(scope, ValueRefFactoryImpl.id) must equal(true)
+      Await.result(asObj.apply(scope, AddOperatorFactoryImpl.id), finiteTimeout) must equal(false)
+      Await.result(asObj.apply(scope, ValueRefFactoryImpl.id), finiteTimeout) must equal(true)
     }
 
     "throw RuntimeException when versioning string doesn't match what we intend to use" in {

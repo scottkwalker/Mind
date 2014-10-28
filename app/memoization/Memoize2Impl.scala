@@ -4,25 +4,23 @@ import java.util.concurrent.CountDownLatch
 import play.api.libs.json._
 import serialization.JsonDeserialiser
 import scala.annotation.tailrec
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 
 abstract class Memoize2Impl[TKey1, TKey2, TOutput](
-                                                   private val versioning: String = "unset" // For versioning purposes save something unique such as the list of all neighbour ids.
+                                                    private val versioning: String = "unset" // For versioning purposes save something unique such as the list of all neighbour ids.
                                                     )
                                                   (implicit cacheFormat: Writes[Map[String, Either[CountDownLatch, Future[TOutput]]]]) extends Memoize2[TKey1, TKey2, TOutput] {
 
   protected var cache: Map[String, Either[CountDownLatch, Future[TOutput]]] = Map.empty[String, Either[CountDownLatch, Future[TOutput]]]
 
-  def apply(implicit key1: TKey1, key2: TKey2): TOutput = {
-  // Look in the (possibly stale) memo table. If the value is present, then
-  // it is guaranteed to be the value.
-  // Else it is absent, call missing() to determine what to do.
-    val future = cache.get(combineKeys) match {
+  override def apply(implicit key1: TKey1, key2: TKey2): Future[TOutput] = {
+    // Look in the (possibly stale) memo table. If the value is present, then
+    // it is guaranteed to be the value.
+    // Else it is absent, call missing() to determine what to do.
+    cache.get(combineKeys) match {
       case Some(Right(b)) => b
       case _ => missing
     }
-    Await.result(future, Duration.Inf) // TODO remove the Await from Memoize2Impl apply.
   }
 
   override def write: JsValue = Json.obj(

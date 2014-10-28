@@ -11,7 +11,8 @@ import scala.concurrent.duration.{FiniteDuration, SECONDS}
 
 abstract class TestComposition extends PlaySpec with MockitoSugar with ScalaFutures {
 
-  protected implicit val timeout = Timeout(FiniteDuration(1, SECONDS))
+  protected val finiteTimeout = FiniteDuration(1, SECONDS)
+  protected implicit val timeout = Timeout(duration = finiteTimeout)
   private val defaultModules = Seq(new DevModule, new LegalGamerModule)
 
   def testInjector(modules: Module*) = {

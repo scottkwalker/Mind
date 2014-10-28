@@ -3,13 +3,23 @@ package memoization
 import com.google.inject.Inject
 import models.common.IScope
 import replaceEmpty._
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
+import scala.concurrent.ExecutionContext.Implicits.global
 
 final class LookupNeighboursImpl @Inject()(factoryIdToFactory: FactoryLookup, neighboursRepository: NeighboursRepository) extends LookupNeighbours {
 
   override def fetch(scope: IScope, neighbours: Seq[Int]): Seq[ReplaceEmpty] = {
-    neighbours.
-      filter(neighbour => neighboursRepository.apply(key1 = scope, key2 = neighbour)). // Remove neighbours that cannot terminate at this scope.
-      map(factoryIdToFactory.convert)
+    val neighbourValues = neighbours.map { neighbourId =>
+      neighboursRepository.apply(key1 = scope, key2 = neighbourId). // Get value from repository
+        map(value => neighbourId -> value) // Convert to ReplaceEmpty
+    }
+    val a = Await.result(Future.sequence(neighbourValues), Duration.Inf)
+    a.filter{
+      case (key: Int, value: Boolean) => value
+    }.map {
+      case (key: Int, value: Boolean) => factoryIdToFactory.convert(key)
+    }
   }
 
   override def fetch(scope: IScope, currentNode: Int): Seq[Int] = {
