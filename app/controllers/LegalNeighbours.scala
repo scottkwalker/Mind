@@ -6,6 +6,8 @@ import models.common.LegalNeighboursRequest
 import play.api.data.Form
 import play.api.libs.json.Json.toJson
 import play.api.mvc.{Action, Controller}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 final class LegalNeighbours @Inject()(lookupNeighbours: LookupNeighbours) extends Controller {
 
@@ -17,14 +19,15 @@ final class LegalNeighbours @Inject()(lookupNeighbours: LookupNeighbours) extend
     Ok(views.html.legalNeighbours(form))
   }
 
-  def calculate = Action { implicit request =>
+  def calculate = Action.async { implicit request =>
     form.bindFromRequest.fold(
       invalidForm => {
-        BadRequest(views.html.legalNeighbours(invalidForm))
+        Future.successful(BadRequest(views.html.legalNeighbours(invalidForm)))
       },
       validForm => {
-        val result = lookupNeighbours.fetch(scope = validForm.scope, currentNode = validForm.currentNode)
-        Ok(toJson(result)).as(JSON)
+        lookupNeighbours.fetch(scope = validForm.scope, currentNode = validForm.currentNode).map { result =>
+          Ok(toJson(result)).as(JSON)
+        }
       }
     )
   }

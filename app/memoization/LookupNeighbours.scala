@@ -6,7 +6,7 @@ import scala.concurrent.Future
 
 trait LookupNeighbours {
 
-  def fetch(scope: IScope, neighbours: Seq[Int]): Seq[ReplaceEmpty]
+  def fetch(scope: IScope, neighbours: Seq[Int]): Future[Seq[ReplaceEmpty]]
 
-  def fetch(scope: IScope, currentNode: Int): Seq[Int]
+  def fetch(scope: IScope, currentNode: Int): Future[Seq[Int]]
 }

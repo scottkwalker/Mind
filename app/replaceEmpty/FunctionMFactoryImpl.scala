@@ -5,6 +5,7 @@ import memoization.LookupNeighbours
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.FunctionM
+import scala.concurrent.Await
 
 case class FunctionMFactoryImpl @Inject()(
                                            creator: CreateSeqNodes,
@@ -26,7 +27,7 @@ case class FunctionMFactoryImpl @Inject()(
 
   def createParams(scope: IScope, acc: Seq[Instruction] = Seq.empty) = {
     creator.create(
-      possibleChildren = legalNeighbours.fetch(scope, paramsNeighbours),
+      possibleChildren = Await.result(legalNeighbours.fetch(scope, paramsNeighbours), finiteTimeout),
       scope = scope,
       saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumVals(accLength)),
       acc = acc,
@@ -36,7 +37,7 @@ case class FunctionMFactoryImpl @Inject()(
 
   def createNodes(scope: IScope, acc: Seq[Instruction] = Seq.empty) = {
     creator.create(
-      possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
+      possibleChildren = Await.result(legalNeighbours.fetch(scope, neighbourIds), finiteTimeout),
       scope = scope,
       acc = acc,
       factoryLimit = scope.maxExpressionsInFunc

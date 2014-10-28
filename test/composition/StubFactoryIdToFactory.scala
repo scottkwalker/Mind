@@ -29,23 +29,23 @@ object StubFactoryIdToFactory {
   val fakeFactoryTerminates2Id = 2
   val fakeFactoryHasChildrenId = 3
   val fakeFactoryTerminates1 = {
-    val factory = mock(classOf[ReplaceEmpty])
-    when(factory.neighbourIds).thenReturn(Seq.empty)
-    factory
+    val replaceEmpty = mock(classOf[ReplaceEmpty])
+    when(replaceEmpty.neighbourIds).thenReturn(Seq.empty)
+    replaceEmpty
   }
   val fakeFactoryTerminates2 = {
-    val factory = mock(classOf[ReplaceEmpty])
-    when(factory.neighbourIds).thenReturn(Seq.empty)
-    factory
+    val replaceEmpty = mock(classOf[ReplaceEmpty])
+    when(replaceEmpty.neighbourIds).thenReturn(Seq.empty)
+    replaceEmpty
   }
   val fNot: ReplaceEmpty = {
-    val fakeFactoryDoesNotTerminate = mock(classOf[ReplaceEmpty])
-    when(fakeFactoryDoesNotTerminate.neighbourIds).thenReturn(Seq(fakeFactoryDoesNotTerminateId))
-    fakeFactoryDoesNotTerminate
+    val replaceEmpty = mock(classOf[ReplaceEmpty])
+    when(replaceEmpty.neighbourIds).thenReturn(Seq(fakeFactoryDoesNotTerminateId))
+    replaceEmpty
   }
   val fakeFactoryHasChildren: ReplaceEmpty = {
-    val fakeFactoryDoesNotTerminate = mock(classOf[ReplaceEmpty])
-    when(fakeFactoryDoesNotTerminate.neighbourIds).thenReturn(Seq(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
-    fakeFactoryDoesNotTerminate
+    val replaceEmpty = mock(classOf[ReplaceEmpty])
+    when(replaceEmpty.neighbourIds).thenReturn(Seq(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
+    replaceEmpty
   }
 }

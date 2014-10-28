@@ -3,7 +3,9 @@ package memoization
 import composition.StubFactoryIdToFactory._
 import composition.{StubFactoryIdToFactory, TestComposition}
 import models.common.Scope
-import org.mockito.Mockito.{times, verify}
+import org.mockito.Matchers.any
+import org.mockito.Mockito.{never, times, verify}
+import scala.concurrent.Await
 
 final class LookupNeighboursImplSpec extends TestComposition {
 
@@ -16,7 +18,7 @@ final class LookupNeighboursImplSpec extends TestComposition {
 
       legalNeighboursImpl.fetch(scope = scope, neighbours = Seq(fakeFactoryTerminates1Id))
 
-      verify(factoryIdToFactory, times(2)).convert(fakeFactoryTerminates1Id)
+      verify(factoryIdToFactory, never).convert(any[Int])
     }
 
     "return only the factories of nodes that can terminate" in {
@@ -32,7 +34,9 @@ final class LookupNeighboursImplSpec extends TestComposition {
           fakeFactoryTerminates2Id)
       )
 
-      result must equal(Seq(fakeFactoryTerminates1, fakeFactoryTerminates2))
+      whenReady(result) {
+        _ must equal(Seq(fakeFactoryTerminates1, fakeFactoryTerminates2))
+      }
     }
   }
 
@@ -43,10 +47,10 @@ final class LookupNeighboursImplSpec extends TestComposition {
       val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory))
       val legalNeighboursImpl = injector.getInstance(classOf[LookupNeighbours])
 
-      legalNeighboursImpl.fetch(scope = scope, currentNode = fakeFactoryHasChildrenId)
+      val result = Await.result(legalNeighboursImpl.fetch(scope = scope, currentNode = fakeFactoryHasChildrenId), finiteTimeout)
 
-      verify(factoryIdToFactory, times(1)).convert(fakeFactoryTerminates1)
-      verify(factoryIdToFactory, times(1)).convert(fakeFactoryTerminates2)
+      verify(factoryIdToFactory, times(1)).convert(fakeFactoryHasChildrenId)
+      verify(factoryIdToFactory, times(1)).convert(fakeFactoryTerminates1Id)
     }
 
     "return only the ids of nodes that can terminate" in {
@@ -55,7 +59,7 @@ final class LookupNeighboursImplSpec extends TestComposition {
       val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory))
       val legalNeighboursImpl = injector.getInstance(classOf[LookupNeighbours])
 
-      val result = legalNeighboursImpl.fetch(scope = scope, currentNode = fakeFactoryHasChildrenId)
+      val result = Await.result(legalNeighboursImpl.fetch(scope = scope, currentNode = fakeFactoryHasChildrenId), finiteTimeout)
 
       result must equal(Seq(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
     }
