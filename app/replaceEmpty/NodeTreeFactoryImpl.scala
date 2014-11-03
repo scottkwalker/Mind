@@ -5,8 +5,6 @@ import memoization.LookupNeighbours
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.NodeTree
-import utils.Timeout.finiteTimeout
-import scala.concurrent.Await
 
 case class NodeTreeFactoryImpl @Inject()(
                                           creator: CreateSeqNodes,
@@ -24,7 +22,7 @@ case class NodeTreeFactoryImpl @Inject()(
 
   def createNodes(scope: IScope, acc: Seq[Instruction] = Seq()): (IScope, Seq[Instruction]) = {
     creator.create(
-      possibleChildren = Await.result(legalNeighbours.fetch(scope, neighbourIds), finiteTimeout),
+      possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,
       saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumFuncs(accLength)),
       acc = acc,

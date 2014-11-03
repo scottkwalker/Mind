@@ -4,19 +4,21 @@ import ai.SelectionStrategy
 import com.google.inject.Inject
 import models.common.IScope
 import models.domain.Instruction
+import utils.Timeout.finiteTimeout
 import scala.annotation.tailrec
+import scala.concurrent.{Await, Future}
 
 final case class CreateSeqNodesImpl @Inject()(createNode: CreateNode, ai: SelectionStrategy) extends CreateSeqNodes {
 
   @tailrec
-  def create(possibleChildren: => Seq[ReplaceEmpty],
+  def create(possibleChildren: => Future[Seq[ReplaceEmpty]],
              scope: IScope,
              saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
              acc: Seq[Instruction] = Seq.empty, // Default the accumulator to empty.
              factoryLimit: Int
               ): (IScope, Seq[Instruction]) = {
     if (ai.canAddAnother(acc.length, factoryLimit)) {
-      val (updatedScope, child) = createNode.create(possibleChildren, scope)
+      val (updatedScope, child) = createNode.create(Await.result(possibleChildren, finiteTimeout), scope)
       create(possibleChildren,
         updatedScope,
         saveAccLengthInScope,

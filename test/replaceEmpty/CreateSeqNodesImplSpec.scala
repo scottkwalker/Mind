@@ -7,6 +7,7 @@ import models.common.{IScope, Scope}
 import models.domain.Instruction
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
+import scala.concurrent.Future
 
 final class CreateSeqNodesImplSpec extends TestComposition {
 
@@ -25,7 +26,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       when(cn.create(any[Seq[ReplaceEmpty]], any[Scope])).thenReturn((s, n))
       val sut = CreateSeqNodesImpl(cn, ai)
 
-      val (_, nodes) = sut.create(possibleChildren = Seq(v),
+      val (_, nodes) = sut.create(possibleChildren = Future.successful(Seq(v)),
         scope = s,
         factoryLimit = s.maxFuncsInObject
       )
@@ -49,7 +50,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val ai: SelectionStrategy = Aco(rng)
       val sut = CreateSeqNodesImpl(cn, ai)
 
-      val (_, nodes) = sut.create(possibleChildren = Seq(v),
+      val (_, nodes) = sut.create(possibleChildren = Future.successful(Seq(v)),
         scope = s,
         factoryLimit = s.maxFuncsInObject
       )
@@ -73,7 +74,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val ai: SelectionStrategy = Aco(rng)
       val sut = CreateSeqNodesImpl(cn, ai)
 
-      val (_, nodes) = sut.create(possibleChildren = Seq(v),
+      val (_, nodes) = sut.create(possibleChildren = Future.successful(Seq(v)),
         scope = s,
         factoryLimit = s.maxFuncsInObject
       )
@@ -97,7 +98,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val ai: SelectionStrategy = Aco(rng)
       val sut = CreateSeqNodesImpl(cn, ai)
 
-      val (_, nodes) = sut.create(possibleChildren = Seq(v),
+      val (_, nodes) = sut.create(possibleChildren = Future.successful(Seq(v)),
         scope = s,
         acc = Seq(n),
         factoryLimit = s.maxFuncsInObject
