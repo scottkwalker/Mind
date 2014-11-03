@@ -50,3 +50,6 @@ CoverallsPlugin.coverallsSettings
 incOptions := incOptions.value.withNameHashing(nameHashing = true)
 
 showCurrentGitBranch // https://github.com/sbt/sbt-git
+
+fork in Test := false 	// Fixes Exception in thread "Thread-4" java.io.EOFException
+			//	at java.io.ObjectInputStream$BlockDataInputStream.peekByte(ObjectInputStream.java:2601)
