@@ -1,6 +1,5 @@
 package fitness
 
-import fitness.Eval
 import models.domain.Instruction
 
 final class AddTwoInts(val nodeTree: Instruction) extends Fitness {
