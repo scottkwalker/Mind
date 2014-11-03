@@ -10,7 +10,7 @@ import scala.concurrent.{Await, Future}
 final case class CreateNodeImpl @Inject()(ai: SelectionStrategy) extends CreateNode {
 
   def create(possibleChildren: Future[Seq[ReplaceEmpty]], scope: IScope): (IScope, Instruction) = {
-    val factory = ai.chooseChild(Await.result(possibleChildren, finiteTimeout), scope)
+    val factory = ai.chooseChild(possibleChildren, scope)
     val child = factory.create(scope)
     val updatedScope = factory.updateScope(scope)
     (updatedScope, child)
