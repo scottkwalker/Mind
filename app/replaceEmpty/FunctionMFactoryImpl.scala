@@ -5,6 +5,9 @@ import memoization.LookupNeighbours
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.FunctionM
+import scala.async.Async.async
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
 case class FunctionMFactoryImpl @Inject()(
                                            creator: CreateSeqNodes,
@@ -14,7 +17,7 @@ case class FunctionMFactoryImpl @Inject()(
   override val neighbourIds = Seq(AddOperatorFactoryImpl.id, ValueRefFactoryImpl.id)
   private val paramsNeighbours = Seq(ValDclInFunctionParamFactoryImpl.id)
 
-  override def create(scope: IScope): Instruction = {
+  override def create(scope: IScope): Future[Instruction] = async {
     val (updatedScope, params) = createParams(scope)
 
     val (_, nodes) = createNodes(updatedScope)

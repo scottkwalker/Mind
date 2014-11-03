@@ -14,6 +14,6 @@ final case class CreateNodeImpl @Inject()(ai: SelectionStrategy) extends CreateN
     val factory = await(ai.chooseChild(possibleChildren, scope))
     val child = factory.create(scope)
     val updatedScope = factory.updateScope(scope)
-    (updatedScope, child)
+    (updatedScope, await(child))
   }
 }

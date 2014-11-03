@@ -5,6 +5,10 @@ import memoization.LookupNeighbours
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.NodeTree
+import utils.Timeout.finiteTimeout
+import scala.async.Async.async
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{Await, Future}
 
 case class NodeTreeFactoryImpl @Inject()(
                                           creator: CreateSeqNodes,
@@ -15,7 +19,7 @@ case class NodeTreeFactoryImpl @Inject()(
 
   def create(scope: IScope, premadeChildren: Seq[ReplaceEmpty]): Instruction = {
     val (_, generated) = createNodes(scope)
-    val nodes = generated ++ premadeChildren.map(p => p.create(scope))
+    val nodes = generated ++ premadeChildren.map(p => Await.result(p.create(scope), finiteTimeout))
 
     NodeTree(nodes)
   }
@@ -30,7 +34,7 @@ case class NodeTreeFactoryImpl @Inject()(
     )
   }
 
-  override def create(scope: IScope): Instruction = {
+  override def create(scope: IScope): Future[Instruction] = async {
     val (_, nodes) = createNodes(scope)
     NodeTree(nodes)
   }

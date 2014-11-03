@@ -21,7 +21,9 @@ final class IntegerMFactorySpec extends TestComposition {
       val instance = factory.create(s)
 
       // Assert
-      instance mustBe a[IntegerM]
+      whenReady(instance) { result =>
+        result mustBe a[IntegerM]
+      }
     }
   }
 

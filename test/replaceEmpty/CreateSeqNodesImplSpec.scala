@@ -18,7 +18,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val n = mock[Instruction]
       val v = mock[ReplaceEmpty]
       when(v.updateScope(s)).thenReturn(s)
-      when(v.create(any[Scope])).thenReturn(n)
+      when(v.create(any[Scope])).thenReturn(Future.successful(n))
       val rng = mock[RandomNumberGenerator]
       when(rng.nextBoolean).thenReturn(true)
       val ai: SelectionStrategy = Aco(rng)
@@ -42,7 +42,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val n = mock[Instruction]
       val v = mock[ReplaceEmpty]
       when(v.updateScope(s)).thenReturn(s)
-      when(v.create(any[Scope])).thenReturn(n)
+      when(v.create(any[Scope])).thenReturn(Future.successful(n))
       val cn = mock[CreateNode]
       when(cn.create(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(s, n))
       val rng = mock[RandomNumberGenerator]
@@ -67,7 +67,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val n = mock[Instruction]
       val v = mock[ReplaceEmpty]
       when(v.updateScope(s)).thenReturn(s)
-      when(v.create(any[Scope])).thenReturn(n)
+      when(v.create(any[Scope])).thenReturn(Future.successful(n))
       val cn = mock[CreateNode]
       when(cn.create(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(s, n))
       val rng = mock[RandomNumberGenerator]
@@ -92,7 +92,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val n = mock[Instruction]
       val v = mock[ReplaceEmpty]
       when(v.updateScope(s)).thenReturn(s)
-      when(v.create(any[Scope])).thenReturn(n)
+      when(v.create(any[Scope])).thenReturn(Future.successful(n))
       val cn = mock[CreateNode]
       when(cn.create(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(s, n))
       val rng = mock[RandomNumberGenerator]

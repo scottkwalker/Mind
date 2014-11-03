@@ -13,7 +13,9 @@ final class ValDclInFunctionParamFactorySpec extends TestComposition {
 
       val instance = factory.create(scope = s)
 
-      instance mustBe a[ValDclInFunctionParam]
+      whenReady(instance) { result =>
+        result mustBe a[ValDclInFunctionParam]
+      }
     }
 
     "returns expected given scope with 0 vals" in {
@@ -21,7 +23,7 @@ final class ValDclInFunctionParamFactorySpec extends TestComposition {
 
       val instance = factory.create(scope = s)
 
-      instance match {
+      whenReady(instance) {
         case ValDclInFunctionParam(name, primitiveType) =>
           name must equal("v0")
           primitiveType mustBe a[IntegerM]
@@ -34,7 +36,7 @@ final class ValDclInFunctionParamFactorySpec extends TestComposition {
 
       val instance = factory.create(scope = s)
 
-      instance match {
+      whenReady(instance) {
         case ValDclInFunctionParam(name, primitiveType) =>
           name must equal("v1")
           primitiveType mustBe a[IntegerM]

@@ -13,7 +13,9 @@ final class FunctionMFactorySpec extends TestComposition {
 
       val instance = factory.create(scope = s)
 
-      instance mustBe a[FunctionM]
+      whenReady(instance) { result =>
+        result mustBe a[FunctionM]
+      }
     }
 
     "return expected given scope with 0 functions" in {
@@ -21,7 +23,7 @@ final class FunctionMFactorySpec extends TestComposition {
 
       val instance = factory.create(scope = s)
 
-      instance match {
+      whenReady(instance) {
         case FunctionM(_, _, name) => name must equal("f0")
         case _ => fail("wrong type")
       }
@@ -32,7 +34,7 @@ final class FunctionMFactorySpec extends TestComposition {
 
       val instance = factory.create(scope = s)
 
-      instance match {
+      whenReady(instance) {
         case FunctionM(_, _, name) => name must equal("f1")
         case _ => fail("wrong type")
       }
@@ -43,7 +45,7 @@ final class FunctionMFactorySpec extends TestComposition {
 
       val instance = factory.create(scope = s)
 
-      instance match {
+      whenReady(instance) {
         case FunctionM(_, children, _) => children.length must equal(3)
         case _ => fail("wrong type")
       }

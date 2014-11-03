@@ -4,6 +4,8 @@ import com.google.inject.Injector
 import replaceEmpty.{UpdateScopeNoChange, ValueRefFactoryImpl}
 import models.common.IScope
 import models.domain.Instruction
+import utils.Timeout.finiteTimeout
+import scala.concurrent.Await
 
 final case class AddOperator(left: Instruction, right: Instruction) extends Instruction with UpdateScopeNoChange {
 
@@ -24,7 +26,7 @@ final case class AddOperator(left: Instruction, right: Instruction) extends Inst
   override def replaceEmpty(scope: IScope)(implicit injector: Injector): Instruction = {
     def replaceEmpty(scope: IScope, n: Instruction): Instruction = {
       n match {
-        case _: Empty => injector.getInstance(classOf[ValueRefFactoryImpl]).create(scope)
+        case _: Empty => Await.result(injector.getInstance(classOf[ValueRefFactoryImpl]).create(scope), finiteTimeout)
         case n: Instruction => n.replaceEmpty(scope.decrementHeight)
       }
     }

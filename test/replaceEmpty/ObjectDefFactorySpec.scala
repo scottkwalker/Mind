@@ -13,7 +13,9 @@ final class ObjectDefFactorySpec extends TestComposition {
 
       val instance = factory.create(scope = s)
 
-      instance mustBe an[ObjectDef]
+      whenReady(instance) { result =>
+        result mustBe an[ObjectDef]
+      }
     }
 
     "returns expected given scope with 0 functions" in {
@@ -21,7 +23,7 @@ final class ObjectDefFactorySpec extends TestComposition {
 
       val instance = factory.create(scope = s)
 
-      instance match {
+      whenReady(instance) {
         case ObjectDef(_, name) => name must equal("o0")
         case _ => fail("wrong type")
       }
@@ -32,7 +34,7 @@ final class ObjectDefFactorySpec extends TestComposition {
 
       val instance = factory.create(scope = s)
 
-      instance match {
+      whenReady(instance) {
         case ObjectDef(_, name) => name must equal("o1")
         case _ => fail("wrong type")
       }
@@ -43,7 +45,7 @@ final class ObjectDefFactorySpec extends TestComposition {
 
       val instance = factory.create(scope = s)
 
-      instance match {
+      whenReady(instance) {
         case ObjectDef(child, _) => child.length must equal(3)
         case _ => fail("wrong type")
       }

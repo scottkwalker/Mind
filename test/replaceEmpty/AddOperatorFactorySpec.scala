@@ -13,7 +13,9 @@ final class AddOperatorFactorySpec extends TestComposition {
 
       val instance = factory.create(scope = s)
 
-      instance mustBe a[AddOperator]
+      whenReady(instance) { result =>
+        result mustBe a[AddOperator]
+      }
     }
   }
 }

@@ -6,6 +6,7 @@ import models.domain.Instruction
 import models.domain.scala.NodeTree
 import org.mockito.Matchers._
 import org.mockito.Mockito._
+import scala.concurrent.Future
 
 final class NodeTreeFactorySpec extends TestComposition {
 
@@ -13,13 +14,15 @@ final class NodeTreeFactorySpec extends TestComposition {
     "returns instance of this type" in {
       val instance = factory.create(scope)
 
-      instance mustBe a[NodeTree]
+      whenReady(instance) { result =>
+        result mustBe a[NodeTree]
+      }
     }
 
     "returns 3 children given scope with 3 maxFuncsInObject (and rng mocked)" in {
       val instance = factory.create(scope = scope)
 
-      instance match {
+      whenReady(instance) {
         case NodeTree(child) => child.length must equal(3)
         case _ => fail("wrong type")
       }
@@ -28,7 +31,7 @@ final class NodeTreeFactorySpec extends TestComposition {
     "returns 4 children given 1 premade and scope with 3 maxFuncsInObject (and rng mocked)" in {
       val n = mock[Instruction]
       val c = mock[ReplaceEmpty]
-      when(c.create(any[IScope])).thenReturn(n)
+      when(c.create(any[IScope])).thenReturn(Future.successful(n))
 
       val instance = factory.create(scope = scope, premadeChildren = Seq(c))
 

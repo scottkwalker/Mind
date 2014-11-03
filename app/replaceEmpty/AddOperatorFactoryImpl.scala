@@ -5,8 +5,9 @@ import memoization.LookupNeighbours
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.AddOperator
-import utils.Timeout.finiteTimeout
-import scala.concurrent.Await
+import scala.async.Async.{async, await}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 case class AddOperatorFactoryImpl @Inject()(
                                              creator: CreateNode,
@@ -15,10 +16,10 @@ case class AddOperatorFactoryImpl @Inject()(
 
   override val neighbourIds = Seq(ValueRefFactoryImpl.id)
 
-  override def create(scope: IScope): Instruction = {
+  override def create(scope: IScope): Future[Instruction] = async {
     val ln = legalNeighbours.fetch(scope, neighbourIds)
-    val (updatedScope, leftChild) = Await.result(creator.create(ln, scope), finiteTimeout)
-    val (_, rightChild) = Await.result(creator.create(ln, updatedScope), finiteTimeout)
+    val (updatedScope, leftChild) = await(creator.create(ln, scope))
+    val (_, rightChild) = await(creator.create(ln, updatedScope))
     AddOperator(left = leftChild,
       right = rightChild)
   }
