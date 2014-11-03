@@ -6,9 +6,9 @@ import models.domain.Instruction
 trait CreateSeqNodes {
 
   def create(possibleChildren: => Seq[ReplaceEmpty],
-                scope: IScope,
-                saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
-                acc: Seq[Instruction] = Seq.empty,
-                factoryLimit: Int
-                 ): (IScope, Seq[Instruction])
+             scope: IScope,
+             saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
+             acc: Seq[Instruction] = Seq.empty,
+             factoryLimit: Int
+              ): (IScope, Seq[Instruction])
 }

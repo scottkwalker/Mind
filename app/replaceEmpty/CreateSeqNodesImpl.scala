@@ -10,11 +10,11 @@ final case class CreateSeqNodesImpl @Inject()(createNode: CreateNode, ai: Select
 
   @tailrec
   def create(possibleChildren: => Seq[ReplaceEmpty],
-                scope: IScope,
-                saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
-                acc: Seq[Instruction] = Seq.empty, // Default the accumulator to empty.
-                factoryLimit: Int
-                 ): (IScope, Seq[Instruction]) = {
+             scope: IScope,
+             saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
+             acc: Seq[Instruction] = Seq.empty, // Default the accumulator to empty.
+             factoryLimit: Int
+              ): (IScope, Seq[Instruction]) = {
     if (ai.canAddAnother(acc.length, factoryLimit)) {
       val (updatedScope, child) = createNode.create(possibleChildren, scope)
       create(possibleChildren,

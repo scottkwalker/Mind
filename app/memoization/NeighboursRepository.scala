@@ -5,9 +5,9 @@ import com.google.inject.Inject
 import memoization.NeighboursRepository.writesNeighboursRepository
 import models.common.IScope
 import play.api.libs.json._
+import utils.Timeout.finiteTimeout
 import scala.async.Async.{async, await}
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 import scala.language.implicitConversions
 
@@ -37,7 +37,7 @@ object NeighboursRepository {
     def writes(cache: Map[String, Either[CountDownLatch, Future[Boolean]]]): JsValue = {
       val computedKeyValues = cache.flatMap {
         case (k, Right(v)) if v.isCompleted =>
-          val computed = Await.result(v, Duration.Inf)
+          val computed = Await.result(v, finiteTimeout)
           Some(k -> computed) // Only store the computed values (the 'right-side').
         case _ => None
       }

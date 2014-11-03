@@ -5,6 +5,7 @@ import memoization.LookupNeighbours
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.NodeTree
+import utils.Timeout.finiteTimeout
 import scala.concurrent.Await
 
 case class NodeTreeFactoryImpl @Inject()(
