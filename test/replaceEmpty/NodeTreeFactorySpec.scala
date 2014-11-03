@@ -35,7 +35,7 @@ final class NodeTreeFactorySpec extends TestComposition {
 
       val instance = factory.create(scope = scope, premadeChildren = Seq(c))
 
-      instance match {
+      whenReady(instance) {
         case NodeTree(child) =>
           child.length must equal(4) // 3 generated and 1 premade
           child(3) must equal(n)

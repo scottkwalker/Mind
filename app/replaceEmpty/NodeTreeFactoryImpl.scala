@@ -5,10 +5,9 @@ import memoization.LookupNeighbours
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.NodeTree
-import utils.Timeout.finiteTimeout
-import scala.async.Async.async
+import scala.async.Async.{async, await}
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 
 case class NodeTreeFactoryImpl @Inject()(
                                           creator: CreateSeqNodes,
@@ -17,9 +16,10 @@ case class NodeTreeFactoryImpl @Inject()(
 
   override val neighbourIds = Seq(ObjectDefFactoryImpl.id)
 
-  def create(scope: IScope, premadeChildren: Seq[ReplaceEmpty]): Instruction = {
+  def create(scope: IScope, premadeChildren: Seq[ReplaceEmpty]): Future[Instruction] = async {
     val (_, generated) = createNodes(scope)
-    val nodes = generated ++ premadeChildren.map(p => Await.result(p.create(scope), finiteTimeout))
+    val premadeWithoutEmpties = premadeChildren.map(p => p.create(scope))
+    val nodes = generated ++ await(Future.sequence(premadeWithoutEmpties))
 
     NodeTree(nodes)
   }
