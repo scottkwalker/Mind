@@ -35,7 +35,7 @@ object NeighboursRepository {
 
   private[memoization] implicit val writesNeighboursRepository = new Writes[Map[String, Either[CountDownLatch, Future[Boolean]]]] {
     def writes(cache: Map[String, Either[CountDownLatch, Future[Boolean]]]): JsValue = {
-      val computedKeyValues = cache.flatMap {
+      val computedKeyValues: Map[String, Boolean] = cache.flatMap {
         case (k, Right(v)) if v.isCompleted =>
           val computed = Await.result(v, finiteTimeout)
           Some(k -> computed) // Only store the computed values (the 'right-side').
