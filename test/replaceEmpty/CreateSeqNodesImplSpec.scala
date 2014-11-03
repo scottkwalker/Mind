@@ -23,7 +23,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       when(rng.nextBoolean).thenReturn(true)
       val ai: SelectionStrategy = Aco(rng)
       val cn = mock[CreateNode]
-      when(cn.create(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn((s, n))
+      when(cn.create(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(s, n))
       val possibleChildren = Future.successful(Seq(v))
       val sut = CreateSeqNodesImpl(cn, ai)
 
@@ -44,7 +44,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       when(v.updateScope(s)).thenReturn(s)
       when(v.create(any[Scope])).thenReturn(n)
       val cn = mock[CreateNode]
-      when(cn.create(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn((s, n))
+      when(cn.create(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(s, n))
       val rng = mock[RandomNumberGenerator]
       when(rng.nextInt(any[Int])).thenReturn(2)
       when(rng.nextBoolean).thenReturn(true)
@@ -69,7 +69,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       when(v.updateScope(s)).thenReturn(s)
       when(v.create(any[Scope])).thenReturn(n)
       val cn = mock[CreateNode]
-      when(cn.create(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn((s, n))
+      when(cn.create(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(s, n))
       val rng = mock[RandomNumberGenerator]
       when(rng.nextInt(any[Int])).thenReturn(1)
       when(rng.nextBoolean).thenReturn(false, true)
@@ -94,7 +94,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       when(v.updateScope(s)).thenReturn(s)
       when(v.create(any[Scope])).thenReturn(n)
       val cn = mock[CreateNode]
-      when(cn.create(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn((s, n))
+      when(cn.create(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(s, n))
       val rng = mock[RandomNumberGenerator]
       when(rng.nextInt(any[Int])).thenReturn(2)
       when(rng.nextBoolean).thenReturn(true)

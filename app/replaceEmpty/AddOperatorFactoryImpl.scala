@@ -5,6 +5,8 @@ import memoization.LookupNeighbours
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.AddOperator
+import utils.Timeout.finiteTimeout
+import scala.concurrent.Await
 
 case class AddOperatorFactoryImpl @Inject()(
                                              creator: CreateNode,
@@ -15,8 +17,8 @@ case class AddOperatorFactoryImpl @Inject()(
 
   override def create(scope: IScope): Instruction = {
     val ln = legalNeighbours.fetch(scope, neighbourIds)
-    val (updatedScope, leftChild) = creator.create(ln, scope)
-    val (_, rightChild) = creator.create(ln, updatedScope)
+    val (updatedScope, leftChild) = Await.result(creator.create(ln, scope), finiteTimeout)
+    val (_, rightChild) = Await.result(creator.create(ln, updatedScope), finiteTimeout)
     AddOperator(left = leftChild,
       right = rightChild)
   }

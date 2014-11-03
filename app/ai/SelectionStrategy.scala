@@ -2,8 +2,8 @@ package ai
 
 import models.common.IScope
 import replaceEmpty.ReplaceEmpty
-import utils.Timeout.finiteTimeout
-import scala.concurrent.{Await, Future}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 trait SelectionStrategy {
 
@@ -13,10 +13,11 @@ trait SelectionStrategy {
 
   def chooseIndex(seqLength: Int): Int
 
-  def chooseChild(possibleChildren: Future[Seq[ReplaceEmpty]], scope: IScope): ReplaceEmpty = {
-    val children = Await.result(possibleChildren, finiteTimeout)
-    require(children.nonEmpty, s"Sequence possibleChildren must not be empty otherwise we cannot pick a node from it, contained: $possibleChildren")
-    chooseChild(children)
+  def chooseChild(possibleChildren: Future[Seq[ReplaceEmpty]], scope: IScope): Future[ReplaceEmpty] = {
+    possibleChildren map { children =>
+      require(children.nonEmpty, s"Sequence possibleChildren must not be empty otherwise we cannot pick a node from it, contained: $possibleChildren")
+      chooseChild(children)
+    }
   }
 
   def canAddAnother(accLength: Int,

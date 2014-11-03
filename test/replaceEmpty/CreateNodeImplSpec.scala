@@ -15,13 +15,13 @@ final class CreateNodeImplSpec extends TestComposition {
       val v = mock[ReplaceEmpty]
       when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
-      when(ai.chooseChild(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(v)
+      when(ai.chooseChild(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(v))
       val possibleChildren = Future.successful(Seq(v))
       val sut = CreateNodeImpl(ai)
 
-      val (_, _) = sut.create(possibleChildren, scope)
-
-      verify(ai, times(1)).chooseChild(possibleChildren, scope)
+      whenReady(sut.create(possibleChildren, scope)) { _ =>
+        verify(ai, times(1)).chooseChild(possibleChildren, scope)
+      }
     }
 
     "calls updateScope" in {
@@ -29,13 +29,13 @@ final class CreateNodeImplSpec extends TestComposition {
       val v = mock[ReplaceEmpty]
       when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
-      when(ai.chooseChild(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(v)
+      when(ai.chooseChild(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(v))
       val possibleChildren = Future.successful(Seq(v))
       val sut = CreateNodeImpl(ai)
 
-      val (_, _) = sut.create(possibleChildren, scope)
-
-      verify(v, times(1)).updateScope(scope)
+      whenReady(sut.create(possibleChildren, scope)) { _ =>
+        verify(v, times(1)).updateScope(scope)
+      }
     }
 
     "calls create on factory" in {
@@ -43,13 +43,13 @@ final class CreateNodeImplSpec extends TestComposition {
       val v = mock[ReplaceEmpty]
       when(v.updateScope(scope)).thenReturn(scope)
       val ai = mock[SelectionStrategy]
-      when(ai.chooseChild(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(v)
+      when(ai.chooseChild(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(v))
       val possibleChildren = Future.successful(Seq(v))
       val sut = CreateNodeImpl(ai)
 
-      val (_, _) = sut.create(possibleChildren, scope)
-
-      verify(v, times(1)).create(scope)
+      whenReady(sut.create(possibleChildren, scope)) { _ =>
+        verify(v, times(1)).create(scope)
+      }
     }
   }
 }
