@@ -5,8 +5,6 @@ import memoization.LookupNeighbours
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.ValDclInFunctionParam
-import utils.Timeout.finiteTimeout
-import scala.concurrent.Await
 
 case class ValDclInFunctionParamFactoryImpl @Inject()(
                                                        creator: CreateNode,
@@ -17,7 +15,7 @@ case class ValDclInFunctionParamFactoryImpl @Inject()(
 
   override def create(scope: IScope): Instruction = {
     val name = "v" + scope.numVals
-    val ln = Await.result(legalNeighbours.fetch(scope, neighbourIds), finiteTimeout)
+    val ln = legalNeighbours.fetch(scope, neighbourIds)
     val (_, primitiveType) = creator.create(ln, scope)
 
     ValDclInFunctionParam(name = name,
