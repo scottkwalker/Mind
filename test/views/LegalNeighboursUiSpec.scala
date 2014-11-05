@@ -1,11 +1,12 @@
 package views
 
-import replaceEmpty.AddOperatorFactoryImpl
+import composition.TestComposition
 import org.scalatestplus.play._
 import play.api.Play
 import play.api.libs.json.{JsArray, JsNumber}
+import replaceEmpty.AddOperatorFactoryImpl
 
-final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
+final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory with TestComposition {
 
   // To enable testing on all browsers https://www.playframework.com/documentation/2.2.x/ScalaFunctionalTestingWithScalaTest
   //with OneServerPerSuite with AllBrowsersPerSuite {
@@ -19,11 +20,16 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
   //  }
   //  }
 
+
   "go to page" must {
     "display the page in English when no language cookie exists" in {
       val page = new LegalNeighboursPage
+
       go to page.url(port)
-      pageTitle mustBe page.title
+
+      eventually(timeout = browserTimeout) {
+        pageTitle mustBe page.title
+      }
     }
 
     "display the page in Welsh when language cookie contains 'cy'" in {
@@ -32,8 +38,12 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
       val key = Play.langCookieName
       val value = "cy" // Code for Welsh
       add cookie(key, value)
+
       go to page.url(port)
-      pageTitle mustBe page.titleCy
+
+      eventually(timeout = browserTimeout) {
+        pageTitle mustBe page.titleCy
+      }
     }
   }
 
@@ -53,9 +63,10 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
       page.maxFuncsInObject.value = valid
       page.maxParamsInFunc.value = valid
       page.maxObjectsInTree.value = valid
+
       submit()
 
-      eventually {
+      eventually(timeout = browserTimeout) {
         pageSource must equal(expected)
       }
     }
@@ -65,8 +76,12 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
       val invalid = "-1"
       go to page.url(port)
       page.numVals.value = invalid
+
       submit()
-      pageSource must include(page.validationSummary)
+
+      eventually(timeout = browserTimeout) {
+        pageSource must include(page.validationSummary)
+      }
     }
   }
 }

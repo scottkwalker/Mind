@@ -1,18 +1,19 @@
 package composition
 
-import akka.util.Timeout
 import com.google.inject.util.Modules.`override`
 import com.google.inject.{Guice, Module}
 import composition.ai.legalGamer.LegalGamerModule
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mock.MockitoSugar
+import org.scalatest.time.{Seconds, Span}
 import org.scalatestplus.play.PlaySpec
 import scala.concurrent.duration.{FiniteDuration, SECONDS}
 
-abstract class TestComposition extends PlaySpec with MockitoSugar with ScalaFutures {
+trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures {
 
   protected val finiteTimeout = FiniteDuration(1, SECONDS)
-  protected implicit val timeout = Timeout(duration = finiteTimeout)
+  protected implicit val timeout = akka.util.Timeout(duration = finiteTimeout)
+  protected val browserTimeout = org.scalatest.concurrent.PatienceConfiguration.Timeout(Span(30, Seconds))
   private val defaultModules = Seq(new DevModule, new LegalGamerModule)
 
   def testInjector(modules: Module*) = {
