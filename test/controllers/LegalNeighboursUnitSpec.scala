@@ -1,7 +1,6 @@
 package controllers
 
 import composition.{StubLookupNeighbours, TestComposition}
-import replaceEmpty.NodeTreeFactoryImpl
 import memoization.LookupNeighbours
 import models.common.{IScope, LegalNeighboursRequest, Scope}
 import org.mockito.Matchers.any
@@ -9,13 +8,14 @@ import org.mockito.Mockito.{times, verify}
 import play.api.libs.json.Json
 import play.api.test.Helpers.{BAD_REQUEST, OK, contentAsString}
 import play.api.test.{FakeRequest, WithApplication}
+import replaceEmpty.NodeTreeFactoryImpl
 import scala.concurrent.ExecutionContext.Implicits.global
 
 final class LegalNeighboursUnitSpec extends TestComposition {
 
   "present" must {
     "return 200" in new WithApplication {
-      whenReady(present) { r =>
+      whenReady(present, browserTimeout) { r =>
         r.header.status must equal(OK)
       }
     }
@@ -29,7 +29,7 @@ final class LegalNeighboursUnitSpec extends TestComposition {
     "return bad request when submission is empty" in new WithApplication {
       val emptyRequest = FakeRequest().withFormUrlEncodedBody()
       val result = legalNeighbours.calculate(emptyRequest)
-      whenReady(result) { r =>
+      whenReady(result, browserTimeout) { r =>
         r.header.status must equal(BAD_REQUEST)
       }
     }
@@ -37,7 +37,7 @@ final class LegalNeighboursUnitSpec extends TestComposition {
     "return ok when submission is valid" in new WithApplication {
       val validRequest = requestWithDefaults()
       val result = legalNeighbours.calculate(validRequest)
-      whenReady(result) { r =>
+      whenReady(result, browserTimeout) { r =>
         r.header.status must equal(OK)
       }
     }
@@ -45,7 +45,7 @@ final class LegalNeighboursUnitSpec extends TestComposition {
     "return seq of ids when submission is valid and legal moves are found" in new WithApplication {
       val validRequest = requestWithDefaults()
       val result = legalNeighbours.calculate(validRequest)
-      whenReady(result) { r =>
+      whenReady(result, browserTimeout) { r =>
         r.body.map { b =>
           Json.parse(b) must equal(Seq(NodeTreeFactoryImpl.id))
         }
@@ -55,7 +55,7 @@ final class LegalNeighboursUnitSpec extends TestComposition {
     "return empty seq when submission is valid but no matches are in scope" in new WithApplication {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
       val result = legalNeighbours.calculate(validRequest)
-      whenReady(result) { r =>
+      whenReady(result, browserTimeout) { r =>
         r.body.map { b =>
           Json.parse(b) must equal(Seq.empty)
         }
@@ -69,7 +69,7 @@ final class LegalNeighboursUnitSpec extends TestComposition {
       val sut = injector.getInstance(classOf[LegalNeighbours])
 
       val result = sut.calculate(validRequest)
-      whenReady(result) { r =>
+      whenReady(result, browserTimeout) { r =>
         verify(lookupNeighbours, times(1)).fetch(any[IScope], any[Int])
       }
     }
