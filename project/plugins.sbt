@@ -23,8 +23,11 @@ addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.4")
 // Plugin for publishing scoverage results to coveralls
 resolvers += Classpaths.sbtPluginReleases
 
-addSbtPlugin("org.scoverage" %% "sbt-scoverage" % "0.99.7.1")
+// Plugin for publishing scoverage results to coveralls
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "0.99.7.1")
 
-addSbtPlugin("com.sksamuel.scoverage" %% "sbt-coveralls" % "0.0.5")
+//addSbtPlugin("com.sksamuel.scoverage" %% "sbt-coveralls" % "0.0.5")
+
+addSbtPlugin("org.scoverage" %% "sbt-coveralls" % "0.99.0")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.6.4")
