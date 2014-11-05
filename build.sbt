@@ -6,7 +6,7 @@ version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.11.4"
 
 // Disable documentation generation to save time for the CI build process
 sources in doc in Compile := List()
@@ -25,7 +25,7 @@ libraryDependencies ++= Seq(
   //cache,
   //ws
   filters,
-  "org.mockito" % "mockito-core" % "1.9.5" % "test" withSources() withJavadoc(),
+  "org.mockito" % "mockito-core" % "1.10.8" % "test" withSources() withJavadoc(),
   "com.google.inject" % "guice" % "4.0-beta5",
   "org.scalatestplus" %% "play" % "1.2.0" % "test",
   "com.twitter" %% "util-core" % "6.20.0",
