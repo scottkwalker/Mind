@@ -28,8 +28,8 @@ libraryDependencies ++= Seq(
   "org.mockito" % "mockito-core" % "1.10.8" % "test" withSources() withJavadoc(),
   "com.google.inject" % "guice" % "4.0-beta5",
   "org.scalatestplus" %% "play" % "1.2.0" % "test",
-  "com.twitter" %% "util-core" % "6.20.0",
-  "org.scala-lang" % "scala-compiler" % "2.11.2",
+  "com.twitter" %% "util-core" % "6.22.1",
+  "org.scala-lang" % "scala-compiler" % "2.11.4",
   "org.scala-lang.modules" %% "scala-async" % "0.9.2"
 )
 
