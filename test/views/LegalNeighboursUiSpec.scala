@@ -1,9 +1,13 @@
 package views
 
 import composition.TestComposition
+import models.common.LegalNeighboursRequest.Form._
+import org.openqa.selenium.{By, WebDriver}
+import org.openqa.selenium.support.ui.{ExpectedConditions, ExpectedCondition, WebDriverWait}
 import org.scalatestplus.play._
 import play.api.Play
 import play.api.libs.json.{JsArray, JsNumber}
+import play.api.test.WithApplication
 import replaceEmpty.AddOperatorFactoryImpl
 
 final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory with TestComposition {
@@ -22,7 +26,7 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
 
 
   "go to page" must {
-    "display the page in English when no language cookie exists" in {
+    "display the page in English when no language cookie exists" in new WithApplication {
       val page = new LegalNeighboursPage
 
       go to page.url(port)
@@ -32,7 +36,7 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
       }
     }
 
-    "display the page in Welsh when language cookie contains 'cy'" in {
+    "display the page in Welsh when language cookie contains 'cy'" in new WithApplication {
       val page = new LegalNeighboursPage
       go to s"http://localhost:$port"
       val key = Play.langCookieName
@@ -48,7 +52,7 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
   }
 
   "submit button" must {
-    "return expected json when valid data is submitted" in {
+    "return expected json when valid data is submitted" in new WithApplication {
       val page = new LegalNeighboursPage
       val expected = JsArray(Seq(JsNumber(7))).toString()
       val valid = "1"
@@ -71,7 +75,7 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
       }
     }
 
-    "display validation error messages when no data is submitted " in {
+    "display validation error messages when no data is submitted " in new WithApplication {
       val page = new LegalNeighboursPage
       val invalid = "-1"
       go to page.url(port)
