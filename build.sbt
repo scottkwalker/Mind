@@ -26,11 +26,11 @@ libraryDependencies ++= Seq(
   //ws
   filters,
   "org.mockito" % "mockito-core" % "1.10.8" % "test" withSources() withJavadoc(),
-  "com.google.inject" % "guice" % "4.0-beta5",
-  "org.scalatestplus" %% "play" % "1.2.0" % "test",
-  "com.twitter" %% "util-core" % "6.22.1",
-  "org.scala-lang" % "scala-compiler" % "2.11.4",
-  "org.scala-lang.modules" %% "scala-async" % "0.9.2"
+  "com.google.inject" % "guice" % "4.0-beta5" withSources() withJavadoc(),
+  "org.scalatestplus" %% "play" % "1.2.0" % "test" withSources() withJavadoc(),
+  "com.twitter" %% "util-core" % "6.22.1" withSources() withJavadoc(),
+  "org.scala-lang" % "scala-compiler" % "2.11.4" withSources() withJavadoc(),
+  "org.scala-lang.modules" %% "scala-async" % "0.9.2" withSources() withJavadoc()
 )
 
 scalacOptions ++= Seq("-feature")
