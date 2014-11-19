@@ -5,6 +5,7 @@ import memoization.LookupNeighbours
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.NodeTree
+
 import scala.async.Async.{async, await}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -17,14 +18,15 @@ case class NodeTreeFactoryImpl @Inject()(
   override val neighbourIds = Seq(ObjectDefFactoryImpl.id)
 
   def create(scope: IScope, premadeChildren: Seq[ReplaceEmpty]): Future[Instruction] = async {
-    val (_, generated) = createNodes(scope)
-    val premadeWithoutEmpties = premadeChildren.map(p => p.create(scope))
-    val nodes = generated ++ await(Future.sequence(premadeWithoutEmpties))
+    val (_, generated) = await(createNodes(scope))
+    val premadeWithoutEmptyChildren = premadeChildren.map(p => p.create(scope)) // TODO doesn't the scope need to be updated each pass
+    val f = await(Future.sequence(premadeWithoutEmptyChildren))
+    val nodes = generated ++ f
 
     NodeTree(nodes)
   }
 
-  def createNodes(scope: IScope, acc: Seq[Instruction] = Seq()): (IScope, Seq[Instruction]) = {
+  def createNodes(scope: IScope, acc: Seq[Instruction] = Seq()) = {
     creator.create(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,
@@ -35,7 +37,7 @@ case class NodeTreeFactoryImpl @Inject()(
   }
 
   override def create(scope: IScope): Future[Instruction] = async {
-    val (_, nodes) = createNodes(scope)
+    val (_, nodes) = await(createNodes(scope))
     NodeTree(nodes)
   }
 }

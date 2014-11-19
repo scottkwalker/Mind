@@ -5,6 +5,7 @@ import replaceEmpty.{ObjectDefFactoryImpl, UpdateScopeIncrementObjects}
 import models.common.IScope
 import models.domain.Instruction
 import scala.annotation.tailrec
+import scala.concurrent.{Future, Await}
 
 final case class ObjectDef(nodes: Seq[Instruction], name: String) extends Instruction with UpdateScopeIncrementObjects {
 
@@ -19,7 +20,7 @@ final case class ObjectDef(nodes: Seq[Instruction], name: String) extends Instru
   }
 
   override def replaceEmpty(scope: IScope)(implicit injector: Injector): Instruction = {
-    def funcCreateNodes(scope: IScope, premade: Seq[Instruction]): (IScope, Seq[Instruction]) = {
+    def funcCreateNodes(scope: IScope, premade: Seq[Instruction]) = {
       val factory = injector.getInstance(classOf[ObjectDefFactoryImpl])
       factory.createNodes(scope = scope, acc = premade.init)
     }
@@ -27,13 +28,13 @@ final case class ObjectDef(nodes: Seq[Instruction], name: String) extends Instru
     @tailrec
     def replaceEmptyInSeq(scope: IScope,
                           n: Seq[Instruction],
-                          f: ((IScope, Seq[Instruction]) => (IScope, Seq[Instruction])),
+                          f: ((IScope, Seq[Instruction]) => Future[(IScope, Seq[Instruction])]),
                           acc: Seq[Instruction] = Seq.empty)(implicit injector: Injector): (IScope, Seq[Instruction]) = {
       n match {
         case x :: xs =>
           val (updatedScope, replaced) = x match {
             case _: Empty =>
-              f(scope, n)
+              Await.result( f(scope, n), utils.Timeout.finiteTimeout)
             case n: Instruction =>
               val r = n.replaceEmpty(scope)
               val u = r.updateScope(scope)

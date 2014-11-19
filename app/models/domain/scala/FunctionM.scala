@@ -5,6 +5,7 @@ import replaceEmpty.{FunctionMFactoryImpl, UpdateScopeIncrementFuncs}
 import models.common.IScope
 import models.domain.Instruction
 import scala.annotation.tailrec
+import scala.concurrent.{Await, Future}
 
 final case class FunctionM(params: Seq[Instruction],
                            nodes: Seq[Instruction],
@@ -20,12 +21,12 @@ final case class FunctionM(params: Seq[Instruction],
     nodes.forall(n => n.hasNoEmpty(scope.decrementHeight))
 
   override def replaceEmpty(scope: IScope)(implicit injector: Injector): Instruction = {
-    def funcCreateParams(scope: IScope, premade: Seq[Instruction]): (IScope, Seq[Instruction]) = {
+    def funcCreateParams(scope: IScope, premade: Seq[Instruction]) = {
       val factory = injector.getInstance(classOf[FunctionMFactoryImpl])
       factory.createParams(scope = scope, acc = premade.init)
     }
 
-    def funcCreateNodes(scope: IScope, premade: Seq[Instruction]): (IScope, Seq[Instruction]) = {
+    def funcCreateNodes(scope: IScope, premade: Seq[Instruction]) = {
       val factory = injector.getInstance(classOf[FunctionMFactoryImpl])
       factory.createNodes(scope = scope, acc = premade.init)
     }
@@ -42,11 +43,11 @@ final case class FunctionM(params: Seq[Instruction],
   }
 
   @tailrec
-  private def replaceEmptyInSeq(scope: IScope, n: Seq[Instruction], f: ((IScope, Seq[Instruction]) => (IScope, Seq[Instruction])), acc: Seq[Instruction] = Seq.empty)(implicit injector: Injector): (IScope, Seq[Instruction]) = {
+  private def replaceEmptyInSeq(scope: IScope, n: Seq[Instruction], f: ((IScope, Seq[Instruction]) => Future[(IScope, Seq[Instruction])]), acc: Seq[Instruction] = Seq.empty)(implicit injector: Injector): (IScope, Seq[Instruction]) = {
     n match {
       case x :: xs =>
         val (updatedScope, replaced) = x match {
-          case _: Empty => f(scope, n)
+          case _: Empty => Await.result( f(scope, n), utils.Timeout.finiteTimeout)
           case n: Instruction =>
             val r = n.replaceEmpty(scope)
             val u = r.updateScope(scope)

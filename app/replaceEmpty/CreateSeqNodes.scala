@@ -11,5 +11,5 @@ trait CreateSeqNodes {
              saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
              acc: Seq[Instruction] = Seq.empty,
              factoryLimit: Int
-              ): (IScope, Seq[Instruction])
+              ): Future[(IScope, Seq[Instruction])]
 }

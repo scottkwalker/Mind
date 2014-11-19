@@ -27,13 +27,16 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val possibleChildren = Future.successful(Seq(v))
       val sut = CreateSeqNodesImpl(cn, ai)
 
-      val (_, nodes) = sut.create(possibleChildren = possibleChildren,
+      val result = sut.create(possibleChildren = possibleChildren,
         scope = s,
         factoryLimit = s.maxFuncsInObject
       )
 
-      verify(cn, times(1)).create(possibleChildren = possibleChildren, scope = s)
-      nodes.length must equal(1)
+      whenReady(result) {
+        case (_, nodes) =>
+          verify(cn, times(1)).create(possibleChildren = possibleChildren, scope = s)
+          nodes.length must equal(1)
+      }
     }
 
     "calls create on factory twice given space for 2 func in obj and mocked rng the same" in {
@@ -52,13 +55,16 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val possibleChildren = Future.successful(Seq(v))
       val sut = CreateSeqNodesImpl(cn, ai)
 
-      val (_, nodes) = sut.create(possibleChildren = possibleChildren,
+      val result = sut.create(possibleChildren = possibleChildren,
         scope = s,
         factoryLimit = s.maxFuncsInObject
       )
 
-      verify(cn, times(2)).create(possibleChildren = possibleChildren, scope = s)
-      nodes.length must equal(2)
+      whenReady(result) {
+        case (_, nodes) =>
+          verify(cn, times(2)).create(possibleChildren = possibleChildren, scope = s)
+          nodes.length must equal(2)
+      }
     }
 
     "calls create on factory once given space for 2 func in obj but rng mocked to 1" in {
@@ -77,13 +83,16 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val possibleChildren = Future.successful(Seq(v))
       val sut = CreateSeqNodesImpl(cn, ai)
 
-      val (_, nodes) = sut.create(possibleChildren = possibleChildren,
+      val result = sut.create(possibleChildren = possibleChildren,
         scope = s,
         factoryLimit = s.maxFuncsInObject
       )
 
-      verify(cn, times(1)).create(possibleChildren = possibleChildren, scope = s)
-      nodes.length must equal(1)
+      whenReady(result) {
+        case (_, nodes) =>
+          verify(cn, times(1)).create(possibleChildren = possibleChildren, scope = s)
+          nodes.length must equal(1)
+      }
     }
 
     "calls create on factory once given space for 2 func in obj and a rng mocked to 2 but 1 pre-made node already added" in {
@@ -102,14 +111,17 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val possibleChildren = Future.successful(Seq(v))
       val sut = CreateSeqNodesImpl(cn, ai)
 
-      val (_, nodes) = sut.create(possibleChildren = possibleChildren,
+      val result = sut.create(possibleChildren = possibleChildren,
         scope = s,
         acc = Seq(n),
         factoryLimit = s.maxFuncsInObject
       )
 
-      verify(cn, times(1)).create(possibleChildren = possibleChildren, scope = s)
-      nodes.length must equal(2)
+      whenReady(result) {
+        case (_, nodes) =>
+          verify(cn, times(1)).create(possibleChildren = possibleChildren, scope = s)
+          nodes.length must equal(2)
+      }
     }
   }
 }
