@@ -7,4 +7,4 @@ matrix:
   fast_finish: true
 notifications:
   email: false
-script: "sbt coveralls"
+script: "sbt warn coveralls"
