@@ -1,12 +1,12 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import replaceEmpty.{NodeTreeFactoryImpl, UpdateScopeThrows}
 import models.common.IScope
 import models.domain.Instruction
-import scala.annotation.tailrec
+import replaceEmpty.{NodeTreeFactoryImpl, UpdateScopeThrows}
+
 import scala.concurrent.{Await, Future}
-import scala.async.Async.{async, await}
+import scala.concurrent.ExecutionContext.Implicits.global
 
 final case class NodeTree(nodes: Seq[Instruction]) extends Instruction with UpdateScopeThrows {
 
@@ -26,27 +26,31 @@ final case class NodeTree(nodes: Seq[Instruction]) extends Instruction with Upda
       factory.createNodes(scope = scope, acc = premade.init)
     }
 
-    @tailrec
     def replaceEmptyInSeq(scope: IScope,
-                          n: Seq[Instruction],
-                          f: ((IScope, Seq[Instruction]) => Future[(IScope, Seq[Instruction])]),
-                          acc: Seq[Instruction] = Seq.empty)(implicit injector: Injector): (IScope, Seq[Instruction]) = {
-      n match {
-        case x :: xs =>
-          val (updatedScope, replaced) = x match {
-            case _: Empty =>
-              Await.result(f(scope, n), utils.Timeout.finiteTimeout)
+                          instructions: Seq[Instruction],
+                          f: ((IScope, Seq[Instruction]) => Future[(IScope, Seq[Instruction])]), // Replaces empties
+                          acc: Seq[Instruction] = Seq.empty)(implicit injector: Injector): Future[(IScope, Seq[Instruction])] = {
+      // TODO could it be better as a fold?
+      instructions match {
+        case head :: tail =>
+          val emptiesReplaced = head match {
+            case _: Empty => f(scope, instructions) // Head node is of type empty, so replace it with a non-empty
             case n: Instruction =>
-              val r = n.replaceEmpty(scope)
-              val u = r.updateScope(scope)
-              (u, Seq(r))
+              Future.successful {
+                val r = n.replaceEmpty(scope) // Head node is not empty, but one of the child nodes may be so check it's children.
+                val u = r.updateScope(scope) // Update scope to include this node.
+                (u, Seq(r))
+              }
           }
-          replaceEmptyInSeq(updatedScope, xs, f, acc ++ replaced)
-        case nil => (scope, acc)
+          emptiesReplaced flatMap {
+            case (updatedScope, replaced) => replaceEmptyInSeq(updatedScope, tail, f, acc ++ replaced) // Recurse
+          }
+        case nil => Future.successful((scope, acc)) // No more in list so return the accumulator.
       }
     }
 
-    val (_, n) = replaceEmptyInSeq(scope, nodes, funcCreateNodes)
+    val seqWithoutEmpties = replaceEmptyInSeq(scope, nodes, funcCreateNodes)
+    val (_, n) = Await.result(seqWithoutEmpties, utils.Timeout.finiteTimeout)
     NodeTree(n)
   }
 
