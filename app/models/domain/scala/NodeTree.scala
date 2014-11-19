@@ -21,8 +21,6 @@ final case class NodeTree(nodes: Seq[Instruction]) extends Instruction with Upda
   }
 
   override def replaceEmpty(scope: IScope)(implicit injector: Injector): Instruction = {
-    lazy val factory = injector.getInstance(classOf[NodeTreeFactoryImpl])
-
     def replaceEmpty(scope: IScope, head: Instruction) = {
       head match {
         case _: Empty => factory.createNodes(scope = scope) // Head node (and any nodes after it) is of type empty, so replace it with a non-empty
@@ -36,6 +34,7 @@ final case class NodeTree(nodes: Seq[Instruction]) extends Instruction with Upda
     }
 
     require(nodes.length > 0, "must not be empty as then we have nothing to replace")
+    lazy val factory = injector.getInstance(classOf[NodeTreeFactoryImpl])
     val seqWithoutEmpties = nodes.foldLeft(Future.successful((scope, Seq.empty[Instruction]))) {
       (fAcc, instruction) => fAcc.flatMap {
         case (updatedScope, acc) => replaceEmpty(scope = updatedScope, head = instruction)
