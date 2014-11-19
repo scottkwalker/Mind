@@ -3,7 +3,7 @@ package models.domain.scala
 import com.google.inject.Injector
 import models.common.IScope
 import models.domain.Instruction
-import replaceEmpty.{NodeTreeFactoryImpl, UpdateScopeThrows}
+import replaceEmpty.{NodeTreeFactory, UpdateScopeThrows}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{Await, Future}
@@ -34,7 +34,7 @@ final case class NodeTree(nodes: Seq[Instruction]) extends Instruction with Upda
     }
 
     require(nodes.length > 0, "must not be empty as then we have nothing to replace")
-    lazy val factory = injector.getInstance(classOf[NodeTreeFactoryImpl])
+    lazy val factory = injector.getInstance(classOf[NodeTreeFactory])
     val seqWithoutEmpties = nodes.foldLeft(Future.successful((scope, Seq.empty[Instruction]))) {
       (fAcc, instruction) => fAcc.flatMap {
         case (updatedScope, acc) => replaceEmpty(scope = updatedScope, head = instruction)

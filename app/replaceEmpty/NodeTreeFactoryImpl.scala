@@ -26,7 +26,7 @@ case class NodeTreeFactoryImpl @Inject()(
     NodeTree(nodes)
   }
 
-  def createNodes(scope: IScope, acc: Seq[Instruction] = Seq.empty) = {
+  override def createNodes(scope: IScope, acc: Seq[Instruction] = Seq()): Future[(IScope, Seq[Instruction])] = {
     creator.create(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,

@@ -99,7 +99,7 @@ final class NodeTreeSpec extends TestComposition {
     "throw when passed empty seq (no empty or non-empty)" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
-      val instance = new NodeTree(Seq.empty)
+      val instance = new NodeTree(nodes = Seq.empty)
 
       a[RuntimeException] must be thrownBy instance.replaceEmpty(s)
     }

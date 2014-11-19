@@ -120,6 +120,14 @@ final class ObjectDefSpec extends TestComposition {
         case _ => fail("wrong type")
       }
     }
+
+    "throw when passed empty seq (no empty or non-empty)" in {
+      val s = mock[IScope]
+      implicit val i = mock[Injector]
+      val instance = new ObjectDef(nodes = Seq.empty, name = name)
+
+      a[RuntimeException] must be thrownBy instance.replaceEmpty(s)
+    }
   }
 
   "height" must {
