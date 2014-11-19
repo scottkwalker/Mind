@@ -14,7 +14,7 @@ final class NodeTreeFactorySpec extends TestComposition {
     "returns instance of this type" in {
       val instance = factory.create(scope)
 
-      whenReady(instance) { result =>
+      whenReady(instance, browserTimeout) { result =>
         result mustBe a[NodeTree]
       }
     }
@@ -22,7 +22,7 @@ final class NodeTreeFactorySpec extends TestComposition {
     "returns 3 children given scope with 3 maxFuncsInObject (and rng mocked)" in {
       val instance = factory.create(scope = scope)
 
-      whenReady(instance) {
+      whenReady(instance, browserTimeout) {
         case NodeTree(child) => child.length must equal(3)
         case _ => fail("wrong type")
       }
@@ -35,7 +35,7 @@ final class NodeTreeFactorySpec extends TestComposition {
 
       val instance = factory.create(scope = scope, premadeChildren = Seq(c))
 
-      whenReady(instance) {
+      whenReady(instance, browserTimeout) {
         case NodeTree(child) =>
           child.length must equal(4) // 3 generated and 1 premade
           child(3) must equal(n)
