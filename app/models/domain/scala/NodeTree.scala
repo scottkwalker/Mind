@@ -26,30 +26,32 @@ final case class NodeTree(nodes: Seq[Instruction]) extends Instruction with Upda
       factory.createNodes(scope = scope, acc = premade.init)
     }
 
+    def replaceEmpty(head: Instruction, instructions: Seq[Instruction]) = {
+      head match {
+        case _: Empty => funcCreateNodes(scope, instructions) // Head node (and any nodes after it) is of type empty, so replace it with a non-empty
+        case n: Instruction =>
+          Future.successful {
+            val r = n.replaceEmpty(scope) // Head node is not empty, but one of the child nodes may be so check it's children.
+            val u = r.updateScope(scope) // Update scope to include this node.
+            (u, Seq(r))
+          }
+      }
+    }
+
     def replaceEmptyInSeq(scope: IScope,
                           instructions: Seq[Instruction],
-                          f: ((IScope, Seq[Instruction]) => Future[(IScope, Seq[Instruction])]), // Replaces empties
                           acc: Seq[Instruction] = Seq.empty)(implicit injector: Injector): Future[(IScope, Seq[Instruction])] = {
       // TODO could it be better as a fold?
       instructions match {
         case head :: tail =>
-          val emptiesReplaced = head match {
-            case _: Empty => f(scope, instructions) // Head node is of type empty, so replace it with a non-empty
-            case n: Instruction =>
-              Future.successful {
-                val r = n.replaceEmpty(scope) // Head node is not empty, but one of the child nodes may be so check it's children.
-                val u = r.updateScope(scope) // Update scope to include this node.
-                (u, Seq(r))
-              }
-          }
-          emptiesReplaced flatMap {
-            case (updatedScope, replaced) => replaceEmptyInSeq(updatedScope, tail, f, acc ++ replaced) // Recurse
+          replaceEmpty(head, instructions) flatMap {
+            case (updatedScope, replaced) => replaceEmptyInSeq(updatedScope, tail, acc ++ replaced) // Recurse
           }
         case nil => Future.successful((scope, acc)) // No more in list so return the accumulator.
       }
     }
 
-    val seqWithoutEmpties = replaceEmptyInSeq(scope, nodes, funcCreateNodes)
+    val seqWithoutEmpties = replaceEmptyInSeq(scope, nodes)
     val (_, n) = Await.result(seqWithoutEmpties, utils.Timeout.finiteTimeout)
     NodeTree(n)
   }
