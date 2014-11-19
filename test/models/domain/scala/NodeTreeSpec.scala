@@ -95,6 +95,14 @@ final class NodeTreeSpec extends TestComposition {
         case _ => fail("wrong type")
       }
     }
+
+    "throw when passed empty seq (no empty or non-empty)" in {
+      val s = mock[IScope]
+      implicit val i = mock[Injector]
+      val instance = new NodeTree(Seq.empty)
+
+      a[RuntimeException] must be thrownBy instance.replaceEmpty(s)
+    }
   }
 
   "height" must {

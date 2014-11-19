@@ -40,7 +40,7 @@ final case class NodeTree(nodes: Seq[Instruction]) extends Instruction with Upda
 
     def replaceEmptyInSeq(scope: IScope,
                           instructions: Seq[Instruction],
-                          acc: Seq[Instruction] = Seq.empty)(implicit injector: Injector): Future[(IScope, Seq[Instruction])] = {
+                          acc: Seq[Instruction] = Seq.empty): Future[(IScope, Seq[Instruction])] = {
       // TODO could it be better as a fold?
       instructions match {
         case head :: tail =>
@@ -51,6 +51,7 @@ final case class NodeTree(nodes: Seq[Instruction]) extends Instruction with Upda
       }
     }
 
+    require(nodes.length > 0, "must not be empty as then we have nothing to replace")
     val seqWithoutEmpties = replaceEmptyInSeq(scope, nodes)
     val (_, n) = Await.result(seqWithoutEmpties, utils.Timeout.finiteTimeout)
     NodeTree(n)
