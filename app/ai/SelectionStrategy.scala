@@ -22,4 +22,6 @@ trait SelectionStrategy {
 
   def canAddAnother(accLength: Int,
                     factoryLimit: Int): Boolean = accLength < 1 || (accLength < factoryLimit && rng.nextBoolean)
+
+  def generateLengthOfSeq(factoryLimit: Int): Integer = 1 + rng.nextInt(factoryLimit - 1)
 }
