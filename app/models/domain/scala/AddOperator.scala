@@ -1,10 +1,11 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import replaceEmpty.{UpdateScopeNoChange, ValueRefFactoryImpl}
 import models.common.IScope
 import models.domain.Instruction
+import replaceEmpty.{UpdateScopeNoChange, ValueRefFactory}
 import utils.Timeout.finiteTimeout
+
 import scala.concurrent.Await
 
 final case class AddOperator(left: Instruction, right: Instruction) extends Instruction with UpdateScopeNoChange {
@@ -24,13 +25,14 @@ final case class AddOperator(left: Instruction, right: Instruction) extends Inst
   }
 
   override def replaceEmpty(scope: IScope)(implicit injector: Injector): Instruction = {
-    def replaceEmpty(scope: IScope, n: Instruction): Instruction = {
-      n match {
-        case _: Empty => Await.result(injector.getInstance(classOf[ValueRefFactoryImpl]).create(scope), finiteTimeout)
-        case n: Instruction => n.replaceEmpty(scope.decrementHeight)
+    def replaceEmpty(scope: IScope, child: Instruction) = {
+      child match {
+        case _: Empty => Await.result(factory.create(scope), finiteTimeout)
+        case nonEmpty: Instruction => nonEmpty.replaceEmpty(scope.decrementHeight) // This node is non-empty but its children may not be, so do the same check on this node's children.
       }
     }
 
+    lazy val factory = injector.getInstance(classOf[ValueRefFactory])
     val l = replaceEmpty(scope, left)
     val r = replaceEmpty(scope, right)
     AddOperator(l, r)
