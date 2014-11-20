@@ -23,7 +23,7 @@ case class ObjectDefFactoryImpl @Inject()(
       index = scope.numObjects)
   }
 
-  def createNodes(scope: IScope, acc: Seq[Instruction] = Seq()) = {
+  override def createNodes(scope: IScope, acc: Seq[Instruction] = Seq()): Future[(IScope, Seq[Instruction])] = {
     creator.create(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,

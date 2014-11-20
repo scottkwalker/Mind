@@ -92,6 +92,7 @@ final class FunctionMSpec extends TestComposition {
   }
 
   "replaceEmpty" must {
+
     "calls replaceEmpty on non-empty child nodes" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
@@ -149,6 +150,27 @@ final class FunctionMSpec extends TestComposition {
       }
     }
 
+      "throw when passed empty params seq (no empty or non-empty)" in {
+        val s = mock[IScope]
+        implicit val i = mock[Injector]
+        val instance = FunctionM(params = Seq.empty,
+          nodes = Seq(Empty()),
+          name = name)
+
+        a[RuntimeException] must be thrownBy instance.replaceEmpty(s)
+      }
+
+      "throw when passed empty nodes seq (no empty or non-empty)" in {
+        val s = mock[IScope]
+        implicit val i = mock[Injector]
+        val instance = FunctionM(params = Seq(Empty()),
+          nodes = Seq.empty,
+          name = name)
+
+        a[RuntimeException] must be thrownBy instance.replaceEmpty(s)
+      }
+    }
+
     "height" must {
       "returns 1 + child height" in {
         val v = mock[Instruction]
@@ -170,7 +192,6 @@ final class FunctionMSpec extends TestComposition {
           name = name).height must equal(3)
       }
     }
-  }
 
   private final val name = "f0"
   private val params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM()))

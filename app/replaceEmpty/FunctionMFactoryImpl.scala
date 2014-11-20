@@ -29,7 +29,7 @@ case class FunctionMFactoryImpl @Inject()(
       index = scope.numFuncs)
   }
 
-  def createParams(scope: IScope, acc: Seq[Instruction] = Seq.empty) = {
+  override def createParams(scope: IScope, acc: Seq[Instruction] = Seq.empty): Future[(IScope, Seq[Instruction])] = {
     creator.create(
       possibleChildren = legalNeighbours.fetch(scope, paramsNeighbours),
       scope = scope,
@@ -39,7 +39,7 @@ case class FunctionMFactoryImpl @Inject()(
     )
   }
 
-  def createNodes(scope: IScope, acc: Seq[Instruction] = Seq.empty) = {
+  override def createNodes(scope: IScope, acc: Seq[Instruction] = Seq.empty): Future[(IScope, Seq[Instruction])] = {
     creator.create(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,
