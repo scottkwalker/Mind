@@ -1,12 +1,13 @@
 package memoization
 
 import java.util.concurrent.CountDownLatch
+
 import composition.TestComposition
 import org.mockito.Mockito._
-import play.api.libs.json.Json.obj
 import play.api.libs.json._
 import serialization.JsonValidationException
-import scala.concurrent.duration.Duration
+
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{Await, Future}
 
 final class Memoize2ImplSpec extends TestComposition {
@@ -18,10 +19,17 @@ final class Memoize2ImplSpec extends TestComposition {
           i + j
         }
       }
+      val a = adder(1, 1)
+      val b = adder(1, 2)
+      val c = adder(2, 2)
 
-      Await.result(adder(1, 1), finiteTimeout) must equal(2)
-      Await.result(adder(1, 2), finiteTimeout) must equal(3)
-      Await.result(adder(2, 2), finiteTimeout) must equal(4)
+      val result = Future.sequence(Seq(a, b, c))
+
+      whenReady(result, browserTimeout) { r =>
+        r(0) must equal(2)
+        r(1) must equal(3)
+        r(2) must equal(4)
+      }
     }
 
     "only runs the function once for the same input (adder)" in {
@@ -36,34 +44,35 @@ final class Memoize2ImplSpec extends TestComposition {
       val memoizer = new Memoize2Impl[Int, Int, Int] {
         override def f(i: Int, j: Int): Future[Int] = adder(i, j)
       }
+      val a1 = memoizer(1, 1)
+      val a2 = memoizer(1, 1)
+      val b1 = memoizer(1, 2)
+      val b2 = memoizer(1, 2)
+      val c1 = memoizer(1, 3)
+      val c2 = memoizer(1, 3)
+      val d1 = memoizer(2, 2)
+      val d2 = memoizer(2, 2)
 
-      Await.result(memoizer(1, 1), finiteTimeout) must equal(2)
-      Await.result(memoizer(1, 1), finiteTimeout) must equal(2)
-      Await.result(memoizer(1, 2), finiteTimeout) must equal(3)
-      Await.result(memoizer(1, 2), finiteTimeout) must equal(3)
-      Await.result(memoizer(1, 3), finiteTimeout) must equal(4)
-      Await.result(memoizer(1, 3), finiteTimeout) must equal(4)
-      Await.result(memoizer(2, 2), finiteTimeout) must equal(4)
-      Await.result(memoizer(2, 2), finiteTimeout) must equal(4)
+      val result = Future.sequence(Seq(a1, a2, b1, b2, c1, c2, d1, d2))
 
-      verify(adder, times(1))(1, 1)
-      verify(adder, times(1))(1, 2)
-      verify(adder, times(1))(2, 2)
+      whenReady(result, browserTimeout) { r =>
+        r(0) must equal(2)
+        r(1) must equal(2)
+        r(2) must equal(3)
+        r(3) must equal(3)
+        r(4) must equal(4)
+        r(5) must equal(4)
+        r(6) must equal(4)
+        r(7) must equal(4)
+
+        verify(adder, times(1))(1, 1)
+        verify(adder, times(1))(1, 2)
+        verify(adder, times(1))(1, 3)
+        verify(adder, times(1))(2, 2)
+      }
     }
 
     "only executes the memoized computation once per input" in {
-      implicit val eitherLatchOrStringToJson = new Writes[Either[CountDownLatch, Future[String]]] {
-        def writes(o: Either[CountDownLatch, Future[String]]): JsValue = obj(
-          o.fold(
-            countDownLatchContent => ???, // must be filtered out at a higher level so that we do not store incomplete calculations.
-            right => {
-              val computed = scala.concurrent.Await.result(right, Duration.Inf)
-              stateKey -> Json.toJson(computed)
-            }
-          )
-        )
-      }
-
       class Adder {
 
         def apply(i: Int, j: Int) = Future.successful {
@@ -78,9 +87,9 @@ final class Memoize2ImplSpec extends TestComposition {
         override def f(i: Int, j: Int): Future[Int] = adder(i, j)
       }
 
-      Await.result(memoizer(5, 1), finiteTimeout)
-
-      verify(adder, times(1))(5, 1)
+      whenReady(memoizer(5, 1), browserTimeout) { r =>
+        verify(adder, times(1))(5, 1)
+      }
     }
 
     "handles exceptions during computations" in {
@@ -109,26 +118,34 @@ final class Memoize2ImplSpec extends TestComposition {
           i + j
         }
       }
-      Await.result(adder(1, 1), finiteTimeout) must equal(2)
-      Await.result(adder(1, 2), finiteTimeout) must equal(3)
-      Await.result(adder(2, 2), finiteTimeout) must equal(4)
+      val a = adder(1, 1)
+      val b = adder(1, 2)
+      val c = adder(2, 2)
 
-      adder.write must equal(
-        JsObject(
-          Seq(
-            ("versioning", JsString("test")),
-            ("cache",
-              JsObject(
-                Seq(
-                  ("1|1", JsNumber(2)),
-                  ("1|2", JsNumber(3)),
-                  ("2|2", JsNumber(4))
+      val result = Future.sequence(Seq(a, b, c))
+
+      whenReady(result, browserTimeout) { r =>
+        r(0) must equal(2)
+        r(1) must equal(3)
+        r(2) must equal(4)
+
+        adder.write must equal(
+          JsObject(
+            Seq(
+              ("versioning", JsString("test")),
+              ("cache",
+                JsObject(
+                  Seq(
+                    ("1|1", JsNumber(2)),
+                    ("1|2", JsNumber(3)),
+                    ("2|2", JsNumber(4))
+                  )
                 )
-              )
-              )
+                )
+            )
           )
         )
-      )
+      }
     }
   }
 
@@ -150,9 +167,16 @@ final class Memoize2ImplSpec extends TestComposition {
 
       val asObj = Memoize2Impl.read[ThrowIfNotMemoized](json)
 
-      Await.result(asObj(1, 1), finiteTimeout) must equal(2)
-      Await.result(asObj(1, 2), finiteTimeout) must equal(3)
-      Await.result(asObj(2, 2), finiteTimeout) must equal(4)
+      val a = asObj(1, 1)
+      val b = asObj(1, 2)
+      val c = asObj(2, 2)
+      val result = Future.sequence(Seq(a, b, c))
+
+      whenReady(result, browserTimeout) { r =>
+        r(0) must equal(2)
+        r(1) must equal(3)
+        r(2) must equal(4)
+      }
     }
 
     "throw when invalid json" in {
@@ -162,13 +186,11 @@ final class Memoize2ImplSpec extends TestComposition {
     }
   }
 
-  private val stateKey = "neighbours"
-
   private implicit val mapOfStringToInt = new Writes[Map[String, Either[CountDownLatch, Future[Int]]]] {
     def writes(cache: Map[String, Either[CountDownLatch, Future[Int]]]): JsValue = {
       val computedKeyValues = cache.flatMap {
         case (k, Right(v)) if v.isCompleted =>
-          val computed = scala.concurrent.Await.result(v, Duration.Inf)
+          val computed = scala.concurrent.Await.result(v, finiteTimeout)
           Some(k -> computed) // Only store the computed values (the 'right-side').
         case _ => None
       }
