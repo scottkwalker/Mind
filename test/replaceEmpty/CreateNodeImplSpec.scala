@@ -6,11 +6,12 @@ import models.common.Scope
 import models.domain.Instruction
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
-import scala.concurrent.{Await, Future}
-import utils.Timeout.finiteTimeout
+
+import scala.concurrent.Future
 
 final class CreateNodeImplSpec extends TestComposition {
 
+  // TODO look at code re-use between tests
   "create" must {
     "calls chooseChild on ai" in {
       val scope = Scope(height = 10)
@@ -23,8 +24,9 @@ final class CreateNodeImplSpec extends TestComposition {
       val possibleChildren = Future.successful(Seq(v))
       val sut = CreateNodeImpl(ai)
 
-      Await.result(sut.create(possibleChildren, scope), finiteTimeout)
-      verify(ai, times(1)).chooseChild(possibleChildren, scope)
+      whenReady(sut.create(possibleChildren, scope), browserTimeout) { _ =>
+        verify(ai, times(1)).chooseChild(possibleChildren, scope)
+      }
     }
 
     "calls updateScope" in {

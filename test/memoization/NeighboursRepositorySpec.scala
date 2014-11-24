@@ -1,33 +1,46 @@
 package memoization
 
 import java.util.concurrent.CountDownLatch
+
 import composition.TestComposition
 import memoization.NeighboursRepository.readsNeighboursRepository
 import models.common.Scope
 import org.mockito.Mockito._
 import play.api.libs.json._
-import replaceEmpty._
-import scala.concurrent.{Await, Future}
+import replaceEmpty.{AddOperatorFactory, AddOperatorFactoryImpl, ValueRefFactory, ValueRefFactoryImpl}
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class NeighboursRepositorySpec extends TestComposition {
 
   "apply" must {
     "return true for ids that are valid for this scope" in {
       val (sut, _) = createSut()
+      val a = sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
+      val b = sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
 
-      Await.result(sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id), finiteTimeout) must equal(false)
-      Await.result(sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id), finiteTimeout) must equal(true)
+      whenReady(Future.sequence(Seq(a, b)), browserTimeout) { r =>
+        r(0) must equal(false)
+        r(1) must equal(true)
+      }
     }
 
     "only runs the function once for the same input" in {
       val (sut, factoryIdToFactory) = createSut()
-      Await.result(sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id), finiteTimeout) must equal(true)
-      Await.result(sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id), finiteTimeout) must equal(true)
-      Await.result(sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id), finiteTimeout) must equal(false)
-      Await.result(sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id), finiteTimeout) must equal(false)
+      val a = sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
+      val b = sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
+      val c = sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
+      val d = sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
 
-      verify(factoryIdToFactory, times(1)).convert(AddOperatorFactoryImpl.id)
-      verify(factoryIdToFactory, times(1)).convert(ValueRefFactoryImpl.id)
+      whenReady(Future.sequence(Seq(a, b, c, d)), browserTimeout) { r =>
+        r(0) must equal(true)
+        r(1) must equal(true)
+        r(2) must equal(false)
+        r(3) must equal(false)
+        verify(factoryIdToFactory, times(1)).convert(AddOperatorFactoryImpl.id)
+        verify(factoryIdToFactory, times(1)).convert(ValueRefFactoryImpl.id)
+      }
     }
   }
 
@@ -106,41 +119,44 @@ class NeighboursRepositorySpec extends TestComposition {
 
     "write expected json for one computed value" in {
       val (sut, _) = createSut()
-      Await.result(sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id), finiteTimeout) must equal(true)
-
-      sut.write must equal(
-        JsObject(
-          Seq(
-            "versioning" -> JsString(version),
-            "cache" -> JsObject(
-              Seq(
-                (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
+      whenReady(sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id), browserTimeout) { r =>
+        r must equal(true) // Check the calculated value is correct before continuing to test it is written correctly.
+        sut.write must equal(
+          JsObject(
+            Seq(
+              "versioning" -> JsString(version),
+              "cache" -> JsObject(
+                Seq(
+                  (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
+                )
               )
             )
           )
         )
-      )
+      }
     }
 
     "write expected json for many computed values" in {
       val (sut, _) = createSut()
-      Await.result(sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id), finiteTimeout) must equal(false)
-      Await.result(sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id), finiteTimeout) must equal(true)
+      val a = sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
+      val b = sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
 
-      sut.write must equal(
-        JsObject(
-          Seq(
-            "versioning" -> JsString(version),
-            "cache" -> JsObject(
-              Seq(
-                (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
-                (s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
-                (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
+      whenReady(Future.sequence(Seq(a, b)), browserTimeout) { r =>
+        sut.write must equal(
+          JsObject(
+            Seq(
+              "versioning" -> JsString(version),
+              "cache" -> JsObject(
+                Seq(
+                  (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
+                  (s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
+                  (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
+                )
               )
             )
           )
         )
-      )
+      }
     }
   }
 
@@ -160,9 +176,13 @@ class NeighboursRepositorySpec extends TestComposition {
       )
       val readsFromJson = readsNeighboursRepository(factoryLookupStub)
       val asObj: NeighboursRepository = Memoize2Impl.read[NeighboursRepository](json)(readsFromJson)
+      val a = asObj.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
+      val b = asObj.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
 
-      Await.result(asObj.apply(scope, AddOperatorFactoryImpl.id), finiteTimeout) must equal(false)
-      Await.result(asObj.apply(scope, ValueRefFactoryImpl.id), finiteTimeout) must equal(true)
+      whenReady(Future.sequence(Seq(a, b)), browserTimeout) { r =>
+        r(0) must equal(false)
+        r(1) must equal(true)
+      }
     }
 
     "throw RuntimeException when versioning string doesn't match what we intend to use" in {

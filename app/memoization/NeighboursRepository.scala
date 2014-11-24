@@ -37,7 +37,7 @@ object NeighboursRepository {
     def writes(cache: Map[String, Either[CountDownLatch, Future[Boolean]]]): JsValue = {
       def computedKeyValues: Map[String, Boolean] = cache.flatMap {
         case (k, Right(v)) if v.isCompleted =>
-          val computed = Await.result(v, finiteTimeout)
+          val computed = Await.result(v, finiteTimeout) // It should be OK to use blocking Await here are the result is already computed so should instantly be returned.
           Some(k -> computed) // Only store the computed values (the 'right-side').
         case _ => None
       }
