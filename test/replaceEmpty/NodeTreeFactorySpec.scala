@@ -33,24 +33,27 @@ final class NodeTreeFactorySpec extends TestComposition {
     }
 
     "returns 4 children given 1 premade and scope with 3 maxFuncsInObject (and rng mocked)" in {
-      val n = mock[Instruction]
-      val c = mock[ReplaceEmpty]
-      when(c.create(any[IScope])).thenReturn(Future.successful(n))
+      val premadeNode = mock[Instruction]
+      val premadeChildren = {
+        val c = mock[ReplaceEmpty]
+        when(c.create(any[IScope])).thenReturn(Future.successful(premadeNode))
+        Seq(c)
+      }
+      val (factory, scope) = nodeTreeFactory(nextInt = 3)
 
-      val (instance, scope) = nodeTreeFactory(nextInt = 3)
-      val result = instance.create(scope = scope, premadeChildren = Seq(c))
+      val result = factory.create(scope = scope, premadeChildren = premadeChildren)
 
       whenReady(result, browserTimeout) {
         case NodeTree(child) =>
           child.length must equal(4) // 3 generated and 1 premade
-          child(3) must equal(n)
+          child.last must equal(premadeNode) // The premade are concatenated to the end of the seq
         case _ => fail("wrong type")
       }
     }
 
     "throw if you ask updateScope" in {
       val s = mock[IScope]
-      val (instance, scope) = nodeTreeFactory()
+      val (instance, _) = nodeTreeFactory()
       a[RuntimeException] must be thrownBy instance.updateScope(s)
     }
   }

@@ -21,10 +21,9 @@ final class ObjectDefFactorySpec extends TestComposition {
     }
 
     "returns expected given scope with 0 existing objects" in {
-      val s = Scope(numObjects = 0, height = 10, maxFuncsInObject = 3, maxExpressionsInFunc = 3, maxParamsInFunc = 3, maxObjectsInTree = 3)
-      val (factory, _) = objectDefFactory()
+      val (factory, scope) = objectDefFactory(numObjects = 0)
 
-      val result = factory.create(scope = s)
+      val result = factory.create(scope = scope)
 
       whenReady(result) {
         case ObjectDef(_, name) => name must equal("o0")
@@ -33,10 +32,9 @@ final class ObjectDefFactorySpec extends TestComposition {
     }
 
     "returns expected given scope with 1 existing objects" in {
-      val s = Scope(numObjects = 1, height = 10, maxFuncsInObject = 3, maxExpressionsInFunc = 3, maxParamsInFunc = 3, maxObjectsInTree = 3)
-      val (factory, _) = objectDefFactory()
+      val (factory, scope) = objectDefFactory(numObjects = 1)
 
-      val result = factory.create(scope = s)
+      val result = factory.create(scope = scope)
 
       whenReady(result) {
         case ObjectDef(_, name) => name must equal("o1")
@@ -45,10 +43,9 @@ final class ObjectDefFactorySpec extends TestComposition {
     }
 
     "returns 3 children given scope with 3 maxExpressionsInFunc (and rng mocked)" in {
-      val s = Scope(numFuncs = 0, height = 10, maxFuncsInObject = 3, maxExpressionsInFunc = 3, maxParamsInFunc = 3, maxObjectsInTree = 3)
-      val (factory, _) = objectDefFactory(nextInt = 3)
+      val (factory, scope) = objectDefFactory(nextInt = 3)
 
-      val result = factory.create(scope = s)
+      val result = factory.create(scope = scope)
 
       whenReady(result) {
         case ObjectDef(child, _) => child.length must equal(3)
@@ -59,19 +56,19 @@ final class ObjectDefFactorySpec extends TestComposition {
 
   "updateScope" must {
     "call increment objects" in {
-      val s = mock[IScope]
+      val scope = mock[IScope]
       val (factory, _) = objectDefFactory()
 
-      factory.updateScope(s)
+      factory.updateScope(scope)
 
-      verify(s, times(1)).incrementObjects
+      verify(scope, times(1)).incrementObjects
     }
   }
 
-  private def objectDefFactory(nextInt: Int = 0) = {
+  private def objectDefFactory(nextInt: Int = 0, numObjects: Int = 1) = {
     val rng: RandomNumberGenerator = mock[RandomNumberGenerator]
     when(rng.nextInt(any[Int])).thenReturn(nextInt)
-    val ioc = testInjector(new StubRng(rng = rng), new StubIScope)
+    val ioc = testInjector(new StubRng(rng = rng), new StubIScope(numObjects = numObjects))
     (ioc.getInstance(classOf[ObjectDefFactoryImpl]), ioc.getInstance(classOf[IScope]))
   }
 }
