@@ -32,8 +32,7 @@ final class FunctionMFactorySpec extends TestComposition {
     }
 
     "return expected given scope with 1 functions" in {
-      val scope = Scope(numFuncs = 1, height = 10, maxExpressionsInFunc = 3, maxParamsInFunc = 3)
-      val (factory, _) = functionMFactory()
+      val (factory, scope) = functionMFactory(numFuncs = 1)
 
       val result = factory.create(scope = scope)
 
@@ -66,12 +65,10 @@ final class FunctionMFactorySpec extends TestComposition {
     }
   }
 
-  private val factory = testInjector(new StubRng).getInstance(classOf[FunctionMFactoryImpl])
-
-  private def functionMFactory(nextInt: Int = 0) = {
+  private def functionMFactory(nextInt: Int = 0, numFuncs: Int = 0) = {
     val rng: RandomNumberGenerator = mock[RandomNumberGenerator]
     when(rng.nextInt(any[Int])).thenReturn(nextInt)
-    val ioc = testInjector(new StubRng(rng = rng), new StubIScope())
+    val ioc = testInjector(new StubRng(rng = rng), new StubIScope(numFuncs = numFuncs))
     (ioc.getInstance(classOf[FunctionMFactoryImpl]), ioc.getInstance(classOf[IScope]))
   }
 }

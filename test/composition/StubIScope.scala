@@ -4,14 +4,17 @@ import com.google.inject.AbstractModule
 import models.common.{IScope, Scope}
 
 final class StubIScope(
-                        scope: IScope = Scope(height = 10,
-                          maxExpressionsInFunc = 2,
-                          maxFuncsInObject = 3,
-                          maxParamsInFunc = 2,
-                          maxObjectsInTree = 3)
+                        numFuncs: Int = 0
                         ) extends AbstractModule {
 
   def configure(): Unit = {
+    val scope: IScope = Scope(
+      numFuncs = numFuncs,
+      height = 10,
+      maxExpressionsInFunc = 2,
+      maxFuncsInObject = 3,
+      maxParamsInFunc = 2,
+      maxObjectsInTree = 3)
     bind(classOf[IScope]).toInstance(scope)
   }
 }
