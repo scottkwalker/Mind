@@ -11,17 +11,10 @@ import scala.concurrent.Future
 
 final class CreateNodeImplSpec extends TestComposition {
 
-  // TODO look at code re-use between tests
   "create" must {
     "calls chooseChild on ai" in {
-      val scope = Scope(height = 10)
-      val instruction = mock[Instruction]
-      val v = mock[ReplaceEmpty]
-      when(v.create(scope)).thenReturn(Future.successful(instruction))
-      when(v.updateScope(scope)).thenReturn(scope)
-      val ai = mock[SelectionStrategy]
-      when(ai.chooseChild(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(v))
-      val possibleChildren = Future.successful(Seq(v))
+      val (_, scope, ai, possibleChildren) = build
+
       val sut = CreateNodeImpl(ai)
 
       whenReady(sut.create(possibleChildren, scope), browserTimeout) { _ =>
@@ -30,35 +23,35 @@ final class CreateNodeImplSpec extends TestComposition {
     }
 
     "calls updateScope" in {
-      val scope = Scope(height = 10)
-      val instruction = mock[Instruction]
-      val v = mock[ReplaceEmpty]
-      when(v.create(scope)).thenReturn(Future.successful(instruction))
-      when(v.updateScope(scope)).thenReturn(scope)
-      val ai = mock[SelectionStrategy]
-      when(ai.chooseChild(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(v))
-      val possibleChildren = Future.successful(Seq(v))
+      val (replaceEmpty, scope, ai, possibleChildren) = build
+
       val sut = CreateNodeImpl(ai)
 
       whenReady(sut.create(possibleChildren, scope)) { _ =>
-        verify(v, times(1)).updateScope(scope)
+        verify(replaceEmpty, times(1)).updateScope(scope)
       }
     }
 
     "calls create on factory" in {
-      val scope = Scope(height = 10)
-      val instruction = mock[Instruction]
-      val v = mock[ReplaceEmpty]
-      when(v.create(scope)).thenReturn(Future.successful(instruction))
-      when(v.updateScope(scope)).thenReturn(scope)
-      val ai = mock[SelectionStrategy]
-      when(ai.chooseChild(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(v))
-      val possibleChildren = Future.successful(Seq(v))
+      val (replaceEmpty, scope, ai, possibleChildren) = build
+
       val sut = CreateNodeImpl(ai)
 
       whenReady(sut.create(possibleChildren, scope)) { _ =>
-        verify(v, times(1)).create(scope)
+        verify(replaceEmpty, times(1)).create(scope)
       }
     }
+  }
+
+  private def build = {
+    val scope = Scope(height = 10)
+    val instruction = mock[Instruction]
+    val replaceEmpty = mock[ReplaceEmpty]
+    when(replaceEmpty.create(scope)).thenReturn(Future.successful(instruction))
+    when(replaceEmpty.updateScope(scope)).thenReturn(scope)
+    val ai = mock[SelectionStrategy]
+    when(ai.chooseChild(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(replaceEmpty))
+    val possibleChildren = Future.successful(Seq(replaceEmpty))
+    (replaceEmpty, scope, ai, possibleChildren)
   }
 }
