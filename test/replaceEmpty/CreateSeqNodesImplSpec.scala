@@ -21,6 +21,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       when(v.create(any[Scope])).thenReturn(Future.successful(n))
       val rng = mock[RandomNumberGenerator]
       when(rng.nextBoolean).thenReturn(true)
+      when(rng.nextInt(any[Int])).thenReturn(1)
       val ai: SelectionStrategy = Aco(rng)
       val cn = mock[CreateNode]
       when(cn.create(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(s, n))
@@ -28,7 +29,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val sut = CreateSeqNodesImpl(cn, ai)
 
       val result = sut.create(possibleChildren = possibleChildren,
-        scope = s,
+        initScope = s,
         factoryLimit = s.maxFuncsInObject
       )
 
@@ -56,7 +57,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val sut = CreateSeqNodesImpl(cn, ai)
 
       val result = sut.create(possibleChildren = possibleChildren,
-        scope = s,
+        initScope = s,
         factoryLimit = s.maxFuncsInObject
       )
 
@@ -84,7 +85,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val sut = CreateSeqNodesImpl(cn, ai)
 
       val result = sut.create(possibleChildren = possibleChildren,
-        scope = s,
+        initScope = s,
         factoryLimit = s.maxFuncsInObject
       )
 
@@ -112,8 +113,8 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       val sut = CreateSeqNodesImpl(cn, ai)
 
       val result = sut.create(possibleChildren = possibleChildren,
-        scope = s,
-        acc = Seq(n),
+        initScope = s,
+        initAcc = Seq(n),
         factoryLimit = s.maxFuncsInObject
       )
 

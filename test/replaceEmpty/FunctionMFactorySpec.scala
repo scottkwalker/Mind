@@ -1,51 +1,54 @@
 package replaceEmpty
 
-import composition.{StubRng, TestComposition}
+import ai.RandomNumberGenerator
+import composition.{StubIScope, StubRng, TestComposition}
 import models.common.{IScope, Scope}
 import models.domain.scala.FunctionM
+import org.mockito.Matchers._
 import org.mockito.Mockito._
 
 final class FunctionMFactorySpec extends TestComposition {
 
   "create" must {
     "return instance of this type" in {
-      val s = Scope(height = 10)
+      val (factory, scope) = functionMFactory()
 
-      val instance = factory.create(scope = s)
+      val result = factory.create(scope = scope)
 
-      whenReady(instance) { result =>
+      whenReady(result) { result =>
         result mustBe a[FunctionM]
       }
     }
 
     "return expected given scope with 0 functions" in {
-      val s = Scope(numFuncs = 0, height = 10)
+      val (factory, scope) = functionMFactory()
 
-      val instance = factory.create(scope = s)
+      val result = factory.create(scope = scope)
 
-      whenReady(instance) {
+      whenReady(result) {
         case FunctionM(_, _, name) => name must equal("f0")
         case _ => fail("wrong type")
       }
     }
 
     "return expected given scope with 1 functions" in {
-      val s = Scope(numFuncs = 1, height = 10)
+      val scope = Scope(numFuncs = 1, height = 10, maxExpressionsInFunc = 3, maxParamsInFunc = 3)
+      val (factory, _) = functionMFactory()
 
-      val instance = factory.create(scope = s)
+      val result = factory.create(scope = scope)
 
-      whenReady(instance) {
+      whenReady(result) {
         case FunctionM(_, _, name) => name must equal("f1")
         case _ => fail("wrong type")
       }
     }
 
     "returns 3 children given scope with 3 maxExpressionsInFunc (and rng mocked)" in {
-      val s = Scope(numFuncs = 0, height = 10, maxParamsInFunc = 3, maxExpressionsInFunc = 3)
+      val (factory, scope) = functionMFactory(nextInt = 3)
 
-      val instance = factory.create(scope = s)
+      val result = factory.create(scope = scope)
 
-      whenReady(instance) {
+      whenReady(result) {
         case FunctionM(_, children, _) => children.length must equal(3)
         case _ => fail("wrong type")
       }
@@ -54,13 +57,21 @@ final class FunctionMFactorySpec extends TestComposition {
 
   "updateScope" must {
     "call increment functions" in {
-      val s = mock[IScope]
+      val scope = mock[IScope]
+      val (factory, _) = functionMFactory()
 
-      factory.updateScope(s)
+      factory.updateScope(scope = scope)
 
-      verify(s, times(1)).incrementFuncs
+      verify(scope, times(1)).incrementFuncs
     }
   }
 
   private val factory = testInjector(new StubRng).getInstance(classOf[FunctionMFactoryImpl])
+
+  private def functionMFactory(nextInt: Int = 0) = {
+    val rng: RandomNumberGenerator = mock[RandomNumberGenerator]
+    when(rng.nextInt(any[Int])).thenReturn(nextInt)
+    val ioc = testInjector(new StubRng(rng = rng), new StubIScope())
+    (ioc.getInstance(classOf[FunctionMFactoryImpl]), ioc.getInstance(classOf[IScope]))
+  }
 }

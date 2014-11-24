@@ -24,21 +24,21 @@ final class SelectionStrategySpec extends TestComposition {
       sut.generateLengthOfSeq(factoryLimit = 42) must equal(1)
     }
 
-    "calls random number generator with a value 1 less than the limit passed in" in {
+    "calls random number generator with the limit passed in" in {
       val (sut, rng) = selectionStrategy(nextInt = 5)
       val factoryLimit = 42
 
       sut.generateLengthOfSeq(factoryLimit = factoryLimit)
 
-      verify(rng, times(1)).nextInt(factoryLimit - 1)
+      verify(rng, times(1)).nextInt(factoryLimit)
     }
 
-    "returns random number generator stubbed value + 1" in {
+    "returns random number generator stubbed value when greater than zero" in {
       val nextInt = 5
       val (sut, rng) = selectionStrategy(nextInt = nextInt)
       val factoryLimit = 42
 
-      sut.generateLengthOfSeq(factoryLimit = factoryLimit) must equal(nextInt + 1)
+      sut.generateLengthOfSeq(factoryLimit = factoryLimit) must equal(nextInt)
     }
   }
 

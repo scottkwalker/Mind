@@ -13,30 +13,40 @@ import scala.concurrent.ExecutionContext.Implicits.global
 final case class CreateSeqNodesImpl @Inject()(createNode: CreateNode, ai: SelectionStrategy) extends CreateSeqNodes {
 
   def create(possibleChildren: => Future[Seq[ReplaceEmpty]],
-             scope: IScope,
+             initScope: IScope,
              saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
-             acc: Seq[Instruction] = Seq.empty, // Default the accumulator to empty.
+             initAcc: Seq[Instruction] = Seq.empty, // Default the accumulator to empty.
              factoryLimit: Int
               ): Future[(IScope, Seq[Instruction])] = {
-    if (ai.canAddAnother(acc.length, factoryLimit)) {
-      createNode.create(possibleChildren, scope).flatMap {
-        case (updatedScope, child) =>
-          create(possibleChildren,
-            updatedScope,
-            saveAccLengthInScope,
-            acc :+ child,
-            factoryLimit
-          )
+    (1 to ai.generateLengthOfSeq(factoryLimit) - initAcc.length).foldLeft(Future.successful((initScope, initAcc))) {
+      (previous, count) => previous.flatMap {
+        case (previousScope, acc) =>
+          createNode.create(possibleChildren, previousScope).map {
+            case (updatedScope, instruction) => (updatedScope, acc :+ instruction)
+          }
       }
-    }
-    else {
-      val updatedScope = saveAccLengthInScope match {
-        case Some(f) => f(scope, acc.length)
-        case None => scope
-      }
-      Future.successful((updatedScope, acc))
     }
 
+
+
+//    if (ai.canAddAnother(initAcc.length, factoryLimit)) {
+//      createNode.create(possibleChildren, initScope).flatMap {
+//        case (updatedScope, child) =>
+//          create(possibleChildren,
+//            updatedScope,
+//            saveAccLengthInScope,
+//            initAcc :+ child,
+//            factoryLimit
+//          )
+//      }
+//    }
+//    else {
+//      val updatedScope = saveAccLengthInScope match {
+//        case Some(f) => f(initScope, initAcc.length)
+//        case None => initScope
+//      }
+//      Future.successful((updatedScope, initAcc))
+//    }
 
   }
 }
