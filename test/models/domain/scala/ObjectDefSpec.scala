@@ -7,6 +7,8 @@ import models.domain.Instruction
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
+import scala.concurrent.{Await, Future}
+
 final class ObjectDefSpec extends TestComposition {
 
   "hasNoEmpty" must {
@@ -79,22 +81,25 @@ final class ObjectDefSpec extends TestComposition {
       val s = mock[IScope]
       implicit val i = mock[Injector]
       val f = mock[Instruction]
-      when(f.replaceEmpty(any[Scope])(any[Injector])).thenReturn(f)
+      when(f.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(f)
       val instance = ObjectDef(Seq(f), name = name)
 
-      instance.replaceEmpty(s)
+      val result = instance.replaceEmpty(s)
 
-      verify(f, times(1)).replaceEmpty(any[Scope])(any[Injector])
+      whenReady(result) { r => verify(f, times(1)).replaceEmpty(any[Scope])(any[Injector])}
     }
 
     "returns same when no empty nodes" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
       val f = mock[Instruction]
-      when(f.replaceEmpty(any[Scope])(any[Injector])).thenReturn(f)
+      when(f.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(f)
       val instance = ObjectDef(Seq(f), name)
 
-      instance.replaceEmpty(s) must equal(instance)
+      val result = instance.replaceEmpty(s)
+      whenReady(result) {
+        _ must equal(instance)
+      }
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -110,7 +115,7 @@ final class ObjectDefSpec extends TestComposition {
 
       val result = instance.replaceEmpty(s)(i)
 
-      result match {
+      whenReady(result) {
         case ObjectDef(n2, name2) =>
           n2 match {
             case Seq(nSeq) => nSeq mustBe a[FunctionM]
@@ -126,7 +131,7 @@ final class ObjectDefSpec extends TestComposition {
       implicit val i = mock[Injector]
       val instance = new ObjectDef(nodes = Seq.empty, name = name)
 
-      a[RuntimeException] must be thrownBy instance.replaceEmpty(s)
+      a[RuntimeException] must be thrownBy Await.result(instance.replaceEmpty(s), finiteTimeout)
     }
   }
 
@@ -150,5 +155,5 @@ final class ObjectDefSpec extends TestComposition {
     }
   }
 
-  private final val name = "o0"
+  private val name = "o0"
 }

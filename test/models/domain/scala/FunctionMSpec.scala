@@ -7,6 +7,8 @@ import models.domain.Instruction
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
+import scala.concurrent.{Await, Future}
+
 final class FunctionMSpec extends TestComposition {
 
   "hasNoEmpty" must {
@@ -97,31 +99,37 @@ final class FunctionMSpec extends TestComposition {
       val s = mock[IScope]
       implicit val i = mock[Injector]
       val p = mock[Instruction]
-      when(p.replaceEmpty(any[Scope])(any[Injector])).thenReturn(p)
+      when(p.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(p)
       val v = mock[Instruction]
-      when(v.replaceEmpty(any[Scope])(any[Injector])) thenReturn v
+      when(v.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(v)
       val instance = FunctionM(params = Seq(p),
         nodes = Seq(v),
         name = name)
 
-      instance.replaceEmpty(s)
+      val result = instance.replaceEmpty(s)
 
-      verify(p, times(1)).replaceEmpty(any[Scope])(any[Injector])
-      verify(v, times(1)).replaceEmpty(any[Scope])(any[Injector])
+      whenReady(result) { _ =>
+        verify(p, times(1)).replaceEmpty(any[Scope])(any[Injector])
+        verify(v, times(1)).replaceEmpty(any[Scope])(any[Injector])
+      }
     }
 
     "returns same when no empty nodes" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
       val p = mock[Instruction]
-      when(p.replaceEmpty(any[Scope])(any[Injector])) thenReturn p
+      when(p.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(p)
       val v = mock[Instruction]
-      when(v.replaceEmpty(any[Scope])(any[Injector])) thenReturn v
+      when(v.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(v)
       val instance = FunctionM(params = Seq(p),
         nodes = Seq(v),
         name = name)
 
-      instance.replaceEmpty(s) must equal(instance)
+      val result = instance.replaceEmpty(s)
+
+      whenReady(result) {
+        _ must equal(instance)
+      }
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -138,7 +146,7 @@ final class FunctionMSpec extends TestComposition {
 
       val result = instance.replaceEmpty(s)(i)
 
-      result match {
+      whenReady(result) {
         case FunctionM(p2, n2, n) =>
           p2 match {
             case Seq(pSeq) => pSeq mustBe a[ValDclInFunctionParam]
@@ -150,49 +158,49 @@ final class FunctionMSpec extends TestComposition {
       }
     }
 
-      "throw when passed empty params seq (no empty or non-empty)" in {
-        val s = mock[IScope]
-        implicit val i = mock[Injector]
-        val instance = FunctionM(params = Seq.empty,
-          nodes = Seq(Empty()),
-          name = name)
+    "throw when passed empty params seq (no empty or non-empty)" in {
+      val s = mock[IScope]
+      implicit val i = mock[Injector]
+      val instance = FunctionM(params = Seq.empty,
+        nodes = Seq(Empty()),
+        name = name)
 
-        a[RuntimeException] must be thrownBy instance.replaceEmpty(s)
-      }
-
-      "throw when passed empty nodes seq (no empty or non-empty)" in {
-        val s = mock[IScope]
-        implicit val i = mock[Injector]
-        val instance = FunctionM(params = Seq(Empty()),
-          nodes = Seq.empty,
-          name = name)
-
-        a[RuntimeException] must be thrownBy instance.replaceEmpty(s)
-      }
+      a[RuntimeException] must be thrownBy Await.result(instance.replaceEmpty(s), finiteTimeout)
     }
 
-    "height" must {
-      "returns 1 + child height" in {
-        val v = mock[Instruction]
-        when(v.height) thenReturn 2
+    "throw when passed empty nodes seq (no empty or non-empty)" in {
+      val s = mock[IScope]
+      implicit val i = mock[Injector]
+      val instance = FunctionM(params = Seq(Empty()),
+        nodes = Seq.empty,
+        name = name)
 
-        FunctionM(params = params,
-          nodes = Seq(v, v),
-          name = name).height must equal(3)
-      }
+      a[RuntimeException] must be thrownBy Await.result(instance.replaceEmpty(s), finiteTimeout)
+    }
+  }
 
-      "returns 1 + child height when children have different depths" in {
-        val v = mock[Instruction]
-        when(v.height) thenReturn 1
-        val v2 = mock[Instruction]
-        when(v2.height) thenReturn 2
+  "height" must {
+    "returns 1 + child height" in {
+      val v = mock[Instruction]
+      when(v.height) thenReturn 2
 
-        FunctionM(params = params,
-          nodes = Seq(v, v2),
-          name = name).height must equal(3)
-      }
+      FunctionM(params = params,
+        nodes = Seq(v, v),
+        name = name).height must equal(3)
     }
 
-  private final val name = "f0"
+    "returns 1 + child height when children have different depths" in {
+      val v = mock[Instruction]
+      when(v.height) thenReturn 1
+      val v2 = mock[Instruction]
+      when(v2.height) thenReturn 2
+
+      FunctionM(params = params,
+        nodes = Seq(v, v2),
+        name = name).height must equal(3)
+    }
+  }
+
+  private val name = "f0"
   private val params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM()))
 }

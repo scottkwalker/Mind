@@ -25,7 +25,11 @@ final class IntegerMSpec extends TestComposition {
       implicit val i = mock[Injector]
       val instance = IntegerM()
 
-      instance.replaceEmpty(s) must equal(instance)
+      val result = instance.replaceEmpty(s)
+
+      whenReady(result) {
+        _ must equal(instance)
+      }
     }
   }
 

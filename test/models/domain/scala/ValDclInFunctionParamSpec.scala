@@ -7,6 +7,8 @@ import models.domain.Instruction
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
+import scala.concurrent.Future
+
 final class ValDclInFunctionParamSpec extends TestComposition {
 
   "toRawScala" must {
@@ -66,12 +68,12 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val name = "a"
       implicit val i = mock[Injector]
       val p = mock[Instruction]
-      when(p.replaceEmpty(any[Scope])(any[Injector])).thenReturn(p)
+      when(p.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(p)
       val instance = ValDclInFunctionParam(name, p)
 
-      instance.replaceEmpty(s)
+      val result = instance.replaceEmpty(s)
 
-      verify(p, times(1)).replaceEmpty(any[Scope])(any[Injector])
+      whenReady(result) { _ => verify(p, times(1)).replaceEmpty(any[Scope])(any[Injector])}
     }
 
     "returns same when no empty nodes" in {
@@ -81,12 +83,14 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val name = "a"
       implicit val i = mock[Injector]
       val p = mock[Instruction]
-      when(p.replaceEmpty(any[Scope])(any[Injector])).thenReturn(p)
+      when(p.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(p)
       val instance = ValDclInFunctionParam(name, p)
 
       val result = instance.replaceEmpty(s)
 
-      result must equal(instance)
+      whenReady(result) {
+        _ must equal(instance)
+      }
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -98,7 +102,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
 
       val result = instance.replaceEmpty(s)(i)
 
-      result match {
+      whenReady(result) {
         case ValDclInFunctionParam(name2, primitiveType) =>
           name2 must equal("a")
           primitiveType mustBe an[IntegerM]

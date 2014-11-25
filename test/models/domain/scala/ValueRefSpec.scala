@@ -44,7 +44,11 @@ final class ValueRefSpec extends TestComposition {
       val i = mock[Injector]
       val instance = ValueRef(name)
 
-      instance.replaceEmpty(s)(i) must equal(instance)
+      val result = instance.replaceEmpty(s)(i)
+
+      whenReady(result) {
+        _ must equal(instance)
+      }
     }
   }
 

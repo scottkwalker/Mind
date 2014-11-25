@@ -1,13 +1,15 @@
 package ai.aco
 
 import ai.{RandomNumberGenerator, SelectionStrategy}
+import composition.ai.aco.AcoModule
 import composition.{StubRng, TestComposition}
-import replaceEmpty.ReplaceEmpty
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.{Empty, FunctionM, IntegerM, NodeTree, ObjectDef, ValDclInFunctionParam}
-import composition.ai.aco.AcoModule
 import org.mockito.Mockito.{times, verify}
+import replaceEmpty.ReplaceEmpty
+
+import scala.concurrent.Future
 
 final class AcoSpec extends TestComposition {
 
@@ -40,9 +42,12 @@ final class AcoSpec extends TestComposition {
 
       try {
         for (i <- 1 to 10) {
-          val nodeTree: NodeTree = premade.replaceEmpty(scope)(injector).asInstanceOf[NodeTree]
-          val f = new AddTwoInts(nodeTree)
-          f.fitness
+          val result = premade.replaceEmpty(scope)(injector)
+          whenReady(result) {
+            case nodeTree: NodeTree =>
+              val f = new AddTwoInts(nodeTree)
+              f.fitness
+          }
         }
       }
       catch {

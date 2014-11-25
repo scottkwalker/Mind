@@ -1,11 +1,13 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import replaceEmpty.{IntegerMFactoryImpl, UpdateScopeIncrementVals}
 import models.common.IScope
 import models.domain.Instruction
-import utils.Timeout.finiteTimeout
-import scala.concurrent.Await
+import replaceEmpty.{IntegerMFactoryImpl, UpdateScopeIncrementVals}
+
+import scala.async.Async.{async, await}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 final case class ValDclInFunctionParam(name: String, primitiveType: Instruction) extends Instruction with UpdateScopeIncrementVals {
 
@@ -18,13 +20,13 @@ final case class ValDclInFunctionParam(name: String, primitiveType: Instruction)
     }
   }
 
-  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Instruction = {
+  override def replaceEmpty(scope: IScope)(implicit injector: Injector): Future[Instruction] = async {
     val pt = primitiveType match {
-      case _: Empty => Await.result(injector.getInstance(classOf[IntegerMFactoryImpl]).create(scope), finiteTimeout)
-      case node: Instruction =>
-        node.replaceEmpty(updateScope(scope.decrementHeight))
+      case _: Empty => injector.getInstance(classOf[IntegerMFactoryImpl]).create(scope)
+      case nonEmpty: Instruction =>
+        nonEmpty.replaceEmpty(updateScope(scope.decrementHeight))
     }
-    ValDclInFunctionParam(name, pt)
+    ValDclInFunctionParam(name, await(pt))
   }
 
   override def height: Int = 1 + primitiveType.height

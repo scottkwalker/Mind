@@ -7,6 +7,8 @@ import models.domain.Instruction
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
+import scala.concurrent.Future
+
 final class AddOperatorSpec extends TestComposition {
 
   "toRawScala" must {
@@ -79,22 +81,26 @@ final class AddOperatorSpec extends TestComposition {
       val s = mock[IScope]
       implicit val i = mock[Injector]
       val v = mock[Instruction]
-      when(v.replaceEmpty(any[Scope])(any[Injector])).thenReturn(v)
+      when(v.replaceEmpty(any[Scope])(any[Injector])).thenReturn(Future.successful(v))
       val instance = AddOperator(v, v)
 
-      instance.replaceEmpty(s)(i)
+      val result = instance.replaceEmpty(s)(i)
 
-      verify(v, times(2)).replaceEmpty(any[Scope])(any[Injector])
+      whenReady(result) { _ => verify(v, times(2)).replaceEmpty(any[Scope])(any[Injector])}
     }
 
     "returns same when no empty nodes" in {
       val s = mock[IScope]
       val i = mock[Injector]
       val v = mock[Instruction]
-      when(v.replaceEmpty(any[Scope])(any[Injector])).thenReturn(v)
+      when(v.replaceEmpty(any[Scope])(any[Injector])).thenReturn(Future.successful(v))
       val instance = AddOperator(v, v)
 
-      instance.replaceEmpty(s)(i) must equal(instance)
+      val result = instance.replaceEmpty(s)(i)
+
+      whenReady(result) {
+        _ must equal(instance)
+      }
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -106,7 +112,7 @@ final class AddOperatorSpec extends TestComposition {
 
       val result = instance.replaceEmpty(s)(i)
 
-      result match {
+      whenReady(result) {
         case AddOperator(left, right) =>
           left mustBe a[ValueRef]
           right mustBe a[ValueRef]

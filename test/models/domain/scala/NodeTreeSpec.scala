@@ -7,6 +7,8 @@ import models.domain.Instruction
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
+import scala.concurrent.{Await, Future}
+
 final class NodeTreeSpec extends TestComposition {
 
   "hasNoEmpty" must {
@@ -56,22 +58,25 @@ final class NodeTreeSpec extends TestComposition {
       val s = mock[IScope]
       implicit val i = mock[Injector]
       val f = mock[Instruction]
-      when(f.replaceEmpty(any[Scope])(any[Injector])).thenReturn(f)
+      when(f.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(f)
       val instance = NodeTree(Seq(f))
 
-      instance.replaceEmpty(s)
-
-      verify(f, times(1)).replaceEmpty(any[Scope])(any[Injector])
+      val result = instance.replaceEmpty(s)
+      whenReady(result) { _ => verify(f, times(1)).replaceEmpty(any[Scope])(any[Injector])}
     }
 
     "return same when no empty nodes" in {
       val s = mock[IScope]
       implicit val i = mock[Injector]
       val f = mock[Instruction]
-      when(f.replaceEmpty(any[Scope])(any[Injector])).thenReturn(f)
+      when(f.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(f)
       val instance = new NodeTree(Seq(f))
 
-      instance.replaceEmpty(s) must equal(instance)
+      val result = instance.replaceEmpty(s)
+
+      whenReady(result) {
+        _ must equal(instance)
+      }
     }
 
     "return without empty nodes given there were empty nodes" in {
@@ -86,7 +91,7 @@ final class NodeTreeSpec extends TestComposition {
 
       val result = instance.replaceEmpty(s)(i)
 
-      result match {
+      whenReady(result) {
         case NodeTree(nodes) =>
           nodes match {
             case Seq(n2) => n2 mustBe an[ObjectDef]
@@ -101,7 +106,7 @@ final class NodeTreeSpec extends TestComposition {
       implicit val i = mock[Injector]
       val instance = new NodeTree(nodes = Seq.empty)
 
-      a[RuntimeException] must be thrownBy instance.replaceEmpty(s)
+      a[RuntimeException] must be thrownBy Await.result(instance.replaceEmpty(s), finiteTimeout)
     }
   }
 

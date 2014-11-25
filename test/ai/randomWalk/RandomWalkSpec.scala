@@ -40,9 +40,12 @@ final class RandomWalkSpec extends TestComposition {
 
       try {
         for (i <- 1 to 10) {
-          val nodeTree: NodeTree = premade.replaceEmpty(scope)(injector).asInstanceOf[NodeTree]
-          val f = new AddTwoInts(nodeTree)
-          f.fitness
+          val result = premade.replaceEmpty(scope)(injector)
+          whenReady(result) {
+            case nodeTree: NodeTree =>
+              val f = new AddTwoInts(nodeTree)
+              f.fitness
+          }
         }
       }
       catch {

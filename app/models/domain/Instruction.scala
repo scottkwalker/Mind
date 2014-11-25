@@ -3,6 +3,8 @@ package models.domain
 import com.google.inject.Injector
 import models.common.IScope
 
+import _root_.scala.concurrent.Future
+
 // Represents a unit of a language, e.g. arithmetic (+ -), logic operations (&& ||), control flow (if-else), etc
 trait Instruction {
 
@@ -16,7 +18,7 @@ trait Instruction {
   def hasNoEmpty(scope: IScope): Boolean
 
   // Recursively replace any child Instruction of type Empty with new values chosen by the AI.
-  def replaceEmpty(scope: IScope)(implicit injector: Injector): Instruction
+  def replaceEmpty(scope: IScope)(implicit injector: Injector): Future[Instruction]
 
   // The height of the tree. Minimum of 1 (the current node).
   def height: Int

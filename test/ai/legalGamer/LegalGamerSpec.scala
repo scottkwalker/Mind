@@ -2,10 +2,10 @@ package ai.legalGamer
 
 import ai.{RandomNumberGenerator, SelectionStrategy}
 import composition.{StubRng, TestComposition}
-import replaceEmpty.ReplaceEmpty
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.{Empty, FunctionM, IntegerM, NodeTree, ObjectDef, ValDclInFunctionParam}
+import replaceEmpty.ReplaceEmpty
 
 final class LegalGamerSpec extends TestComposition {
 
@@ -37,9 +37,12 @@ final class LegalGamerSpec extends TestComposition {
         maxObjectsInTree = 1)
 
       try {
-        val nodeTree: NodeTree = premade.replaceEmpty(scope)(injector).asInstanceOf[NodeTree]
-        val f = new AddTwoInts(nodeTree)
-        f.fitness
+        val result = premade.replaceEmpty(scope)(injector)
+        whenReady(result) {
+          case nodeTree: NodeTree =>
+            val f = new AddTwoInts(nodeTree)
+            f.fitness
+        }
       }
       catch {
         case e: Throwable => fail("must not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
