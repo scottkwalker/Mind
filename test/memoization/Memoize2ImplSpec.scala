@@ -190,7 +190,7 @@ final class Memoize2ImplSpec extends TestComposition {
     def writes(cache: Map[String, Either[CountDownLatch, Future[Int]]]): JsValue = {
       val computedKeyValues = cache.flatMap {
         case (k, Right(v)) if v.isCompleted =>
-          val computed = scala.concurrent.Await.result(v, finiteTimeout)
+          val computed = Await.result(v, finiteTimeout) // It should be OK to use blocking Await here are the result is already computed so should instantly be returned.
           Some(k -> computed) // Only store the computed values (the 'right-side').
         case _ => None
       }

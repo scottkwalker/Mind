@@ -12,6 +12,7 @@ import scala.annotation.tailrec
 
 final class Memoize1ImplSpec extends TestComposition {
 
+  // TODO convert from twitter Futures to scala futures
   "apply" must {
     "return the same result when called twice" in {
       val memoizePlusOne = new Memoize1Impl[Int, Int] {
