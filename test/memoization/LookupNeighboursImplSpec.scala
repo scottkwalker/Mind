@@ -6,18 +6,14 @@ import models.common.Scope
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{never, times, verify}
 import replaceEmpty.ReplaceEmpty
-import scala.concurrent.Await
 
 final class LookupNeighboursImplSpec extends TestComposition {
 
   "fetch with neighbours" must {
     "does not call FactoryIdToFactory.convert with ReplaceEmpty as the repository already contains the ids" in {
-      val scope = Scope(height = 3)
-      val factoryIdToFactory = mock[FactoryLookup]
-      val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory)) // Override an implementation returned by IoC with a stubbed version.
-      val legalNeighboursImpl = injector.getInstance(classOf[LookupNeighbours])
+      val (lookupNeighbours, scope, factoryIdToFactory) = build
 
-      val result = legalNeighboursImpl.fetch(scope = scope, neighbours = Seq(fakeFactoryTerminates1Id))
+      val result = lookupNeighbours.fetch(scope = scope, neighbours = Seq(fakeFactoryTerminates1Id))
 
       whenReady(result, browserTimeout) { _ =>
         verify(factoryIdToFactory, never).convert(any[ReplaceEmpty])
@@ -25,12 +21,9 @@ final class LookupNeighboursImplSpec extends TestComposition {
     }
 
     "call FactoryIdToFactory.convert(factory) for only the nodes that can terminate" in {
-      val scope = Scope(height = 3)
-      val factoryIdToFactory = mock[FactoryLookup]
-      val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory)) // Override an implementation returned by IoC with a stubbed version.
-      val legalNeighboursImpl = injector.getInstance(classOf[LookupNeighbours])
+      val (lookupNeighbours, scope, factoryIdToFactory) = build
 
-      val result = legalNeighboursImpl.fetch(scope = scope, neighbours = Seq(fakeFactoryTerminates1Id))
+      val result = lookupNeighbours.fetch(scope = scope, neighbours = Seq(fakeFactoryTerminates1Id))
 
       whenReady(result, browserTimeout) { _ =>
         verify(factoryIdToFactory, times(2)).convert(fakeFactoryTerminates1Id)
@@ -38,12 +31,9 @@ final class LookupNeighboursImplSpec extends TestComposition {
     }
 
     "return only the factories of nodes that can terminate" in {
-      val scope = Scope(height = 3)
-      val factoryIdToFactory = mock[FactoryLookup]
-      val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory)) // Override an implementation returned by IoC with a stubbed version.
-      val legalNeighboursImpl = injector.getInstance(classOf[LookupNeighbours])
+      val (lookupNeighbours, scope, _) = build
 
-      val result = legalNeighboursImpl.fetch(scope = scope,
+      val result = lookupNeighbours.fetch(scope = scope,
         neighbours = Seq(fakeFactoryDoesNotTerminateId,
           fakeFactoryTerminates1Id,
           fakeFactoryDoesNotTerminateId,
@@ -58,12 +48,9 @@ final class LookupNeighboursImplSpec extends TestComposition {
 
   "fetch with current node" must {
     "call FactoryIdToFactory.convert(id) for only the nodes that can terminate" in {
-      val scope = Scope(height = 3)
-      val factoryIdToFactory = mock[FactoryLookup]
-      val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory))
-      val legalNeighboursImpl = injector.getInstance(classOf[LookupNeighbours])
+      val (lookupNeighbours, scope, factoryIdToFactory) = build
 
-      val result = legalNeighboursImpl.fetch(scope = scope, currentNode = fakeFactoryHasChildrenId)
+      val result = lookupNeighbours.fetch(scope = scope, currentNode = fakeFactoryHasChildrenId)
 
       whenReady(result, browserTimeout) { _ =>
         verify(factoryIdToFactory, times(1)).convert(fakeFactoryHasChildrenId)
@@ -72,16 +59,20 @@ final class LookupNeighboursImplSpec extends TestComposition {
     }
 
     "return only the ids of nodes that can terminate" in {
-      val scope = Scope(height = 3)
-      val factoryIdToFactory = mock[FactoryLookup]
-      val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory))
-      val legalNeighboursImpl = injector.getInstance(classOf[LookupNeighbours])
+      val (lookupNeighbours, scope, _) = build
 
-      val result = legalNeighboursImpl.fetch(scope = scope, currentNode = fakeFactoryHasChildrenId)
+      val result = lookupNeighbours.fetch(scope = scope, currentNode = fakeFactoryHasChildrenId)
 
       whenReady(result, browserTimeout) {
         _ must equal(Seq(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
       }
     }
+  }
+
+  private def build = {
+    val scope = Scope(height = 3)
+    val factoryIdToFactory = mock[FactoryLookup]
+    val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory)) // Override an implementation returned by IoC with a stubbed version.
+    (injector.getInstance(classOf[LookupNeighbours]), scope, factoryIdToFactory)
   }
 }
