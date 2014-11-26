@@ -21,12 +21,12 @@ final case class ObjectDef(nodes: Seq[Instruction], name: String) extends Instru
     }
   }
 
-  private def replaceEmpty(scope: IScope, head: Instruction, acc: Seq[Instruction])(implicit injector: Injector) = {
+  private def replaceEmpty(scope: IScope, currentInstruction: Instruction, acc: Seq[Instruction])(implicit injector: Injector) = {
     lazy val factory = injector.getInstance(classOf[ObjectDefFactory])
-    head match {
+    currentInstruction match {
       case _: Empty => factory.createNodes(scope = scope) // Head node (and any nodes after it) is of type empty, so replace it with a non-empty
-      case n: Instruction =>
-        n.replaceEmpty(scope).map { r => // Head node is not empty, but one of the child nodes may be so check it's children.
+      case instruction: Instruction =>
+        instruction.replaceEmpty(scope).map { r => // Head node is not empty, but one of the child nodes may be so check it's children.
           val updatedScope = r.updateScope(scope) // Update scope to include this node.
           (updatedScope, acc :+ r)
         }
@@ -36,8 +36,8 @@ final case class ObjectDef(nodes: Seq[Instruction], name: String) extends Instru
   override def replaceEmpty(scope: IScope)(implicit injector: Injector): Future[Instruction] = async {
     require(nodes.length > 0, "must not be empty as then we have nothing to replace")
     val seqWithoutEmpties = nodes.foldLeft(Future.successful((scope, Seq.empty[Instruction]))) {
-      (fAcc, instruction) => fAcc.flatMap {
-        case (updatedScope, acc) => replaceEmpty(scope = updatedScope, head = instruction, acc = acc)
+      (previousResult, currentInstruction) => previousResult.flatMap {
+        case (updatedScope, acc) => replaceEmpty(scope = updatedScope, currentInstruction = currentInstruction, acc = acc)
       }
     }
     val (_, n) = await(seqWithoutEmpties)

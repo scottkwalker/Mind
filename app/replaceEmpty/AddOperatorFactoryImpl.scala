@@ -17,11 +17,11 @@ case class AddOperatorFactoryImpl @Inject()(
   override val neighbourIds = Seq(ValueRefFactoryImpl.id)
 
   override def create(scope: IScope): Future[Instruction] = async {
-    val ln = legalNeighbours.fetch(scope, neighbourIds)
-    val (updatedScope, leftChild) = await(creator.create(ln, scope))
-    val (_, rightChild) = await(creator.create(ln, updatedScope))
-    AddOperator(left = leftChild,
-      right = rightChild)
+    val possibleNodes = legalNeighbours.fetch(scope, neighbourIds)
+    val (updatedScope, left) = await(creator.create(possibleNodes, scope))
+    val (_, right) = await(creator.create(possibleNodes, updatedScope))
+    AddOperator(left = left,
+      right = right)
   }
 }
 

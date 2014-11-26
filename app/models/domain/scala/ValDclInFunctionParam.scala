@@ -21,12 +21,11 @@ final case class ValDclInFunctionParam(name: String, primitiveType: Instruction)
   }
 
   override def replaceEmpty(scope: IScope)(implicit injector: Injector): Future[Instruction] = async {
-    val pt = primitiveType match {
+    val instruction = primitiveType match {
       case _: Empty => injector.getInstance(classOf[IntegerMFactoryImpl]).create(scope)
-      case nonEmpty: Instruction =>
-        nonEmpty.replaceEmpty(updateScope(scope.decrementHeight))
+      case nonEmpty: Instruction => nonEmpty.replaceEmpty(updateScope(scope.decrementHeight))
     }
-    ValDclInFunctionParam(name, await(pt))
+    ValDclInFunctionParam(name, await(instruction))
   }
 
   override def height: Int = 1 + primitiveType.height

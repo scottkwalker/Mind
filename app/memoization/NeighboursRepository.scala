@@ -14,7 +14,7 @@ import scala.language.implicitConversions
 class NeighboursRepository @Inject()(factoryLookup: FactoryLookup)
   extends Memoize2Impl[IScope, Int, Boolean](factoryLookup.version)(writesNeighboursRepository) {
 
-  def f(scope: IScope, neighbourId: Int): Future[Boolean] =
+  def funcCalculate(scope: IScope, neighbourId: Int): Future[Boolean] =
     async {
       if (scope.hasHeightRemaining) {
         val possibleNeighbourIds = factoryLookup.convert(neighbourId).neighbourIds
@@ -36,9 +36,9 @@ object NeighboursRepository {
   private[memoization] implicit val writesNeighboursRepository = new Writes[Map[String, Either[CountDownLatch, Future[Boolean]]]] {
     def writes(cache: Map[String, Either[CountDownLatch, Future[Boolean]]]): JsValue = {
       def computedKeyValues: Map[String, Boolean] = cache.flatMap {
-        case (k, Right(v)) if v.isCompleted =>
-          val computed = Await.result(v, finiteTimeout) // It should be OK to use blocking Await here are the result is already computed so should instantly be returned.
-          Some(k -> computed) // Only store the computed values (the 'right-side').
+        case (key, Right(value)) if value.isCompleted =>
+          val computed = Await.result(value, finiteTimeout) // It should be OK to use blocking Await here are the result is already computed so should instantly be returned.
+          Some(key -> computed) // Only store the computed values (the 'right-side').
         case _ => None
       }
       Json.toJson(computedKeyValues)
@@ -52,7 +52,7 @@ object NeighboursRepository {
         (__ \ "cache").read[Map[String, Boolean]].map {
           keyValueMap =>
             val cache = keyValueMap.map {
-              case (k, v) => k -> Right[CountDownLatch, Future[Boolean]](Future.successful(v))
+              case (key, value) => key -> Right[CountDownLatch, Future[Boolean]](Future.successful(value))
             }
 
             val neighboursRepository = new NeighboursRepository(factoryLookup)

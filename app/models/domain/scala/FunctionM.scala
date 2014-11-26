@@ -22,12 +22,11 @@ final case class FunctionM(params: Seq[Instruction],
     !name.isEmpty &&
     nodes.forall(n => n.hasNoEmpty(scope.decrementHeight))
 
-
-  private def replaceEmpty(scope: IScope, head: Instruction, acc: Seq[Instruction], funcReplaceEmpty: (IScope) => Future[(IScope, Seq[Instruction])])(implicit injector: Injector): Future[(IScope, Seq[Instruction])] = {
-    head match {
+  private def replaceEmpty(scope: IScope, currentInstruction: Instruction, acc: Seq[Instruction], funcReplaceEmpty: (IScope) => Future[(IScope, Seq[Instruction])])(implicit injector: Injector): Future[(IScope, Seq[Instruction])] = {
+    currentInstruction match {
       case _: Empty => funcReplaceEmpty(scope) // Head node (and any nodes after it) is of type empty, so replace it with a non-empty
-      case n: Instruction =>
-        n.replaceEmpty(scope).map { r => // Head node is not empty, but one of the child nodes may be so check it's children.
+      case instruction: Instruction =>
+        instruction.replaceEmpty(scope).map { r => // Head node is not empty, but one of the child nodes may be so check it's children.
           val updatedScope = r.updateScope(scope) // Update scope to include this node.
           (updatedScope, acc :+ r)
         }
@@ -36,8 +35,8 @@ final case class FunctionM(params: Seq[Instruction],
 
   private def replaceEmpty(scope: IScope, input: Seq[Instruction], funcReplaceEmpty: (IScope) => Future[(IScope, Seq[Instruction])])(implicit injector: Injector): Future[(IScope, Seq[Instruction])] = {
     input.foldLeft(Future.successful((scope, Seq.empty[Instruction]))) {
-      (fAcc, instruction) => fAcc.flatMap {
-        case (updatedScope, acc) => replaceEmpty(scope = updatedScope, head = instruction, acc = acc, funcReplaceEmpty = funcReplaceEmpty)
+      (previousResult, currentInstruction) => previousResult.flatMap {
+        case (updatedScope, acc) => replaceEmpty(scope = updatedScope, currentInstruction = currentInstruction, acc = acc, funcReplaceEmpty = funcReplaceEmpty)
       }
     }
   }

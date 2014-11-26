@@ -14,9 +14,9 @@ final case class AddOperator(left: Instruction, right: Instruction) extends Inst
   override def toRaw: String = s"${left.toRaw} + ${right.toRaw}"
 
   override def hasNoEmpty(scope: IScope): Boolean = {
-    def validate(n: Instruction, scope: IScope) = {
-      n match {
-        case _: ValueRef => n.hasNoEmpty(scope.decrementHeight)
+    def validate(instruction: Instruction, scope: IScope) = {
+      instruction match {
+        case _: ValueRef => instruction.hasNoEmpty(scope.decrementHeight)
         case _: Empty => false
         case _ => false
       }
@@ -25,9 +25,9 @@ final case class AddOperator(left: Instruction, right: Instruction) extends Inst
     scope.hasHeightRemaining && validate(left, scope) && validate(right, scope)
   }
 
-  private def replaceEmpty(scope: IScope, child: Instruction)(implicit injector: Injector): Future[Instruction] = {
+  private def replaceEmpty(scope: IScope, instruction: Instruction)(implicit injector: Injector): Future[Instruction] = {
     lazy val factory = injector.getInstance(classOf[ValueRefFactory])
-    child match {
+    instruction match {
       case _: Empty => factory.create(scope)
       case nonEmpty: Instruction => nonEmpty.replaceEmpty(scope.decrementHeight) // This node is non-empty but its children may not be, so do the same check on this node's children.
     }

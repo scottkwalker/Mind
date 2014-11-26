@@ -35,7 +35,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
 
       whenReady(result) {
         case (_, nodes) =>
-          verify(cn, times(1)).create(possibleChildren = possibleChildren, scope = s)
+          verify(cn, times(1)).create(possibleNodes = possibleChildren, scope = s)
           nodes.length must equal(1)
       }
     }
@@ -63,7 +63,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
 
       whenReady(result) {
         case (_, nodes) =>
-          verify(cn, times(2)).create(possibleChildren = possibleChildren, scope = s)
+          verify(cn, times(2)).create(possibleNodes = possibleChildren, scope = s)
           nodes.length must equal(2)
       }
     }
@@ -91,7 +91,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
 
       whenReady(result) {
         case (_, nodes) =>
-          verify(cn, times(1)).create(possibleChildren = possibleChildren, scope = s)
+          verify(cn, times(1)).create(possibleNodes = possibleChildren, scope = s)
           nodes.length must equal(1)
       }
     }
@@ -120,7 +120,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
 
       whenReady(result) {
         case (_, nodes) =>
-          verify(cn, times(1)).create(possibleChildren = possibleChildren, scope = s)
+          verify(cn, times(1)).create(possibleNodes = possibleChildren, scope = s)
           nodes.length must equal(2)
       }
     }

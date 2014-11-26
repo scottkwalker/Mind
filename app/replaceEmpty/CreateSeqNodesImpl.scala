@@ -18,8 +18,11 @@ final case class CreateSeqNodesImpl @Inject()(createNode: CreateNode, ai: Select
              initAcc: Seq[Instruction] = Seq.empty, // Default the accumulator to empty.
              factoryLimit: Int
               ): Future[(IScope, Seq[Instruction])] = {
-    (1 to ai.generateLengthOfSeq(factoryLimit) - initAcc.length).foldLeft(Future.successful((initScope, initAcc))) {
-      (previous, count) => previous.flatMap {
+    // Create a seq of nodes (of a random length) from a pool of possible children.
+    val lengthOfSeq = ai.generateLengthOfSeq(factoryLimit) - initAcc.length
+    val init = Future.successful((initScope, initAcc))
+    (1 to lengthOfSeq).foldLeft(init) {
+      (previousResult, _) => previousResult.flatMap {
         case (previousScope, acc) =>
           createNode.create(possibleChildren, previousScope).map {
             case (updatedScope, instruction) => (updatedScope, acc :+ instruction)

@@ -62,7 +62,7 @@ abstract class Memoize2Impl[TKey1, TKey2, TOutput](
         // Compute the value outside of the synchronized block.
         val calculated =
           try {
-            f(key1, key2)
+            funcCalculate(key1, key2)
           } catch {
             case t: Throwable =>
               // If there was an exception running the computation, then we need to make sure we do not
