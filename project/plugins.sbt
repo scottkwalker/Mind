@@ -1,8 +1,6 @@
 //SBT plugins used by the project build including Play itself.
 
-logLevel := Level.Debug
-
-// The Typesafe repository 
+// The Typesafe repository
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
 resolvers += Resolver.sonatypeRepo("snapshots")
