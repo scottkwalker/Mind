@@ -68,7 +68,7 @@ final class ObjectDefFactorySpec extends TestComposition {
   private def objectDefFactory(nextInt: Int = 0, numObjects: Int = 1) = {
     val rng: RandomNumberGenerator = mock[RandomNumberGenerator]
     when(rng.nextInt(any[Int])).thenReturn(nextInt)
-    val ioc = testInjector(new StubRng(rng = rng), new StubIScope(numObjects = numObjects))
+    val ioc = testInjector(new StubRng(randomNumberGenerator = rng), new StubIScope(numObjects = numObjects))
     (ioc.getInstance(classOf[ObjectDefFactoryImpl]), ioc.getInstance(classOf[IScope]))
   }
 }

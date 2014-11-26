@@ -11,7 +11,7 @@ final class FactoryLookupImplSpec extends TestComposition {
     }
 
     "return expected factory" in {
-      factoryLookup.convert(NodeTreeFactoryImpl.id) must equal(nodeTreeFactory)
+      sut.convert(NodeTreeFactoryImpl.id) mustBe a [NodeTreeFactory]
     }
   }
 
@@ -56,24 +56,6 @@ final class FactoryLookupImplSpec extends TestComposition {
     }
   }
 
-  private val nodeTreeFactory = mock[NodeTreeFactory]
-  private val factoryLookup = {
-    val addOperatorFactory = mock[AddOperatorFactory]
-    val functionMFactory = mock[FunctionMFactory]
-    val integerMFactory = mock[IntegerMFactory]
-    val objectDefFactory = mock[ObjectDefFactory]
-    val valDclInFunctionParamFactory = mock[ValDclInFunctionParamFactory]
-    val valueRefFactory = mock[ValueRefFactory]
-    new FactoryLookupImpl(
-      addOperatorFactory,
-      functionMFactory,
-      integerMFactory,
-      nodeTreeFactory,
-      objectDefFactory,
-      valDclInFunctionParamFactory,
-      valueRefFactory
-    )
-  }
   private val injector = testInjector()
   private val sut = injector.getInstance(classOf[FactoryLookup])
 }

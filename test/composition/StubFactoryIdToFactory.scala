@@ -6,19 +6,19 @@ import replaceEmpty.ReplaceEmpty
 import memoization.FactoryLookup
 import org.mockito.Mockito.{mock, when}
 
-final class StubFactoryIdToFactory(factoryIdToFactory: FactoryLookup) extends AbstractModule {
+final class StubFactoryIdToFactory(factoryLookup: FactoryLookup) extends AbstractModule {
 
   def configure(): Unit = {
     // Id -> factory
-    when(factoryIdToFactory.convert(fakeFactoryDoesNotTerminateId)).thenReturn(fNot)
-    when(factoryIdToFactory.convert(fakeFactoryTerminates1Id)).thenReturn(fakeFactoryTerminates1)
-    when(factoryIdToFactory.convert(fakeFactoryTerminates2Id)).thenReturn(fakeFactoryTerminates2)
-    when(factoryIdToFactory.convert(fakeFactoryHasChildrenId)).thenReturn(fakeFactoryHasChildren)
+    when(factoryLookup.convert(fakeFactoryDoesNotTerminateId)).thenReturn(fNot)
+    when(factoryLookup.convert(fakeFactoryTerminates1Id)).thenReturn(fakeFactoryTerminates1)
+    when(factoryLookup.convert(fakeFactoryTerminates2Id)).thenReturn(fakeFactoryTerminates2)
+    when(factoryLookup.convert(fakeFactoryHasChildrenId)).thenReturn(fakeFactoryHasChildren)
     // Factory -> Id
-    when(factoryIdToFactory.convert(fakeFactoryTerminates1)).thenReturn(fakeFactoryTerminates1Id)
-    when(factoryIdToFactory.convert(fakeFactoryTerminates2)).thenReturn(fakeFactoryTerminates2Id)
+    when(factoryLookup.convert(fakeFactoryTerminates1)).thenReturn(fakeFactoryTerminates1Id)
+    when(factoryLookup.convert(fakeFactoryTerminates2)).thenReturn(fakeFactoryTerminates2Id)
 
-    bind(classOf[FactoryLookup]).toInstance(factoryIdToFactory)
+    bind(classOf[FactoryLookup]).toInstance(factoryLookup)
   }
 }
 

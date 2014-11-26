@@ -61,7 +61,7 @@ final class NodeTreeFactorySpec extends TestComposition {
   private def nodeTreeFactory(nextInt: Int = 0) = {
     val rng: RandomNumberGenerator = mock[RandomNumberGenerator]
     when(rng.nextInt(any[Int])).thenReturn(nextInt)
-    val ioc = testInjector(new StubRng(rng = rng), new StubIScope)
+    val ioc = testInjector(new StubRng(randomNumberGenerator = rng), new StubIScope)
     (ioc.getInstance(classOf[NodeTreeFactory]), ioc.getInstance(classOf[IScope]))
   }
 }

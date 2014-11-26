@@ -11,12 +11,12 @@ final class LegalGamerSpec extends TestComposition {
 
   "chooseChild" must {
     "return expected type given only one valid choice" in {
-      val rng = mock[RandomNumberGenerator]
-      val sut = testInjector(new StubRng(rng)).getInstance(classOf[SelectionStrategy])
-      val v = mock[ReplaceEmpty]
-      val possibleChildren = Seq(v)
+      val randomNumberGenerator = mock[RandomNumberGenerator]
+      val selectionStrategy = testInjector(new StubRng(randomNumberGenerator)).getInstance(classOf[SelectionStrategy])
+      val node = mock[ReplaceEmpty]
+      val possibleChildren = Seq(node)
 
-      sut.chooseChild(possibleChildren) mustBe a[ReplaceEmpty]
+      selectionStrategy.chooseChild(possibleChildren) mustBe a[ReplaceEmpty]
     }
 
     "return code that can be compiled and evaluated" in {
@@ -50,22 +50,22 @@ final class LegalGamerSpec extends TestComposition {
     }
 
     "throw when sequence is empty" in {
-      val sut = injector.getInstance(classOf[SelectionStrategy])
-      a[RuntimeException] must be thrownBy sut.chooseChild(possibleChildren = Seq.empty)
+      val selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
+      a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Seq.empty)
     }
   }
 
   "chooseIndex" must {
     "throw when length is zero" in {
-      val sut = injector.getInstance(classOf[SelectionStrategy])
-      a[RuntimeException] must be thrownBy sut.chooseIndex(seqLength = 0)
+      val selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
+      a[RuntimeException] must be thrownBy selectionStrategy.chooseIndex(seqLength = 0)
     }
 
     "always returns zero" in {
-      val sut = injector.getInstance(classOf[SelectionStrategy])
-      sut.chooseIndex(2) must equal(0)
+      val selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
+      selectionStrategy.chooseIndex(2) must equal(0)
     }
   }
 
-  private val injector = testInjector()
+  private def injector = testInjector()
 }

@@ -13,10 +13,10 @@ final class RandomWalkSpec extends TestComposition {
 
   "chooseChild" must {
     "return expected type given only one valid choice" in {
-      val rng = mock[RandomNumberGenerator]
-      val sut = testInjector(new RandomWalkModule, new StubRng(rng)).getInstance(classOf[SelectionStrategy])
-      val v = mock[ReplaceEmpty]
-      val possibleChildren = Seq(v)
+      val randomNumberGenerator = mock[RandomNumberGenerator]
+      val sut = testInjector(new RandomWalkModule, new StubRng(randomNumberGenerator)).getInstance(classOf[SelectionStrategy])
+      val node = mock[ReplaceEmpty]
+      val possibleChildren = Seq(node)
 
       sut.chooseChild(possibleChildren) mustBe a[ReplaceEmpty]
     }
@@ -54,27 +54,27 @@ final class RandomWalkSpec extends TestComposition {
     }
 
     "throw when sequence is empty" in {
-      a[RuntimeException] must be thrownBy sut.chooseChild(possibleChildren = Seq.empty)
+      a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Seq.empty)
     }
   }
 
   "chooseIndex" must {
     "throw when length is zero" in {
-      a[RuntimeException] must be thrownBy sut.chooseIndex(seqLength = 0)
+      a[RuntimeException] must be thrownBy selectionStrategy.chooseIndex(seqLength = 0)
     }
 
     "call random number generator nextInt" in {
       val expected = 2
-      val rng = mock[RandomNumberGenerator]
-      val injector = testInjector(new RandomWalkModule, new StubRng(rng))
-      val sut = injector.getInstance(classOf[SelectionStrategy])
+      val randomNumberGenerator = mock[RandomNumberGenerator]
+      val injector = testInjector(new RandomWalkModule, new StubRng(randomNumberGenerator))
+      val selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
 
-      sut.chooseIndex(expected)
+      selectionStrategy.chooseIndex(expected)
 
-      verify(rng, times(1)).nextInt(expected)
+      verify(randomNumberGenerator, times(1)).nextInt(expected)
     }
   }
 
-  private val injector = testInjector(new RandomWalkModule)
-  private val sut = injector.getInstance(classOf[SelectionStrategy])
+  private def injector = testInjector(new RandomWalkModule)
+  private val selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
 }

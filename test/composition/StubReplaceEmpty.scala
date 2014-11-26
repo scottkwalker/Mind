@@ -11,9 +11,9 @@ import scala.concurrent.Future
 final class StubReplaceEmpty extends AbstractModule {
 
   def configure(): Unit = {
-    val n: Instruction = mock(classOf[Instruction])
-    val f = mock(classOf[ReplaceEmpty])
-    when(f.create(any[Scope])).thenReturn(Future.successful(n))
-    bind(classOf[ReplaceEmpty]).toInstance(f)
+    val instruction: Instruction = mock(classOf[Instruction])
+    val node = mock(classOf[ReplaceEmpty])
+    when(node.create(any[Scope])).thenReturn(Future.successful(instruction))
+    bind(classOf[ReplaceEmpty]).toInstance(node)
   }
 }
