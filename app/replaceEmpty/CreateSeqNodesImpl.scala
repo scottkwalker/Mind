@@ -26,27 +26,5 @@ final case class CreateSeqNodesImpl @Inject()(createNode: CreateNode, ai: Select
           }
       }
     }
-
-
-
-//    if (ai.canAddAnother(initAcc.length, factoryLimit)) {
-//      createNode.create(possibleChildren, initScope).flatMap {
-//        case (updatedScope, child) =>
-//          create(possibleChildren,
-//            updatedScope,
-//            saveAccLengthInScope,
-//            initAcc :+ child,
-//            factoryLimit
-//          )
-//      }
-//    }
-//    else {
-//      val updatedScope = saveAccLengthInScope match {
-//        case Some(f) => f(initScope, initAcc.length)
-//        case None => initScope
-//      }
-//      Future.successful((updatedScope, initAcc))
-//    }
-
   }
 }

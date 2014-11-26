@@ -22,11 +22,10 @@ final case class FunctionM(params: Seq[Instruction],
     !name.isEmpty &&
     nodes.forall(n => n.hasNoEmpty(scope.decrementHeight))
 
-  // TODO look at passing the function and having more code re-use
-  private def replaceEmptyParams(scope: IScope, head: Instruction, acc: Seq[Instruction])(implicit injector: Injector) = {
-    lazy val factory = injector.getInstance(classOf[FunctionMFactory])
+
+  private def replaceEmpty(scope: IScope, head: Instruction, acc: Seq[Instruction], funcReplaceEmpty: (IScope) => Future[(IScope, Seq[Instruction])])(implicit injector: Injector): Future[(IScope, Seq[Instruction])] = {
     head match {
-      case _: Empty => factory.createParams(scope = scope) // Head node (and any nodes after it) is of type empty, so replace it with a non-empty
+      case _: Empty => funcReplaceEmpty(scope) // Head node (and any nodes after it) is of type empty, so replace it with a non-empty
       case n: Instruction =>
         n.replaceEmpty(scope).map { r => // Head node is not empty, but one of the child nodes may be so check it's children.
           val updatedScope = r.updateScope(scope) // Update scope to include this node.
@@ -35,32 +34,21 @@ final case class FunctionM(params: Seq[Instruction],
     }
   }
 
-  private def replaceEmptyNodes(scope: IScope, head: Instruction, acc: Seq[Instruction])(implicit injector: Injector) = {
-    lazy val factory = injector.getInstance(classOf[FunctionMFactory])
-    head match {
-      case _: Empty => factory.createNodes(scope = scope) // Head node (and any nodes after it) is of type empty, so replace it with a non-empty
-      case n: Instruction =>
-        n.replaceEmpty(scope).map { r => // Head node is not empty, but one of the child nodes may be so check it's children.
-          val updatedScope = r.updateScope(scope) // Update scope to include this node.
-          (updatedScope, acc :+ r)
-        }
+  private def replaceEmpty(scope: IScope, input: Seq[Instruction], funcReplaceEmpty: (IScope) => Future[(IScope, Seq[Instruction])])(implicit injector: Injector): Future[(IScope, Seq[Instruction])] = {
+    input.foldLeft(Future.successful((scope, Seq.empty[Instruction]))) {
+      (fAcc, instruction) => fAcc.flatMap {
+        case (updatedScope, acc) => replaceEmpty(scope = updatedScope, head = instruction, acc = acc, funcReplaceEmpty = funcReplaceEmpty)
+      }
     }
   }
 
   override def replaceEmpty(scope: IScope)(implicit injector: Injector): Future[Instruction] = async {
     require(params.length > 0, "must not be empty as then we have nothing to replace")
     require(nodes.length > 0, "must not be empty as then we have nothing to replace")
-    val paramSeqWithoutEmpties = params.foldLeft(Future.successful((scope, Seq.empty[Instruction]))) {
-      (fAcc, instruction) => fAcc.flatMap {
-        case (updatedScope, acc) => replaceEmptyParams(scope = updatedScope, head = instruction, acc = acc)
-      }
-    }
+    lazy val factory = injector.getInstance(classOf[FunctionMFactory])
+    val paramSeqWithoutEmpties = replaceEmpty(scope = scope, input = params, funcReplaceEmpty = factory.createParams)
     val (scopeWithParams, p) = await(paramSeqWithoutEmpties)
-    val nodeSeqWithoutEmpties = nodes.foldLeft(Future.successful((scopeWithParams, Seq.empty[Instruction]))) {
-      (fAcc, instruction) => fAcc.flatMap {
-        case (updatedScope, acc) => replaceEmptyNodes(scope = updatedScope, head = instruction, acc = acc)
-      }
-    }
+    val nodeSeqWithoutEmpties = replaceEmpty(scope = scopeWithParams, input = nodes, funcReplaceEmpty = factory.createNodes)
     val (_, n) = await(nodeSeqWithoutEmpties)
     FunctionM(p, n, name)
   }

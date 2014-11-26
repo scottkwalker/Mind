@@ -29,21 +29,21 @@ case class FunctionMFactoryImpl @Inject()(
       index = scope.numFuncs)
   }
 
-  override def createParams(scope: IScope, acc: Seq[Instruction] = Seq.empty): Future[(IScope, Seq[Instruction])] = {
+  override def createParams(scope: IScope): Future[(IScope, Seq[Instruction])] = {
     creator.create(
       possibleChildren = legalNeighbours.fetch(scope, paramsNeighbours),
       scope = scope,
       saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumVals(accLength)),
-      acc = acc,
+      acc = Seq.empty,
       factoryLimit = scope.maxParamsInFunc
     )
   }
 
-  override def createNodes(scope: IScope, acc: Seq[Instruction] = Seq.empty): Future[(IScope, Seq[Instruction])] = {
+  override def createNodes(scope: IScope): Future[(IScope, Seq[Instruction])] = {
     creator.create(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,
-      acc = acc,
+      acc = Seq.empty,
       factoryLimit = scope.maxExpressionsInFunc
     )
   }
