@@ -15,9 +15,7 @@ final class LookupNeighboursImplSpec extends TestComposition {
 
       val result = lookupNeighbours.fetch(scope = scope, neighbours = Seq(fakeFactoryTerminates1Id))
 
-      whenReady(result, browserTimeout) { _ =>
-        verify(factoryIdToFactory, never).convert(any[ReplaceEmpty])
-      }
+      whenReady(result, browserTimeout) { _ => verify(factoryIdToFactory, never).convert(any[ReplaceEmpty])}
     }
 
     "call FactoryIdToFactory.convert(factory) for only the nodes that can terminate" in {
@@ -25,9 +23,7 @@ final class LookupNeighboursImplSpec extends TestComposition {
 
       val result = lookupNeighbours.fetch(scope = scope, neighbours = Seq(fakeFactoryTerminates1Id))
 
-      whenReady(result, browserTimeout) { _ =>
-        verify(factoryIdToFactory, times(2)).convert(fakeFactoryTerminates1Id)
-      }
+      whenReady(result, browserTimeout) { _ => verify(factoryIdToFactory, times(2)).convert(fakeFactoryTerminates1Id)}
     }
 
     "return only the factories of nodes that can terminate" in {

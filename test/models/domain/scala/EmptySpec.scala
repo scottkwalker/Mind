@@ -14,19 +14,19 @@ final class EmptySpec extends TestComposition {
 
   "hasNoEmpty" must {
     "return false" in {
-      val s = Scope(height = 10)
-      Empty().hasNoEmpty(s) must equal(false)
+      val scope = Scope(height = 10)
+      Empty().hasNoEmpty(scope) must equal(false)
     }
   }
 
   "replaceEmpty" must {
     "throws" in {
-      val s = mock[IScope]
-      implicit val i = mock[Injector]
+      val scope = mock[IScope]
+      implicit val injector = mock[Injector]
 
       val instance = Empty()
 
-      a[RuntimeException] must be thrownBy instance.replaceEmpty(s)
+      a[RuntimeException] must be thrownBy instance.replaceEmpty(scope)
     }
   }
 

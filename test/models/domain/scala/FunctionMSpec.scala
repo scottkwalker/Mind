@@ -13,119 +13,113 @@ final class FunctionMSpec extends TestComposition {
 
   "hasNoEmpty" must {
     "false given an empty name" in {
-      val s = Scope(height = 10)
-      val v = mock[Instruction]
-      when(v.hasNoEmpty(any[Scope])).thenReturn(true)
+      val scope = Scope(height = 10)
+      val node = mock[Instruction]
+      when(node.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException("should not have been called"))
       FunctionM(params = params,
-        nodes = Seq(v, v),
-        name = "").hasNoEmpty(s) must equal(false)
+        nodes = Seq(node, node),
+        name = "").hasNoEmpty(scope) must equal(false)
     }
 
     "true given it can terminate in under N steps" in {
-      val s = Scope(height = 3)
-      val v = mock[Instruction]
-      when(v.hasNoEmpty(any[Scope])).thenReturn(true)
+      val scope = Scope(height = 3)
 
       FunctionM(params = params,
-        nodes = Seq(v, v),
-        name = name).hasNoEmpty(s) must equal(true)
+        nodes = Seq(nonEmpty, nonEmpty),
+        name = name).hasNoEmpty(scope) must equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
-      val s = Scope(height = 0)
-      val v = mock[Instruction]
-      when(v.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException)
+      val scope = Scope(height = 0)
+      val node = mock[Instruction]
+      when(node.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException("should not have been called"))
 
       FunctionM(params = params,
-        nodes = Seq(v, v),
-        name = name).hasNoEmpty(s) must equal(false)
+        nodes = Seq(node, node),
+        name = name).hasNoEmpty(scope) must equal(false)
     }
 
     "false given it cannot terminate in under N steps" in {
-      val s = Scope(height = 2)
-      val v = mock[Instruction]
-      when(v.hasNoEmpty(any[Scope])).thenReturn(false)
+      val scope = Scope(height = 2)
+      val nonTerminal = mock[Instruction]
+      when(nonTerminal.hasNoEmpty(any[Scope])).thenReturn(false)
 
       FunctionM(params = params,
-        nodes = Seq(v, v),
-        name = name).hasNoEmpty(s) must equal(false)
+        nodes = Seq(nonTerminal, nonTerminal),
+        name = name).hasNoEmpty(scope) must equal(false)
     }
 
     "true given no empty nodes" in {
-      val s = Scope(height = 10)
-      val v = mock[Instruction]
-      when(v.hasNoEmpty(any[Scope])).thenReturn(true)
+      val scope = Scope(height = 10)
 
       FunctionM(params = params,
-        nodes = Seq(v, v),
-        name = name).hasNoEmpty(s) must equal(true)
+        nodes = Seq(nonEmpty, nonEmpty),
+        name = name).hasNoEmpty(scope) must equal(true)
     }
 
     "false given an empty node" in {
-      val s = Scope(height = 10)
-      val v = mock[Instruction]
-      when(v.hasNoEmpty(any[Scope])).thenReturn(true)
+      val scope = Scope(height = 10)
 
       FunctionM(params = params,
-        nodes = Seq(v, Empty()),
-        name = name).hasNoEmpty(s) must equal(false)
+        nodes = Seq(nonEmpty, Empty()),
+        name = name).hasNoEmpty(scope) must equal(false)
     }
   }
 
   "toRawScala" must {
     "returns expected" in {
-      val a = mock[Instruction]
-      when(a.toRaw).thenReturn("STUB")
+      val node = mock[Instruction]
+      when(node.toRaw).thenReturn("STUB")
 
       FunctionM(params = params,
-        nodes = Seq(a),
+        nodes = Seq(node),
         name = name).toRaw must equal("def f0(a: Int, b: Int) = { STUB }")
     }
 
     "throws if has no name" in {
-      val a = mock[Instruction]
-      when(a.toRaw).thenReturn("STUB")
-      val sut = FunctionM(params = params,
-        nodes = Seq(a),
+      val node = mock[Instruction]
+      when(node.toRaw).thenReturn("STUB")
+      val functionM = FunctionM(params = params,
+        nodes = Seq(node),
         name = "")
 
-      an[IllegalArgumentException] must be thrownBy sut.toRaw
+      an[IllegalArgumentException] must be thrownBy functionM.toRaw
     }
   }
 
   "replaceEmpty" must {
 
     "calls replaceEmpty on non-empty child nodes" in {
-      val s = mock[IScope]
-      implicit val i = mock[Injector]
-      val p = mock[Instruction]
-      when(p.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(p)
-      val v = mock[Instruction]
-      when(v.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(v)
-      val instance = FunctionM(params = Seq(p),
-        nodes = Seq(v),
+      val scope = mock[IScope]
+      val injector = mock[Injector]
+      val param = mock[Instruction]
+      when(param.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(param)
+      val node = mock[Instruction]
+      when(node.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(node)
+      val functionM = FunctionM(params = Seq(param),
+        nodes = Seq(node),
         name = name)
 
-      val result = instance.replaceEmpty(s)
+      val result = functionM.replaceEmpty(scope)(injector)
 
       whenReady(result) { _ =>
-        verify(p, times(1)).replaceEmpty(any[Scope])(any[Injector])
-        verify(v, times(1)).replaceEmpty(any[Scope])(any[Injector])
+        verify(param, times(1)).replaceEmpty(any[Scope])(any[Injector])
+        verify(node, times(1)).replaceEmpty(any[Scope])(any[Injector])
       }
     }
 
     "returns same when no empty nodes" in {
-      val s = mock[IScope]
-      implicit val i = mock[Injector]
-      val p = mock[Instruction]
-      when(p.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(p)
-      val v = mock[Instruction]
-      when(v.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(v)
-      val instance = FunctionM(params = Seq(p),
-        nodes = Seq(v),
+      val scope = mock[IScope]
+      val injector = mock[Injector]
+      val param = mock[Instruction]
+      when(param.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(param)
+      val node = mock[Instruction]
+      when(node.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(node)
+      val instance = FunctionM(params = Seq(param),
+        nodes = Seq(node),
         name = name)
 
-      val result = instance.replaceEmpty(s)
+      val result = instance.replaceEmpty(scope)(injector)
 
       whenReady(result) {
         _ must equal(instance)
@@ -133,18 +127,18 @@ final class FunctionMSpec extends TestComposition {
     }
 
     "returns without empty nodes given there were empty nodes" in {
-      val s = Scope(maxExpressionsInFunc = 1,
+      val scope = Scope(maxExpressionsInFunc = 1,
         maxFuncsInObject = 1,
         maxParamsInFunc = 1,
         height = 5,
         maxObjectsInTree = 1)
       val empty = Empty()
-      val i = testInjector(new StubReplaceEmpty)
-      val instance = FunctionM(params = Seq(empty),
+      val injector = testInjector(new StubReplaceEmpty)
+      val functionM = FunctionM(params = Seq(empty),
         nodes = Seq(Empty()),
         name = name)
 
-      val result = instance.replaceEmpty(s)(i)
+      val result = functionM.replaceEmpty(scope)(injector)
 
       whenReady(result) {
         case FunctionM(p2, n2, n) =>
@@ -159,48 +153,53 @@ final class FunctionMSpec extends TestComposition {
     }
 
     "throw when passed empty params seq (no empty or non-empty)" in {
-      val s = mock[IScope]
-      implicit val i = mock[Injector]
-      val instance = FunctionM(params = Seq.empty,
+      val scope = mock[IScope]
+      val injector = mock[Injector]
+      val functionM = FunctionM(params = Seq.empty,
         nodes = Seq(Empty()),
         name = name)
 
-      a[RuntimeException] must be thrownBy Await.result(instance.replaceEmpty(s), finiteTimeout)
+      a[RuntimeException] must be thrownBy Await.result(functionM.replaceEmpty(scope)(injector), finiteTimeout)
     }
 
     "throw when passed empty nodes seq (no empty or non-empty)" in {
-      val s = mock[IScope]
-      implicit val i = mock[Injector]
-      val instance = FunctionM(params = Seq(Empty()),
+      val scope = mock[IScope]
+      val injector = mock[Injector]
+      val functionM = FunctionM(params = Seq(Empty()),
         nodes = Seq.empty,
         name = name)
 
-      a[RuntimeException] must be thrownBy Await.result(instance.replaceEmpty(s), finiteTimeout)
+      a[RuntimeException] must be thrownBy Await.result(functionM.replaceEmpty(scope)(injector), finiteTimeout)
     }
   }
 
   "height" must {
     "returns 1 + child height" in {
-      val v = mock[Instruction]
-      when(v.height) thenReturn 2
+      val node = mock[Instruction]
+      when(node.height) thenReturn 2
 
       FunctionM(params = params,
-        nodes = Seq(v, v),
+        nodes = Seq(node, node),
         name = name).height must equal(3)
     }
 
     "returns 1 + child height when children have different depths" in {
-      val v = mock[Instruction]
-      when(v.height) thenReturn 1
-      val v2 = mock[Instruction]
-      when(v2.height) thenReturn 2
+      val node1 = mock[Instruction]
+      when(node1.height) thenReturn 1
+      val node2 = mock[Instruction]
+      when(node2.height) thenReturn 2
 
       FunctionM(params = params,
-        nodes = Seq(v, v2),
+        nodes = Seq(node1, node2),
         name = name).height must equal(3)
     }
   }
 
   private val name = "f0"
   private val params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM()))
+  private def nonEmpty = {
+    val node = mock[Instruction]
+    when(node.hasNoEmpty(any[Scope])).thenReturn(true)
+    node
+  }
 }

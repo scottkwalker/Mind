@@ -13,90 +13,91 @@ final class AddOperatorSpec extends TestComposition {
 
   "toRawScala" must {
     "return expected" in {
-      val a = mock[Instruction]
-      when(a.toRaw).thenReturn("STUB_A")
-      val b = mock[Instruction]
-      when(b.toRaw).thenReturn("STUB_B")
+      val left = mock[Instruction]
+      when(left.toRaw).thenReturn("STUB_A")
+      val right = mock[Instruction]
+      when(right.toRaw).thenReturn("STUB_B")
 
-      AddOperator(a, b).toRaw must equal("STUB_A + STUB_B")
+      AddOperator(left=left, right=right).toRaw must equal("STUB_A + STUB_B")
     }
   }
 
   "hasNoEmpty" must {
     "true given child nodes can terminate in under N steps" in {
-      val s = Scope(height = 2)
-      val v = ValueRef("v")
+      val scope = Scope(height = 2)
+      val terminal = ValueRef("v")
 
-      AddOperator(v, v).hasNoEmpty(s) must equal(true)
+      AddOperator(terminal, terminal).hasNoEmpty(scope) must equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
-      val s = Scope(height = 0)
-      val v = mock[Instruction]
-      when(v.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException)
+      val scope = Scope(height = 0)
+      val nonTerminal = mock[Instruction]
+      when(nonTerminal.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException)
 
-      AddOperator(v, v).hasNoEmpty(s) must equal(false)
+      AddOperator(nonTerminal, nonTerminal).hasNoEmpty(scope) must equal(false)
     }
 
     "false given child nodes cannot terminate in under N steps" in {
-      val s = Scope(height = 10)
-      val v = mock[Instruction]
-      when(v.hasNoEmpty(any[Scope])).thenReturn(false)
+      val scope = Scope(height = 10)
+      val nonTerminal = mock[Instruction]
+      when(nonTerminal.hasNoEmpty(any[Scope])).thenReturn(false)
 
-      AddOperator(v, v).hasNoEmpty(s) must equal(false)
+      AddOperator(nonTerminal, nonTerminal).hasNoEmpty(scope) must equal(false)
     }
 
-    "true given none empty" in {
-      val s = Scope(height = 10)
-      val v = ValueRef("v")
+    "true when no nodes are empty" in {
+      val scope = Scope(height = 10)
+      val nonEmpty = ValueRef("v")
 
-      AddOperator(v, v).hasNoEmpty(s) must equal(true)
+      AddOperator(nonEmpty, nonEmpty).hasNoEmpty(scope) must equal(true)
     }
 
     "false when left node is empty" in {
-      val s = Scope(height = 10)
-      val v = ValueRef("stub")
+      val scope = Scope(height = 10)
+      val nonEmpty = ValueRef("stub")
 
-      AddOperator(Empty(), v).hasNoEmpty(s) must equal(false)
+      AddOperator(Empty(), nonEmpty).hasNoEmpty(scope) must equal(false)
     }
 
     "false when right node is empty" in {
-      val s = Scope(height = 10)
-      val v = ValueRef("stub")
+      val scope = Scope(height = 10)
+      val nonEmpty = ValueRef("stub")
 
-      AddOperator(v, Empty()).hasNoEmpty(s) must equal(false)
+      AddOperator(nonEmpty, Empty()).hasNoEmpty(scope) must equal(false)
     }
 
     "false given contains a node that is not valid for this level" in {
-      val s = Scope(height = 10)
-      val v = mock[Instruction]
-      when(v.hasNoEmpty(any[Scope])).thenReturn(true)
+      val scope = Scope(height = 10)
+      val valid = mock[Instruction]
+      when(valid.hasNoEmpty(any[Scope])).thenReturn(true)
+      val invalid = ObjectDef(Seq.empty, "ObjectM0")
 
-      AddOperator(v, ObjectDef(Seq.empty, "ObjectM0")).hasNoEmpty(s) must equal(false)
+      AddOperator(valid, invalid).hasNoEmpty(scope) must equal(false)
     }
   }
 
   "replaceEmpty" must {
     "calls replaceEmpty on non-empty child nodes" in {
-      val s = mock[IScope]
+      val scope = mock[IScope]
       implicit val i = mock[Injector]
-      val v = mock[Instruction]
-      when(v.replaceEmpty(any[Scope])(any[Injector])).thenReturn(Future.successful(v))
-      val instance = AddOperator(v, v)
+      val nonEmpty = mock[Instruction]
+      when(nonEmpty.replaceEmpty(any[Scope])(any[Injector])).thenReturn(Future.successful(nonEmpty))
+      val instance = AddOperator(nonEmpty, nonEmpty)
 
-      val result = instance.replaceEmpty(s)(i)
+      val result = instance.replaceEmpty(scope)(i)
 
-      whenReady(result) { _ => verify(v, times(2)).replaceEmpty(any[Scope])(any[Injector])}
+      whenReady(result) { _ => verify(nonEmpty, times(2)).replaceEmpty(any[Scope])(any[Injector])}
     }
 
     "returns same when no empty nodes" in {
-      val s = mock[IScope]
-      val i = mock[Injector]
-      val v = mock[Instruction]
-      when(v.replaceEmpty(any[Scope])(any[Injector])).thenReturn(Future.successful(v))
-      val instance = AddOperator(v, v)
+      val scope = mock[IScope]
+      val injector = mock[Injector]
+      val nonEmpty = mock[Instruction]
+      when(nonEmpty.replaceEmpty(any[Scope])(any[Injector])).thenReturn(Future.successful(nonEmpty))
+      val instance = AddOperator(nonEmpty, nonEmpty)
 
-      val result = instance.replaceEmpty(s)(i)
+      val result = instance.replaceEmpty(scope)(injector)
 
       whenReady(result) {
         _ must equal(instance)
@@ -104,13 +105,13 @@ final class AddOperatorSpec extends TestComposition {
     }
 
     "returns without empty nodes given there were empty nodes" in {
-      val s = mock[IScope]
-      when(s.numVals).thenReturn(1)
+      val scope = mock[IScope]
+      when(scope.numVals).thenReturn(1)
       val empty: Instruction = Empty()
-      val i = testInjector(new StubReplaceEmpty)
+      val injector = testInjector(new StubReplaceEmpty)
       val instance = AddOperator(empty, empty)
 
-      val result = instance.replaceEmpty(s)(i)
+      val result = instance.replaceEmpty(scope)(injector)
 
       whenReady(result) {
         case AddOperator(left, right) =>
@@ -122,10 +123,10 @@ final class AddOperatorSpec extends TestComposition {
 
   "height" must {
     "return 1 + child height" in {
-      val v = mock[Instruction]
-      when(v.height).thenReturn(1)
+      val node = mock[Instruction]
+      when(node.height).thenReturn(1)
 
-      AddOperator(v, v).height must equal(2)
+      AddOperator(node, node).height must equal(2)
     }
   }
 }
