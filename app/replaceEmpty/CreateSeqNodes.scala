@@ -8,7 +8,6 @@ trait CreateSeqNodes {
 
   def create(possibleChildren: => Future[Seq[ReplaceEmpty]],
              scope: IScope,
-             saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
              acc: Seq[Instruction] = Seq.empty,
              factoryLimit: Int
               ): Future[(IScope, Seq[Instruction])]

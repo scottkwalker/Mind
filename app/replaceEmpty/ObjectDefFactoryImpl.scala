@@ -27,7 +27,6 @@ case class ObjectDefFactoryImpl @Inject()(
     creator.create(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,
-      saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumFuncs(accLength)),
       acc = acc,
       factoryLimit = scope.maxFuncsInObject
     )

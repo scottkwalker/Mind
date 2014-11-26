@@ -14,7 +14,6 @@ final case class CreateSeqNodesImpl @Inject()(createNode: CreateNode, ai: Select
 
   def create(possibleChildren: => Future[Seq[ReplaceEmpty]],
              initScope: IScope,
-             saveAccLengthInScope: Option[((IScope, Int) => IScope)] = None,
              initAcc: Seq[Instruction] = Seq.empty, // Default the accumulator to empty.
              factoryLimit: Int
               ): Future[(IScope, Seq[Instruction])] = {

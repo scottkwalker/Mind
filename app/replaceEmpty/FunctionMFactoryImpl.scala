@@ -33,7 +33,6 @@ case class FunctionMFactoryImpl @Inject()(
     creator.create(
       possibleChildren = legalNeighbours.fetch(scope, paramsNeighbours),
       scope = scope,
-      saveAccLengthInScope = Some((s: IScope, accLength: Int) => s.setNumVals(accLength)),
       acc = Seq.empty,
       factoryLimit = scope.maxParamsInFunc
     )
