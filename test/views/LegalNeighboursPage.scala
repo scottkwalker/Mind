@@ -5,13 +5,13 @@ import models.common.Scope.Form._
 import org.openqa.selenium.WebDriver
 import org.scalatest.selenium.WebBrowser
 
-class LegalNeighboursPage(implicit driver: WebDriver) extends WebBrowser {
+class LegalNeighboursPage(port: Int)(implicit driver: WebDriver) extends org.scalatest.selenium.Page with WebBrowser {
 
   val title = "Mind - Legal neighbours calculator"
   val titleCy = "Mind - Cyfrifiannell cymdogion Cyfreithiol"
   val validationSummary = """<div id="validation-summary">"""
 
-  def url(port: Int) = s"http://localhost:$port/mind/legal-neighbours"
+  override val url = s"http://localhost:$port/mind/legal-neighbours"
 
   def currentNode = textField(CurrentNodeId)
 

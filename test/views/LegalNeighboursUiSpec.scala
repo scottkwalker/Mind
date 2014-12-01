@@ -1,9 +1,6 @@
 package views
 
 import composition.TestComposition
-import models.common.LegalNeighboursRequest.Form._
-import org.openqa.selenium.{By, WebDriver}
-import org.openqa.selenium.support.ui.{ExpectedConditions, ExpectedCondition, WebDriverWait}
 import org.scalatestplus.play._
 import play.api.Play
 import play.api.libs.json.{JsArray, JsNumber}
@@ -27,9 +24,9 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
 
   "go to page" must {
     "display the page in English when no language cookie exists" in new WithApplication {
-      val page = new LegalNeighboursPage
+      val page = new LegalNeighboursPage(port)
 
-      go to page.url(port)
+      go to page
 
       eventually(timeout = browserTimeout) {
         pageTitle mustBe page.title
@@ -37,13 +34,13 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
     }
 
     "display the page in Welsh when language cookie contains 'cy'" in new WithApplication {
-      val page = new LegalNeighboursPage
+      val page = new LegalNeighboursPage(port)
       go to s"http://localhost:$port"
       val key = Play.langCookieName
       val value = "cy" // Code for Welsh
       add cookie(key, value)
 
-      go to page.url(port)
+      go to page
 
       eventually(timeout = browserTimeout) {
         pageTitle mustBe page.titleCy
@@ -53,10 +50,10 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
 
   "submit button" must {
     "return expected json when valid data is submitted" in new WithApplication {
-      val page = new LegalNeighboursPage
+      val page = new LegalNeighboursPage(port)
       val expected = JsArray(Seq(JsNumber(7))).toString()
       val valid = "1"
-      go to page.url(port)
+      go to page
       // Fill in the fields
       page.currentNode.value = AddOperatorFactoryImpl.id.toString
       page.numVals.value = valid
@@ -76,9 +73,9 @@ final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with O
     }
 
     "display validation error messages when no data is submitted " in new WithApplication {
-      val page = new LegalNeighboursPage
+      val page = new LegalNeighboursPage(port)
       val invalid = "-1"
-      go to page.url(port)
+      go to page
       page.numVals.value = invalid
 
       submit()
