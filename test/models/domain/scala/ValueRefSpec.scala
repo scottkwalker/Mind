@@ -16,38 +16,38 @@ final class ValueRefSpec extends TestComposition {
 
   "hasNoEmpty" must {
     "true when it has a non-empty name and height is 0" in {
-      val s = Scope(height = 0)
+      val scope = Scope(height = 0)
       val name = "a"
 
-      ValueRef(name).hasNoEmpty(s) must equal(true)
+      ValueRef(name).hasNoEmpty(scope) must equal(true)
     }
 
     "true given a non-empty name" in {
-      val s = Scope(height = 10)
+      val scope = Scope(height = 10)
       val name = "a"
 
-      ValueRef(name).hasNoEmpty(s) must equal(true)
+      ValueRef(name).hasNoEmpty(scope) must equal(true)
     }
 
     "false given an empty name" in {
-      val s = Scope(height = 10)
+      val scope = Scope(height = 10)
       val name = ""
 
-      ValueRef(name).hasNoEmpty(s) must equal(false)
+      ValueRef(name).hasNoEmpty(scope) must equal(false)
     }
   }
 
   "replaceEmpty" must {
     "returns same when no empty nodes" in {
-      val s = mock[IScope]
+      val scope = mock[IScope]
       val name = "a"
-      val i = mock[Injector]
-      val instance = ValueRef(name)
+      val injector = mock[Injector]
+      val valueRef = ValueRef(name)
 
-      val result = instance.replaceEmpty(s)(i)
+      val result = valueRef.replaceEmpty(scope)(injector)
 
       whenReady(result) {
-        _ must equal(instance)
+        _ must equal(valueRef)
       }
     }
   }
