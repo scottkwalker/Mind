@@ -13,66 +13,66 @@ final class NodeTreeSpec extends TestComposition {
 
   "hasNoEmpty" must {
     "return true given it can terminates in under N steps" in {
-      val s = Scope(height = 10)
-      val f = ObjectDef(nodes = Seq.empty, name = "o0")
-      val nodeTree = new NodeTree(Seq(f))
+      val scope = Scope(height = 10)
+      val instruction = ObjectDef(nodes = Seq.empty, name = "o0")
+      val nodeTree = new NodeTree(Seq(instruction))
 
-      nodeTree.hasNoEmpty(s) must equal(true)
+      nodeTree.hasNoEmpty(scope) must equal(true)
     }
 
     "return false given it cannot terminate in under N steps" in {
-      val s = Scope(height = 10)
-      val f = mock[Instruction]
-      when(f.hasNoEmpty(any[Scope])).thenReturn(false)
-      val nodeTree = new NodeTree(Seq(f))
+      val scope = Scope(height = 10)
+      val instruction = mock[Instruction]
+      when(instruction.hasNoEmpty(any[Scope])).thenReturn(false)
+      val nodeTree = new NodeTree(Seq(instruction))
 
-      nodeTree.hasNoEmpty(s) must equal(false)
+      nodeTree.hasNoEmpty(scope) must equal(false)
     }
 
     "return true given none empty" in {
-      val s = Scope(height = 10)
-      val f = ObjectDef(nodes = Seq.empty, name = "o0")
-      val nodeTree = new NodeTree(Seq(f))
+      val scope = Scope(height = 10)
+      val instruction = ObjectDef(nodes = Seq.empty, name = "o0")
+      val nodeTree = new NodeTree(Seq(instruction))
 
-      nodeTree.hasNoEmpty(s) must equal(true)
+      nodeTree.hasNoEmpty(scope) must equal(true)
     }
 
     "return false given empty root node" in {
-      val s = Scope(height = 10)
+      val scope = Scope(height = 10)
       val nodeTree = new NodeTree(Seq(Empty()))
-      nodeTree.hasNoEmpty(s) must equal(false)
+      nodeTree.hasNoEmpty(scope) must equal(false)
     }
 
     "return false when hasHeightRemaining returns false" in {
-      val s = mock[IScope]
-      when(s.hasHeightRemaining).thenReturn(false)
-      val f = mock[Instruction]
-      val nodeTree = new NodeTree(Seq(f))
+      val scope = mock[IScope]
+      when(scope.hasHeightRemaining).thenReturn(false)
+      val instruction = mock[Instruction]
+      val nodeTree = new NodeTree(Seq(instruction))
 
-      nodeTree.hasNoEmpty(s) must equal(false)
+      nodeTree.hasNoEmpty(scope) must equal(false)
     }
   }
 
   "replaceEmpty" must {
     "calls replaceEmpty on non-empty child nodes" in {
-      val s = mock[IScope]
-      implicit val i = mock[Injector]
-      val f = mock[Instruction]
-      when(f.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(f)
-      val instance = NodeTree(Seq(f))
+      val scope = mock[IScope]
+      val injector = mock[Injector]
+      val instruction = mock[Instruction]
+      when(instruction.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
+      val instance = NodeTree(Seq(instruction))
 
-      val result = instance.replaceEmpty(s)
-      whenReady(result) { _ => verify(f, times(1)).replaceEmpty(any[Scope])(any[Injector])}
+      val result = instance.replaceEmpty(scope)(injector)
+      whenReady(result) { _ => verify(instruction, times(1)).replaceEmpty(any[Scope])(any[Injector])}
     }
 
     "return same when no empty nodes" in {
-      val s = mock[IScope]
-      implicit val i = mock[Injector]
-      val f = mock[Instruction]
-      when(f.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(f)
-      val instance = new NodeTree(Seq(f))
+      val scope = mock[IScope]
+      val injector = mock[Injector]
+      val instruction = mock[Instruction]
+      when(instruction.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
+      val instance = new NodeTree(Seq(instruction))
 
-      val result = instance.replaceEmpty(s)
+      val result = instance.replaceEmpty(scope)(injector)
 
       whenReady(result) {
         _ must equal(instance)
@@ -80,21 +80,21 @@ final class NodeTreeSpec extends TestComposition {
     }
 
     "return without empty nodes given there were empty nodes" in {
-      val s = Scope(maxExpressionsInFunc = 1,
+      val scope = Scope(maxExpressionsInFunc = 1,
         maxFuncsInObject = 1,
         maxParamsInFunc = 1,
         height = 10,
         maxObjectsInTree = 1)
       val empty = Empty()
-      val i = testInjector(new StubReplaceEmpty)
+      val injector = testInjector(new StubReplaceEmpty)
       val instance = NodeTree(nodes = Seq(empty))
 
-      val result = instance.replaceEmpty(s)(i)
+      val result = instance.replaceEmpty(scope)(injector)
 
       whenReady(result) {
         case NodeTree(nodes) =>
           nodes match {
-            case Seq(n2) => n2 mustBe an[ObjectDef]
+            case Seq(nonEmpty) => nonEmpty mustBe an[ObjectDef]
             case _ => fail("not a seq")
           }
         case _ => fail("wrong type")
@@ -102,34 +102,34 @@ final class NodeTreeSpec extends TestComposition {
     }
 
     "throw when passed empty seq (no empty or non-empty)" in {
-      val s = mock[IScope]
-      implicit val i = mock[Injector]
+      val scope = mock[IScope]
+      val injector = mock[Injector]
       val instance = new NodeTree(nodes = Seq.empty)
 
-      a[RuntimeException] must be thrownBy Await.result(instance.replaceEmpty(s), finiteTimeout)
+      a[RuntimeException] must be thrownBy Await.result(instance.replaceEmpty(scope)(injector), finiteTimeout)
     }
   }
 
   "height" must {
     "return 1 + child height when has one child" in {
-      val f = mock[Instruction]
-      when(f.height).thenReturn(2)
-      val nodeTree = new NodeTree(Seq(f))
+      val instruction = mock[Instruction]
+      when(instruction.height).thenReturn(2)
+      val nodeTree = new NodeTree(Seq(instruction))
 
       nodeTree.height must equal(3)
     }
 
     "return 1 + child height when has two children" in {
-      val f = mock[Instruction]
-      when(f.height).thenReturn(1)
-      val f2 = mock[Instruction]
-      when(f2.height).thenReturn(2)
-      val nodeTree = new NodeTree(Seq(f, f2))
+      val instruction1 = mock[Instruction]
+      when(instruction1.height).thenReturn(1)
+      val instruction2 = mock[Instruction]
+      when(instruction2.height).thenReturn(2)
+      val nodeTree = new NodeTree(Seq(instruction1, instruction2))
 
       nodeTree.height must equal(3)
     }
 
-    "return correct value for realistic tree" in {
+    "return expected value for realistic tree" in {
       val nodeTree = new NodeTree(
         Seq(
           ObjectDef(Seq(
