@@ -3,9 +3,9 @@ package views
 import models.common.LegalNeighboursRequest.Form.CurrentNodeId
 import models.common.Scope.Form._
 import org.openqa.selenium.WebDriver
-import org.scalatest.selenium.WebBrowser
+import org.scalatest.selenium.{Page, WebBrowser}
 
-class LegalNeighboursPage(port: Int)(implicit driver: WebDriver) extends org.scalatest.selenium.Page with WebBrowser {
+class LegalNeighboursPage(port: Int)(implicit driver: WebDriver) extends Page with WebBrowser {
 
   val title = "Mind - Legal neighbours calculator"
   val titleCy = "Mind - Cyfrifiannell cymdogion Cyfreithiol"

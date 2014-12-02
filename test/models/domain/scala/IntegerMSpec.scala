@@ -8,34 +8,35 @@ final class IntegerMSpec extends TestComposition {
 
   "toRawScala" must {
     "return expected" in {
-      IntegerM().toRaw must equal("Int")
+      integerM.toRaw must equal("Int")
     }
   }
 
   "hasNoEmpty" must {
     "returns true" in {
       val s = mock[IScope]
-      IntegerM().hasNoEmpty(s) must equal(true)
+      integerM.hasNoEmpty(s) must equal(true)
     }
   }
 
   "replaceEmpty" must {
     "return same when no empty nodes" in {
       val s = mock[IScope]
-      implicit val i = mock[Injector]
-      val instance = IntegerM()
+      val injector = mock[Injector]
 
-      val result = instance.replaceEmpty(s)
+      val result = integerM.replaceEmpty(s)(injector)
 
       whenReady(result) {
-        _ must equal(instance)
+        _ must equal(integerM)
       }
     }
   }
 
   "height" must {
     "return 1" in {
-      IntegerM().height must equal(1)
+      integerM.height must equal(1)
     }
   }
+
+  private val integerM = IntegerM()
 }

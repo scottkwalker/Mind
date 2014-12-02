@@ -197,6 +197,7 @@ final class FunctionMSpec extends TestComposition {
 
   private val name = "f0"
   private val params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM()))
+
   private def nonEmpty = {
     val node = mock[Instruction]
     when(node.hasNoEmpty(any[Scope])).thenReturn(true)
