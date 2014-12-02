@@ -13,9 +13,9 @@ final class NodeTreeFactorySpec extends TestComposition {
 
   "create" must {
     "returns instance of this type" in {
-      val (instance, scope) = nodeTreeFactory()
+      val (nodeTreeFactory, scope) = build()
 
-      val result = instance.create(scope)
+      val result = nodeTreeFactory.create(scope)
 
       whenReady(result, browserTimeout) { result =>
         result mustBe a[NodeTree]
@@ -23,8 +23,8 @@ final class NodeTreeFactorySpec extends TestComposition {
     }
 
     "returns 3 children given scope with 3 maxFuncsInObject (and rng mocked)" in {
-      val (instance, scope) = nodeTreeFactory(nextInt = 3)
-      val result = instance.create(scope = scope)
+      val (nodeTreeFactory, scope) = build(nextInt = 3)
+      val result = nodeTreeFactory.create(scope = scope)
 
       whenReady(result, browserTimeout) {
         case NodeTree(child) => child.length must equal(3)
@@ -35,13 +35,13 @@ final class NodeTreeFactorySpec extends TestComposition {
     "returns 4 children given 1 premade and scope with 3 maxFuncsInObject (and rng mocked)" in {
       val premadeNode = mock[Instruction]
       val premadeChildren = {
-        val c = mock[ReplaceEmpty]
-        when(c.create(any[IScope])).thenReturn(Future.successful(premadeNode))
-        Seq(c)
+        val replaceEmpty = mock[ReplaceEmpty]
+        when(replaceEmpty.create(any[IScope])).thenReturn(Future.successful(premadeNode))
+        Seq(replaceEmpty)
       }
-      val (factory, scope) = nodeTreeFactory(nextInt = 3)
+      val (nodeTreeFactory, scope) = build(nextInt = 3)
 
-      val result = factory.create(scope = scope, premadeChildren = premadeChildren)
+      val result = nodeTreeFactory.create(scope = scope, premadeChildren = premadeChildren)
 
       whenReady(result, browserTimeout) {
         case NodeTree(child) =>
@@ -52,16 +52,16 @@ final class NodeTreeFactorySpec extends TestComposition {
     }
 
     "throw if you ask updateScope" in {
-      val s = mock[IScope]
-      val (instance, _) = nodeTreeFactory()
-      a[RuntimeException] must be thrownBy instance.updateScope(s)
+      val scope = mock[IScope]
+      val (nodeTreeFactory, _) = build()
+      a[RuntimeException] must be thrownBy nodeTreeFactory.updateScope(scope)
     }
   }
 
-  private def nodeTreeFactory(nextInt: Int = 0) = {
+  private def build(nextInt: Int = 0) = {
     val rng: RandomNumberGenerator = mock[RandomNumberGenerator]
     when(rng.nextInt(any[Int])).thenReturn(nextInt)
-    val ioc = testInjector(new StubRng(randomNumberGenerator = rng), new StubIScope)
-    (ioc.getInstance(classOf[NodeTreeFactory]), ioc.getInstance(classOf[IScope]))
+    val injector = testInjector(new StubRng(randomNumberGenerator = rng), new StubIScope)
+    (injector.getInstance(classOf[NodeTreeFactory]), injector.getInstance(classOf[IScope]))
   }
 }

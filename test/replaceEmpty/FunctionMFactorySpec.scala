@@ -68,7 +68,7 @@ final class FunctionMFactorySpec extends TestComposition {
   private def functionMFactory(nextInt: Int = 0, numFuncs: Int = 0) = {
     val rng: RandomNumberGenerator = mock[RandomNumberGenerator]
     when(rng.nextInt(any[Int])).thenReturn(nextInt)
-    val ioc = testInjector(new StubRng(randomNumberGenerator = rng), new StubIScope(numFuncs = numFuncs))
-    (ioc.getInstance(classOf[FunctionMFactoryImpl]), ioc.getInstance(classOf[IScope]))
+    val injector = testInjector(new StubRng(randomNumberGenerator = rng), new StubIScope(numFuncs = numFuncs))
+    (injector.getInstance(classOf[FunctionMFactoryImpl]), injector.getInstance(classOf[IScope]))
   }
 }

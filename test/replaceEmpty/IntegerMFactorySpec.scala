@@ -8,24 +8,24 @@ final class IntegerMFactorySpec extends TestComposition {
 
   "neighbours" must {
     "have no possible children" in {
-      factory.neighbourIds.length must equal(0)
+      integerMFactory.neighbourIds.length must equal(0)
     }
   }
 
   "create" must {
     "return instance of this type" in {
       // Arrange
-      val s = mock[IScope]
+      val scope = mock[IScope]
 
       // Act
-      val instance = factory.create(s)
+      val instruction = integerMFactory.create(scope)
 
       // Assert
-      whenReady(instance) { result =>
+      whenReady(instruction) { result =>
         result mustBe a[IntegerM]
       }
     }
   }
 
-  private val factory = testInjector().getInstance(classOf[IntegerMFactoryImpl])
+  private val integerMFactory = testInjector().getInstance(classOf[IntegerMFactoryImpl])
 }
