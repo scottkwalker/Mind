@@ -7,5 +7,5 @@ import scala.concurrent.Future
 
 trait ObjectDefFactory extends ReplaceEmpty {
 
-  def createNodes(scope: IScope, acc: Seq[Instruction] = Seq()): Future[AccumulateInstructions]
+  def createNodes(scope: IScope, acc: Seq[Instruction] = Seq.empty): Future[AccumulateInstructions]
 }

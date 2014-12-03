@@ -9,5 +9,5 @@ trait NodeTreeFactory extends ReplaceEmpty {
 
   def create(scope: IScope, premadeChildren: Seq[ReplaceEmpty]): Future[Instruction]
 
-  def createNodes(scope: IScope, acc: Seq[Instruction] = Seq()): Future[AccumulateInstructions]
+  def createNodes(scope: IScope, acc: Seq[Instruction] = Seq.empty): Future[AccumulateInstructions]
 }

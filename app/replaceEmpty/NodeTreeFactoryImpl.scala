@@ -17,16 +17,17 @@ case class NodeTreeFactoryImpl @Inject()(
 
   override val neighbourIds = Seq(ObjectDefFactoryImpl.id)
 
+  // TODO is this ever going to be used for this type? Maybe we will only ever use the replaceEmpty method
   override def create(scope: IScope, premadeChildren: Seq[ReplaceEmpty]): Future[Instruction] = async {
-    val generated = await(createNodes(scope))
-    val premadeWithoutEmptyChildren = premadeChildren.map(p => p.create(scope)) // TODO doesn't the scope need to be updated each pass
-    val f = await(Future.sequence(premadeWithoutEmptyChildren))
-    val nodes = generated.instructions ++ f
+    val generatedNodes = await(createNodes(scope))
+    val fPremadeWithoutEmpties = premadeChildren.map(p => p.create(scope)) // TODO doesn't the scope need to be updated each pass
+    val premadeWithoutEmpties = await(Future.sequence(fPremadeWithoutEmpties))
+    val nodes = generatedNodes.instructions ++ premadeWithoutEmpties
 
     NodeTree(nodes)
   }
 
-  override def createNodes(scope: IScope, acc: Seq[Instruction] = Seq()): Future[AccumulateInstructions] = {
+  override def createNodes(scope: IScope, acc: Seq[Instruction] = Seq.empty): Future[AccumulateInstructions] = {
     creator.create(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,
