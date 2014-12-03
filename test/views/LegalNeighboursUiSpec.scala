@@ -7,7 +7,7 @@ import play.api.libs.json.{JsArray, JsNumber}
 import play.api.test.WithApplication
 import replaceEmpty.AddOperatorFactoryImpl
 
-final class LegalNeighboursUiSpec extends PlaySpec with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory with TestComposition {
+final class LegalNeighboursUiSpec extends TestComposition with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory  {
 
   // To enable testing on all browsers https://www.playframework.com/documentation/2.2.x/ScalaFunctionalTestingWithScalaTest
   //with OneServerPerSuite with AllBrowsersPerSuite {

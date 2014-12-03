@@ -6,5 +6,5 @@ import scala.concurrent.Future
 
 trait CreateNode {
 
-  def create(possibleNodes: Future[Seq[ReplaceEmpty]], scope: IScope): Future[(IScope, Instruction)]
+  def create(possibleChildren: Future[Seq[ReplaceEmpty]], scope: IScope): Future[(IScope, Instruction)]
 }
