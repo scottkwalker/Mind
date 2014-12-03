@@ -16,15 +16,14 @@ final case class CreateSeqNodesImpl @Inject()(createNode: CreateNode, ai: Select
              initScope: IScope,
              initAcc: Seq[Instruction] = Seq.empty, // Default the accumulator to empty.
              factoryLimit: Int
-              ): Future[(IScope, Seq[Instruction])] = {
+              ): Future[AccumulateInstructions] = {
     // Create a seq of nodes (of a random length) from a pool of possible children.
     val lengthOfSeq = ai.generateLengthOfSeq(factoryLimit) - initAcc.length
-    val init = Future.successful((initScope, initAcc))
+    val init = Future.successful(AccumulateInstructions(instructions = initAcc, scope = initScope))
     (1 to lengthOfSeq).foldLeft(init) {
-      (previousResult, _) => previousResult.flatMap {
-        case (previousScope, acc) =>
-          createNode.create(possibleChildren, previousScope).map {
-            case (updatedScope, instruction) => (updatedScope, acc :+ instruction)
+      (previousResult, _) => previousResult.flatMap { prev =>
+          createNode.create(possibleChildren, prev.scope).map {
+            case (updatedScope, instruction) => AccumulateInstructions(instructions = prev.instructions :+ instruction, scope = updatedScope)
           }
       }
     }

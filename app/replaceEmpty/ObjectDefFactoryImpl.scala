@@ -17,13 +17,13 @@ case class ObjectDefFactoryImpl @Inject()(
   override val neighbourIds = Seq(FunctionMFactoryImpl.id)
 
   override def create(scope: IScope): Future[Instruction] = async {
-    val (_, nodes) = await(createNodes(scope))
+    val nodesWithoutEmpties = await(createNodes(scope))
 
-    ObjectDef(nodes = nodes,
+    ObjectDef(nodes = nodesWithoutEmpties.instructions,
       index = scope.numObjects)
   }
 
-  override def createNodes(scope: IScope, acc: Seq[Instruction] = Seq()): Future[(IScope, Seq[Instruction])] = {
+  override def createNodes(scope: IScope, acc: Seq[Instruction] = Seq()): Future[AccumulateInstructions] = {
     creator.create(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,

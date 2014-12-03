@@ -3,7 +3,7 @@ package models.domain.scala
 import com.google.inject.Injector
 import models.common.IScope
 import models.domain.Instruction
-import replaceEmpty.{NodeTreeFactory, UpdateScopeThrows}
+import replaceEmpty.{AccumulateInstructions, NodeTreeFactory, UpdateScopeThrows}
 
 import scala.async.Async.{async, await}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -28,20 +28,20 @@ final case class NodeTree(nodes: Seq[Instruction]) extends Instruction with Upda
       case instruction: Instruction =>
         instruction.replaceEmpty(scope).map { r => // Head node is not empty, but one of the child nodes may be so check it's children.
           val updatedScope = r.updateScope(scope) // Update scope to include this node.
-          (updatedScope, acc :+ r)
+          AccumulateInstructions(instructions = acc :+ r, scope = updatedScope)
         }
     }
   }
 
   override def replaceEmpty(scope: IScope)(implicit injector: Injector): Future[Instruction] = async {
     require(nodes.length > 0, "must not be empty as then we have nothing to replace")
-    val seqWithoutEmpties = nodes.foldLeft(Future.successful((scope, Seq.empty[Instruction]))) {
-      (previousResult, currentInstruction) => previousResult.flatMap {
-        case (updatedScope, acc) => replaceEmpty(scope = updatedScope, currentInstruction = currentInstruction, acc = acc)
+    val fNodesWithoutEmpties = nodes.foldLeft(Future.successful(AccumulateInstructions(instructions = Seq.empty[Instruction], scope = scope))) {
+      (previousResult, currentInstruction) => previousResult.flatMap { previous =>
+        replaceEmpty(scope = previous.scope, currentInstruction = currentInstruction, acc = previous.instructions)
       }
     }
-    val (_, n) = await(seqWithoutEmpties)
-    NodeTree(n)
+    val nodesWithoutEmpties = await(fNodesWithoutEmpties)
+    NodeTree(nodesWithoutEmpties.instructions)
   }
 
   override def height: Int = 1 + nodes.map(_.height).max

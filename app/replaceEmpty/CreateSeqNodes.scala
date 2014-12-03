@@ -10,5 +10,5 @@ trait CreateSeqNodes {
              scope: IScope,
              acc: Seq[Instruction] = Seq.empty,
              factoryLimit: Int
-              ): Future[(IScope, Seq[Instruction])]
+              ): Future[AccumulateInstructions]
 }

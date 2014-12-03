@@ -7,6 +7,7 @@ import models.common.{IScope, Scope}
 import models.domain.Instruction
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
+
 import scala.concurrent.Future
 
 final class CreateSeqNodesImplSpec extends TestComposition {
@@ -20,10 +21,9 @@ final class CreateSeqNodesImplSpec extends TestComposition {
         factoryLimit = scope.maxFuncsInObject
       )
 
-      whenReady(result) {
-        case (_, nodes) =>
-          verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
-          nodes.length must equal(1)
+      whenReady(result) { r =>
+        verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
+        r.instructions.length must equal(1)
       }
     }
 
@@ -35,10 +35,9 @@ final class CreateSeqNodesImplSpec extends TestComposition {
         factoryLimit = scope.maxFuncsInObject
       )
 
-      whenReady(result) {
-        case (_, nodes) =>
-          verify(createNode, times(2)).create(possibleChildren = possibleChildren, scope = scope)
-          nodes.length must equal(2)
+      whenReady(result) { r =>
+        verify(createNode, times(2)).create(possibleChildren = possibleChildren, scope = scope)
+        r.instructions.length must equal(2)
       }
     }
 
@@ -50,10 +49,9 @@ final class CreateSeqNodesImplSpec extends TestComposition {
         factoryLimit = scope.maxFuncsInObject
       )
 
-      whenReady(result) {
-        case (_, nodes) =>
-          verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
-          nodes.length must equal(1)
+      whenReady(result) { r =>
+        verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
+        r.instructions.length must equal(1)
       }
     }
 
@@ -66,10 +64,9 @@ final class CreateSeqNodesImplSpec extends TestComposition {
         factoryLimit = scope.maxFuncsInObject
       )
 
-      whenReady(result) {
-        case (_, nodes) =>
-          verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
-          nodes.length must equal(2)
+      whenReady(result) { r =>
+        verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
+        r.instructions.length must equal(2)
       }
     }
   }

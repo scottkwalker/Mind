@@ -18,15 +18,15 @@ case class NodeTreeFactoryImpl @Inject()(
   override val neighbourIds = Seq(ObjectDefFactoryImpl.id)
 
   override def create(scope: IScope, premadeChildren: Seq[ReplaceEmpty]): Future[Instruction] = async {
-    val (_, generated) = await(createNodes(scope))
+    val generated = await(createNodes(scope))
     val premadeWithoutEmptyChildren = premadeChildren.map(p => p.create(scope)) // TODO doesn't the scope need to be updated each pass
     val f = await(Future.sequence(premadeWithoutEmptyChildren))
-    val nodes = generated ++ f
+    val nodes = generated.instructions ++ f
 
     NodeTree(nodes)
   }
 
-  override def createNodes(scope: IScope, acc: Seq[Instruction] = Seq()): Future[(IScope, Seq[Instruction])] = {
+  override def createNodes(scope: IScope, acc: Seq[Instruction] = Seq()): Future[AccumulateInstructions] = {
     creator.create(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,
@@ -36,8 +36,8 @@ case class NodeTreeFactoryImpl @Inject()(
   }
 
   override def create(scope: IScope): Future[Instruction] = async {
-    val (_, nodes) = await(createNodes(scope))
-    NodeTree(nodes)
+    val nodes = await(createNodes(scope))
+    NodeTree(nodes.instructions)
   }
 }
 

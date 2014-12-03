@@ -20,16 +20,16 @@ case class FunctionMFactoryImpl @Inject()(
   private val paramsNeighbours = Seq(ValDclInFunctionParamFactoryImpl.id)
 
   override def create(scope: IScope): Future[Instruction] = async {
-    val (updatedScope, params) = await(createParams(scope))
+    val paramsWithoutEmpties = await(createParams(scope))
 
-    val (_, nodes) = await(createNodes(updatedScope))
+    val nodesWithoutEmpties = await(createNodes(paramsWithoutEmpties.scope))
 
-    FunctionM(params = params,
-      nodes = nodes,
+    FunctionM(params = paramsWithoutEmpties.instructions,
+      nodes = nodesWithoutEmpties.instructions,
       index = scope.numFuncs)
   }
 
-  override def createParams(scope: IScope): Future[(IScope, Seq[Instruction])] = {
+  override def createParams(scope: IScope): Future[AccumulateInstructions] = {
     creator.create(
       possibleChildren = legalNeighbours.fetch(scope, paramsNeighbours),
       scope = scope,
@@ -38,7 +38,7 @@ case class FunctionMFactoryImpl @Inject()(
     )
   }
 
-  override def createNodes(scope: IScope): Future[(IScope, Seq[Instruction])] = {
+  override def createNodes(scope: IScope): Future[AccumulateInstructions] = {
     creator.create(
       possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
       scope = scope,
