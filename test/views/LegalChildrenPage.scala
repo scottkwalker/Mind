@@ -1,17 +1,17 @@
 package views
 
-import models.common.LegalNeighboursRequest.Form.CurrentNodeId
+import models.common.LookupChildrenRequest.Form.CurrentNodeId
 import models.common.Scope.Form._
 import org.openqa.selenium.WebDriver
 import org.scalatest.selenium.{Page, WebBrowser}
 
-class LegalNeighboursPage(port: Int)(implicit driver: WebDriver) extends Page with WebBrowser {
+class LegalChildrenPage(port: Int)(implicit driver: WebDriver) extends Page with WebBrowser {
 
   val title = "Mind - Legal neighbours calculator"
   val titleCy = "Mind - Cyfrifiannell cymdogion Cyfreithiol"
   val validationSummary = """<div id="validation-summary">"""
 
-  override val url = s"http://localhost:$port/mind/legal-neighbours"
+  override val url = s"http://localhost:$port/mind/legal-children"
 
   def currentNode = textField(CurrentNodeId)
 

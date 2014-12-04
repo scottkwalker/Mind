@@ -1,14 +1,14 @@
 package controllers
 
 import composition.TestComposition
-import models.common.LegalNeighboursRequest.Form.CurrentNodeId
+import models.common.LookupChildrenRequest.Form.CurrentNodeId
 import models.common.Scope.Form._
 
-final class LegalNeighboursFormSpec extends TestComposition {
+final class LegalChildrenFormSpec extends TestComposition {
 
   "form" must {
     "reject when submission is empty" in {
-      val errors = legalNeighbours.form.bind(Map("" -> "")).errors
+      val errors = legalChildren.form.bind(Map("" -> "")).errors
       errors.length must equal(9)
     }
 
@@ -136,7 +136,7 @@ final class LegalNeighboursFormSpec extends TestComposition {
     }
   }
 
-  private val legalNeighbours = testInjector().getInstance(classOf[LegalNeighbours])
+  private val legalChildren = testInjector().getInstance(classOf[LegalChildren])
 
   private def formWithValidDefaults(numVals: String,
                                     numFuncs: String,
@@ -147,7 +147,7 @@ final class LegalNeighboursFormSpec extends TestComposition {
                                     maxParamsInFunc: String,
                                     maxObjectsInTree: String,
                                     currentNode: String) = {
-    legalNeighbours.form.bind(
+    legalChildren.form.bind(
       Map(
         s"$ScopeId.$NumValsId" -> numVals,
         s"$ScopeId.$NumFuncsId" -> numFuncs,

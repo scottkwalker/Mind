@@ -1,7 +1,7 @@
 package replaceEmpty
 
 import com.google.inject.Inject
-import memoization.LookupNeighbours
+import memoization.LookupChildren
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.FunctionM
@@ -13,7 +13,7 @@ import scala.concurrent.Future
 
 case class FunctionMFactoryImpl @Inject()(
                                            creator: CreateSeqNodes,
-                                           legalNeighbours: LookupNeighbours
+                                           lookupChildren: LookupChildren
                                            ) extends FunctionMFactory with UpdateScopeIncrementFuncs {
 
   override val neighbourIds = Seq(AddOperatorFactoryImpl.id, ValueRefFactoryImpl.id)
@@ -31,7 +31,7 @@ case class FunctionMFactoryImpl @Inject()(
 
   override def createParams(scope: IScope): Future[AccumulateInstructions] = {
     creator.create(
-      possibleChildren = legalNeighbours.fetch(scope, paramsNeighbours),
+      possibleChildren = lookupChildren.fetch(scope, paramsNeighbours),
       scope = scope,
       acc = Seq.empty,
       factoryLimit = scope.maxParamsInFunc
@@ -40,7 +40,7 @@ case class FunctionMFactoryImpl @Inject()(
 
   override def createNodes(scope: IScope): Future[AccumulateInstructions] = {
     creator.create(
-      possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
+      possibleChildren = lookupChildren.fetch(scope, neighbourIds),
       scope = scope,
       acc = Seq.empty,
       factoryLimit = scope.maxExpressionsInFunc

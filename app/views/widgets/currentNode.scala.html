@@ -1,6 +1,6 @@
 @(field: play.api.data.Field, args: Map[Symbol, Any] = Map.empty)(implicit lang: Lang)
 
-@import models.common.LegalNeighboursRequest.Form.{CurrentNodeId, CurrentNodeMinLength, CurrentNodeMaxLength}
+@import models.common.LookupChildrenRequest.Form.{CurrentNodeId, CurrentNodeMinLength, CurrentNodeMaxLength}
 @import views.html.widgets.inputText
 
 @inputText(field, args =

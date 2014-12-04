@@ -1,7 +1,7 @@
 package replaceEmpty
 
 import com.google.inject.Inject
-import memoization.LookupNeighbours
+import memoization.LookupChildren
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.ObjectDef
@@ -11,7 +11,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 case class ObjectDefFactoryImpl @Inject()(
                                            creator: CreateSeqNodes,
-                                           legalNeighbours: LookupNeighbours
+                                           lookupChildren: LookupChildren
                                            ) extends ObjectDefFactory with UpdateScopeIncrementObjects {
 
   override val neighbourIds = Seq(FunctionMFactoryImpl.id)
@@ -25,7 +25,7 @@ case class ObjectDefFactoryImpl @Inject()(
 
   override def createNodes(scope: IScope, acc: Seq[Instruction] = Seq.empty): Future[AccumulateInstructions] = {
     creator.create(
-      possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
+      possibleChildren = lookupChildren.fetch(scope, neighbourIds),
       scope = scope,
       acc = acc,
       factoryLimit = scope.maxFuncsInObject

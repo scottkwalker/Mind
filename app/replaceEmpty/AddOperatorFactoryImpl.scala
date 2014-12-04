@@ -1,7 +1,7 @@
 package replaceEmpty
 
 import com.google.inject.Inject
-import memoization.LookupNeighbours
+import memoization.LookupChildren
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.AddOperator
@@ -11,13 +11,13 @@ import scala.concurrent.Future
 
 case class AddOperatorFactoryImpl @Inject()(
                                              creator: CreateNode,
-                                             legalNeighbours: LookupNeighbours
+                                             lookupChildren: LookupChildren
                                              ) extends AddOperatorFactory with UpdateScopeNoChange {
 
   override val neighbourIds = Seq(ValueRefFactoryImpl.id)
 
   override def create(scope: IScope): Future[Instruction] = async {
-    val possibleNodes = legalNeighbours.fetch(scope, neighbourIds)
+    val possibleNodes = lookupChildren.fetch(scope, neighbourIds)
     val (updatedScope, left) = await(creator.create(possibleNodes, scope))
     val (_, right) = await(creator.create(possibleNodes, updatedScope))
     AddOperator(left = left,

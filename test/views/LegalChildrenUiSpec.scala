@@ -7,7 +7,7 @@ import play.api.libs.json.{JsArray, JsNumber}
 import play.api.test.WithApplication
 import replaceEmpty.AddOperatorFactoryImpl
 
-final class LegalNeighboursUiSpec extends TestComposition with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory  {
+final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory  {
 
   // To enable testing on all browsers https://www.playframework.com/documentation/2.2.x/ScalaFunctionalTestingWithScalaTest
   //with OneServerPerSuite with AllBrowsersPerSuite {
@@ -15,7 +15,7 @@ final class LegalNeighboursUiSpec extends TestComposition with OneServerPerSuite
   //  def sharedTests(browser: BrowserInfo) = {
   //  "go to page" must {
   //    "display the page " + browser.name in {
-  //      go to s"http://localhost:$port/mind/legal-neighbours"
+  //      go to s"http://localhost:$port/mind/legal-children"
   //      pageTitle mustBe "Mind - Legal neighbours calculator"
   //    }
   //  }
@@ -24,7 +24,7 @@ final class LegalNeighboursUiSpec extends TestComposition with OneServerPerSuite
 
   "go to page" must {
     "display the page in English when no language cookie exists" in new WithApplication {
-      val page = new LegalNeighboursPage(port)
+      val page = new LegalChildrenPage(port)
 
       go to page
 
@@ -34,7 +34,7 @@ final class LegalNeighboursUiSpec extends TestComposition with OneServerPerSuite
     }
 
     "display the page in Welsh when language cookie contains 'cy'" in new WithApplication {
-      val page = new LegalNeighboursPage(port)
+      val page = new LegalChildrenPage(port)
       go to s"http://localhost:$port"
       val key = Play.langCookieName
       val value = "cy" // Code for Welsh
@@ -50,7 +50,7 @@ final class LegalNeighboursUiSpec extends TestComposition with OneServerPerSuite
 
   "submit button" must {
     "return expected json when valid data is submitted" in new WithApplication {
-      val page = new LegalNeighboursPage(port)
+      val page = new LegalChildrenPage(port)
       val expected = JsArray(Seq(JsNumber(7))).toString()
       val valid = "1"
       go to page
@@ -73,7 +73,7 @@ final class LegalNeighboursUiSpec extends TestComposition with OneServerPerSuite
     }
 
     "display validation error messages when no data is submitted " in new WithApplication {
-      val page = new LegalNeighboursPage(port)
+      val page = new LegalChildrenPage(port)
       val invalid = "-1"
       go to page
       page.numVals.value = invalid

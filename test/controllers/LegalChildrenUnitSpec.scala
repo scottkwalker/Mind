@@ -1,8 +1,8 @@
 package controllers
 
-import composition.{StubLookupNeighbours, TestComposition}
-import memoization.LookupNeighbours
-import models.common.{IScope, LegalNeighboursRequest, Scope}
+import composition.{StubLookupChildren, TestComposition}
+import memoization.LookupChildren
+import models.common.{IScope, LookupChildrenRequest, Scope}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify}
 import play.api.libs.json.Json
@@ -11,7 +11,7 @@ import play.api.test.{FakeRequest, WithApplication}
 import replaceEmpty.NodeTreeFactoryImpl
 import scala.concurrent.ExecutionContext.Implicits.global
 
-final class LegalNeighboursUnitSpec extends TestComposition {
+final class LegalChildrenUnitSpec extends TestComposition {
 
   "present" must {
     "return 200" in new WithApplication {
@@ -21,14 +21,14 @@ final class LegalNeighboursUnitSpec extends TestComposition {
     }
 
     "contain a form that POSTs to the expected action" in new WithApplication {
-      contentAsString(present)(timeout) must include( """form action="/mind/legal-neighbours" method="POST"""")
+      contentAsString(present)(timeout) must include( """form action="/mind/legal-children" method="POST"""")
     }
   }
 
   "calculate" must {
     "return bad request when submission is empty" in new WithApplication {
       val emptyRequest = FakeRequest().withFormUrlEncodedBody()
-      val result = legalNeighbours.calculate(emptyRequest)
+      val result = legalChildren.calculate(emptyRequest)
       whenReady(result, browserTimeout) { r =>
         r.header.status must equal(BAD_REQUEST)
       }
@@ -36,7 +36,7 @@ final class LegalNeighboursUnitSpec extends TestComposition {
 
     "return ok when submission is valid" in new WithApplication {
       val validRequest = requestWithDefaults()
-      val result = legalNeighbours.calculate(validRequest)
+      val result = legalChildren.calculate(validRequest)
       whenReady(result, browserTimeout) { r =>
         r.header.status must equal(OK)
       }
@@ -44,7 +44,7 @@ final class LegalNeighboursUnitSpec extends TestComposition {
 
     "return seq of ids when submission is valid and legal moves are found" in new WithApplication {
       val validRequest = requestWithDefaults()
-      val result = legalNeighbours.calculate(validRequest)
+      val result = legalChildren.calculate(validRequest)
       whenReady(result, browserTimeout) { r =>
         r.body.map { b =>
           Json.parse(b) must equal(Seq(NodeTreeFactoryImpl.id))
@@ -54,7 +54,7 @@ final class LegalNeighboursUnitSpec extends TestComposition {
 
     "return empty seq when submission is valid but no matches are in scope" in new WithApplication {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
-      val result = legalNeighbours.calculate(validRequest)
+      val result = legalChildren.calculate(validRequest)
       whenReady(result, browserTimeout) { r =>
         r.body.map { b =>
           Json.parse(b) must equal(Seq.empty)
@@ -62,28 +62,28 @@ final class LegalNeighboursUnitSpec extends TestComposition {
       }
     }
 
-    "call lookupNeighbours.fetch when submission is valid" in new WithApplication {
+    "call lookupChildren.fetch when submission is valid" in new WithApplication {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
-      val lookupNeighbours = mock[LookupNeighbours]
-      val injector = testInjector(new StubLookupNeighbours(lookupNeighbours))
-      val sut = injector.getInstance(classOf[LegalNeighbours])
+      val lookupChildren = mock[LookupChildren]
+      val injector = testInjector(new StubLookupChildren(lookupChildren))
+      val sut = injector.getInstance(classOf[LegalChildren])
 
       val result = sut.calculate(validRequest)
       whenReady(result, browserTimeout) { r =>
-        verify(lookupNeighbours, times(1)).fetch(any[IScope], any[Int])
+        verify(lookupChildren, times(1)).fetch(any[IScope], any[Int])
       }
     }
 
     "throw when submission contains unknown currentNode" in new WithApplication {
       val validRequest = requestWithDefaults(currentNode = 99)
-      a[RuntimeException] must be thrownBy legalNeighbours.calculate(validRequest)
+      a[RuntimeException] must be thrownBy legalChildren.calculate(validRequest)
     }
   }
 
-  private val legalNeighbours = testInjector().getInstance(classOf[LegalNeighbours])
+  private val legalChildren = testInjector().getInstance(classOf[LegalChildren])
   private val present = {
     val emptyRequest = FakeRequest()
-    legalNeighbours.present(emptyRequest)
+    legalChildren.present(emptyRequest)
   }
   private val scopeDefault = Scope(
     numVals = 1,
@@ -97,7 +97,7 @@ final class LegalNeighboursUnitSpec extends TestComposition {
   )
 
   private def requestWithDefaults(scope: Scope = scopeDefault, currentNode: Int = 1) = {
-    val request = LegalNeighboursRequest(scope, currentNode)
+    val request = LookupChildrenRequest(scope, currentNode)
     FakeRequest().withJsonBody(Json.toJson(request))
   }
 }

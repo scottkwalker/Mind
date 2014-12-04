@@ -1,8 +1,8 @@
-@(currentForm: Form[models.common.LegalNeighboursRequest])(implicit lang: Lang)
+@(currentForm: Form[models.common.LookupChildrenRequest])(implicit lang: Lang)
 
-@import models.common.LegalNeighboursRequest.Form.CurrentNodeId
+@import models.common.LookupChildrenRequest.Form.CurrentNodeId
 @import models.common.Scope.Form.ScopeId
-@import views.LegalNeighbours.SubmitId
+@import views.LegalChildren.SubmitId
 @import views.html.errorsSummary
 @import views.html.helper.form
 @import views.html.widgets.{currentNode, scope}
@@ -15,7 +15,7 @@
     <body>
         @errorsSummary(Some(currentForm))
 
-        @form(action = controllers.routes.LegalNeighbours.calculate(), args = ('novalidate, "novalidate")) {
+        @form(action = controllers.routes.LegalChildren.calculate(), args = ('novalidate, "novalidate")) {
 
             @currentNode(currentForm(CurrentNodeId))
 

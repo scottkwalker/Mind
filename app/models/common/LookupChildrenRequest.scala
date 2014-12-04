@@ -4,11 +4,11 @@ import models.common.Scope.Form.ScopeId
 import play.api.data.Forms.{mapping, number}
 import play.api.libs.json.Json
 
-final case class LegalNeighboursRequest(scope: Scope, currentNode: Int)
+final case class LookupChildrenRequest(scope: Scope, currentNode: Int)
 
-object LegalNeighboursRequest {
+object LookupChildrenRequest {
 
-  implicit val jsonFormat = Json.writes[LegalNeighboursRequest]
+  implicit val jsonFormat = Json.writes[LookupChildrenRequest]
 
   object Form {
 
@@ -21,7 +21,7 @@ object LegalNeighboursRequest {
     val Mapping = mapping(
       ScopeId -> Scope.Form.Mapping,
       CurrentNodeId -> number(min = CurrentNodeMin, max = CurrentNodeMax)
-    )(LegalNeighboursRequest.apply)(LegalNeighboursRequest.unapply)
+    )(LookupChildrenRequest.apply)(LookupChildrenRequest.unapply)
   }
 
 }

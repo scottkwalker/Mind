@@ -6,7 +6,7 @@ import replaceEmpty._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final class LookupNeighboursImpl @Inject()(factoryIdToFactory: FactoryLookup, neighboursRepository: NeighboursRepository) extends LookupNeighbours {
+final class LookupChildrenImpl @Inject()(factoryIdToFactory: FactoryLookup, neighboursRepository: NeighboursRepository) extends LookupChildren {
 
   override def fetch(scope: IScope, neighbours: Seq[Int]): Future[Seq[ReplaceEmpty]] = {
     fetchFromRepository(scope, neighbours).map(_.map(factoryIdToFactory.convert))

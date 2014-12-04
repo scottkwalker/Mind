@@ -4,7 +4,7 @@ import models.common.IScope
 import replaceEmpty.ReplaceEmpty
 import scala.concurrent.Future
 
-trait LookupNeighbours {
+trait LookupChildren {
 
   def fetch(scope: IScope, neighbours: Seq[Int]): Future[Seq[ReplaceEmpty]]
 

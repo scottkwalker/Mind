@@ -1,7 +1,7 @@
 package replaceEmpty
 
 import com.google.inject.Inject
-import memoization.LookupNeighbours
+import memoization.LookupChildren
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.ValDclInFunctionParam
@@ -11,14 +11,14 @@ import scala.concurrent.Future
 
 case class ValDclInFunctionParamFactoryImpl @Inject()(
                                                        creator: CreateNode,
-                                                       legalNeighbours: LookupNeighbours
+                                                       lookupChildren: LookupChildren
                                                        ) extends ValDclInFunctionParamFactory with UpdateScopeIncrementVals {
 
   override val neighbourIds = Seq(IntegerMFactoryImpl.id)
 
   override def create(scope: IScope): Future[Instruction] = async {
     val name = "v" + scope.numVals
-    val ln = legalNeighbours.fetch(scope, neighbourIds)
+    val ln = lookupChildren.fetch(scope, neighbourIds)
     val (_, primitiveType) = await(creator.create(ln, scope))
 
     ValDclInFunctionParam(name = name,

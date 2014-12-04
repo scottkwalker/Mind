@@ -1,7 +1,7 @@
 package replaceEmpty
 
 import com.google.inject.Inject
-import memoization.LookupNeighbours
+import memoization.LookupChildren
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.NodeTree
@@ -12,7 +12,7 @@ import scala.concurrent.Future
 
 case class NodeTreeFactoryImpl @Inject()(
                                           creator: CreateSeqNodes,
-                                          legalNeighbours: LookupNeighbours
+                                          lookupChildren: LookupChildren
                                           ) extends NodeTreeFactory with UpdateScopeThrows {
 
   override val neighbourIds = Seq(ObjectDefFactoryImpl.id)
@@ -29,7 +29,7 @@ case class NodeTreeFactoryImpl @Inject()(
 
   override def createNodes(scope: IScope, acc: Seq[Instruction] = Seq.empty): Future[AccumulateInstructions] = {
     creator.create(
-      possibleChildren = legalNeighbours.fetch(scope, neighbourIds),
+      possibleChildren = lookupChildren.fetch(scope, neighbourIds),
       scope = scope,
       acc = acc,
       factoryLimit = scope.maxObjectsInTree

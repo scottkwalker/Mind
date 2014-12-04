@@ -23,13 +23,13 @@ final class RoutesSpec extends TestComposition {
       result must be('defined)
     }
 
-    "define GET /mind/legal-neighbours" in new App {
-      val Some(result) = route(FakeRequest(GET, "/mind/legal-neighbours"))
+    "define GET /mind/legal-children" in new App {
+      val Some(result) = route(FakeRequest(GET, "/mind/legal-children"))
       result must be('defined)
     }
 
-    "define POST /mind/legal-neighbours" in new App {
-      val Some(result) = route(FakeRequest(POST, "/mind/legal-neighbours"))
+    "define POST /mind/legal-children" in new App {
+      val Some(result) = route(FakeRequest(POST, "/mind/legal-children"))
       result must be('defined)
     }
   }
