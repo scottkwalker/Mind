@@ -18,7 +18,7 @@ final class CreateNodeImplSpec extends TestComposition {
       val sut = CreateNodeImpl(ai)
 
       whenReady(sut.create(possibleChildren, scope), browserTimeout) { _ =>
-        verify(ai, times(1)).chooseChild(possibleChildren, scope)
+        verify(ai, times(1)).chooseChild(possibleChildren)
       }
     }
 
@@ -50,7 +50,7 @@ final class CreateNodeImplSpec extends TestComposition {
     when(replaceEmpty.create(scope)).thenReturn(Future.successful(instruction))
     when(replaceEmpty.updateScope(scope)).thenReturn(scope)
     val ai = mock[SelectionStrategy]
-    when(ai.chooseChild(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(replaceEmpty))
+    when(ai.chooseChild(any[Future[Seq[ReplaceEmpty]]])).thenReturn(Future.successful(replaceEmpty))
     val possibleChildren = Future.successful(Seq(replaceEmpty))
     (replaceEmpty, scope, ai, possibleChildren)
   }

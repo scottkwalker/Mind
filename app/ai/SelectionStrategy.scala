@@ -13,7 +13,7 @@ trait SelectionStrategy {
 
   def chooseIndex(seqLength: Int): Int
 
-  def chooseChild(possibleChildren: Future[Seq[ReplaceEmpty]], scope: IScope): Future[ReplaceEmpty] = {
+  def chooseChild(possibleChildren: Future[Seq[ReplaceEmpty]]): Future[ReplaceEmpty] = {
     possibleChildren map { children =>
       require(children.nonEmpty, s"Sequence possibleChildren must not be empty otherwise we cannot pick a node from it, contained: $possibleChildren")
       chooseChild(children)

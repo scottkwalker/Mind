@@ -12,9 +12,8 @@ final class SelectionStrategySpec extends TestComposition {
 
   "chooseChild" must {
     "throw when seq is empty" in {
-      val scope = mock[IScope]
       val (sut, rng) = selectionStrategy(nextInt = 42)
-      a[RuntimeException] must be thrownBy sut.chooseChild(Future.successful(Seq.empty), scope).futureValue
+      a[RuntimeException] must be thrownBy sut.chooseChild(Future.successful(Seq.empty)).futureValue
     }
   }
 
