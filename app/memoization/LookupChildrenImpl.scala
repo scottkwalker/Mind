@@ -26,9 +26,9 @@ final class LookupChildrenImpl @Inject()(factoryIdToFactory: FactoryLookup, neig
 
     Future.sequence(neighbourValues).map {
       _.filter {
-        case (key: Int, value: Boolean) => value
+        case (_: Int, value: Boolean) => value
       }.map {
-        case (key: Int, value: Boolean) => key
+        case (key: Int, _: Boolean) => key
       }
     }
   }
