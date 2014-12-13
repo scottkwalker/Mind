@@ -59,6 +59,10 @@ Previously I was using Jacoco offline, but the problems are:
 
 You can run the code coverage plugin from a terminal using `sbt clean test scoverage:test`. Note I add the `clean` to wipe the target directory where old reports are stored and add `test` because on another project I see problems with .scss stylesheets not being compiled by scoverage.
 
+Abide
+-----
+Abide is a simple framework for lint-like rule creation and verification. You can run this plugin from a terminal using `sbt abide`.
+
 Version control
 ---------------
 I am using Git with Github because:

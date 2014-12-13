@@ -25,7 +25,7 @@ final class LegalChildren @Inject()(lookupChildren: LookupChildren) extends Cont
         Future.successful(BadRequest(views.html.legalChildren(invalidForm)))
       },
       validForm => {
-        lookupChildren.fetch(scope = validForm.scope, currentNode = validForm.currentNode).map { result =>
+        lookupChildren.fetch(scope = validForm.scope, parent = validForm.currentNode).map { result =>
           Ok(toJson(result)).as(JSON)
         }
       }

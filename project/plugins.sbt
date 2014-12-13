@@ -29,3 +29,5 @@ addSbtPlugin("org.scoverage" % "sbt-scoverage" % "0.99.7.1")
 addSbtPlugin("org.scoverage" %% "sbt-coveralls" % "0.98.0")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.6.4")
+
+addSbtPlugin("com.typesafe" % "sbt-abide" % "0.1-SNAPSHOT")

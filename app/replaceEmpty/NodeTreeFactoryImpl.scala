@@ -15,7 +15,7 @@ case class NodeTreeFactoryImpl @Inject()(
                                           lookupChildren: LookupChildren
                                           ) extends NodeTreeFactory with UpdateScopeThrows {
 
-  override val neighbourIds = Seq(ObjectDefFactoryImpl.id)
+  override val nodesToChooseFrom = Seq(ObjectDefFactoryImpl.id)
 
   // TODO is this ever going to be used for this type? Maybe we will only ever use the replaceEmpty method
   override def create(scope: IScope, premadeChildren: Seq[ReplaceEmpty]): Future[Instruction] = async {
@@ -29,7 +29,7 @@ case class NodeTreeFactoryImpl @Inject()(
 
   override def createNodes(scope: IScope, acc: Seq[Instruction] = Seq.empty): Future[AccumulateInstructions] = {
     creator.create(
-      possibleChildren = lookupChildren.fetch(scope, neighbourIds),
+      possibleChildren = lookupChildren.fetch(scope, nodesToChooseFrom),
       scope = scope,
       acc = acc,
       factoryLimit = scope.maxObjectsInTree

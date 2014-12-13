@@ -6,7 +6,7 @@ import scala.concurrent.Future
 
 trait LookupChildren {
 
-  def fetch(scope: IScope, neighbours: Seq[Int]): Future[Seq[ReplaceEmpty]]
+  def fetch(scope: IScope, childrenToChooseFrom: Seq[Int]): Future[Seq[ReplaceEmpty]]
 
-  def fetch(scope: IScope, currentNode: Int): Future[Seq[Int]]
+  def fetch(scope: IScope, parent: Int): Future[Seq[Int]]
 }

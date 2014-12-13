@@ -13,7 +13,7 @@ final class LookupChildrenImplSpec extends TestComposition {
     "does not call FactoryIdToFactory.convert with ReplaceEmpty as the repository already contains the ids" in {
       val (lookupChildren, scope, factoryIdToFactory) = build
 
-      val result = lookupChildren.fetch(scope = scope, neighbours = Seq(fakeFactoryTerminates1Id))
+      val result = lookupChildren.fetch(scope = scope, childrenToChooseFrom = Seq(fakeFactoryTerminates1Id))
 
       whenReady(result, browserTimeout) { _ => verify(factoryIdToFactory, never).convert(any[ReplaceEmpty])}
     }
@@ -21,7 +21,7 @@ final class LookupChildrenImplSpec extends TestComposition {
     "call FactoryIdToFactory.convert(factory) for only the nodes that can terminate" in {
       val (lookupChildren, scope, factoryIdToFactory) = build
 
-      val result = lookupChildren.fetch(scope = scope, neighbours = Seq(fakeFactoryTerminates1Id))
+      val result = lookupChildren.fetch(scope = scope, childrenToChooseFrom = Seq(fakeFactoryTerminates1Id))
 
       whenReady(result, browserTimeout) { _ => verify(factoryIdToFactory, times(2)).convert(fakeFactoryTerminates1Id)}
     }
@@ -30,7 +30,7 @@ final class LookupChildrenImplSpec extends TestComposition {
       val (lookupChildren, scope, _) = build
 
       val result = lookupChildren.fetch(scope = scope,
-        neighbours = Seq(fakeFactoryDoesNotTerminateId,
+        childrenToChooseFrom = Seq(fakeFactoryDoesNotTerminateId,
           fakeFactoryTerminates1Id,
           fakeFactoryDoesNotTerminateId,
           fakeFactoryTerminates2Id)
@@ -46,7 +46,7 @@ final class LookupChildrenImplSpec extends TestComposition {
     "call FactoryIdToFactory.convert(id) for only the nodes that can terminate" in {
       val (lookupChildren, scope, factoryIdToFactory) = build
 
-      val result = lookupChildren.fetch(scope = scope, currentNode = fakeFactoryHasChildrenId)
+      val result = lookupChildren.fetch(scope = scope, parent = fakeFactoryHasChildrenId)
 
       whenReady(result, browserTimeout) { _ =>
         verify(factoryIdToFactory, times(1)).convert(fakeFactoryHasChildrenId)
@@ -57,7 +57,7 @@ final class LookupChildrenImplSpec extends TestComposition {
     "return only the ids of nodes that can terminate" in {
       val (lookupChildren, scope, _) = build
 
-      val result = lookupChildren.fetch(scope = scope, currentNode = fakeFactoryHasChildrenId)
+      val result = lookupChildren.fetch(scope = scope, parent = fakeFactoryHasChildrenId)
 
       whenReady(result, browserTimeout) {
         _ must equal(Seq(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))

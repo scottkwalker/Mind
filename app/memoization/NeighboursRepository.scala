@@ -17,7 +17,7 @@ class NeighboursRepository @Inject()(factoryLookup: FactoryLookup)
   def funcCalculate(scope: IScope, neighbourId: Int): Future[Boolean] =
     async {
       if (scope.hasHeightRemaining) {
-        val possibleNeighbourIds = factoryLookup.convert(neighbourId).neighbourIds
+        val possibleNeighbourIds = factoryLookup.convert(neighbourId).nodesToChooseFrom
         if (possibleNeighbourIds.isEmpty) true
         else await {
           // TODO can this use Observable to turn it into a stream of futures and then it wouldn't need to Await for all the results to complete.
