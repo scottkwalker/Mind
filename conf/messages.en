@@ -13,3 +13,5 @@ scope.maxFuncsInObject = Max functions in an Object:
 scope.maxParamsInFunc = Max params on a function:
 scope.maxObjectsInTree = Max Objects in a tree:
 footer = Please see the GitHub page for this project: https://github.com/scottkwalker/Mind
+healthcheck-title = Health check
+healthcheck-site-refreshed-at = Site refreshed at: {0}

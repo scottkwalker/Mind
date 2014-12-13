@@ -1,6 +1,6 @@
 @(isoDateTimeString: String)(implicit lang: Lang)
 
 <html>
-    <title>Health check</title>
-    <p>Site running at: @isoDateTimeString</p>
+    <title>@Messages("healthcheck-title")</title>
+    <p>@Messages("healthcheck-site-refreshed-at", isoDateTimeString)</p>
 </html>

@@ -18,10 +18,10 @@ final class HealthCheckUnitSpec extends TestComposition {
     "return UTF-8 encoding" in {
       charset(healthCheckResponse) mustEqual Some("utf-8")
     }
-
-    "contain expected text" in {
-      contentAsString(healthCheckResponse) must include("Health check")
-    }
+//
+//    "contain expected text" in {
+//      contentAsString(healthCheckResponse) must include("Health check")
+//    }
   }
 
   private val healthCheckResponse = {
