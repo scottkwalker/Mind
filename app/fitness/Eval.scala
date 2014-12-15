@@ -270,7 +270,7 @@ class Eval(target: Option[File]) {
     val digest = MessageDigest.getInstance("SHA-1").digest(code.getBytes)
     val sha = new BigInteger(1, digest).toString(16)
     idOpt match {
-      case Some(id) => sha + "_" + jvmId
+      case Some(_) => sha + "_" + jvmId
       case _ => sha
     }
   }
@@ -392,8 +392,6 @@ class Eval(target: Option[File]) {
       clazz.getResourceAsStream(quotePath(path))
   }
 
-  class ResolutionFailedException(message: String) extends Exception
-
   /*
    * This is a preprocesor that can include files by requesting them from the given classloader
    *
@@ -510,7 +508,7 @@ class Eval(target: Option[File]) {
       targetDir match {
         case None =>
           target.asInstanceOf[VirtualDirectory].clear()
-        case Some(t) =>
+        case Some(_) =>
           target.foreach { abstractFile =>
             if (abstractFile.file == null || abstractFile.file.getName.endsWith(".class")) {
               abstractFile.delete()
@@ -546,7 +544,7 @@ class Eval(target: Option[File]) {
             cache(className) = cls
             Some(cls)
           } catch {
-            case e: ClassNotFoundException => None
+            case _: ClassNotFoundException => None
           }
         }
       }
