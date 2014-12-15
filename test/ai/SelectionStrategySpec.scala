@@ -11,7 +11,7 @@ final class SelectionStrategySpec extends TestComposition {
 
   "chooseChild" must {
     "throw when seq is empty" in {
-      val (sut, rng) = selectionStrategy(nextInt = 42)
+      val (sut, _) = selectionStrategy(nextInt = 42)
       a[RuntimeException] must be thrownBy sut.chooseChild(Future.successful(Seq.empty)).futureValue
     }
   }
@@ -45,7 +45,7 @@ final class SelectionStrategySpec extends TestComposition {
 
   "generateLengthOfSeq" must {
     "return a minimum of 1 when the random number generator stubbed to return zero" in {
-      val (sut, rng) = selectionStrategy(nextInt = 0)
+      val (sut, _) = selectionStrategy(nextInt = 0)
       sut.generateLengthOfSeq(factoryLimit = 42) must equal(1)
     }
 
@@ -60,10 +60,15 @@ final class SelectionStrategySpec extends TestComposition {
 
     "returns random number generator stubbed value when greater than zero" in {
       val nextInt = 5
-      val (sut, rng) = selectionStrategy(nextInt = nextInt)
+      val (sut, _) = selectionStrategy(nextInt = nextInt)
       val factoryLimit = 42
 
       sut.generateLengthOfSeq(factoryLimit = factoryLimit) must equal(nextInt)
+    }
+
+    "throws when factoryLimit equals zero" in {
+      val (sut, _) = selectionStrategy(nextInt = 0)
+      a[RuntimeException] must be thrownBy sut.generateLengthOfSeq(factoryLimit = 0)
     }
   }
 

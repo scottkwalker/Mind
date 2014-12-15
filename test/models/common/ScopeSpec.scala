@@ -1,10 +1,12 @@
 package models.common
 
 import java.util.concurrent.CountDownLatch
+
 import composition.TestComposition
 import play.api.libs.json.Json.obj
 import play.api.libs.json._
 import serialization.JsonDeserialiser
+
 import scala.collection.immutable.BitSet
 
 final class ScopeSpec extends TestComposition {
@@ -106,6 +108,40 @@ final class ScopeSpec extends TestComposition {
           numFuncs must equal(1)
           numObjects must equal(1)
           height must equal(1)
+          maxExpressionsInFunc must equal(0)
+          maxFuncs must equal(0)
+          maxParamsInFunc must equal(0)
+          maxObjectsInTree must equal(0)
+        case _ => fail("must have matched")
+      }
+    }
+  }
+
+  "setNumFuncs" must {
+    "return expected" in {
+      Scope().setNumFuncs(1) match {
+        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
+          numVals must equal(0)
+          numFuncs must equal(1)
+          numObjects must equal(0)
+          height must equal(0)
+          maxExpressionsInFunc must equal(0)
+          maxFuncs must equal(0)
+          maxParamsInFunc must equal(0)
+          maxObjectsInTree must equal(0)
+        case _ => fail("must have matched")
+      }
+    }
+  }
+
+  "setNumVals" must {
+    "return expected" in {
+      Scope().setNumVals(1) match {
+        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
+          numVals must equal(1)
+          numFuncs must equal(0)
+          numObjects must equal(0)
+          height must equal(0)
           maxExpressionsInFunc must equal(0)
           maxFuncs must equal(0)
           maxParamsInFunc must equal(0)
@@ -276,11 +312,11 @@ final class ScopeSpec extends TestComposition {
         JsObject(
           Seq(
             ("key", JsObject(
-                Seq(
-                  ("intContent", JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2))))
-                )
+              Seq(
+                ("intContent", JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2))))
               )
             )
+              )
           )
         )
       )
