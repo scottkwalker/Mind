@@ -1,0 +1,35 @@
+package views
+
+import composition.TestComposition
+import org.scalatestplus.play._
+import play.api.Play
+import play.api.test.WithApplication
+
+final class HealthCheckUiSpec extends TestComposition with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
+
+  "go to page" must {
+    "display the page in English when no language cookie exists" in new WithApplication {
+      val page = new HealthCheckPage(port)
+
+      go to page
+
+      eventually(timeout = browserTimeout) {
+        pageTitle mustBe page.title
+      }
+    }
+
+    "display the page in Welsh when language cookie contains 'cy'" in new WithApplication {
+      val page = new HealthCheckPage(port)
+      go to page // Must be on a page before you can set a cookie.
+      val key = Play.langCookieName
+      val value = "cy" // Code for Welsh
+      add cookie(key, value)
+
+      go to page
+
+      eventually(timeout = browserTimeout) {
+        pageTitle mustBe page.titleCy
+      }
+    }
+  }
+}

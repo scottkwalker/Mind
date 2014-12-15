@@ -1,7 +1,7 @@
 package controllers
 
 import composition.TestComposition
-import play.api.test.FakeRequest
+import play.api.test.{WithApplication, FakeRequest}
 import play.api.test.Helpers.{OK, charset, contentAsString, contentType, status}
 
 final class HealthCheckUnitSpec extends TestComposition {
@@ -18,10 +18,6 @@ final class HealthCheckUnitSpec extends TestComposition {
     "return UTF-8 encoding" in {
       charset(healthCheckResponse) mustEqual Some("utf-8")
     }
-//
-//    "contain expected text" in {
-//      contentAsString(healthCheckResponse) must include("Health check")
-//    }
   }
 
   private val healthCheckResponse = {
