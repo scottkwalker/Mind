@@ -8,7 +8,7 @@ import play.api.test.WithApplication
 final class HealthCheckUiSpec extends TestComposition with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
 
   "go to page" must {
-    "display the page in English when no language cookie exists" in new WithApplication {
+    "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication {
       val page = new HealthCheckPage(port)
 
       go to page
@@ -18,7 +18,7 @@ final class HealthCheckUiSpec extends TestComposition with OneServerPerSuite wit
       }
     }
 
-    "display the page in Welsh when language cookie contains 'cy'" in new WithApplication {
+    "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication {
       val page = new HealthCheckPage(port)
       go to page
       // Must be on a page before you can set a cookie.

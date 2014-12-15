@@ -46,6 +46,14 @@ I am using [Travis CI](https://travis-ci.org/scottkwalker) as my build server be
 * It automatically builds forks!
 * It is free.
 
+Testing
+-------
+I am using the ScalaTestPlus framework for writing tests. I am using this framework because it is well integrated into the Play framework and the memory usage scaled better than Specs2 for large number of tests (at least it did at the time I began the project!).
+
+You can run the code coverage plugin from a terminal using `sbt test`.
+
+To run all tests except those tagged as "ui" tests, run `sbt "test-only  -- -l ui"`
+
 Code coverage
 -------------
 When the Continuous Integration build runs, the tests will gather coverage statistics and post the results online to [Coveralls](https://coveralls.io).

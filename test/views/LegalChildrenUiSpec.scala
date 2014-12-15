@@ -23,7 +23,7 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
 
 
   "go to page" must {
-    "display the page in English when no language cookie exists" in new WithApplication {
+    "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication {
       val page = new LegalChildrenPage(port)
 
       go to page
@@ -33,7 +33,7 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
       }
     }
 
-    "display the page in Welsh when language cookie contains 'cy'" in new WithApplication {
+    "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication {
       val page = new LegalChildrenPage(port)
       go to page
       // Must be on a page before you can set a cookie.
@@ -50,7 +50,7 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
   }
 
   "submit button" must {
-    "return expected json when valid data is submitted" in new WithApplication {
+    "return expected json when valid data is submitted" taggedAs UiTag in new WithApplication {
       val page = new LegalChildrenPage(port)
       val expected = JsArray(Seq(JsNumber(7))).toString()
       val valid = "1"
@@ -73,7 +73,7 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
       }
     }
 
-    "display validation error messages when no data is submitted " in new WithApplication {
+    "display validation error messages when no data is submitted " taggedAs UiTag in new WithApplication {
       val page = new LegalChildrenPage(port)
       val invalid = "-1"
       go to page
