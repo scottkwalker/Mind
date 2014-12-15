@@ -21,7 +21,7 @@ trait SelectionStrategy {
   }
 
   def canAddAnother(accLength: Int,
-                    factoryLimit: Int): Boolean = accLength < 1 || (accLength < factoryLimit && rng.nextBoolean)
+                    factoryLimit: Int): Boolean = accLength == 0 || (accLength < factoryLimit && rng.nextBoolean)
 
   def generateLengthOfSeq(factoryLimit: Int): Integer = {
     assert(factoryLimit > 0, "cannot make a random seq when limit is zero")

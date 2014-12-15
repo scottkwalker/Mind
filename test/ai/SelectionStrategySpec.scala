@@ -1,5 +1,6 @@
 package ai
 
+import ai.aco.Aco
 import ai.legalGamer.LegalGamer
 import composition.{StubRng, TestComposition}
 import models.common.IScope
@@ -14,6 +15,34 @@ final class SelectionStrategySpec extends TestComposition {
     "throw when seq is empty" in {
       val (sut, rng) = selectionStrategy(nextInt = 42)
       a[RuntimeException] must be thrownBy sut.chooseChild(Future.successful(Seq.empty)).futureValue
+    }
+  }
+
+  "canAddAnother" must {
+    "return true when accumulator length is zero" in {
+      val (sut, _) = selectionStrategy(nextInt = 0)
+      sut.canAddAnother(accLength = 0, factoryLimit = 0) must equal(true)
+    }
+//accLength == 0 || (accLength < factoryLimit && rng.nextBoolean)
+
+    "return false when accumulator length greater than zero and equals than factory limit" in {
+      val (sut, _) = selectionStrategy(nextInt = 1)
+      sut.canAddAnother(accLength = 1, factoryLimit = 1) must equal(false)
+    }
+
+    "return false when accumulator length greater than zero and greater than factory limit" in {
+      val (sut, _) = selectionStrategy(nextInt = 1)
+      sut.canAddAnother(accLength = 2, factoryLimit = 1) must equal(false)
+    }
+
+    "return false when accumulator length greater than zero and less than factory limit and rng stubbed to false" in {
+      val (sut, _) = selectionStrategy(nextInt = 1, nextBoolean = false)
+      sut.canAddAnother(accLength = 1, factoryLimit = 2) must equal(false)
+    }
+
+    "return true when accumulator length greater than zero and accumulator length less than factory limit and rng stubbed to true" in {
+      val (sut, _) = selectionStrategy(nextInt = 1, nextBoolean = true)
+      sut.canAddAnother(accLength = 1, factoryLimit = 2) must equal(true)
     }
   }
 
@@ -46,6 +75,6 @@ final class SelectionStrategySpec extends TestComposition {
     when(rng.nextBoolean).thenReturn(nextBoolean)
     when(rng.nextInt(any[Int])).thenReturn(nextInt)
     val ioc = testInjector(new StubRng(rng))
-    (ioc.getInstance(classOf[LegalGamer]), ioc.getInstance(classOf[RandomNumberGenerator]) )
+    (ioc.getInstance(classOf[Aco]), ioc.getInstance(classOf[RandomNumberGenerator]) )
   }
 }
