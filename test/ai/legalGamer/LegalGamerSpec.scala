@@ -50,22 +50,34 @@ final class LegalGamerSpec extends TestComposition {
     }
 
     "throw when sequence is empty" in {
-      val selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
       a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Seq.empty)
     }
   }
 
   "chooseIndex" must {
     "throw when length is zero" in {
-      val selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
       a[RuntimeException] must be thrownBy selectionStrategy.chooseIndex(seqLength = 0)
     }
 
     "always returns zero" in {
-      val selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
       selectionStrategy.chooseIndex(2) must equal(0)
     }
   }
 
-  private def injector = testInjector()
+  "canAddAnother" must {
+    "return false when accumulator length equals factoryLimit" in {
+      selectionStrategy.canAddAnother(accLength = 1, factoryLimit = 1) must equal(false)
+    }
+
+    "return false when accumulator length is greater than factoryLimit" in {
+      selectionStrategy.canAddAnother(accLength = 2, factoryLimit = 1) must equal(false)
+    }
+
+    "return true when accumulator length is less than factoryLimit" in {
+      selectionStrategy.canAddAnother(accLength = 1, factoryLimit = 2) must equal(true)
+    }
+  }
+
+  private val injector = testInjector()
+  private val selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
 }

@@ -9,8 +9,6 @@ import models.domain.scala.{Empty, FunctionM, IntegerM, NodeTree, ObjectDef, Val
 import org.mockito.Mockito.{times, verify}
 import replaceEmpty.ReplaceEmpty
 
-import scala.concurrent.Future
-
 final class AcoSpec extends TestComposition {
 
   "chooseChild" must {
@@ -78,5 +76,6 @@ final class AcoSpec extends TestComposition {
   }
 
   private def injector = testInjector(new AcoModule)
+
   private def selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
 }

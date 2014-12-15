@@ -1,7 +1,7 @@
 package ai
 
-import models.common.IScope
 import replaceEmpty.ReplaceEmpty
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 

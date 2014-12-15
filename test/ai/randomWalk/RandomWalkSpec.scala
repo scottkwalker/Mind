@@ -1,13 +1,13 @@
 package ai.randomWalk
 
 import ai.{RandomNumberGenerator, SelectionStrategy}
+import composition.ai.randomWalk.RandomWalkModule
 import composition.{StubRng, TestComposition}
-import replaceEmpty.ReplaceEmpty
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.{FunctionM, IntegerM, NodeTree, ObjectDef, _}
-import composition.ai.randomWalk.RandomWalkModule
 import org.mockito.Mockito.{times, verify}
+import replaceEmpty.ReplaceEmpty
 
 final class RandomWalkSpec extends TestComposition {
 
@@ -76,5 +76,6 @@ final class RandomWalkSpec extends TestComposition {
   }
 
   private def injector = testInjector(new RandomWalkModule)
+
   private val selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
 }
