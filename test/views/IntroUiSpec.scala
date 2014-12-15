@@ -18,4 +18,19 @@ final class IntroUiSpec extends TestComposition with OneServerPerSuite with OneB
       }
     }
   }
+
+  "display the page in Welsh when language cookie contains 'cy'" in new WithApplication {
+    val page = new IntroPage(port)
+    go to page
+    // Must be on a page before you can set a cookie.
+    val key = Play.langCookieName
+    val value = "cy" // Code for Welsh
+    add cookie(key, value)
+
+    go to page
+
+    eventually(timeout = browserTimeout) {
+      pageTitle mustBe page.titleCy
+    }
+  }
 }

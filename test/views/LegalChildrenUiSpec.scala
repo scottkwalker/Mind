@@ -7,7 +7,7 @@ import play.api.libs.json.{JsArray, JsNumber}
 import play.api.test.WithApplication
 import replaceEmpty.AddOperatorFactoryImpl
 
-final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory  {
+final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
 
   // To enable testing on all browsers https://www.playframework.com/documentation/2.2.x/ScalaFunctionalTestingWithScalaTest
   //with OneServerPerSuite with AllBrowsersPerSuite {
@@ -35,7 +35,8 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
 
     "display the page in Welsh when language cookie contains 'cy'" in new WithApplication {
       val page = new LegalChildrenPage(port)
-      go to page // Must be on a page before you can set a cookie.
+      go to page
+      // Must be on a page before you can set a cookie.
       val key = Play.langCookieName
       val value = "cy" // Code for Welsh
       add cookie(key, value)
