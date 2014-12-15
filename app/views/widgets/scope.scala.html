@@ -1,10 +1,10 @@
-@(field: play.api.data.Field, args: Map[Symbol, Any] = Map.empty)(implicit lang: Lang)
+@(field: play.api.data.Field)(implicit lang: Lang)
 
 @import views.html.helper.input
 @import views.html.widgets.inputText
 @import models.common.Scope.Form._
 
-@input(field, args.toSeq: _*) { (id, name, value, htmlArgs) =>
+@input(field) { (id, _, _, _) =>
     <fieldset>
         @inputText(field(NumValsId), args =
                 Map('_label -> Messages(s"$id.$NumValsId"),
