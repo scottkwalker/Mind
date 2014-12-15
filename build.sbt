@@ -1,4 +1,5 @@
 import sbt.Keys.testOnly
+import scoverage.ScoverageSbtPlugin.ScoverageKeys
 
 name := "Mind"
 
@@ -37,17 +38,13 @@ libraryDependencies ++= Seq(
 
 scalacOptions ++= Seq("-feature")
 
-instrumentSettings
+ScoverageKeys.coverageExcludedPackages := "<empty>;Reverse.*;fitness.Eval;views;views.html;views.html.widgets"
 
-ScoverageKeys.excludedPackages in ScoverageCompile := "<empty>;Reverse.*;fitness.Eval;views;views.html;views.html.widgets"
+ScoverageKeys.coverageMinimum := 80
 
-ScoverageKeys.minimumCoverage := 80
+ScoverageKeys.coverageFailOnMinimum := true
 
-ScoverageKeys.failOnMinimumCoverage := true
-
-ScoverageKeys.highlighting := true
-
-CoverallsPlugin.coverallsSettings
+ScoverageKeys.coverageHighlighting := true
 
 incOptions := incOptions.value.withNameHashing(nameHashing = true)
 

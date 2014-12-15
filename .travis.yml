@@ -7,4 +7,5 @@ matrix:
   fast_finish: true
 notifications:
   email: false
-script: "sbt coveralls"
+script: "sbt clean coverage test"
+after_success: "sbt coveralls"
