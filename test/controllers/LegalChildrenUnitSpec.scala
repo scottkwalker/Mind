@@ -8,7 +8,7 @@ import org.mockito.Mockito.{times, verify}
 import play.api.libs.json.Json
 import play.api.test.Helpers.{BAD_REQUEST, OK, contentAsString}
 import play.api.test.{FakeRequest, WithApplication}
-import replaceEmpty.NodeTreeFactoryImpl
+import replaceEmpty.TypeTreeFactoryImpl
 import scala.concurrent.ExecutionContext.Implicits.global
 
 final class LegalChildrenUnitSpec extends TestComposition {
@@ -47,7 +47,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
       val result = legalChildren.calculate(validRequest)
       whenReady(result, browserTimeout) { r =>
         r.body.map { b =>
-          Json.parse(b) must equal(Seq(NodeTreeFactoryImpl.id))
+          Json.parse(b) must equal(Seq(TypeTreeFactoryImpl.id))
         }
       }
     }

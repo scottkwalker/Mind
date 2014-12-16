@@ -9,47 +9,47 @@ import org.mockito.Mockito._
 
 import scala.concurrent.{Await, Future}
 
-final class NodeTreeSpec extends TestComposition {
+final class TypeTreeSpec extends TestComposition {
 
   "hasNoEmpty" must {
     "return true given it can terminates in under N steps" in {
       val scope = Scope(height = 10)
       val instruction = ObjectDef(nodes = Seq.empty, name = "o0")
-      val nodeTree = new NodeTree(Seq(instruction))
+      val typeTree = new TypeTree(Seq(instruction))
 
-      nodeTree.hasNoEmpty(scope) must equal(true)
+      typeTree.hasNoEmpty(scope) must equal(true)
     }
 
     "return false given it cannot terminate in under N steps" in {
       val scope = Scope(height = 10)
       val instruction = mock[Instruction]
       when(instruction.hasNoEmpty(any[Scope])).thenReturn(false)
-      val nodeTree = new NodeTree(Seq(instruction))
+      val typeTree = new TypeTree(Seq(instruction))
 
-      nodeTree.hasNoEmpty(scope) must equal(false)
+      typeTree.hasNoEmpty(scope) must equal(false)
     }
 
     "return true given none empty" in {
       val scope = Scope(height = 10)
       val instruction = ObjectDef(nodes = Seq.empty, name = "o0")
-      val nodeTree = new NodeTree(Seq(instruction))
+      val typeTree = new TypeTree(Seq(instruction))
 
-      nodeTree.hasNoEmpty(scope) must equal(true)
+      typeTree.hasNoEmpty(scope) must equal(true)
     }
 
     "return false given empty root node" in {
       val scope = Scope(height = 10)
-      val nodeTree = new NodeTree(Seq(Empty()))
-      nodeTree.hasNoEmpty(scope) must equal(false)
+      val typeTree = new TypeTree(Seq(Empty()))
+      typeTree.hasNoEmpty(scope) must equal(false)
     }
 
     "return false when hasHeightRemaining returns false" in {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(false)
       val instruction = mock[Instruction]
-      val nodeTree = new NodeTree(Seq(instruction))
+      val typeTree = new TypeTree(Seq(instruction))
 
-      nodeTree.hasNoEmpty(scope) must equal(false)
+      typeTree.hasNoEmpty(scope) must equal(false)
     }
   }
 
@@ -59,7 +59,7 @@ final class NodeTreeSpec extends TestComposition {
       val injector = mock[Injector]
       val instruction = mock[Instruction]
       when(instruction.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
-      val instance = NodeTree(Seq(instruction))
+      val instance = TypeTree(Seq(instruction))
 
       val result = instance.replaceEmpty(scope)(injector)
       whenReady(result) { _ => verify(instruction, times(1)).replaceEmpty(any[Scope])(any[Injector])}
@@ -70,7 +70,7 @@ final class NodeTreeSpec extends TestComposition {
       val injector = mock[Injector]
       val instruction = mock[Instruction]
       when(instruction.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
-      val instance = new NodeTree(Seq(instruction))
+      val instance = new TypeTree(Seq(instruction))
 
       val result = instance.replaceEmpty(scope)(injector)
 
@@ -87,12 +87,12 @@ final class NodeTreeSpec extends TestComposition {
         maxObjectsInTree = 1)
       val empty = Empty()
       val injector = testInjector(new StubReplaceEmpty)
-      val instance = NodeTree(nodes = Seq(empty))
+      val instance = TypeTree(nodes = Seq(empty))
 
       val result = instance.replaceEmpty(scope)(injector)
 
       whenReady(result) {
-        case NodeTree(nodes) =>
+        case TypeTree(nodes) =>
           nodes match {
             case Seq(nonEmpty) => nonEmpty mustBe an[ObjectDef]
             case _ => fail("not a seq")
@@ -104,7 +104,7 @@ final class NodeTreeSpec extends TestComposition {
     "throw when passed empty seq (no empty or non-empty)" in {
       val scope = mock[IScope]
       val injector = mock[Injector]
-      val instance = new NodeTree(nodes = Seq.empty)
+      val instance = new TypeTree(nodes = Seq.empty)
 
       a[RuntimeException] must be thrownBy Await.result(instance.replaceEmpty(scope)(injector), finiteTimeout)
     }
@@ -114,9 +114,9 @@ final class NodeTreeSpec extends TestComposition {
     "return 1 + child height when has one child" in {
       val instruction = mock[Instruction]
       when(instruction.height).thenReturn(2)
-      val nodeTree = new NodeTree(Seq(instruction))
+      val typeTree = new TypeTree(Seq(instruction))
 
-      nodeTree.height must equal(3)
+      typeTree.height must equal(3)
     }
 
     "return 1 + child height when has two children" in {
@@ -124,13 +124,13 @@ final class NodeTreeSpec extends TestComposition {
       when(instruction1.height).thenReturn(1)
       val instruction2 = mock[Instruction]
       when(instruction2.height).thenReturn(2)
-      val nodeTree = new NodeTree(Seq(instruction1, instruction2))
+      val typeTree = new TypeTree(Seq(instruction1, instruction2))
 
-      nodeTree.height must equal(3)
+      typeTree.height must equal(3)
     }
 
     "return expected value for realistic tree" in {
-      val nodeTree = new NodeTree(
+      val typeTree = new TypeTree(
         Seq(
           ObjectDef(Seq(
             FunctionM(params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM())),
@@ -140,7 +140,7 @@ final class NodeTreeSpec extends TestComposition {
               ), name = "f0")),
             name = "o0")))
 
-      nodeTree.height must equal(5)
+      typeTree.height must equal(5)
     }
   }
 }

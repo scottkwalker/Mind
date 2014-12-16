@@ -11,7 +11,7 @@ final class FactoryLookupImplSpec extends TestComposition {
     }
 
     "return expected factory" in {
-      factoryLookup.convert(NodeTreeFactoryImpl.id) mustBe a [NodeTreeFactory]
+      factoryLookup.convert(TypeTreeFactoryImpl.id) mustBe a [TypeTreeFactory]
     }
   }
 
@@ -35,9 +35,9 @@ final class FactoryLookupImplSpec extends TestComposition {
       factoryLookup.convert(factory) must equal(IntegerMFactoryImpl.id)
     }
 
-    "return expected id for NodeTreeFactory" in {
-      val factory = injector.getInstance(classOf[NodeTreeFactory])
-      factoryLookup.convert(factory) must equal(NodeTreeFactoryImpl.id)
+    "return expected id for TypeTreeFactory" in {
+      val factory = injector.getInstance(classOf[TypeTreeFactory])
+      factoryLookup.convert(factory) must equal(TypeTreeFactoryImpl.id)
     }
 
     "return expected id for ObjectDefFactory" in {

@@ -5,7 +5,7 @@ import models.domain.Instruction
 
 import scala.concurrent.Future
 
-trait NodeTreeFactory extends ReplaceEmpty {
+trait TypeTreeFactory extends ReplaceEmpty {
 
   def create(scope: IScope, premadeChildren: Seq[ReplaceEmpty]): Future[Instruction]
 

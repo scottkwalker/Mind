@@ -5,7 +5,7 @@ import composition.ai.aco.AcoModule
 import composition.{StubRng, TestComposition}
 import fitness.AddTwoInts
 import models.common.Scope
-import models.domain.scala.{Empty, FunctionM, IntegerM, NodeTree, ObjectDef, ValDclInFunctionParam}
+import models.domain.scala.{Empty, FunctionM, IntegerM, TypeTree, ObjectDef, ValDclInFunctionParam}
 import org.mockito.Mockito.{times, verify}
 import replaceEmpty.ReplaceEmpty
 
@@ -22,7 +22,7 @@ final class AcoSpec extends TestComposition {
     }
 
     "return code that can be compiled and evaluated" in {
-      val premade = new NodeTree(
+      val premade = new TypeTree(
         Seq(
           ObjectDef(Seq(
             FunctionM(
@@ -42,8 +42,8 @@ final class AcoSpec extends TestComposition {
         for (i <- 1 to 10) {
           val result = premade.replaceEmpty(scope)(injector)
           whenReady(result) {
-            case nodeTree: NodeTree =>
-              val f = new AddTwoInts(nodeTree)
+            case typeTree: TypeTree =>
+              val f = new AddTwoInts(typeTree)
               f.fitness
           }
         }

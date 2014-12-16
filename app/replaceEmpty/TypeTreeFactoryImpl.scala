@@ -4,16 +4,16 @@ import com.google.inject.Inject
 import memoization.LookupChildren
 import models.common.IScope
 import models.domain.Instruction
-import models.domain.scala.NodeTree
+import models.domain.scala.TypeTree
 
 import scala.async.Async.{async, await}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-case class NodeTreeFactoryImpl @Inject()(
+case class TypeTreeFactoryImpl @Inject()(
                                           creator: CreateSeqNodes,
                                           lookupChildren: LookupChildren
-                                          ) extends NodeTreeFactory with UpdateScopeThrows {
+                                          ) extends TypeTreeFactory with UpdateScopeThrows {
 
   override val nodesToChooseFrom = Seq(ObjectDefFactoryImpl.id)
 
@@ -24,7 +24,7 @@ case class NodeTreeFactoryImpl @Inject()(
     val premadeWithoutEmpties = await(Future.sequence(fPremadeWithoutEmpties))
     val nodes = generatedNodes.instructions ++ premadeWithoutEmpties
 
-    NodeTree(nodes)
+    TypeTree(nodes)
   }
 
   override def createNodes(scope: IScope, acc: Seq[Instruction] = Seq.empty): Future[AccumulateInstructions] = {
@@ -38,11 +38,11 @@ case class NodeTreeFactoryImpl @Inject()(
 
   override def create(scope: IScope): Future[Instruction] = async {
     val nodes = await(createNodes(scope))
-    NodeTree(nodes.instructions)
+    TypeTree(nodes.instructions)
   }
 }
 
-object NodeTreeFactoryImpl {
+object TypeTreeFactoryImpl {
 
   val id = 4
 }

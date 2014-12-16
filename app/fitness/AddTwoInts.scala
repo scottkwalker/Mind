@@ -2,7 +2,7 @@ package fitness
 
 import models.domain.Instruction
 
-final class AddTwoInts(val nodeTree: Instruction) extends Fitness {
+final class AddTwoInts(val typeTree: Instruction) extends Fitness {
 
   override val maxFitness = 1.0d
 
@@ -12,7 +12,7 @@ final class AddTwoInts(val nodeTree: Instruction) extends Fitness {
     val expected = 3
 
     val evaluateAsScala = new Eval
-    evaluateAsScala.compile(nodeTree.toRaw)
+    evaluateAsScala.compile(typeTree.toRaw)
 
     val result = evaluateAsScala.inPlace[Int](s"o0.f0($left, $right)")
 

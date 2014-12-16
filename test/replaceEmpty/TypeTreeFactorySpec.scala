@@ -4,30 +4,30 @@ import ai.RandomNumberGenerator
 import composition.{StubIScope, StubRng, TestComposition}
 import models.common.IScope
 import models.domain.Instruction
-import models.domain.scala.NodeTree
+import models.domain.scala.TypeTree
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import scala.concurrent.Future
 
-final class NodeTreeFactorySpec extends TestComposition {
+final class TypeTreeFactorySpec extends TestComposition {
 
   "create" must {
     "returns instance of this type" in {
-      val (nodeTreeFactory, scope) = build()
+      val (typeTreeFactory, scope) = build()
 
-      val result = nodeTreeFactory.create(scope)
+      val result = typeTreeFactory.create(scope)
 
       whenReady(result, browserTimeout) { result =>
-        result mustBe a[NodeTree]
+        result mustBe a[TypeTree]
       }
     }
 
     "returns 3 children given scope with 3 maxFuncsInObject (and rng mocked)" in {
-      val (nodeTreeFactory, scope) = build(nextInt = 3)
-      val result = nodeTreeFactory.create(scope = scope)
+      val (typeTreeFactory, scope) = build(nextInt = 3)
+      val result = typeTreeFactory.create(scope = scope)
 
       whenReady(result, browserTimeout) {
-        case NodeTree(child) => child.length must equal(3)
+        case TypeTree(child) => child.length must equal(3)
         case _ => fail("wrong type")
       }
     }
@@ -39,12 +39,12 @@ final class NodeTreeFactorySpec extends TestComposition {
         when(replaceEmpty.create(any[IScope])).thenReturn(Future.successful(premadeNode))
         Seq(replaceEmpty)
       }
-      val (nodeTreeFactory, scope) = build(nextInt = 3)
+      val (typeTreeFactory, scope) = build(nextInt = 3)
 
-      val result = nodeTreeFactory.create(scope = scope, premadeChildren = premadeChildren)
+      val result = typeTreeFactory.create(scope = scope, premadeChildren = premadeChildren)
 
       whenReady(result, browserTimeout) {
-        case NodeTree(child) =>
+        case TypeTree(child) =>
           child.length must equal(4) // 3 generated and 1 premade
           child.last must equal(premadeNode) // The premade are concatenated to the end of the seq
         case _ => fail("wrong type")
@@ -53,8 +53,8 @@ final class NodeTreeFactorySpec extends TestComposition {
 
     "throw if you ask updateScope" in {
       val scope = mock[IScope]
-      val (nodeTreeFactory, _) = build()
-      a[RuntimeException] must be thrownBy nodeTreeFactory.updateScope(scope)
+      val (typeTreeFactory, _) = build()
+      a[RuntimeException] must be thrownBy typeTreeFactory.updateScope(scope)
     }
   }
 
@@ -62,6 +62,6 @@ final class NodeTreeFactorySpec extends TestComposition {
     val rng: RandomNumberGenerator = mock[RandomNumberGenerator]
     when(rng.nextInt(any[Int])).thenReturn(nextInt)
     val injector = testInjector(new StubRng(randomNumberGenerator = rng), new StubIScope)
-    (injector.getInstance(classOf[NodeTreeFactory]), injector.getInstance(classOf[IScope]))
+    (injector.getInstance(classOf[TypeTreeFactory]), injector.getInstance(classOf[IScope]))
   }
 }

@@ -3,13 +3,13 @@ package models.domain.scala
 import com.google.inject.Injector
 import models.common.IScope
 import models.domain.Instruction
-import replaceEmpty.{AccumulateInstructions, NodeTreeFactory, UpdateScopeThrows}
+import replaceEmpty.{AccumulateInstructions, TypeTreeFactory, UpdateScopeThrows}
 
 import scala.async.Async.{async, await}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final case class NodeTree(nodes: Seq[Instruction]) extends Instruction with UpdateScopeThrows {
+final case class TypeTree(nodes: Seq[Instruction]) extends Instruction with UpdateScopeThrows {
 
   override def toRaw: String = nodes.map(f => f.toRaw).mkString(" ")
 
@@ -22,7 +22,7 @@ final case class NodeTree(nodes: Seq[Instruction]) extends Instruction with Upda
   }
 
   private def replaceEmpty(scope: IScope, currentInstruction: Instruction, acc: Seq[Instruction])(implicit injector: Injector) = {
-    lazy val factory = injector.getInstance(classOf[NodeTreeFactory])
+    lazy val factory = injector.getInstance(classOf[TypeTreeFactory])
     currentInstruction match {
       case _: Empty => factory.createNodes(scope = scope) // Head node (and any nodes after it) is of type empty, so replace it with a non-empty
       case instruction: Instruction =>
@@ -41,7 +41,7 @@ final case class NodeTree(nodes: Seq[Instruction]) extends Instruction with Upda
       }
     }
     val nodesWithoutEmpties = await(fNodesWithoutEmpties)
-    NodeTree(nodesWithoutEmpties.instructions)
+    TypeTree(nodesWithoutEmpties.instructions)
   }
 
   override def height: Int = 1 + nodes.map(_.height).max

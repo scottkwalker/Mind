@@ -8,7 +8,7 @@ final class PopulateMemoizationMapsImplSpec extends TestComposition {
     private val addOperatorFactory = injector.getInstance(classOf[AddOperatorFactoryImpl])
     private val functionMFactory = injector.getInstance(classOf[FunctionMFactoryImpl])
     private val integerMFactory = injector.getInstance(classOf[IntegerMFactoryImpl])
-    private val nodeTreeFactory = injector.getInstance(classOf[NodeTreeFactoryImpl])
+    private val typeTreeFactory = injector.getInstance(classOf[NodeTreeFactoryImpl])
     private val objectDefFactory = injector.getInstance(classOf[ObjectDefFactoryImpl])
     private val valDclInFunctionParamFactory = injector.getInstance(classOf[ValDclInFunctionParamFactoryImpl])
     private val valueRefFactory = injector.getInstance(classOf[ValueRefFactoryImpl])
@@ -40,7 +40,7 @@ final class PopulateMemoizationMapsImplSpec extends TestComposition {
           val pmm: IPopulateMemoizationMaps = new PopulateMemoizationMaps(addOperatorFactory,
             functionMFactory,
             integerMFactory,
-            nodeTreeFactory,
+            typeTreeFactory,
             objectDefFactory,
             valDclInFunctionParamFactory,
             valueRefFactory)
@@ -67,7 +67,7 @@ final class PopulateMemoizationMapsImplSpec extends TestComposition {
           val pmm: IPopulateMemoizationMaps = new PopulateMemoizationMaps(addOperatorFactory,
             functionMFactory,
             integerMFactory,
-            nodeTreeFactory,
+            typeTreeFactory,
             objectDefFactory,
             valDclInFunctionParamFactory,
             valueRefFactory)
@@ -130,7 +130,7 @@ final class PopulateMemoizationMapsImplSpec extends TestComposition {
           val pmm: IPopulateMemoizationMaps = new PopulateMemoizationMaps(addOperatorFactory,
             functionMFactory,
             integerMFactory,
-            nodeTreeFactory,
+            typeTreeFactory,
             objectDefFactory,
             valDclInFunctionParamFactory,
             valueRefFactory)
@@ -142,7 +142,7 @@ final class PopulateMemoizationMapsImplSpec extends TestComposition {
           assert(addOperatorFactory.mapOfCanTerminateInStepsRemaining.size > 0)
           assert(functionMFactory.mapOfCanTerminateInStepsRemaining.size > 0)
           assert(integerMFactory.mapOfCanTerminateInStepsRemaining.size > 0)
-          assert(nodeTreeFactory.mapOfCanTerminateInStepsRemaining.size > 0)
+          assert(typeTreeFactory.mapOfCanTerminateInStepsRemaining.size > 0)
           assert(objectDefFactory.mapOfCanTerminateInStepsRemaining.size > 0)
           assert(valDclInFunctionParamFactory.mapOfCanTerminateInStepsRemaining.size > 0)
           assert(valueRefFactory.mapOfCanTerminateInStepsRemaining.size > 0)

@@ -5,7 +5,7 @@ import composition.ai.randomWalk.RandomWalkModule
 import composition.{StubRng, TestComposition}
 import fitness.AddTwoInts
 import models.common.Scope
-import models.domain.scala.{FunctionM, IntegerM, NodeTree, ObjectDef, _}
+import models.domain.scala.{FunctionM, IntegerM, TypeTree, ObjectDef, _}
 import org.mockito.Mockito.{times, verify}
 import replaceEmpty.ReplaceEmpty
 
@@ -22,7 +22,7 @@ final class RandomWalkSpec extends TestComposition {
     }
 
     "return code that can be compiled and evaluated" in {
-      val premade = new NodeTree(
+      val premade = new TypeTree(
         Seq(
           ObjectDef(Seq(
             FunctionM(
@@ -42,8 +42,8 @@ final class RandomWalkSpec extends TestComposition {
         for (i <- 1 to 10) {
           val result = premade.replaceEmpty(scope)(injector)
           whenReady(result) {
-            case nodeTree: NodeTree =>
-              val f = new AddTwoInts(nodeTree)
+            case typeTree: TypeTree =>
+              val f = new AddTwoInts(typeTree)
               f.fitness
           }
         }
