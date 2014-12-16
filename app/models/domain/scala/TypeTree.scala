@@ -15,7 +15,7 @@ final case class TypeTree(nodes: Seq[Instruction]) extends Instruction with Upda
 
   override def hasNoEmpty(scope: IScope): Boolean = scope.hasHeightRemaining && {
     nodes.forall {
-      case n: ObjectDef => n.hasNoEmpty(scope.decrementHeight)
+      case n: Object => n.hasNoEmpty(scope.decrementHeight)
       case _: Empty => false
       case _ => false
     }

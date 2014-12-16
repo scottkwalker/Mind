@@ -9,7 +9,7 @@ import org.mockito.Mockito._
 
 import scala.concurrent.{Await, Future}
 
-final class ObjectDefSpec extends TestComposition {
+final class ObjectSpec extends TestComposition {
 
   "hasNoEmpty" must {
     "true given it can terminates in under N steps" in {
@@ -18,7 +18,7 @@ final class ObjectDefSpec extends TestComposition {
       val instruction = FunctionM(params = Seq.empty,
         nodes = Seq.empty,
         name = "f0")
-      val objectDef = ObjectDef(Seq(instruction), name)
+      val objectDef = Object(Seq(instruction), name)
 
       objectDef.hasNoEmpty(scope) must equal(true)
     }
@@ -27,7 +27,7 @@ final class ObjectDefSpec extends TestComposition {
       val scope = Scope(height = 0)
       val instruction = mock[Instruction]
       when(instruction.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException)
-      val objectDef = ObjectDef(Seq(instruction), name)
+      val objectDef = Object(Seq(instruction), name)
 
       objectDef.hasNoEmpty(scope) must equal(false)
     }
@@ -36,7 +36,7 @@ final class ObjectDefSpec extends TestComposition {
       val scope = Scope(height = 3)
       val instruction = mock[Instruction]
       when(instruction.hasNoEmpty(any[Scope])).thenReturn(false)
-      val objectDef = ObjectDef(Seq(instruction), name)
+      val objectDef = Object(Seq(instruction), name)
 
       objectDef.hasNoEmpty(scope) must equal(false)
     }
@@ -47,14 +47,14 @@ final class ObjectDefSpec extends TestComposition {
       val instruction = FunctionM(params = Seq.empty,
         nodes = Seq.empty,
         name = "f0")
-      val objectDef = ObjectDef(Seq(instruction), name)
+      val objectDef = Object(Seq(instruction), name)
 
       objectDef.hasNoEmpty(scope) must equal(true)
     }
 
     "false given single empty method node" in {
       val scope = Scope(height = 10)
-      val objectDef = ObjectDef(Seq(Empty()), name)
+      val objectDef = Object(Seq(Empty()), name)
       objectDef.hasNoEmpty(scope) must equal(false)
     }
 
@@ -62,7 +62,7 @@ final class ObjectDefSpec extends TestComposition {
       val scope = Scope(height = 10)
       val instruction = mock[Instruction]
       when(instruction.hasNoEmpty(any[Scope])).thenReturn(true)
-      val objectDef = ObjectDef(Seq(instruction, Empty()), name)
+      val objectDef = Object(Seq(instruction, Empty()), name)
 
       objectDef.hasNoEmpty(scope) must equal(false)
     }
@@ -72,7 +72,7 @@ final class ObjectDefSpec extends TestComposition {
     "return expected" in {
       val instruction = mock[Instruction]
       when(instruction.toRaw).thenReturn("STUB")
-      val objectDef = ObjectDef(Seq(instruction), name)
+      val objectDef = Object(Seq(instruction), name)
 
       objectDef.toRaw must equal("object o0 { STUB }")
     }
@@ -84,7 +84,7 @@ final class ObjectDefSpec extends TestComposition {
       val injector = mock[Injector]
       val instruction = mock[Instruction]
       when(instruction.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
-      val objectDef = ObjectDef(Seq(instruction), name = name)
+      val objectDef = Object(Seq(instruction), name = name)
 
       val result = objectDef.replaceEmpty(scope)(injector)
 
@@ -96,7 +96,7 @@ final class ObjectDefSpec extends TestComposition {
       val injector = mock[Injector]
       val instruction = mock[Instruction]
       when(instruction.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
-      val objectDef = ObjectDef(Seq(instruction), name)
+      val objectDef = Object(Seq(instruction), name)
 
       val result = objectDef.replaceEmpty(scope)(injector)
 
@@ -113,13 +113,13 @@ final class ObjectDefSpec extends TestComposition {
         maxObjectsInTree = 1)
       val empty = Empty()
       val injector = testInjector(new StubReplaceEmpty)
-      val objectDef = ObjectDef(nodes = Seq(empty),
+      val objectDef = Object(nodes = Seq(empty),
         name = name)
 
       val result = objectDef.replaceEmpty(scope)(injector)
 
       whenReady(result) {
-        case ObjectDef(n2, name2) =>
+        case Object(n2, name2) =>
           n2 match {
             case Seq(nSeq) => nSeq mustBe a[FunctionM]
             case _ => fail("not a Seq")
@@ -132,7 +132,7 @@ final class ObjectDefSpec extends TestComposition {
     "throw when passed empty seq (no empty or non-empty)" in {
       val scope = mock[IScope]
       val injector = mock[Injector]
-      val instance = new ObjectDef(nodes = Seq.empty, name = name)
+      val instance = new Object(nodes = Seq.empty, name = name)
 
       a[RuntimeException] must be thrownBy Await.result(instance.replaceEmpty(scope)(injector), finiteTimeout)
     }
@@ -142,7 +142,7 @@ final class ObjectDefSpec extends TestComposition {
     "height returns 1 + child height when has 1 child" in {
       val instruction = mock[Instruction]
       when(instruction.height).thenReturn(2)
-      val objectDef = ObjectDef(Seq(instruction), name)
+      val objectDef = Object(Seq(instruction), name)
 
       objectDef.height must equal(3)
     }
@@ -152,7 +152,7 @@ final class ObjectDefSpec extends TestComposition {
       when(instruction1.height).thenReturn(1)
       val instruction2 = mock[Instruction]
       when(instruction2.height).thenReturn(2)
-      val objectDef = ObjectDef(Seq(instruction1, instruction2), name)
+      val objectDef = Object(Seq(instruction1, instruction2), name)
 
       objectDef.height must equal(3)
     }

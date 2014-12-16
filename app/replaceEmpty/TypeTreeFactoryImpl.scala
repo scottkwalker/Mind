@@ -15,7 +15,7 @@ case class TypeTreeFactoryImpl @Inject()(
                                           lookupChildren: LookupChildren
                                           ) extends TypeTreeFactory with UpdateScopeThrows {
 
-  override val nodesToChooseFrom = Seq(ObjectDefFactoryImpl.id)
+  override val nodesToChooseFrom = Seq(ObjectFactoryImpl.id)
 
   // TODO is this ever going to be used for this type? Maybe we will only ever use the replaceEmpty method
   override def create(scope: IScope, premadeChildren: Seq[ReplaceEmpty]): Future[Instruction] = async {

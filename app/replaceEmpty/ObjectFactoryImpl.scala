@@ -4,22 +4,22 @@ import com.google.inject.Inject
 import memoization.LookupChildren
 import models.common.IScope
 import models.domain.Instruction
-import models.domain.scala.ObjectDef
+import models.domain.scala.Object
 import scala.async.Async.{async, await}
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-case class ObjectDefFactoryImpl @Inject()(
+case class ObjectFactoryImpl @Inject()(
                                            creator: CreateSeqNodes,
                                            lookupChildren: LookupChildren
-                                           ) extends ObjectDefFactory with UpdateScopeIncrementObjects {
+                                           ) extends ObjectFactory with UpdateScopeIncrementObjects {
 
   override val nodesToChooseFrom = Seq(FunctionMFactoryImpl.id)
 
   override def create(scope: IScope): Future[Instruction] = async {
     val nodesWithoutEmpties = await(createNodes(scope))
 
-    ObjectDef(nodes = nodesWithoutEmpties.instructions,
+    Object(nodes = nodesWithoutEmpties.instructions,
       index = scope.numObjects)
   }
 
@@ -33,7 +33,7 @@ case class ObjectDefFactoryImpl @Inject()(
   }
 }
 
-object ObjectDefFactoryImpl {
+object ObjectFactoryImpl {
 
   val id = 5
 }

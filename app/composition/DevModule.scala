@@ -13,7 +13,7 @@ final class DevModule() extends AbstractModule {
   def configure(): Unit = {
     bind(classOf[Empty]).asEagerSingleton()
     bind(classOf[TypeTreeFactory]).to(classOf[TypeTreeFactoryImpl]).asEagerSingleton()
-    bind(classOf[ObjectDefFactory]).to(classOf[ObjectDefFactoryImpl]).asEagerSingleton()
+    bind(classOf[ObjectFactory]).to(classOf[ObjectFactoryImpl]).asEagerSingleton()
     bind(classOf[ValueRefFactory]).to(classOf[ValueRefFactoryImpl]).asEagerSingleton()
     bind(classOf[IScope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1))
     bind(classOf[CreateNode]).to(classOf[CreateNodeImpl]).asEagerSingleton()

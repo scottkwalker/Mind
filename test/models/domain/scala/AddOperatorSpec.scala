@@ -71,7 +71,7 @@ final class AddOperatorSpec extends TestComposition {
       val scope = Scope(height = 10)
       val valid = mock[Instruction]
       when(valid.hasNoEmpty(any[Scope])).thenReturn(true)
-      val invalid = ObjectDef(Seq.empty, "ObjectM0")
+      val invalid = Object(Seq.empty, "ObjectM0")
 
       AddOperator(valid, invalid).hasNoEmpty(scope) must equal(false)
     }

@@ -18,7 +18,7 @@ final class PopulateMemoizationMapsImpl @Inject()(addOperatorFactory: AddOperato
                                               functionMFactory: FunctionMFactoryImpl,
                                               integerMFactory: IntegerMFactoryImpl,
                                               typeTreeFactory: TypeTreeFactoryImpl,
-                                              objectDefFactory: ObjectDefFactoryImpl,
+                                              objectFactory: ObjectFactoryImpl,
                                               valDclInFunctionParamFactory: ValDclInFunctionParamFactoryImpl,
                                               valueRefFactory: ValueRefFactoryImpl) extends PopulateMemoizationMaps {
 
@@ -32,7 +32,7 @@ final class PopulateMemoizationMapsImpl @Inject()(addOperatorFactory: AddOperato
       functionMFactory,
       integerMFactory,
       typeTreeFactory,
-      objectDefFactory,
+      objectFactory,
       valDclInFunctionParamFactory,
       valueRefFactory
     )

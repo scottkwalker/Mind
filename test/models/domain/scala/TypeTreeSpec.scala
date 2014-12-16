@@ -14,7 +14,7 @@ final class TypeTreeSpec extends TestComposition {
   "hasNoEmpty" must {
     "return true given it can terminates in under N steps" in {
       val scope = Scope(height = 10)
-      val instruction = ObjectDef(nodes = Seq.empty, name = "o0")
+      val instruction = Object(nodes = Seq.empty, name = "o0")
       val typeTree = new TypeTree(Seq(instruction))
 
       typeTree.hasNoEmpty(scope) must equal(true)
@@ -31,7 +31,7 @@ final class TypeTreeSpec extends TestComposition {
 
     "return true given none empty" in {
       val scope = Scope(height = 10)
-      val instruction = ObjectDef(nodes = Seq.empty, name = "o0")
+      val instruction = Object(nodes = Seq.empty, name = "o0")
       val typeTree = new TypeTree(Seq(instruction))
 
       typeTree.hasNoEmpty(scope) must equal(true)
@@ -94,7 +94,7 @@ final class TypeTreeSpec extends TestComposition {
       whenReady(result) {
         case TypeTree(nodes) =>
           nodes match {
-            case Seq(nonEmpty) => nonEmpty mustBe an[ObjectDef]
+            case Seq(nonEmpty) => nonEmpty mustBe an[Object]
             case _ => fail("not a seq")
           }
         case _ => fail("wrong type")
@@ -132,7 +132,7 @@ final class TypeTreeSpec extends TestComposition {
     "return expected value for realistic tree" in {
       val typeTree = new TypeTree(
         Seq(
-          ObjectDef(Seq(
+          Object(Seq(
             FunctionM(params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM())),
               nodes = Seq(
                 AddOperator(

@@ -2,7 +2,7 @@ package fitness
 
 import composition.TestComposition
 import models.domain.Instruction
-import models.domain.scala.{AddOperator, FunctionM, IntegerM, ObjectDef, _}
+import models.domain.scala.{AddOperator, FunctionM, IntegerM, Object, _}
 import org.mockito.Mockito._
 
 final class AddTwoIntsSpec extends TestComposition {
@@ -18,7 +18,7 @@ final class AddTwoIntsSpec extends TestComposition {
     "1 add 1 equals 2 with TypeTree that converts nodes to raw Scala" in {
       val typeTree = new TypeTree(
         Seq(
-          ObjectDef(Seq(
+          Object(Seq(
             FunctionM(
               params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM())),
               nodes = Seq(
@@ -31,7 +31,7 @@ final class AddTwoIntsSpec extends TestComposition {
 
     "return score less than max fitness for a non-optimal solution" in {
       // Arrange
-      val typeTree = new TypeTree(List(ObjectDef(List(FunctionM(List(ValDclInFunctionParam("v0", IntegerM()), ValDclInFunctionParam("v1", IntegerM())), List(ValueRef("v0")), "f0")), "o0")))
+      val typeTree = new TypeTree(List(Object(List(FunctionM(List(ValDclInFunctionParam("v0", IntegerM()), ValDclInFunctionParam("v1", IntegerM())), List(ValueRef("v0")), "f0")), "o0")))
 
       // Act
       val f = new AddTwoInts(typeTree)

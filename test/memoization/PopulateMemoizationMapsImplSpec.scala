@@ -9,7 +9,7 @@ final class PopulateMemoizationMapsImplSpec extends TestComposition {
     private val functionMFactory = injector.getInstance(classOf[FunctionMFactoryImpl])
     private val integerMFactory = injector.getInstance(classOf[IntegerMFactoryImpl])
     private val typeTreeFactory = injector.getInstance(classOf[NodeTreeFactoryImpl])
-    private val objectDefFactory = injector.getInstance(classOf[ObjectDefFactoryImpl])
+    private val objectFactory = injector.getInstance(classOf[objectFactoryImpl])
     private val valDclInFunctionParamFactory = injector.getInstance(classOf[ValDclInFunctionParamFactoryImpl])
     private val valueRefFactory = injector.getInstance(classOf[ValueRefFactoryImpl])
   */
@@ -41,7 +41,7 @@ final class PopulateMemoizationMapsImplSpec extends TestComposition {
             functionMFactory,
             integerMFactory,
             typeTreeFactory,
-            objectDefFactory,
+            objectFactory,
             valDclInFunctionParamFactory,
             valueRefFactory)
 
@@ -68,7 +68,7 @@ final class PopulateMemoizationMapsImplSpec extends TestComposition {
             functionMFactory,
             integerMFactory,
             typeTreeFactory,
-            objectDefFactory,
+            objectFactory,
             valDclInFunctionParamFactory,
             valueRefFactory)
 
@@ -131,7 +131,7 @@ final class PopulateMemoizationMapsImplSpec extends TestComposition {
             functionMFactory,
             integerMFactory,
             typeTreeFactory,
-            objectDefFactory,
+            objectFactory,
             valDclInFunctionParamFactory,
             valueRefFactory)
 
@@ -143,7 +143,7 @@ final class PopulateMemoizationMapsImplSpec extends TestComposition {
           assert(functionMFactory.mapOfCanTerminateInStepsRemaining.size > 0)
           assert(integerMFactory.mapOfCanTerminateInStepsRemaining.size > 0)
           assert(typeTreeFactory.mapOfCanTerminateInStepsRemaining.size > 0)
-          assert(objectDefFactory.mapOfCanTerminateInStepsRemaining.size > 0)
+          assert(objectFactory.mapOfCanTerminateInStepsRemaining.size > 0)
           assert(valDclInFunctionParamFactory.mapOfCanTerminateInStepsRemaining.size > 0)
           assert(valueRefFactory.mapOfCanTerminateInStepsRemaining.size > 0)
         }

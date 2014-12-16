@@ -5,7 +5,7 @@ import models.domain.Instruction
 
 import scala.concurrent.Future
 
-trait ObjectDefFactory extends ReplaceEmpty {
+trait ObjectFactory extends ReplaceEmpty {
 
   def createNodes(scope: IScope, acc: Seq[Instruction] = Seq.empty): Future[AccumulateInstructions]
 }

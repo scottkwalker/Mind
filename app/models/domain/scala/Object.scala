@@ -3,13 +3,13 @@ package models.domain.scala
 import com.google.inject.Injector
 import models.common.IScope
 import models.domain.Instruction
-import replaceEmpty.{AccumulateInstructions, ObjectDefFactory, UpdateScopeIncrementObjects}
+import replaceEmpty.{AccumulateInstructions, ObjectFactory, UpdateScopeIncrementObjects}
 
 import scala.async.Async.{async, await}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final case class ObjectDef(nodes: Seq[Instruction], name: String) extends Instruction with UpdateScopeIncrementObjects {
+final case class Object(nodes: Seq[Instruction], name: String) extends Instruction with UpdateScopeIncrementObjects {
 
   override def toRaw: String = s"object $name ${nodes.map(f => f.toRaw).mkString("{ ", " ", " }")}"
 
@@ -22,7 +22,7 @@ final case class ObjectDef(nodes: Seq[Instruction], name: String) extends Instru
   }
 
   private def replaceEmpty(scope: IScope, currentInstruction: Instruction, acc: Seq[Instruction])(implicit injector: Injector) = {
-    lazy val factory = injector.getInstance(classOf[ObjectDefFactory])
+    lazy val factory = injector.getInstance(classOf[ObjectFactory])
     currentInstruction match {
       case _: Empty => factory.createNodes(scope = scope) // Head node (and any nodes after it) is of type empty, so replace it with a non-empty
       case instruction: Instruction =>
@@ -41,15 +41,15 @@ final case class ObjectDef(nodes: Seq[Instruction], name: String) extends Instru
       }
     }
     val nodesWithoutEmpties = await(fNodesWithoutEmpties)
-    ObjectDef(nodesWithoutEmpties.instructions, name)
+    Object(nodesWithoutEmpties.instructions, name)
   }
 
   override def height: Int = 1 + nodes.map(_.height).reduceLeft(math.max)
 }
 
-object ObjectDef {
+object Object {
 
-  def apply(nodes: Seq[Instruction], index: Int): ObjectDef = ObjectDef(
+  def apply(nodes: Seq[Instruction], index: Int): Object = Object(
     nodes = nodes,
     name = s"o$index"
   )

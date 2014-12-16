@@ -40,9 +40,9 @@ final class FactoryLookupImplSpec extends TestComposition {
       factoryLookup.convert(factory) must equal(TypeTreeFactoryImpl.id)
     }
 
-    "return expected id for ObjectDefFactory" in {
-      val factory = injector.getInstance(classOf[ObjectDefFactory])
-      factoryLookup.convert(factory) must equal(ObjectDefFactoryImpl.id)
+    "return expected id for objectFactory" in {
+      val factory = injector.getInstance(classOf[ObjectFactory])
+      factoryLookup.convert(factory) must equal(ObjectFactoryImpl.id)
     }
 
     "return expected id for ValDclInFunctionParamFactory" in {
