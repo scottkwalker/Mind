@@ -11,7 +11,7 @@ import scala.concurrent.Future
 
 final case class ValueRefFactoryImpl @Inject()(ai: SelectionStrategy) extends ValueRefFactory with UpdateScopeNoChange {
 
-  override val nodesToChooseFrom = Seq.empty
+  override val nodesToChooseFrom = Set.empty[Int]
 
   override def create(scope: IScope): Future[Instruction] = async {
     ValueRef(index = ai.chooseIndex(scope.numVals))

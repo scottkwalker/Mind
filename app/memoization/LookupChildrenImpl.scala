@@ -15,7 +15,7 @@ final class LookupChildrenImpl @Inject()(factoryIdToFactory: FactoryLookup, neig
   override def fetch(scope: IScope, parent: Int): Future[Seq[Int]] = {
     val factory = factoryIdToFactory.convert(parent)
     val nodesToChooseFrom = factory.nodesToChooseFrom
-    fetchFromRepository(scope, nodesToChooseFrom)
+    fetchFromRepository(scope, nodesToChooseFrom.toSeq)
   }
 
   private def fetchFromRepository(scope: IScope, neighbours: Seq[Int]): Future[Seq[Int]] = {

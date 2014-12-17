@@ -10,7 +10,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 case class IntegerMFactoryImpl @Inject()() extends IntegerMFactory with UpdateScopeNoChange {
 
-  override val nodesToChooseFrom = Seq.empty
+  override val nodesToChooseFrom = Set.empty[Int]
 
   override def create(scope: IScope): Future[Instruction] = async {
     IntegerM()

@@ -218,12 +218,12 @@ class NeighboursRepositorySpec extends TestComposition {
   private def factoryLookupStub = {
     val addOperatorFactoryImpl = {
       val stub = mock[AddOperatorFactory]
-      when(stub.nodesToChooseFrom).thenReturn(Seq(ValueRefFactoryImpl.id))
+      when(stub.nodesToChooseFrom).thenReturn(Set(ValueRefFactoryImpl.id))
       stub
     }
     val valueRefFactoryImpl = {
       val stub = mock[ValueRefFactory]
-      when(stub.nodesToChooseFrom).thenReturn(Seq.empty)
+      when(stub.nodesToChooseFrom).thenReturn(Set.empty[Int])
       stub
     }
 

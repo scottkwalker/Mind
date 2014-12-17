@@ -6,7 +6,7 @@ import scala.concurrent.Future
 
 trait ReplaceEmpty {
 
-  val nodesToChooseFrom: Seq[Int] // TODO should the collection type be Array?
+  val nodesToChooseFrom: Set[Int] // TODO should the collection type be Array?
 
   def create(scope: IScope): Future[Instruction]
 

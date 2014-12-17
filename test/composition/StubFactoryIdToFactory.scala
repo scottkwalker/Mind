@@ -30,22 +30,22 @@ object StubFactoryIdToFactory {
   val fakeFactoryHasChildrenId = 3
   val fakeFactoryTerminates1 = {
     val replaceEmpty = mock(classOf[ReplaceEmpty])
-    when(replaceEmpty.nodesToChooseFrom).thenReturn(Seq.empty)
+    when(replaceEmpty.nodesToChooseFrom).thenReturn(Set.empty[Int])
     replaceEmpty
   }
   val fakeFactoryTerminates2 = {
     val replaceEmpty = mock(classOf[ReplaceEmpty])
-    when(replaceEmpty.nodesToChooseFrom).thenReturn(Seq.empty)
+    when(replaceEmpty.nodesToChooseFrom).thenReturn(Set.empty[Int])
     replaceEmpty
   }
   val fNot: ReplaceEmpty = {
     val replaceEmpty = mock(classOf[ReplaceEmpty])
-    when(replaceEmpty.nodesToChooseFrom).thenReturn(Seq(fakeFactoryDoesNotTerminateId))
+    when(replaceEmpty.nodesToChooseFrom).thenReturn(Set(fakeFactoryDoesNotTerminateId))
     replaceEmpty
   }
   val fakeFactoryHasChildren: ReplaceEmpty = {
     val replaceEmpty = mock(classOf[ReplaceEmpty])
-    when(replaceEmpty.nodesToChooseFrom).thenReturn(Seq(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
+    when(replaceEmpty.nodesToChooseFrom).thenReturn(Set(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
     replaceEmpty
   }
 }

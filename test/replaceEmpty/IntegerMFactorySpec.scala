@@ -8,7 +8,7 @@ final class IntegerMFactorySpec extends TestComposition {
 
   "neighbours" must {
     "have no possible children" in {
-      integerMFactory.nodesToChooseFrom.length must equal(0)
+      integerMFactory.nodesToChooseFrom.size must equal(0)
     }
   }
 

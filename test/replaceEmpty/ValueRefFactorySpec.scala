@@ -36,7 +36,7 @@ final class ValueRefFactorySpec extends TestComposition {
 
   "neighbours" must {
     "be empty" in {
-      valueRefFactory.nodesToChooseFrom.length must equal(0)
+      valueRefFactory.nodesToChooseFrom.size must equal(0)
     }
   }
 
