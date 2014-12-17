@@ -83,8 +83,8 @@ final class CreateSeqNodesImplSpec extends TestComposition {
     when(rng.nextInt(any[Int])).thenReturn(nextInt)
     val ai: SelectionStrategy = Aco(rng)
     val createNode = mock[CreateNode]
-    when(createNode.create(any[Future[Seq[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(scope, instruction))
-    val possibleChildren = Future.successful(Seq(replaceEmpty))
+    when(createNode.create(any[Future[Set[ReplaceEmpty]]], any[Scope])).thenReturn(Future.successful(scope, instruction))
+    val possibleChildren = Future.successful(Set(replaceEmpty))
     val createSeqNodes = CreateSeqNodesImpl(createNode, ai)
 
     (possibleChildren, createSeqNodes, scope, createNode, instruction)

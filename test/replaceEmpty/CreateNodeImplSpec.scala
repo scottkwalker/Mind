@@ -50,8 +50,8 @@ final class CreateNodeImplSpec extends TestComposition {
     when(replaceEmpty.create(scope)).thenReturn(Future.successful(instruction))
     when(replaceEmpty.updateScope(scope)).thenReturn(scope)
     val ai = mock[SelectionStrategy]
-    when(ai.chooseChild(any[Future[Seq[ReplaceEmpty]]])).thenReturn(Future.successful(replaceEmpty))
-    val possibleChildren = Future.successful(Seq(replaceEmpty))
+    when(ai.chooseChild(any[Future[Set[ReplaceEmpty]]])).thenReturn(Future.successful(replaceEmpty))
+    val possibleChildren = Future.successful(Set(replaceEmpty))
     (replaceEmpty, scope, ai, possibleChildren)
   }
 }

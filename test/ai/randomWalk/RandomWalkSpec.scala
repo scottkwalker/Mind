@@ -16,7 +16,7 @@ final class RandomWalkSpec extends TestComposition {
       val randomNumberGenerator = mock[RandomNumberGenerator]
       val sut = testInjector(new RandomWalkModule, new StubRng(randomNumberGenerator)).getInstance(classOf[SelectionStrategy])
       val node = mock[ReplaceEmpty]
-      val possibleChildren = Seq(node)
+      val possibleChildren = Set(node)
 
       sut.chooseChild(possibleChildren) mustBe a[ReplaceEmpty]
     }
@@ -54,7 +54,7 @@ final class RandomWalkSpec extends TestComposition {
     }
 
     "throw when sequence is empty" in {
-      a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Seq.empty)
+      a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Set.empty[ReplaceEmpty])
     }
   }
 

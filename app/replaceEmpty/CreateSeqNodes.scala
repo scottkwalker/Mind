@@ -6,7 +6,7 @@ import scala.concurrent.Future
 
 trait CreateSeqNodes {
 
-  def create(possibleChildren: => Future[Seq[ReplaceEmpty]],
+  def create(possibleChildren: => Future[Set[ReplaceEmpty]],
              scope: IScope,
              acc: Seq[Instruction] = Seq.empty,
              factoryLimit: Int

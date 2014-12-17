@@ -9,11 +9,11 @@ trait SelectionStrategy {
 
   protected val rng: RandomNumberGenerator
 
-  def chooseChild(possibleChildren: Seq[ReplaceEmpty]): ReplaceEmpty
+  def chooseChild(possibleChildren: Set[ReplaceEmpty]): ReplaceEmpty
 
   def chooseIndex(seqLength: Int): Int
 
-  def chooseChild(possibleChildren: Future[Seq[ReplaceEmpty]]): Future[ReplaceEmpty] = {
+  def chooseChild(possibleChildren: Future[Set[ReplaceEmpty]]): Future[ReplaceEmpty] = {
     possibleChildren map { children =>
       require(children.nonEmpty, s"Sequence possibleChildren must not be empty otherwise we cannot pick a node from it, contained: $possibleChildren")
       chooseChild(children)

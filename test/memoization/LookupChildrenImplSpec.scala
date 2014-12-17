@@ -13,7 +13,7 @@ final class LookupChildrenImplSpec extends TestComposition {
     "does not call FactoryIdToFactory.convert with ReplaceEmpty as the repository already contains the ids" in {
       val (lookupChildren, scope, factoryIdToFactory) = build
 
-      val result = lookupChildren.fetch(scope = scope, childrenToChooseFrom = Seq(fakeFactoryTerminates1Id))
+      val result = lookupChildren.fetch(scope = scope, childrenToChooseFrom = Set(fakeFactoryTerminates1Id))
 
       whenReady(result, browserTimeout) { _ => verify(factoryIdToFactory, never).convert(any[ReplaceEmpty])}
     }
@@ -21,7 +21,7 @@ final class LookupChildrenImplSpec extends TestComposition {
     "call FactoryIdToFactory.convert(factory) for only the nodes that can terminate" in {
       val (lookupChildren, scope, factoryIdToFactory) = build
 
-      val result = lookupChildren.fetch(scope = scope, childrenToChooseFrom = Seq(fakeFactoryTerminates1Id))
+      val result = lookupChildren.fetch(scope = scope, childrenToChooseFrom = Set(fakeFactoryTerminates1Id))
 
       whenReady(result, browserTimeout) { _ => verify(factoryIdToFactory, times(2)).convert(fakeFactoryTerminates1Id)}
     }
@@ -30,14 +30,14 @@ final class LookupChildrenImplSpec extends TestComposition {
       val (lookupChildren, scope, _) = build
 
       val result = lookupChildren.fetch(scope = scope,
-        childrenToChooseFrom = Seq(fakeFactoryDoesNotTerminateId,
+        childrenToChooseFrom = Set(fakeFactoryDoesNotTerminateId,
           fakeFactoryTerminates1Id,
           fakeFactoryDoesNotTerminateId,
           fakeFactoryTerminates2Id)
       )
 
       whenReady(result, browserTimeout) {
-        _ must equal(Seq(fakeFactoryTerminates1, fakeFactoryTerminates2))
+        _ must equal(Set(fakeFactoryTerminates1, fakeFactoryTerminates2))
       }
     }
   }
@@ -60,7 +60,7 @@ final class LookupChildrenImplSpec extends TestComposition {
       val result = lookupChildren.fetch(scope = scope, parent = fakeFactoryHasChildrenId)
 
       whenReady(result, browserTimeout) {
-        _ must equal(Seq(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
+        _ must equal(Set(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
       }
     }
   }

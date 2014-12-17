@@ -16,7 +16,7 @@ final class AcoSpec extends TestComposition {
       val randomNumberGenerator = mock[RandomNumberGenerator]
       val selectionStrategy = testInjector(new AcoModule, new StubRng(randomNumberGenerator)).getInstance(classOf[SelectionStrategy])
       val node = mock[ReplaceEmpty]
-      val possibleChildren = Seq(node)
+      val possibleChildren = Set(node)
 
       selectionStrategy.chooseChild(possibleChildren) mustBe a[ReplaceEmpty]
     }
@@ -54,7 +54,7 @@ final class AcoSpec extends TestComposition {
     }
 
     "throw when sequence is empty" in {
-      a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Seq.empty)
+      a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Set.empty[ReplaceEmpty])
     }
   }
 

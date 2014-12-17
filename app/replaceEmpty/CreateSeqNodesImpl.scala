@@ -12,7 +12,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 final case class CreateSeqNodesImpl @Inject()(createNode: CreateNode, ai: SelectionStrategy) extends CreateSeqNodes {
 
-  def create(possibleChildren: => Future[Seq[ReplaceEmpty]],
+  def create(possibleChildren: => Future[Set[ReplaceEmpty]],
              initScope: IScope,
              initAcc: Seq[Instruction] = Seq.empty, // Default the accumulator to empty.
              factoryLimit: Int

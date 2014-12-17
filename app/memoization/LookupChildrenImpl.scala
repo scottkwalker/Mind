@@ -8,17 +8,17 @@ import scala.concurrent.Future
 
 final class LookupChildrenImpl @Inject()(factoryIdToFactory: FactoryLookup, neighboursRepository: NeighboursRepository) extends LookupChildren {
 
-  override def fetch(scope: IScope, childrenToChooseFrom: Seq[Int]): Future[Seq[ReplaceEmpty]] = {
+  override def fetch(scope: IScope, childrenToChooseFrom: Set[Int]): Future[Set[ReplaceEmpty]] = {
     fetchFromRepository(scope, childrenToChooseFrom).map(_.map(factoryIdToFactory.convert))
   }
 
-  override def fetch(scope: IScope, parent: Int): Future[Seq[Int]] = {
+  override def fetch(scope: IScope, parent: Int): Future[Set[Int]] = {
     val factory = factoryIdToFactory.convert(parent)
     val nodesToChooseFrom = factory.nodesToChooseFrom
-    fetchFromRepository(scope, nodesToChooseFrom.toSeq)
+    fetchFromRepository(scope, nodesToChooseFrom)
   }
 
-  private def fetchFromRepository(scope: IScope, neighbours: Seq[Int]): Future[Seq[Int]] = {
+  private def fetchFromRepository(scope: IScope, neighbours: Set[Int]): Future[Set[Int]] = {
     val neighbourValues = neighbours.map { neighbourId =>
       neighboursRepository.apply(key1 = scope, key2 = neighbourId). // Get value from repository
         map(value => neighbourId -> value) // Convert to ReplaceEmpty

@@ -4,6 +4,7 @@ import ai.aco.Aco
 import composition.{StubRng, TestComposition}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{when, _}
+import replaceEmpty.ReplaceEmpty
 
 import scala.concurrent.Future
 
@@ -12,7 +13,7 @@ final class SelectionStrategySpec extends TestComposition {
   "chooseChild" must {
     "throw when seq is empty" in {
       val (sut, _) = selectionStrategy(nextInt = 42)
-      a[RuntimeException] must be thrownBy sut.chooseChild(Future.successful(Seq.empty)).futureValue
+      a[RuntimeException] must be thrownBy sut.chooseChild(Future.successful(Set.empty[ReplaceEmpty])).futureValue
     }
   }
 

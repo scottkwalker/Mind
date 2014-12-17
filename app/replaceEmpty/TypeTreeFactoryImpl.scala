@@ -29,7 +29,7 @@ case class TypeTreeFactoryImpl @Inject()(
 
   override def createNodes(scope: IScope, acc: Seq[Instruction] = Seq.empty): Future[AccumulateInstructions] = {
     creator.create(
-      possibleChildren = lookupChildren.fetch(scope, nodesToChooseFrom.toSeq),
+      possibleChildren = lookupChildren.fetch(scope, nodesToChooseFrom),
       scope = scope,
       acc = acc,
       factoryLimit = scope.maxObjectsInTree

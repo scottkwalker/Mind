@@ -7,9 +7,9 @@ import replaceEmpty.ReplaceEmpty
 // Always chooses a random move from the legal moves.
 final case class RandomGamer @Inject()(rng: RandomNumberGenerator) extends SelectionStrategy {
 
-  override def chooseChild(possibleChildren: Seq[ReplaceEmpty]): ReplaceEmpty = {
-    val index = chooseIndex(possibleChildren.length)
-    possibleChildren(index)
+  override def chooseChild(possibleChildren: Set[ReplaceEmpty]): ReplaceEmpty = {
+    val index = chooseIndex(possibleChildren.size)
+    possibleChildren.toSeq(index)
   }
 
   override def chooseIndex(seqLength: Int): Int = {
