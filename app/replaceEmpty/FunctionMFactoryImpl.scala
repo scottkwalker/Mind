@@ -5,6 +5,7 @@ import memoization.LookupChildren
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.FunctionM
+import utils.PozInt
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -50,5 +51,5 @@ case class FunctionMFactoryImpl @Inject()(
 
 object FunctionMFactoryImpl {
 
-  val id = 2
+  val id = PozInt(2)
 }

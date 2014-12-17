@@ -5,6 +5,7 @@ import composition.StubFactoryIdToFactory._
 import replaceEmpty.ReplaceEmpty
 import memoization.FactoryLookup
 import org.mockito.Mockito.{mock, when}
+import utils.PozInt
 
 final class StubFactoryIdToFactory(factoryLookup: FactoryLookup) extends AbstractModule {
 
@@ -24,18 +25,18 @@ final class StubFactoryIdToFactory(factoryLookup: FactoryLookup) extends Abstrac
 
 object StubFactoryIdToFactory {
 
-  val fakeFactoryDoesNotTerminateId = 0
-  val fakeFactoryTerminates1Id = 1
-  val fakeFactoryTerminates2Id = 2
-  val fakeFactoryHasChildrenId = 3
+  val fakeFactoryDoesNotTerminateId = PozInt(0)
+  val fakeFactoryTerminates1Id = PozInt(1)
+  val fakeFactoryTerminates2Id = PozInt(2)
+  val fakeFactoryHasChildrenId = PozInt(3)
   val fakeFactoryTerminates1 = {
     val replaceEmpty = mock(classOf[ReplaceEmpty])
-    when(replaceEmpty.nodesToChooseFrom).thenReturn(Set.empty[Int])
+    when(replaceEmpty.nodesToChooseFrom).thenReturn(Set.empty[PozInt])
     replaceEmpty
   }
   val fakeFactoryTerminates2 = {
     val replaceEmpty = mock(classOf[ReplaceEmpty])
-    when(replaceEmpty.nodesToChooseFrom).thenReturn(Set.empty[Int])
+    when(replaceEmpty.nodesToChooseFrom).thenReturn(Set.empty[PozInt])
     replaceEmpty
   }
   val fNot: ReplaceEmpty = {

@@ -5,6 +5,7 @@ import memoization.LookupChildren
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.Object
+import utils.PozInt
 import scala.async.Async.{async, await}
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -35,5 +36,5 @@ case class ObjectFactoryImpl @Inject()(
 
 object ObjectFactoryImpl {
 
-  val id = 5
+  val id = PozInt(5)
 }

@@ -5,6 +5,7 @@ import memoization.LookupChildren
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.AddOperator
+import utils.PozInt
 import scala.async.Async.{async, await}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -27,5 +28,5 @@ case class AddOperatorFactoryImpl @Inject()(
 
 object AddOperatorFactoryImpl {
 
-  val id = 1
+  val id = PozInt(1)
 }

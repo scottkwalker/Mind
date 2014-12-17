@@ -6,6 +6,7 @@ import models.common.LookupChildrenRequest
 import play.api.data.Form
 import play.api.libs.json.Json.toJson
 import play.api.mvc.{Action, Controller}
+import utils.PozInt
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -25,8 +26,8 @@ final class LegalChildren @Inject()(lookupChildren: LookupChildren) extends Cont
         Future.successful(BadRequest(views.html.legalChildren(invalidForm)))
       },
       validForm => {
-        lookupChildren.fetch(scope = validForm.scope, parent = validForm.currentNode).map { result =>
-          Ok(toJson(result)).as(JSON)
+        lookupChildren.fetch(scope = validForm.scope, parent = PozInt(validForm.currentNode)).map { result =>
+          Ok(toJson(result.map{_.value})).as(JSON)
         }
       }
     )

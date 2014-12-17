@@ -2,11 +2,12 @@ package replaceEmpty
 
 import models.common.IScope
 import models.domain.Instruction
+import utils.PozInt
 import scala.concurrent.Future
 
 trait ReplaceEmpty {
 
-  val nodesToChooseFrom: Set[Int] // TODO should the collection type be Array?
+  val nodesToChooseFrom: Set[PozInt]
 
   def create(scope: IScope): Future[Instruction]
 

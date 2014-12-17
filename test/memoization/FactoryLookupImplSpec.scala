@@ -2,12 +2,13 @@ package memoization
 
 import composition.TestComposition
 import replaceEmpty._
+import utils.PozInt
 
 final class FactoryLookupImplSpec extends TestComposition {
 
   "convert id to factory" must {
     "throw when id is not in the list" in {
-      a[RuntimeException] must be thrownBy factoryLookup.convert(-1)
+      a[RuntimeException] must be thrownBy factoryLookup.convert(PozInt(Int.MaxValue))
     }
 
     "return expected factory" in {

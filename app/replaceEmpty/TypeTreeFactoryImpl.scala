@@ -5,6 +5,7 @@ import memoization.LookupChildren
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.TypeTree
+import utils.PozInt
 
 import scala.async.Async.{async, await}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -44,5 +45,5 @@ case class TypeTreeFactoryImpl @Inject()(
 
 object TypeTreeFactoryImpl {
 
-  val id = 4
+  val id = PozInt(4)
 }

@@ -5,6 +5,7 @@ import com.google.inject.Inject
 import memoization.NeighboursRepository.writesNeighboursRepository
 import models.common.IScope
 import play.api.libs.json._
+import utils.PozInt
 import utils.Timeout.finiteTimeout
 import scala.async.Async.{async, await}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -12,9 +13,9 @@ import scala.concurrent.{Await, Future}
 import scala.language.implicitConversions
 
 class NeighboursRepository @Inject()(factoryLookup: FactoryLookup)
-  extends Memoize2Impl[IScope, Int, Boolean](factoryLookup.version)(writesNeighboursRepository) {
+  extends Memoize2Impl[IScope, PozInt, Boolean](factoryLookup.version)(writesNeighboursRepository) {
 
-  def funcCalculate(scope: IScope, neighbourId: Int): Future[Boolean] =
+  def funcCalculate(scope: IScope, neighbourId: PozInt): Future[Boolean] =
     async {
       if (scope.hasHeightRemaining) {
         val possibleNeighbourIds = factoryLookup.convert(neighbourId).nodesToChooseFrom

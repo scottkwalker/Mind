@@ -8,6 +8,7 @@ import models.common.Scope
 import org.mockito.Mockito._
 import play.api.libs.json._
 import replaceEmpty.{AddOperatorFactory, AddOperatorFactoryImpl, ValueRefFactory, ValueRefFactoryImpl}
+import utils.PozInt
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -223,7 +224,7 @@ class NeighboursRepositorySpec extends TestComposition {
     }
     val valueRefFactoryImpl = {
       val stub = mock[ValueRefFactory]
-      when(stub.nodesToChooseFrom).thenReturn(Set.empty[Int])
+      when(stub.nodesToChooseFrom).thenReturn(Set.empty[PozInt])
       stub
     }
 

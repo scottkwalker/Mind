@@ -5,6 +5,7 @@ import memoization.LookupChildren
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.ValDclInFunctionParam
+import utils.PozInt
 import scala.async.Async.{async, await}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -28,5 +29,5 @@ case class ValDclInFunctionParamFactoryImpl @Inject()(
 
 object ValDclInFunctionParamFactoryImpl {
 
-  val id = 6
+  val id = PozInt(6)
 }

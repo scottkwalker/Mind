@@ -9,6 +9,7 @@ import play.api.libs.json.Json
 import play.api.test.Helpers.{BAD_REQUEST, OK, contentAsString}
 import play.api.test.{FakeRequest, WithApplication}
 import replaceEmpty.TypeTreeFactoryImpl
+import utils.PozInt
 import scala.concurrent.ExecutionContext.Implicits.global
 
 final class LegalChildrenUnitSpec extends TestComposition {
@@ -70,7 +71,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
 
       val result = sut.calculate(validRequest)
       whenReady(result, browserTimeout) { r =>
-        verify(lookupChildren, times(1)).fetch(any[IScope], any[Int])
+        verify(lookupChildren, times(1)).fetch(any[IScope], any[PozInt])
       }
     }
 

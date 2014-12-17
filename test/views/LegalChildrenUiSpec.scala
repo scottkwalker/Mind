@@ -56,7 +56,7 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
       val valid = "1"
       go to page
       // Fill in the fields
-      page.currentNode.value = AddOperatorFactoryImpl.id.toString
+      page.currentNode.value = AddOperatorFactoryImpl.id.value.toString
       page.numVals.value = valid
       page.numFuncs.value = valid
       page.numObjects.value = valid
