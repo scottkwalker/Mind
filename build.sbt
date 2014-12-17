@@ -16,6 +16,8 @@ sources in doc in Compile := List()
 // project from scratch, so now only output when there is a warning or error.
 logLevel := Level.Warn
 
+logLevel in test := Level.Info
+
 logLevel in testOnly := Level.Info
 
 logLevel in testQuick := Level.Info

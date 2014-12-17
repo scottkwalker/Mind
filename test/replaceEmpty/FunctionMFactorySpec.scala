@@ -15,7 +15,7 @@ final class FunctionMFactorySpec extends TestComposition {
 
       val result = factory.create(scope = scope)
 
-      whenReady(result) { result =>
+      whenReady(result, browserTimeout) { result =>
         result mustBe a[FunctionM]
       }
     }
@@ -25,7 +25,7 @@ final class FunctionMFactorySpec extends TestComposition {
 
       val result = factory.create(scope = scope)
 
-      whenReady(result) {
+      whenReady(result, browserTimeout) {
         case FunctionM(_, _, name) => name must equal("f0")
         case _ => fail("wrong type")
       }
@@ -36,7 +36,7 @@ final class FunctionMFactorySpec extends TestComposition {
 
       val result = factory.create(scope = scope)
 
-      whenReady(result) {
+      whenReady(result, browserTimeout) {
         case FunctionM(_, _, name) => name must equal("f1")
         case _ => fail("wrong type")
       }
@@ -47,7 +47,7 @@ final class FunctionMFactorySpec extends TestComposition {
 
       val result = factory.create(scope = scope)
 
-      whenReady(result) {
+      whenReady(result, browserTimeout) {
         case FunctionM(_, children, _) => children.length must equal(3)
         case _ => fail("wrong type")
       }
