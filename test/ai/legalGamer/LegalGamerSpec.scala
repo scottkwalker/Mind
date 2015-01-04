@@ -4,7 +4,7 @@ import ai.{RandomNumberGenerator, SelectionStrategy}
 import composition.{StubRng, TestComposition}
 import fitness.AddTwoInts
 import models.common.Scope
-import models.domain.scala.{Empty, FunctionM, IntegerM, TypeTree, Object, ValDclInFunctionParam}
+import models.domain.scala.{Empty, FunctionM, IntegerM, Object, TypeTree, ValDclInFunctionParam}
 import replaceEmpty.ReplaceEmpty
 
 final class LegalGamerSpec extends TestComposition {
@@ -78,6 +78,7 @@ final class LegalGamerSpec extends TestComposition {
     }
   }
 
-  private val injector = testInjector()
-  private val selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
+  private def injector = testInjector()
+
+  private def selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
 }
