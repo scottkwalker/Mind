@@ -48,7 +48,7 @@ final class ValueRefFactorySpec extends TestComposition {
     }
   }
 
-  private val valueRefFactory = testInjector().getInstance(classOf[ValueRefFactoryImpl])
+  private def valueRefFactory = testInjector().getInstance(classOf[ValueRefFactoryImpl])
   private val scope = {
     val stub = mock[IScope]
     when(stub.numVals).thenReturn(1)

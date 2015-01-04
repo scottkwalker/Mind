@@ -136,7 +136,7 @@ final class LegalChildrenFormSpec extends TestComposition {
     }
   }
 
-  private val legalChildren = testInjector().getInstance(classOf[LegalChildren])
+  private def legalChildren = testInjector().getInstance(classOf[LegalChildren])
 
   private def formWithValidDefaults(numVals: String,
                                     numFuncs: String,

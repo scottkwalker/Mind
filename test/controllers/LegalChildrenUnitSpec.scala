@@ -81,8 +81,8 @@ final class LegalChildrenUnitSpec extends TestComposition {
     }
   }
 
-  private val legalChildren = testInjector().getInstance(classOf[LegalChildren])
-  private val present = {
+  private def legalChildren = testInjector().getInstance(classOf[LegalChildren])
+  private def present = {
     val emptyRequest = FakeRequest()
     legalChildren.present(emptyRequest)
   }

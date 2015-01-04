@@ -27,5 +27,5 @@ final class IntegerMFactorySpec extends TestComposition {
     }
   }
 
-  private val integerMFactory = testInjector().getInstance(classOf[IntegerMFactoryImpl])
+  private def integerMFactory = testInjector().getInstance(classOf[IntegerMFactoryImpl])
 }
