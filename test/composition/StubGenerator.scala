@@ -13,7 +13,7 @@ import scala.concurrent.Future
 final class StubGenerator(generator: Generator = mock(classOf[Generator])) extends AbstractModule {
 
   def configure(): Unit = {
-    when(generator.generate).thenReturn(Future.successful(true))
+    when(generator.generate(any[IScope])).thenReturn(Future.successful(true))
     bind(classOf[Generator]).toInstance(generator)
   }
 }

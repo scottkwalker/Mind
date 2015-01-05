@@ -52,7 +52,7 @@ final class PopulateUnitSpec extends TestComposition {
 
       val result = sut.calculate(validRequest)
       whenReady(result, browserTimeout) { r =>
-        verify(generator, times(1)).generate
+        verify(generator, times(1)).generate(any[IScope])
       }
     }
   }

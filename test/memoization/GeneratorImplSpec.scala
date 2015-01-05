@@ -11,14 +11,16 @@ class GeneratorImplSpec extends TestComposition {
   "generate" must {
     "return true" in {
       val (_, generator) = build
-      whenReady(generator.generate) {
+      val scope = mock[IScope]
+      whenReady(generator.generate(scope)) {
         _ must equal(true)
       }
     }
 
     "call lookupChildren.fetch" in {
       val (lookupChildren, generator) = build
-      whenReady(generator.generate) { r =>
+      val scope = mock[IScope]
+      whenReady(generator.generate(scope)) { r =>
         verify(lookupChildren, times(1)).fetch(any[IScope], any[PozInt])
       }
     }
