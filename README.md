@@ -58,7 +58,7 @@ Code coverage
 -------------
 When the Continuous Integration build runs, the tests will gather coverage statistics and post the results online to [Coveralls](https://coveralls.io).
 
-Offline I run the sbt plugin for [Scoverage](https://github.com/scoverage/sbt-scoverage). From the sbt console run 'scoverage:test' to make it run the tests and output statistics to html files.
+Offline I run the sbt plugin for [Scoverage](https://github.com/scoverage/sbt-scoverage). From the sbt console run 'clean coverage test' to make it run the tests and output statistics to html files.
 
 Previously I was using Jacoco offline, but the problems are:
 
