@@ -1,7 +1,7 @@
 package controllers
 
-import composition.{StubLookupChildren, TestComposition}
-import memoization.LookupChildren
+import composition.{StubGenerator, StubLookupChildren, TestComposition}
+import memoization.{Generator, LookupChildren}
 import models.common.{IScope, PopulateRequest, Scope}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify}
@@ -44,41 +44,16 @@ final class PopulateUnitSpec extends TestComposition {
       }
     }
 
-    "return seq of ids when submission is valid and legal moves are found" in new WithApplication {
-      val validRequest = requestWithDefaults()
-      val result = populate.calculate(validRequest)
-      whenReady(result, browserTimeout) { r =>
-        r.body.map { b =>
-          Json.parse(b) must equal(Seq(TypeTreeFactoryImpl.id))
-        }
-      }
-    }
-
-    "return empty seq when submission is valid but no matches are in scope" in new WithApplication {
-      val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
-      val result = populate.calculate(validRequest)
-      whenReady(result, browserTimeout) { r =>
-        r.body.map { b =>
-          Json.parse(b) must equal(Seq.empty)
-        }
-      }
-    }
-
     "call lookupChildren.fetch when submission is valid" in new WithApplication {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
-      val lookupChildren = mock[LookupChildren]
-      val injector = testInjector(new StubLookupChildren(lookupChildren))
-      val sut = injector.getInstance(classOf[LegalChildren])
+      val generator = mock[Generator]
+      val injector = testInjector(new StubGenerator(generator))
+      val sut = injector.getInstance(classOf[Populate])
 
       val result = sut.calculate(validRequest)
       whenReady(result, browserTimeout) { r =>
-        verify(lookupChildren, times(1)).fetch(any[IScope], any[PozInt])
+        verify(generator, times(1)).generate
       }
-    }
-
-    "throw when submission contains unknown currentNode" in new WithApplication {
-      val validRequest = requestWithDefaults(currentNode = 99)
-      a[RuntimeException] must be thrownBy populate.calculate(validRequest)
     }
   }
 

@@ -52,7 +52,7 @@ final class PopulateUiSpec extends TestComposition with OneServerPerSuite with O
   "submit button" must {
     "return expected json when valid data is submitted" taggedAs UiTag in new WithApplication {
       val page = new PopulatePage(port)
-      val expected = JsArray(Seq(JsNumber(7))).toString()
+      val expected = "generator returned true"
       val valid = "1"
       go to page
       // Fill in the fields

@@ -10,6 +10,7 @@ import play.api.test.Helpers.{BAD_REQUEST, OK, contentAsString}
 import play.api.test.{FakeRequest, WithApplication}
 import replaceEmpty.TypeTreeFactoryImpl
 import utils.PozInt
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
 final class LegalChildrenUnitSpec extends TestComposition {
@@ -74,18 +75,17 @@ final class LegalChildrenUnitSpec extends TestComposition {
         verify(lookupChildren, times(1)).fetch(any[IScope], any[PozInt])
       }
     }
-
-    "throw when submission contains unknown currentNode" in new WithApplication {
-      val validRequest = requestWithDefaults(currentNode = 99)
-      a[RuntimeException] must be thrownBy legalChildren.calculate(validRequest)
-    }
   }
 
-  private def legalChildren = testInjector().getInstance(classOf[LegalChildren])
+  private def legalChildren =
+    testInjector(new StubLookupChildren()).
+      getInstance(classOf[LegalChildren])
+
   private def present = {
     val emptyRequest = FakeRequest()
     legalChildren.present(emptyRequest)
   }
+
   private val scopeDefault = Scope(
     numVals = 1,
     numFuncs = 2,
