@@ -17,3 +17,6 @@ footer = Please see the GitHub page for this project: https://github.com/scottkw
 healthcheck-title = Mind - Health check
 healthcheck-site-refreshed-at = Site refreshed at: {0}
 intro-title = Mind - Introduction
+
+populate-title = Mind - Populate
+populate-description = Submitting this form will cause ids for children to be generated for values from zero up to the submitted scope. The values are cached for subsequent look-ups.

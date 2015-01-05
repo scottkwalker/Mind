@@ -1,5 +1,5 @@
 legal-children-title = Mind - Cyfrifiannell cymdogion Cyfreithiol
-legal-children-description = Submitting this form will return the ids for the children of the submitted scope. If the value is not already cached then it will be calculated and the value cached for subsequent look-ups.
+legal-children-description = Bydd cyflwyno''r ffurflen hon yn dychwelyd y bidiau ar gyfer y plant o gwmpas a gyflwynwyd. Os nad yw''r gwerth yn cael ei eisoes cached yna bydd yn cael ei gyfrifo ac mae''r gwerth cached am edrych-ups dilynol.
 error-summary-title = Crynodeb gwall
 currentNode = Dynodwr nod cyfredol:
 submit = Cyflwyno
@@ -17,3 +17,6 @@ footer = Gweler y dudalen GitHub gyfer y prosiect hwn: https://github.com/scottk
 healthcheck-title = Mind - Archwiliad iechyd
 healthcheck-site-refreshed-at = Hadnewyddu Safle yn: {0}
 intro-title = Mind - WELSH Introduction
+
+populate-title = Mind - Boblogi
+populate-description = Bydd cyflwyno''r ffurflen hon yn achosi bidiau i blant gael eu cynhyrchu ar gyfer gwerthoedd o sero hyd at gwmpas a gyflwynwyd. Mae''r gwerthoedd yn cael eu cached am edrych-ups dilynol.

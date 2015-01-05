@@ -2,24 +2,24 @@
 
 @import models.common.PopulateRequest.Form.CurrentNodeId
 @import models.common.Scope.Form.ScopeId
-@import views.LegalChildren.SubmitId
+@import views.Populate.SubmitId
 @import views.html.errorsSummary
 @import views.html.helper.form
 @import views.html.widgets.{currentNode, scope}
 
 <html>
     <head>
-        <title>@Messages("legal-children-title")</title>
+        <title>@Messages("populate-title")</title>
     </head>
 
     <body>
-        <h1>@Messages("legal-children-title")</h1>
+        <h1>@Messages("populate-title")</h1>
 
         @errorsSummary(Some(currentForm))
 
-        <p>@Messages("legal-children-description")</p>
+        <p>@Messages("populate-description")</p>
 
-        @form(action = controllers.routes.LegalChildren.calculate(), args = ('novalidate, "novalidate")) {
+        @form(action = controllers.routes.Populate.calculate(), args = ('novalidate, "novalidate")) {
 
             @currentNode(currentForm(CurrentNodeId))
 

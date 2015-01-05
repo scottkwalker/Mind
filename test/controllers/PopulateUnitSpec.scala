@@ -23,7 +23,7 @@ final class PopulateUnitSpec extends TestComposition {
     }
 
     "contain a form that POSTs to the expected action" in new WithApplication {
-      contentAsString(present)(timeout) must include( """form action="/mind/legal-children" method="POST"""")
+      contentAsString(present)(timeout) must include( """form action="/mind/populate" method="POST"""")
     }
   }
 

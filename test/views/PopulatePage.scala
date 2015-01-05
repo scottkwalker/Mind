@@ -7,11 +7,11 @@ import org.scalatest.selenium.{Page, WebBrowser}
 
 class PopulatePage(port: Int)(implicit driver: WebDriver) extends Page with WebBrowser {
 
-  val title = "Mind - Legal children calculator"
-  val titleCy = "Mind - Cyfrifiannell cymdogion Cyfreithiol"
+  val title = "Mind - Populate"
+  val titleCy = "Mind - Boblogi"
   val validationSummary = """<div id="validation-summary">"""
 
-  override val url = s"http://localhost:$port/mind/legal-children"
+  override val url = s"http://localhost:$port/mind/populate"
 
   def currentNode = textField(CurrentNodeId)
 
