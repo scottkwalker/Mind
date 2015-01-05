@@ -1,15 +1,15 @@
 package controllers
 
 import composition.TestComposition
-import models.common.PopulateRequest.Form.CurrentNodeId
 import models.common.Scope.Form._
+import models.common.PopulateRequest.Form.MaxScopeId
 
 final class PopulateFormSpec extends TestComposition {
 
   "form" must {
     "reject when submission is empty" in {
       val errors = populate.form.bind(Map("" -> "")).errors
-      errors.length must equal(9)
+      errors.length must equal(8)
     }
 
     "reject when submission contains wrong types" in {
@@ -25,17 +25,16 @@ final class PopulateFormSpec extends TestComposition {
         currentNode = "INVALID"
       ).errors
 
-      errors.length must equal(9)
+      errors.length must equal(8)
 
-      errors(0).key must equal(s"$ScopeId.$NumValsId")
-      errors(1).key must equal(s"$ScopeId.$NumFuncsId")
-      errors(2).key must equal(s"$ScopeId.$NumObjectsId")
-      errors(3).key must equal(s"$ScopeId.$HeightId")
-      errors(4).key must equal(s"$ScopeId.$MaxExpressionsInFuncId")
-      errors(5).key must equal(s"$ScopeId.$MaxFuncsInObjectId")
-      errors(6).key must equal(s"$ScopeId.$MaxParamsInFuncId")
-      errors(7).key must equal(s"$ScopeId.$MaxObjectsInTreeId")
-      errors(8).key must equal(CurrentNodeId)
+      errors(0).key must equal(s"$MaxScopeId.$NumValsId")
+      errors(1).key must equal(s"$MaxScopeId.$NumFuncsId")
+      errors(2).key must equal(s"$MaxScopeId.$NumObjectsId")
+      errors(3).key must equal(s"$MaxScopeId.$HeightId")
+      errors(4).key must equal(s"$MaxScopeId.$MaxExpressionsInFuncId")
+      errors(5).key must equal(s"$MaxScopeId.$MaxFuncsInObjectId")
+      errors(6).key must equal(s"$MaxScopeId.$MaxParamsInFuncId")
+      errors(7).key must equal(s"$MaxScopeId.$MaxObjectsInTreeId")
 
       for (i <- 0 until errors.length) {
         errors(i).messages must equal(List("error.number"))
@@ -55,17 +54,16 @@ final class PopulateFormSpec extends TestComposition {
         currentNode = "100"
       ).errors
 
-      errors.length must equal(9)
+      errors.length must equal(8)
 
-      errors(0).key must equal(s"$ScopeId.$NumValsId")
-      errors(1).key must equal(s"$ScopeId.$NumFuncsId")
-      errors(2).key must equal(s"$ScopeId.$NumObjectsId")
-      errors(3).key must equal(s"$ScopeId.$HeightId")
-      errors(4).key must equal(s"$ScopeId.$MaxExpressionsInFuncId")
-      errors(5).key must equal(s"$ScopeId.$MaxFuncsInObjectId")
-      errors(6).key must equal(s"$ScopeId.$MaxParamsInFuncId")
-      errors(7).key must equal(s"$ScopeId.$MaxObjectsInTreeId")
-      errors(8).key must equal(CurrentNodeId)
+      errors(0).key must equal(s"$MaxScopeId.$NumValsId")
+      errors(1).key must equal(s"$MaxScopeId.$NumFuncsId")
+      errors(2).key must equal(s"$MaxScopeId.$NumObjectsId")
+      errors(3).key must equal(s"$MaxScopeId.$HeightId")
+      errors(4).key must equal(s"$MaxScopeId.$MaxExpressionsInFuncId")
+      errors(5).key must equal(s"$MaxScopeId.$MaxFuncsInObjectId")
+      errors(6).key must equal(s"$MaxScopeId.$MaxParamsInFuncId")
+      errors(7).key must equal(s"$MaxScopeId.$MaxObjectsInTreeId")
 
       for (i <- 0 until errors.length) {
         errors(i).messages must equal(List("error.max"))
@@ -85,17 +83,16 @@ final class PopulateFormSpec extends TestComposition {
         currentNode = "-1"
       ).errors
 
-      errors.length must equal(9)
+      errors.length must equal(8)
 
-      errors(0).key must equal(s"$ScopeId.$NumValsId")
-      errors(1).key must equal(s"$ScopeId.$NumFuncsId")
-      errors(2).key must equal(s"$ScopeId.$NumObjectsId")
-      errors(3).key must equal(s"$ScopeId.$HeightId")
-      errors(4).key must equal(s"$ScopeId.$MaxExpressionsInFuncId")
-      errors(5).key must equal(s"$ScopeId.$MaxFuncsInObjectId")
-      errors(6).key must equal(s"$ScopeId.$MaxParamsInFuncId")
-      errors(7).key must equal(s"$ScopeId.$MaxObjectsInTreeId")
-      errors(8).key must equal(CurrentNodeId)
+      errors(0).key must equal(s"$MaxScopeId.$NumValsId")
+      errors(1).key must equal(s"$MaxScopeId.$NumFuncsId")
+      errors(2).key must equal(s"$MaxScopeId.$NumObjectsId")
+      errors(3).key must equal(s"$MaxScopeId.$HeightId")
+      errors(4).key must equal(s"$MaxScopeId.$MaxExpressionsInFuncId")
+      errors(5).key must equal(s"$MaxScopeId.$MaxFuncsInObjectId")
+      errors(6).key must equal(s"$MaxScopeId.$MaxParamsInFuncId")
+      errors(7).key must equal(s"$MaxScopeId.$MaxObjectsInTreeId")
 
       for (i <- 0 until errors.length) {
         errors(i).messages must equal(List("error.min"))
@@ -125,14 +122,14 @@ final class PopulateFormSpec extends TestComposition {
       )
       result.errors.length must equal(0)
       val model = result.get
-      model.scope.numVals must equal(numVals)
-      model.scope.numFuncs must equal(numFuncs)
-      model.scope.numObjects must equal(numObjects)
-      model.scope.height must equal(height)
-      model.scope.maxExpressionsInFunc must equal(maxExpressionsInFunc)
-      model.scope.maxFuncsInObject must equal(maxFuncsInObject)
-      model.scope.maxParamsInFunc must equal(maxParamsInFunc)
-      model.scope.maxObjectsInTree must equal(maxObjectsInTree)
+      model.maxScope.numVals must equal(numVals)
+      model.maxScope.numFuncs must equal(numFuncs)
+      model.maxScope.numObjects must equal(numObjects)
+      model.maxScope.height must equal(height)
+      model.maxScope.maxExpressionsInFunc must equal(maxExpressionsInFunc)
+      model.maxScope.maxFuncsInObject must equal(maxFuncsInObject)
+      model.maxScope.maxParamsInFunc must equal(maxParamsInFunc)
+      model.maxScope.maxObjectsInTree must equal(maxObjectsInTree)
     }
   }
 
@@ -149,15 +146,14 @@ final class PopulateFormSpec extends TestComposition {
                                     currentNode: String) = {
     populate.form.bind(
       Map(
-        s"$ScopeId.$NumValsId" -> numVals,
-        s"$ScopeId.$NumFuncsId" -> numFuncs,
-        s"$ScopeId.$NumObjectsId" -> numObjects,
-        s"$ScopeId.$HeightId" -> height,
-        s"$ScopeId.$MaxExpressionsInFuncId" -> maxExpressionsInFunc,
-        s"$ScopeId.$MaxFuncsInObjectId" -> maxFuncsInObject,
-        s"$ScopeId.$MaxParamsInFuncId" -> maxParamsInFunc,
-        s"$ScopeId.$MaxObjectsInTreeId" -> maxObjectsInTree,
-        CurrentNodeId -> currentNode
+        s"$MaxScopeId.$NumValsId" -> numVals,
+        s"$MaxScopeId.$NumFuncsId" -> numFuncs,
+        s"$MaxScopeId.$NumObjectsId" -> numObjects,
+        s"$MaxScopeId.$HeightId" -> height,
+        s"$MaxScopeId.$MaxExpressionsInFuncId" -> maxExpressionsInFunc,
+        s"$MaxScopeId.$MaxFuncsInObjectId" -> maxFuncsInObject,
+        s"$MaxScopeId.$MaxParamsInFuncId" -> maxParamsInFunc,
+        s"$MaxScopeId.$MaxObjectsInTreeId" -> maxObjectsInTree
       )
     )
   }

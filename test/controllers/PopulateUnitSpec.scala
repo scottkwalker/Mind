@@ -1,17 +1,13 @@
 package controllers
 
-import composition.{StubGenerator, StubLookupChildren, TestComposition}
-import memoization.{Generator, LookupChildren}
+import composition.{StubGenerator, TestComposition}
+import memoization.Generator
 import models.common.{IScope, PopulateRequest, Scope}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify}
 import play.api.libs.json.Json
 import play.api.test.Helpers.{BAD_REQUEST, OK, contentAsString}
 import play.api.test.{FakeRequest, WithApplication}
-import replaceEmpty.TypeTreeFactoryImpl
-import utils.PozInt
-
-import scala.concurrent.ExecutionContext.Implicits.global
 
 final class PopulateUnitSpec extends TestComposition {
 
@@ -58,10 +54,12 @@ final class PopulateUnitSpec extends TestComposition {
   }
 
   private def populate = testInjector().getInstance(classOf[Populate])
+
   private def present = {
     val emptyRequest = FakeRequest()
     populate.present(emptyRequest)
   }
+
   private val scopeDefault = Scope(
     numVals = 1,
     numFuncs = 2,
@@ -73,8 +71,8 @@ final class PopulateUnitSpec extends TestComposition {
     maxObjectsInTree = 8
   )
 
-  private def requestWithDefaults(scope: Scope = scopeDefault, currentNode: Int = 1) = {
-    val request = PopulateRequest(scope, currentNode)
+  private def requestWithDefaults(scope: Scope = scopeDefault) = {
+    val request = PopulateRequest(scope)
     FakeRequest().withJsonBody(Json.toJson(request))
   }
 }

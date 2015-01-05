@@ -5,7 +5,6 @@ import memoization.Generator
 import models.common.PopulateRequest
 import play.api.data.Form
 import play.api.mvc.{Action, Controller}
-import utils.PozInt
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -26,7 +25,7 @@ final class Populate @Inject()(generator: Generator) extends Controller {
         Future.successful(BadRequest(views.html.populate(invalidForm)))
       },
       validForm => {
-        generator.generate(maxScope = validForm.scope).map { result =>
+        generator.generate(maxScope = validForm.maxScope).map { result =>
           Ok(s"generator returned $result")
         }
       }

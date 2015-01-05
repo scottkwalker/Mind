@@ -1,11 +1,10 @@
 @(currentForm: Form[models.common.PopulateRequest])(implicit lang: Lang)
 
-@import models.common.PopulateRequest.Form.CurrentNodeId
-@import models.common.Scope.Form.ScopeId
+@import models.common.PopulateRequest.Form.MaxScopeId
 @import views.Populate.SubmitId
 @import views.html.errorsSummary
 @import views.html.helper.form
-@import views.html.widgets.{currentNode, scope}
+@import views.html.widgets.scope
 
 <html>
     <head>
@@ -21,9 +20,7 @@
 
         @form(action = controllers.routes.Populate.calculate(), args = ('novalidate, "novalidate")) {
 
-            @currentNode(currentForm(CurrentNodeId))
-
-            @scope(currentForm(ScopeId))
+            @scope(currentForm(MaxScopeId))
 
             <button id="@SubmitId" type="submit" name="action" class="button">@Messages("submit")</button>
         }

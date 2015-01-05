@@ -1,10 +1,9 @@
 package models.common
 
-import models.common.Scope.Form.ScopeId
-import play.api.data.Forms.{mapping, number}
+import play.api.data.Forms.mapping
 import play.api.libs.json.Json
 
-final case class PopulateRequest(scope: Scope, currentNode: Int)
+final case class PopulateRequest(maxScope: Scope)
 
 object PopulateRequest {
 
@@ -12,15 +11,10 @@ object PopulateRequest {
 
   object Form {
 
-    val CurrentNodeId = "currentNode"
-    val CurrentNodeMin = 0
-    val CurrentNodeMax = 99
-    val CurrentNodeMinLength = 1
-    val CurrentNodeMaxLength = 2
+    val MaxScopeId = "maxScope"
 
     val Mapping = mapping(
-      ScopeId -> Scope.Form.Mapping,
-      CurrentNodeId -> number(min = CurrentNodeMin, max = CurrentNodeMax)
+      MaxScopeId -> Scope.Form.Mapping
     )(PopulateRequest.apply)(PopulateRequest.unapply)
   }
 
