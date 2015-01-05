@@ -1,6 +1,5 @@
 package models.common
 
-import models.common.Scope.Form.ScopeId
 import play.api.data.Forms.{mapping, number}
 import play.api.libs.json.Json
 
@@ -12,6 +11,7 @@ object LookupChildrenRequest {
 
   object Form {
 
+    val ScopeId = "scope"
     val CurrentNodeId = "currentNode"
     val CurrentNodeMin = 0
     val CurrentNodeMax = 99

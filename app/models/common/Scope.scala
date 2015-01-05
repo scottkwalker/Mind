@@ -37,8 +37,6 @@ object Scope {
 
   object Form {
 
-    val ScopeId = "scope"
-
     val NumValsId = "numVals"
     val NumValsMin = 0
     val NumValsMax = 99

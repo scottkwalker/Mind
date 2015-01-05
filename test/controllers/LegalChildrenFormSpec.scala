@@ -1,7 +1,7 @@
 package controllers
 
 import composition.TestComposition
-import models.common.LookupChildrenRequest.Form.CurrentNodeId
+import models.common.LookupChildrenRequest.Form.{CurrentNodeId, ScopeId}
 import models.common.Scope.Form._
 
 final class LegalChildrenFormSpec extends TestComposition {

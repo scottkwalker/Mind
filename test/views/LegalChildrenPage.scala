@@ -1,6 +1,6 @@
 package views
 
-import models.common.LookupChildrenRequest.Form.CurrentNodeId
+import models.common.LookupChildrenRequest.Form.{CurrentNodeId, ScopeId}
 import models.common.Scope.Form._
 import org.openqa.selenium.WebDriver
 import org.scalatest.selenium.{Page, WebBrowser}
