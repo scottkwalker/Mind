@@ -3,7 +3,7 @@
 @if(form.isDefined) {
     @if(form.get.hasErrors) {
         <div id="validation-summary">
-            <p>@Messages("errorSummary.title")</p>
+            <p>@Messages("error-summary-title")</p>
 
             <ol>
             @for(error <- form.get.errors) {

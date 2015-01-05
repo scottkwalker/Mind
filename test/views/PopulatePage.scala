@@ -5,7 +5,7 @@ import models.common.Scope.Form._
 import org.openqa.selenium.WebDriver
 import org.scalatest.selenium.{Page, WebBrowser}
 
-class LegalChildrenPage(port: Int)(implicit driver: WebDriver) extends Page with WebBrowser {
+class PopulatePage(port: Int)(implicit driver: WebDriver) extends Page with WebBrowser {
 
   val title = "Mind - Legal children calculator"
   val titleCy = "Mind - Cyfrifiannell cymdogion Cyfreithiol"

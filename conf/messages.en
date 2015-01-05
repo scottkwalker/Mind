@@ -1,6 +1,7 @@
-title = Mind - Legal neighbours calculator
-errorSummary.title = Error summary
-currentNode = Current node identifier:
+legal-children-title = Mind - Legal children calculator
+legal-children-description = Submitting this form will return the ids for the children of the submitted scope. If the value is not already cached then it will be calculated and the value cached for subsequent look-ups.
+error-summary-title = Error summary
+currentNode = Current node identifier (e.g an add operator is 1):
 submit = Submit
 # Scope (a compound object)
 scope = Scope the current node is in

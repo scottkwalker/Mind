@@ -1,5 +1,6 @@
-title = Mind - Cyfrifiannell cymdogion Cyfreithiol
-errorSummary.title = Crynodeb gwall
+legal-children-title = Mind - Cyfrifiannell cymdogion Cyfreithiol
+legal-children-description = Submitting this form will return the ids for the children of the submitted scope. If the value is not already cached then it will be calculated and the value cached for subsequent look-ups.
+error-summary-title = Crynodeb gwall
 currentNode = Dynodwr nod cyfredol:
 submit = Cyflwyno
 # Scope (a compound object)
