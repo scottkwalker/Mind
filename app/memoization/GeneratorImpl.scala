@@ -9,11 +9,11 @@ class GeneratorImpl @Inject()(lookupChildren: LookupChildren) extends Generator 
 
   def generate(maxScope: IScope): Future[Boolean] = {
     for {
+      height <- 0 to maxScope.height // Must be first val in the loop so that all lookups for one height are done in one go.
       _ <- 0 to maxScope.maxExpressionsInFunc // THIS IS NOT USED SO SHOULD BE REMOVED WITH OTHERS FROM THE MAPPING AND HTML
       numFuncs <- 0 to maxScope.maxFuncsInObject
       numVals <- 0 to maxScope.maxParamsInFunc
       numObjects <- 0 to maxScope.maxObjectsInTree
-      height <- 0 to maxScope.height
     } yield {
       val currentScope = Scope(
         numVals = numVals,
