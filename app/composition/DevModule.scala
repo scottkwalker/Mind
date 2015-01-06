@@ -4,9 +4,8 @@ import _root_.ai.{RandomNumberGenerator, RandomNumberGeneratorImpl}
 import com.google.inject.AbstractModule
 import memoization._
 import models.common.{IScope, Scope}
-import models.domain.scala.Empty
+import models.domain.scala.{FactoryLookup, FactoryLookupImpl, Empty}
 import replaceEmpty._
-import serialization.Versioning
 
 final class DevModule() extends AbstractModule {
 

@@ -2,8 +2,8 @@ package composition
 
 import com.google.inject.AbstractModule
 import composition.StubFactoryIdToFactory._
+import models.domain.scala.FactoryLookup
 import replaceEmpty.ReplaceEmpty
-import memoization.FactoryLookup
 import org.mockito.Mockito.{mock, when}
 import utils.PozInt
 

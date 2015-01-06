@@ -2,6 +2,7 @@ package memoization
 
 import com.google.inject.Inject
 import models.common.IScope
+import models.domain.scala.FactoryLookup
 import replaceEmpty._
 import utils.PozInt
 import scala.concurrent.ExecutionContext.Implicits.global

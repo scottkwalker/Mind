@@ -3,6 +3,7 @@ package memoization
 import composition.StubFactoryIdToFactory._
 import composition.{StubFactoryIdToFactory, TestComposition}
 import models.common.Scope
+import models.domain.scala.FactoryLookup
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{never, times, verify}
 import replaceEmpty.ReplaceEmpty

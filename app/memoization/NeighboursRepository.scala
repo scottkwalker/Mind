@@ -4,6 +4,7 @@ import java.util.concurrent.CountDownLatch
 import com.google.inject.Inject
 import memoization.NeighboursRepository.writesNeighboursRepository
 import models.common.IScope
+import models.domain.scala.FactoryLookup
 import play.api.libs.json._
 import utils.PozInt
 import utils.Timeout.finiteTimeout

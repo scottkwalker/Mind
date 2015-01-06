@@ -5,6 +5,7 @@ import java.util.concurrent.CountDownLatch
 import composition.TestComposition
 import memoization.NeighboursRepository.readsNeighboursRepository
 import models.common.Scope
+import models.domain.scala.FactoryLookup
 import org.mockito.Mockito._
 import play.api.libs.json._
 import replaceEmpty.{AddOperatorFactory, AddOperatorFactoryImpl, ValueRefFactory, ValueRefFactoryImpl}

@@ -1,4 +1,4 @@
-package memoization
+package models.domain.scala
 
 import composition.TestComposition
 import replaceEmpty._

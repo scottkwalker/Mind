@@ -1,10 +1,9 @@
-package memoization
+package models.domain.scala
 
 import com.google.inject.Inject
+import models.domain.scala.FactoryLookup
 import replaceEmpty._
 import utils.PozInt
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 final class FactoryLookupImpl @Inject()(addOperatorFactory: AddOperatorFactory,
                                         functionMFactory: FunctionMFactory,

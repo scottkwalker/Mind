@@ -1,4 +1,4 @@
-package memoization
+package models.domain.scala
 
 import replaceEmpty.ReplaceEmpty
 import serialization.Versioning
