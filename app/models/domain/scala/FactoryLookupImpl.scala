@@ -1,7 +1,6 @@
 package models.domain.scala
 
 import com.google.inject.Inject
-import models.domain.scala.FactoryLookup
 import replaceEmpty._
 import utils.PozInt
 
@@ -13,7 +12,8 @@ final class FactoryLookupImpl @Inject()(addOperatorFactory: AddOperatorFactory,
                                         valDclInFunctionParamFactory: ValDclInFunctionParamFactory,
                                         valueRefFactory: ValueRefFactory) extends FactoryLookup {
 
-  override val version: String = s"${AddOperatorFactoryImpl.id}|${FunctionMFactoryImpl.id}|${IntegerMFactoryImpl.id}|${TypeTreeFactoryImpl.id}|${ObjectFactoryImpl.id}|${ValDclInFunctionParamFactoryImpl.id}|${ValueRefFactoryImpl.id}"
+  override val factories: Set[PozInt] = Set(AddOperatorFactoryImpl.id, FunctionMFactoryImpl.id, IntegerMFactoryImpl.id, TypeTreeFactoryImpl.id, ObjectFactoryImpl.id, ValDclInFunctionParamFactoryImpl.id, ValueRefFactoryImpl.id)
+  override val version: String = factories.mkString("|")
 
   override def convert(id: PozInt): ReplaceEmpty = id match {
     case AddOperatorFactoryImpl.id => addOperatorFactory

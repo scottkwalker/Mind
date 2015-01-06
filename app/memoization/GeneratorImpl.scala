@@ -9,7 +9,9 @@ import scala.concurrent.Future
 class GeneratorImpl @Inject()(lookupChildren: LookupChildren) extends Generator {
 
   def generate(maxScope: IScope): Future[Boolean] = {
-    lookupChildren.fetch(maxScope, new PozInt(1))
+    for(id <- lookupChildren.factoryLookup.factories) {
+      lookupChildren.fetch(maxScope, id)
+    }
     Future.successful(true)
   }
 }
