@@ -46,6 +46,12 @@ class GeneratorImplSpec extends TestComposition {
       when(scope.maxObjectsInTree).thenReturn(1)
       verfifyLookupChildrenCalled(scope)
     }
+
+    "call lookupChildren.fetch once for each scope height" in {
+      val scope = mock[IScope]
+      when(scope.height).thenReturn(1)
+      verfifyLookupChildrenCalled(scope)
+    }
   }
 
   private def build = {
