@@ -2,10 +2,12 @@ package models.common
 
 import java.util.concurrent.CountDownLatch
 
+//import com.fasterxml.jackson.annotation.JsonFormat
 import composition.TestComposition
-import play.api.libs.json.Json.obj
+import play.api.libs.json.Json.{JsValueWrapper, obj}
 import play.api.libs.json._
 import serialization.JsonDeserialiser
+//import spray.json._
 
 import scala.collection.immutable.BitSet
 
@@ -520,6 +522,41 @@ final class ScopeSpec extends TestComposition {
         Scope(height = 1) -> right
       )
       ) must equal(expected)
+    }
+
+    "Seq[(String, Any)]" in {
+      implicit val jsonWrites = new Writes[Seq[(String, Any)]] {
+        def writes(o: Seq[(String, Any)]): JsValue = obj(
+          o.map {
+            case (key: String, value: Any) =>
+              val ret: (String, JsValueWrapper) = value match {
+              case asInt: Int => key -> JsNumber(asInt)
+              case asDouble: Double => key -> JsNumber(asDouble)
+              case None => key -> JsNull
+              case JsArray(elements) => key -> JsArray(elements)
+              case _: String => key -> JsString(value.asInstanceOf[String])
+              case _ => throw new RuntimeException("no match, you need to tell it how to cast this type to json")
+            }
+            ret
+          }.toSeq: _*
+        )
+      }
+      val key0 = "key0"
+      val key1 = "key1"
+      val key2 = "key2"
+      val expectedString = "test-field-0"
+      val expectedInt = 123
+      val expectedDouble: Double = 2.0
+      val data: Seq[(String, Any)] = Seq((key0, expectedString), (key1, expectedInt), (key2, expectedDouble))
+      val asJson = Json.toJson(data)
+      asJson must equal(JsObject(
+        Seq(
+          (key0, JsString(expectedString)),
+          (key1, JsNumber(expectedInt)),
+          (key2, JsNumber(expectedDouble))
+        )
+      ))
+      Json.stringify(asJson) must equal(s"""{"$key0":"$expectedString","$key1":$expectedInt,"$key2":$expectedDouble}""")
     }
   }
 
