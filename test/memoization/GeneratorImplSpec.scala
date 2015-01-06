@@ -1,8 +1,9 @@
 package memoization
 
 import composition.{StubLookupChildren, TestComposition}
-import models.common.IScope
+import models.common.{Scope, IScope}
 import models.domain.scala.FactoryLookup
+import org.mockito.Matchers
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import utils.PozInt
@@ -23,34 +24,44 @@ class GeneratorImplSpec extends TestComposition {
       verfifyLookupChildrenCalled(scope, expected = 1)
     }
 
-    "call lookupChildren.fetch once for each scope maxExpressionsInFunc" in {
-      val scope = mock[IScope]
-      when(scope.maxExpressionsInFunc).thenReturn(1)
-      verfifyLookupChildrenCalled(scope)
-    }
-
     "call lookupChildren.fetch once for each scope maxFuncsInObject" in {
       val scope = mock[IScope]
       when(scope.maxFuncsInObject).thenReturn(1)
-      verfifyLookupChildrenCalled(scope)
+      val (lookupChildren, generator) = build
+      whenReady(generator.generate(scope)) { r =>
+        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numFuncs = 0)), any[PozInt])
+        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numFuncs = 1)), any[PozInt])
+      }
     }
 
     "call lookupChildren.fetch once for each scope maxParamsInFunc" in {
       val scope = mock[IScope]
       when(scope.maxParamsInFunc).thenReturn(1)
-      verfifyLookupChildrenCalled(scope)
+      val (lookupChildren, generator) = build
+      whenReady(generator.generate(scope)) { r =>
+        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numVals = 0)), any[PozInt])
+        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numVals = 1)), any[PozInt])
+      }
     }
 
     "call lookupChildren.fetch once for each scope maxObjectsInTree" in {
       val scope = mock[IScope]
       when(scope.maxObjectsInTree).thenReturn(1)
-      verfifyLookupChildrenCalled(scope)
+      val (lookupChildren, generator) = build
+      whenReady(generator.generate(scope)) { r =>
+        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numObjects = 0)), any[PozInt])
+        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numObjects = 1)), any[PozInt])
+      }
     }
 
     "call lookupChildren.fetch once for each scope height" in {
       val scope = mock[IScope]
       when(scope.height).thenReturn(1)
-      verfifyLookupChildrenCalled(scope)
+      val (lookupChildren, generator) = build
+      whenReady(generator.generate(scope)) { r =>
+        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(height = 0)), any[PozInt])
+        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(height = 1)), any[PozInt])
+      }
     }
   }
 

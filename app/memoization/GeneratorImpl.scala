@@ -16,6 +16,7 @@ class GeneratorImpl @Inject()(lookupChildren: LookupChildren) extends Generator 
       height <- 0 to maxScope.height
     } yield {
       val currentScope = Scope(
+        numVals = numVals,
         numFuncs = numFuncs,
         numObjects = numObjects,
         height = height
