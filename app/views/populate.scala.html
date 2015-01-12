@@ -4,7 +4,7 @@
 @import views.Populate.SubmitId
 @import views.html.errorsSummary
 @import views.html.helper.form
-@import views.html.widgets.scope
+@import views.html.widgets.scopeMax
 
 <html>
     <head>
@@ -20,7 +20,7 @@
 
         @form(action = controllers.routes.Populate.calculate(), args = ('novalidate, "novalidate")) {
 
-            @scope(currentForm(MaxScopeId))
+            @scopeMax(currentForm(MaxScopeId))
 
             <button id="@SubmitId" type="submit" name="action" class="button">@Messages("submit")</button>
         }

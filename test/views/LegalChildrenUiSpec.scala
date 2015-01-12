@@ -73,7 +73,7 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
       }
     }
 
-    "display validation error messages when no data is submitted " taggedAs UiTag in new WithApplication {
+    "display validation error messages when invalid data is submitted " taggedAs UiTag in new WithApplication {
       val page = new LegalChildrenPage(port)
       val invalid = "-1"
       go to page

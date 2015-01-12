@@ -56,11 +56,7 @@ final class PopulateUiSpec extends TestComposition with OneServerPerSuite with O
       val valid = "1"
       go to page
       // Fill in the fields
-      page.numVals.value = valid
-      page.numFuncs.value = valid
-      page.numObjects.value = valid
       page.height.value = valid
-      page.maxExpressionsInFunc.value = valid
       page.maxFuncsInObject.value = valid
       page.maxParamsInFunc.value = valid
       page.maxObjectsInTree.value = valid
@@ -72,11 +68,11 @@ final class PopulateUiSpec extends TestComposition with OneServerPerSuite with O
       }
     }
 
-    "display validation error messages when no data is submitted " taggedAs UiTag in new WithApplication {
+    "display validation error messages when invalid data is submitted " taggedAs UiTag in new WithApplication {
       val page = new PopulatePage(port)
       val invalid = "-1"
       go to page
-      page.numVals.value = invalid
+      page.maxFuncsInObject.value = invalid
 
       submit()
 

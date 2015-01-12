@@ -1,0 +1,41 @@
+@(field: play.api.data.Field)(implicit lang: Lang)
+
+@import views.html.helper.input
+@import views.html.widgets.inputText
+@import models.common.Scope.Form._
+
+@input(field) { (id, _, _, _) =>
+    <fieldset>
+        @inputText(field(HeightId), args =
+                Map('_label -> Messages(s"$id.$HeightId"),
+                    '_showConstraints -> false,
+                    'autofocus -> false,
+                    'pattern -> s".{$HeightMinLength,$HeightMaxLength}"
+                )
+        )
+
+        @inputText(field(MaxFuncsInObjectId), args =
+                Map('_label -> Messages(s"$id.$MaxFuncsInObjectId"),
+                    '_showConstraints -> false,
+                    'autofocus -> false,
+                    'pattern -> s".{$MaxFuncsInObjectMinLength,$MaxFuncsInObjectMaxLength}"
+                )
+        )
+
+        @inputText(field(MaxParamsInFuncId), args =
+                Map('_label -> Messages(s"$id.$MaxParamsInFuncId"),
+                    '_showConstraints -> false,
+                    'autofocus -> false,
+                    'pattern -> s".{$MaxParamsInFuncMinLength,$MaxParamsInFuncMaxLength}"
+                )
+        )
+
+        @inputText(field(MaxObjectsInTreeId), args =
+                Map('_label -> Messages(s"$id.$MaxObjectsInTreeId"),
+                    '_showConstraints -> false,
+                    'autofocus -> false,
+                    'pattern -> s".{$MaxObjectsInTreeMinLength,$MaxObjectsInTreeMaxLength}"
+                )
+        )
+    </fieldset>
+}
