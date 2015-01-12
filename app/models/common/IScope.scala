@@ -2,16 +2,23 @@ package models.common
 
 import play.api.libs.json._
 
-trait IScope {
+trait IScopeWithMax {
+
+  val maxExpressionsInFunc: Int
+  val maxFuncsInObject: Int
+  val maxParamsInFunc: Int
+  val maxObjectsInTree: Int
+}
+
+trait IScopeWithCurrent {
 
   val numVals: Int
   val numFuncs: Int
   val numObjects: Int
   val height: Int
-  val maxExpressionsInFunc: Int
-  val maxFuncsInObject: Int
-  val maxParamsInFunc: Int
-  val maxObjectsInTree: Int
+}
+
+trait IScope extends IScopeWithMax with IScopeWithCurrent {
 
   def incrementVals: IScope
 
