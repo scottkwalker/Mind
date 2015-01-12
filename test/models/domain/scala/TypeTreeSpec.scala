@@ -91,7 +91,7 @@ final class TypeTreeSpec extends TestComposition {
 
       val result = instance.replaceEmpty(scope)(injector)
 
-      whenReady(result) {
+      whenReady(result, browserTimeout) {
         case TypeTree(nodes) =>
           nodes match {
             case Seq(nonEmpty) => nonEmpty mustBe an[Object]
