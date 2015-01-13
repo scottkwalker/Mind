@@ -7,7 +7,7 @@
 @input(field) { (id, _, _, _) =>
     <fieldset>
         @inputText(field(HeightId), args =
-                Map('_label -> Messages(s"$id.$HeightId"),
+                Map('_label -> Messages(s"$id-$HeightId"),
                     '_showConstraints -> false,
                     'autofocus -> false,
                     'pattern -> s".{$HeightMinLength,$HeightMaxLength}"
@@ -15,7 +15,7 @@
         )
 
         @inputText(field(MaxFuncsInObjectId), args =
-                Map('_label -> Messages(s"$id.$MaxFuncsInObjectId"),
+                Map('_label -> Messages(s"$id-$MaxFuncsInObjectId"),
                     '_showConstraints -> false,
                     'autofocus -> false,
                     'pattern -> s".{$MaxFuncsInObjectMinLength,$MaxFuncsInObjectMaxLength}"
@@ -23,7 +23,7 @@
         )
 
         @inputText(field(MaxParamsInFuncId), args =
-                Map('_label -> Messages(s"$id.$MaxParamsInFuncId"),
+                Map('_label -> Messages(s"$id-$MaxParamsInFuncId"),
                     '_showConstraints -> false,
                     'autofocus -> false,
                     'pattern -> s".{$MaxParamsInFuncMinLength,$MaxParamsInFuncMaxLength}"
@@ -31,7 +31,7 @@
         )
 
         @inputText(field(MaxObjectsInTreeId), args =
-                Map('_label -> Messages(s"$id.$MaxObjectsInTreeId"),
+                Map('_label -> Messages(s"$id-$MaxObjectsInTreeId"),
                     '_showConstraints -> false,
                     'autofocus -> false,
                     'pattern -> s".{$MaxObjectsInTreeMinLength,$MaxObjectsInTreeMaxLength}"
@@ -39,7 +39,7 @@
         )
 
         @inputText(field(MaxHeightId), args =
-                Map('_label -> Messages(s"$id.$MaxHeightId"),
+                Map('_label -> Messages(s"$id-$MaxHeightId"),
                     '_showConstraints -> false,
                     'autofocus -> false,
                     'pattern -> s".{$HeightMinLength,$HeightMaxLength}"

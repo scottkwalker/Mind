@@ -7,15 +7,15 @@ submit = Cyflwyno
 # /mind/legal-children:
 # Form model: a compound object of type Scope taking in both current and max values
 scope = Cwmpas y nôd presennol mewn
-scope.numVals = Nifer o werthoedd:
-scope.numFuncs = Nifer o swyddogaethau:
-scope.numObjects = Nifer o gwrthrychau:
-scope.height = Uchder y nod yn y goeden:
-scope.maxExpressionsInFunc = Ymadroddion Max mewn swyddogaeth:
-scope.maxFuncsInObject = Swyddogaethau Max mewn Gwrthrych:
-scope.maxParamsInFunc = Max paramedrau ar swyddogaeth:
-scope.maxObjectsInTree = Max Gwrthrychau mewn coeden:
-scope.maxHeight = Max uchder y nôd yn y goeden:
+scope-numVals = Nifer o werthoedd:
+scope-numFuncs = Nifer o swyddogaethau:
+scope-numObjects = Nifer o gwrthrychau:
+scope-height = Uchder y nod yn y goeden:
+scope-maxExpressionsInFunc = Ymadroddion Max mewn swyddogaeth:
+scope-maxFuncsInObject = Swyddogaethau Max mewn Gwrthrych:
+scope-maxParamsInFunc = Max paramedrau ar swyddogaeth:
+scope-maxObjectsInTree = Max Gwrthrychau mewn coeden:
+scope-maxHeight = Max uchder y nôd yn y goeden:
 footer = Gweler y dudalen GitHub gyfer y prosiect hwn: https://github.com/scottkwalker/Mind
 healthcheck-title = Mind - Archwiliad iechyd
 healthcheck-site-refreshed-at = Hadnewyddu Safle yn: {0}
@@ -27,7 +27,7 @@ populate-description = Bydd cyflwyno''r ffurflen hon yn achosi bidiau i blant ga
 # /mind/populate:
 # Form model: a compound object of type Scope only taking in the max values
 maxScope = Scope the current node is in
-maxScope.height = Uchder y nod yn y goeden:
-maxScope.maxFuncsInObject = Swyddogaethau Max mewn Gwrthrych:
-maxScope.maxParamsInFunc = Max paramedrau ar swyddogaeth:
-maxScope.maxObjectsInTree = Max Gwrthrychau mewn coeden:
+maxScope-height = Uchder y nod yn y goeden:
+maxScope-maxFuncsInObject = Swyddogaethau Max mewn Gwrthrych:
+maxScope-maxParamsInFunc = Max paramedrau ar swyddogaeth:
+maxScope-maxObjectsInTree = Max Gwrthrychau mewn coeden:

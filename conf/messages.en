@@ -7,15 +7,15 @@ submit = Submit
 # /mind/legal-children:
 # Form model: a compound object of type Scope taking in both current and max values
 scope = Scope the current node is in
-scope.numVals = Number of vals:
-scope.numFuncs = Number of functions:
-scope.numObjects = Number of objects:
-scope.height = Height of the node in the tree:
-scope.maxExpressionsInFunc = Max expressions in a function:
-scope.maxFuncsInObject = Max functions in an Object:
-scope.maxParamsInFunc = Max params on a function:
-scope.maxObjectsInTree = Max Objects in a tree:
-scope.maxHeight = Max height of the node in the tree:
+scope-numVals = Number of vals:
+scope-numFuncs = Number of functions:
+scope-numObjects = Number of objects:
+scope-height = Height of the node in the tree:
+scope-maxExpressionsInFunc = Max expressions in a function:
+scope-maxFuncsInObject = Max functions in an Object:
+scope-maxParamsInFunc = Max params on a function:
+scope-maxObjectsInTree = Max Objects in a tree:
+scope-maxHeight = Max height of the node in the tree:
 footer = Please see the GitHub page for this project: https://github.com/scottkwalker/Mind
 healthcheck-title = Mind - Health check
 healthcheck-site-refreshed-at = Site refreshed at: {0}
@@ -27,8 +27,8 @@ populate-description = Submitting this form will cause ids for children to be ge
 # /mind/populate:
 # Form model: a compound object of type Scope only taking in the max values
 maxScope = Scope the current node is in
-maxScope.height = Height of the node in the tree:
-maxScope.maxFuncsInObject = Max functions in an Object:
-maxScope.maxParamsInFunc = Max params on a function:
-maxScope.maxObjectsInTree = Max Objects in a tree:
-maxScope.maxHeight = Max height of the node in the tree:
+maxScope-height = Height of the node in the tree:
+maxScope-maxFuncsInObject = Max functions in an Object:
+maxScope-maxParamsInFunc = Max params on a function:
+maxScope-maxObjectsInTree = Max Objects in a tree:
+maxScope-maxHeight = Max height of the node in the tree:
