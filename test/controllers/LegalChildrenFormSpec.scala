@@ -9,11 +9,11 @@ final class LegalChildrenFormSpec extends TestComposition {
   "form" must {
     "reject when submission is empty" in {
       val errors = legalChildren.form.bind(Map("" -> "")).errors
-      errors.length must equal(9)
+      errors.length must equal(10)
     }
 
     "reject when submission contains wrong types" in {
-      val errors = formWithValidDefaults(
+      val errors = formBuilder(
         numVals = "INVALID",
         numFuncs = "INVALID",
         numObjects = "INVALID",
@@ -22,10 +22,11 @@ final class LegalChildrenFormSpec extends TestComposition {
         maxFuncsInObject = "INVALID",
         maxParamsInFunc = "INVALID",
         maxObjectsInTree = "INVALID",
+        maxHeight = "INVALID",
         currentNode = "INVALID"
       ).errors
 
-      errors.length must equal(9)
+      errors.length must equal(10)
 
       errors(0).key must equal(s"$ScopeId.$NumValsId")
       errors(1).key must equal(s"$ScopeId.$NumFuncsId")
@@ -35,7 +36,8 @@ final class LegalChildrenFormSpec extends TestComposition {
       errors(5).key must equal(s"$ScopeId.$MaxFuncsInObjectId")
       errors(6).key must equal(s"$ScopeId.$MaxParamsInFuncId")
       errors(7).key must equal(s"$ScopeId.$MaxObjectsInTreeId")
-      errors(8).key must equal(CurrentNodeId)
+      errors(8).key must equal(s"$ScopeId.$MaxHeightId")
+      errors(9).key must equal(CurrentNodeId)
 
       for (i <- 0 until errors.length) {
         errors(i).messages must equal(List("error.number"))
@@ -43,7 +45,7 @@ final class LegalChildrenFormSpec extends TestComposition {
     }
 
     "reject when input is above max" in {
-      val errors = formWithValidDefaults(
+      val errors = formBuilder(
         numVals = "100",
         numFuncs = "100",
         numObjects = "100",
@@ -52,10 +54,11 @@ final class LegalChildrenFormSpec extends TestComposition {
         maxFuncsInObject = "100",
         maxParamsInFunc = "100",
         maxObjectsInTree = "100",
+        maxHeight = "100",
         currentNode = "100"
       ).errors
 
-      errors.length must equal(9)
+      errors.length must equal(10)
 
       errors(0).key must equal(s"$ScopeId.$NumValsId")
       errors(1).key must equal(s"$ScopeId.$NumFuncsId")
@@ -65,7 +68,8 @@ final class LegalChildrenFormSpec extends TestComposition {
       errors(5).key must equal(s"$ScopeId.$MaxFuncsInObjectId")
       errors(6).key must equal(s"$ScopeId.$MaxParamsInFuncId")
       errors(7).key must equal(s"$ScopeId.$MaxObjectsInTreeId")
-      errors(8).key must equal(CurrentNodeId)
+      errors(8).key must equal(s"$ScopeId.$MaxHeightId")
+      errors(9).key must equal(CurrentNodeId)
 
       for (i <- 0 until errors.length) {
         errors(i).messages must equal(List("error.max"))
@@ -73,7 +77,7 @@ final class LegalChildrenFormSpec extends TestComposition {
     }
 
     "reject when input is below min" in {
-      val errors = formWithValidDefaults(
+      val errors = formBuilder(
         numVals = "-1",
         numFuncs = "-1",
         numObjects = "-1",
@@ -82,10 +86,11 @@ final class LegalChildrenFormSpec extends TestComposition {
         maxFuncsInObject = "-1",
         maxParamsInFunc = "-1",
         maxObjectsInTree = "-1",
+        maxHeight = "-1",
         currentNode = "-1"
       ).errors
 
-      errors.length must equal(9)
+      errors.length must equal(10)
 
       errors(0).key must equal(s"$ScopeId.$NumValsId")
       errors(1).key must equal(s"$ScopeId.$NumFuncsId")
@@ -95,7 +100,8 @@ final class LegalChildrenFormSpec extends TestComposition {
       errors(5).key must equal(s"$ScopeId.$MaxFuncsInObjectId")
       errors(6).key must equal(s"$ScopeId.$MaxParamsInFuncId")
       errors(7).key must equal(s"$ScopeId.$MaxObjectsInTreeId")
-      errors(8).key must equal(CurrentNodeId)
+      errors(8).key must equal(s"$ScopeId.$MaxHeightId")
+      errors(9).key must equal(CurrentNodeId)
 
       for (i <- 0 until errors.length) {
         errors(i).messages must equal(List("error.min"))
@@ -111,8 +117,9 @@ final class LegalChildrenFormSpec extends TestComposition {
       val maxFuncsInObject = 6
       val maxParamsInFunc = 7
       val maxObjectsInTree = 8
+      val maxHeight = 9
       val currentNode = 1
-      val result = formWithValidDefaults(
+      val result = formBuilder(
         numVals.toString,
         numFuncs.toString,
         numObjects.toString,
@@ -121,6 +128,7 @@ final class LegalChildrenFormSpec extends TestComposition {
         maxFuncsInObject.toString,
         maxParamsInFunc.toString,
         maxObjectsInTree.toString,
+        maxHeight.toString,
         currentNode.toString
       )
       result.errors.length must equal(0)
@@ -133,12 +141,13 @@ final class LegalChildrenFormSpec extends TestComposition {
       model.scope.maxFuncsInObject must equal(maxFuncsInObject)
       model.scope.maxParamsInFunc must equal(maxParamsInFunc)
       model.scope.maxObjectsInTree must equal(maxObjectsInTree)
+      model.scope.maxHeight must equal(maxHeight)
     }
   }
 
   private def legalChildren = testInjector().getInstance(classOf[LegalChildren])
 
-  private def formWithValidDefaults(numVals: String,
+  private def formBuilder(numVals: String,
                                     numFuncs: String,
                                     numObjects: String,
                                     height: String,
@@ -146,6 +155,7 @@ final class LegalChildrenFormSpec extends TestComposition {
                                     maxFuncsInObject: String,
                                     maxParamsInFunc: String,
                                     maxObjectsInTree: String,
+                                    maxHeight: String,
                                     currentNode: String) = {
     legalChildren.form.bind(
       Map(
@@ -157,6 +167,7 @@ final class LegalChildrenFormSpec extends TestComposition {
         s"$ScopeId.$MaxFuncsInObjectId" -> maxFuncsInObject,
         s"$ScopeId.$MaxParamsInFuncId" -> maxParamsInFunc,
         s"$ScopeId.$MaxObjectsInTreeId" -> maxObjectsInTree,
+        s"$ScopeId.$MaxHeightId" -> maxHeight,
         CurrentNodeId -> currentNode
       )
     )

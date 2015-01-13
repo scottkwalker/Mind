@@ -65,6 +65,7 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
       page.maxFuncsInObject.value = valid
       page.maxParamsInFunc.value = valid
       page.maxObjectsInTree.value = valid
+      page.maxHeight.value = valid
 
       submit()
 

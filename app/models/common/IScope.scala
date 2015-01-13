@@ -4,6 +4,7 @@ import play.api.libs.json._
 
 trait IScopeWithMax {
 
+  val maxHeight: Int
   val maxExpressionsInFunc: Int
   val maxFuncsInObject: Int
   val maxParamsInFunc: Int

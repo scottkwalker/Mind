@@ -60,6 +60,7 @@ final class PopulateUiSpec extends TestComposition with OneServerPerSuite with O
       page.maxFuncsInObject.value = valid
       page.maxParamsInFunc.value = valid
       page.maxObjectsInTree.value = valid
+      page.maxHeight.value = valid
 
       submit()
 

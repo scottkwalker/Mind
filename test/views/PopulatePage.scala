@@ -1,7 +1,7 @@
 package views
 
-import models.common.Scope.Form._
 import models.common.PopulateRequest.Form.MaxScopeId
+import models.common.Scope.Form._
 import org.openqa.selenium.WebDriver
 import org.scalatest.selenium.{Page, WebBrowser}
 
@@ -28,4 +28,6 @@ class PopulatePage(port: Int)(implicit driver: WebDriver) extends Page with WebB
   def maxParamsInFunc = textField(s"$MaxScopeId.$MaxParamsInFuncId")
 
   def maxObjectsInTree = textField(s"$MaxScopeId.$MaxObjectsInTreeId")
+
+  def maxHeight = textField(s"$MaxScopeId.$MaxHeightId")
 }

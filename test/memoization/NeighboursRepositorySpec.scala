@@ -58,12 +58,12 @@ class NeighboursRepositorySpec extends TestComposition {
 
     "write expected json for one computed value" in {
       val cache = Map(
-        s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(Future.successful(true))
+        s"Scope(0,0,0,1,0,0,0,0,1)|${ValueRefFactoryImpl.id}" -> Right(Future.successful(true))
       )
       NeighboursRepository.writesNeighboursRepository.writes(cache) must equal(
         JsObject(
           Seq(
-            (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
+            (s"Scope(0,0,0,1,0,0,0,0,1)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
           )
         )
       )
@@ -129,7 +129,7 @@ class NeighboursRepositorySpec extends TestComposition {
               "versioning" -> JsString(version),
               "cache" -> JsObject(
                 Seq(
-                  (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
+                  (s"Scope(0,0,0,1,0,0,0,0,1)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
                 )
               )
             )
@@ -150,9 +150,9 @@ class NeighboursRepositorySpec extends TestComposition {
               "versioning" -> JsString(version),
               "cache" -> JsObject(
                 Seq(
-                  (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
-                  (s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
-                  (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
+                  (s"Scope(0,0,0,1,0,0,0,0,1)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
+                  (s"Scope(0,0,0,0,0,0,0,0,1)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
+                  (s"Scope(0,0,0,1,0,0,0,0,1)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
                 )
               )
             )
@@ -207,7 +207,7 @@ class NeighboursRepositorySpec extends TestComposition {
     }
   }
 
-  private val scope = Scope(height = 1)
+  private val scope = Scope(height = 1, maxHeight = 1)
 
   private def createSut() = {
     val factoryLookup = factoryLookupStub

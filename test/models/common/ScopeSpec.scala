@@ -11,6 +11,8 @@ import serialization.JsonDeserialiser
 
 //import spray.json._
 
+import models.common.Scope.Form._
+
 import scala.collection.immutable.BitSet
 
 final class ScopeSpec extends TestComposition {
@@ -18,7 +20,7 @@ final class ScopeSpec extends TestComposition {
   "constructor" must {
     "set default values to zero" in {
       Scope() match {
-        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
+        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree, maxHeight) =>
           numVals must equal(0)
           numFuncs must equal(0)
           numObjects must equal(0)
@@ -27,6 +29,7 @@ final class ScopeSpec extends TestComposition {
           maxFuncs must equal(0)
           maxParamsInFunc must equal(0)
           maxObjectsInTree must equal(0)
+          maxHeight must equal(0)
         case _ => fail("must have matched")
       }
     }
@@ -35,7 +38,7 @@ final class ScopeSpec extends TestComposition {
   "incrementVals" must {
     "return expected" in {
       Scope().incrementVals match {
-        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
+        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree, maxHeight) =>
           numVals must equal(1)
           numFuncs must equal(0)
           numObjects must equal(0)
@@ -44,6 +47,7 @@ final class ScopeSpec extends TestComposition {
           maxFuncs must equal(0)
           maxParamsInFunc must equal(0)
           maxObjectsInTree must equal(0)
+          maxHeight must equal(0)
         case _ => fail("must have matched")
       }
     }
@@ -52,7 +56,7 @@ final class ScopeSpec extends TestComposition {
   "incrementFuncs" must {
     "return expected" in {
       Scope().incrementFuncs match {
-        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
+        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree, maxHeight) =>
           numVals must equal(0)
           numFuncs must equal(1)
           numObjects must equal(0)
@@ -61,6 +65,7 @@ final class ScopeSpec extends TestComposition {
           maxFuncs must equal(0)
           maxParamsInFunc must equal(0)
           maxObjectsInTree must equal(0)
+          maxHeight must equal(0)
         case _ => fail("must have matched")
       }
     }
@@ -69,7 +74,7 @@ final class ScopeSpec extends TestComposition {
   "incrementObjects" must {
     "return expected" in {
       Scope().incrementObjects match {
-        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
+        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree, maxHeight) =>
           numVals must equal(0)
           numFuncs must equal(0)
           numObjects must equal(1)
@@ -78,6 +83,7 @@ final class ScopeSpec extends TestComposition {
           maxFuncs must equal(0)
           maxParamsInFunc must equal(0)
           maxObjectsInTree must equal(0)
+          maxHeight must equal(0)
         case _ => fail("must have matched")
       }
     }
@@ -86,7 +92,7 @@ final class ScopeSpec extends TestComposition {
   "decrementHeight" must {
     "return expected" in {
       Scope(height = 2).decrementHeight match {
-        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
+        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree, maxHeight) =>
           numVals must equal(0)
           numFuncs must equal(0)
           numObjects must equal(0)
@@ -95,6 +101,7 @@ final class ScopeSpec extends TestComposition {
           maxFuncs must equal(0)
           maxParamsInFunc must equal(0)
           maxObjectsInTree must equal(0)
+          maxHeight must equal(0)
         case _ => fail("must have matched")
       }
     }
@@ -107,7 +114,7 @@ final class ScopeSpec extends TestComposition {
         incrementFuncs.
         incrementObjects.
         decrementHeight match {
-        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
+        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree, maxHeight) =>
           numVals must equal(1)
           numFuncs must equal(1)
           numObjects must equal(1)
@@ -116,6 +123,7 @@ final class ScopeSpec extends TestComposition {
           maxFuncs must equal(0)
           maxParamsInFunc must equal(0)
           maxObjectsInTree must equal(0)
+          maxHeight must equal(0)
         case _ => fail("must have matched")
       }
     }
@@ -124,7 +132,7 @@ final class ScopeSpec extends TestComposition {
   "setNumFuncs" must {
     "return expected" in {
       Scope().setNumFuncs(1) match {
-        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
+        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree, maxHeight) =>
           numVals must equal(0)
           numFuncs must equal(1)
           numObjects must equal(0)
@@ -133,6 +141,7 @@ final class ScopeSpec extends TestComposition {
           maxFuncs must equal(0)
           maxParamsInFunc must equal(0)
           maxObjectsInTree must equal(0)
+          maxHeight must equal(0)
         case _ => fail("must have matched")
       }
     }
@@ -141,7 +150,7 @@ final class ScopeSpec extends TestComposition {
   "setNumVals" must {
     "return expected" in {
       Scope().setNumVals(1) match {
-        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree) =>
+        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree, maxHeight) =>
           numVals must equal(1)
           numFuncs must equal(0)
           numObjects must equal(0)
@@ -150,6 +159,7 @@ final class ScopeSpec extends TestComposition {
           maxFuncs must equal(0)
           maxParamsInFunc must equal(0)
           maxObjectsInTree must equal(0)
+          maxHeight must equal(0)
         case _ => fail("must have matched")
       }
     }
@@ -268,7 +278,7 @@ final class ScopeSpec extends TestComposition {
       Json.toJson(Map[IScope, Int](Scope() -> 123)) must equal(
         JsObject(
           Seq(
-            ("Scope(0,0,0,0,0,0,0,0)", JsNumber(123))
+            ("Scope(0,0,0,0,0,0,0,0,0)", JsNumber(123))
           )
         )
       )
@@ -505,7 +515,7 @@ final class ScopeSpec extends TestComposition {
       val right = Right(Seq[Int](0, 1, 2))
       val expected = JsObject(
         Seq(
-          ("Scope(0,0,0,1,0,0,0,0)",
+          ("Scope(0,0,0,1,0,0,0,0,1)",
             JsObject(
               Seq(
                 ("intContent", JsArray(Seq(JsNumber(0), JsNumber(1), JsNumber(2))))
@@ -517,11 +527,11 @@ final class ScopeSpec extends TestComposition {
 
       Json.toJson(Map[IScope, Either[CountDownLatch, Seq[Int]]](Scope() -> left)) must equal(JsObject(Seq.empty))
 
-      Json.toJson(Map[IScope, Either[CountDownLatch, Seq[Int]]](Scope(height = 1) -> right)) must equal(expected)
+      Json.toJson(Map[IScope, Either[CountDownLatch, Seq[Int]]](Scope(height = 1, maxHeight = 1) -> right)) must equal(expected)
 
       Json.toJson(Map[IScope, Either[CountDownLatch, Seq[Int]]](
         Scope() -> left,
-        Scope(height = 1) -> right
+        Scope(height = 1, maxHeight = 1) -> right
       )
       ) must equal(expected)
     }
@@ -577,7 +587,8 @@ final class ScopeSpec extends TestComposition {
       ("maxExpressionsInFunc", JsNumber(5)),
       ("maxFuncsInObject", JsNumber(6)),
       ("maxParamsInFunc", JsNumber(7)),
-      ("maxObjectsInTree", JsNumber(8))
+      ("maxObjectsInTree", JsNumber(8)),
+      (MaxHeightId, JsNumber(9))
     )
   )
   private val asJsonString = Json.stringify(asJson)
@@ -589,7 +600,8 @@ final class ScopeSpec extends TestComposition {
     maxExpressionsInFunc = 5,
     maxFuncsInObject = 6,
     maxParamsInFunc = 7,
-    maxObjectsInTree = 8
+    maxObjectsInTree = 8,
+    maxHeight = 9
   )
   private val asJsonWithType = JsObject(
     Seq(

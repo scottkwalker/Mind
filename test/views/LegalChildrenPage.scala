@@ -30,4 +30,6 @@ class LegalChildrenPage(port: Int)(implicit driver: WebDriver) extends Page with
   def maxParamsInFunc = textField(s"$ScopeId.$MaxParamsInFuncId")
 
   def maxObjectsInTree = textField(s"$ScopeId.$MaxObjectsInTreeId")
+
+  def maxHeight = textField(s"$ScopeId.$MaxHeightId")
 }

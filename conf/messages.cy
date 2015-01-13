@@ -15,6 +15,7 @@ scope.maxExpressionsInFunc = Ymadroddion Max mewn swyddogaeth:
 scope.maxFuncsInObject = Swyddogaethau Max mewn Gwrthrych:
 scope.maxParamsInFunc = Max paramedrau ar swyddogaeth:
 scope.maxObjectsInTree = Max Gwrthrychau mewn coeden:
+scope.maxHeight = Max uchder y nôd yn y goeden:
 footer = Gweler y dudalen GitHub gyfer y prosiect hwn: https://github.com/scottkwalker/Mind
 healthcheck-title = Mind - Archwiliad iechyd
 healthcheck-site-refreshed-at = Hadnewyddu Safle yn: {0}
