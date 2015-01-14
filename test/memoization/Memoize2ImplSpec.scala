@@ -14,7 +14,7 @@ final class Memoize2ImplSpec extends TestComposition {
 
   "apply" must {
     "return the same result when called twice" in {
-      val adder = new Memoize2Impl[Int, Int, Int] {
+      val adder = new Memoize2Impl[Int, Int, Future[Int]] {
         override def funcCalculate(i: Int, j: Int): Future[Int] = Future.successful {
           i + j
         }
@@ -41,7 +41,7 @@ final class Memoize2ImplSpec extends TestComposition {
       }
 
       val adder = spy(new Adder)
-      val memoizer = new Memoize2Impl[Int, Int, Int] {
+      val memoizer = new Memoize2Impl[Int, Int, Future[Int]] {
         override def funcCalculate(i: Int, j: Int): Future[Int] = adder(i, j)
       }
       val a1 = memoizer(1, 1)
@@ -83,7 +83,7 @@ final class Memoize2ImplSpec extends TestComposition {
       }
 
       val adder = spy(new Adder)
-      val memoizer = new Memoize2Impl[Int, Int, Int] {
+      val memoizer = new Memoize2Impl[Int, Int, Future[Int]] {
         override def funcCalculate(i: Int, j: Int): Future[Int] = adder(i, j)
       }
 
@@ -103,7 +103,7 @@ final class Memoize2ImplSpec extends TestComposition {
       // A computation that must fail the first time, and then
       // succeed for all subsequent attempts.
       val throwWhenCalled = spy(new ThrowWhenCalled)
-      val memoizeThrowWhenCalled = new Memoize2Impl[Int, Int, Int] {
+      val memoizeThrowWhenCalled = new Memoize2Impl[Int, Int, Future[Int]] {
         override def funcCalculate(i: Int, j: Int): Future[Int] = throwWhenCalled(i, j)
       }
 
@@ -113,7 +113,7 @@ final class Memoize2ImplSpec extends TestComposition {
 
   "write" must {
     "turn map into Json" in {
-      val adder = new Memoize2Impl[Int, Int, Int](versioning = "test") {
+      val adder = new Memoize2Impl[Int, Int, Future[Int]](versioning = "test") {
         override def funcCalculate(i: Int, j: Int): Future[Int] = Future.successful {
           i + j
         }
@@ -198,7 +198,7 @@ final class Memoize2ImplSpec extends TestComposition {
     }
   }
 
-  class ThrowIfNotMemoized() extends Memoize2Impl[Int, Int, Int]() {
+  class ThrowIfNotMemoized() extends Memoize2Impl[Int, Int, Future[Int]]() {
 
     override def funcCalculate(key: Int, key2: Int): Future[Int] = throw new Exception("fAsync must not be called as the result must have been retrieved from the json")
 

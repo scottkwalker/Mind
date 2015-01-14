@@ -14,7 +14,7 @@ import scala.concurrent.{Await, Future}
 import scala.language.implicitConversions
 
 class NeighboursRepository @Inject()(factoryLookup: FactoryLookup)
-  extends Memoize2Impl[IScope, PozInt, Boolean](factoryLookup.version)(writesNeighboursRepository) {
+  extends Memoize2Impl[IScope, PozInt, Future[Boolean]](factoryLookup.version)(writesNeighboursRepository) {
 
   override def funcCalculate(scope: IScope, neighbourId: PozInt): Future[Boolean] =
     async {
