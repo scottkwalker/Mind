@@ -16,7 +16,7 @@ import scala.language.implicitConversions
 class NeighboursRepository @Inject()(factoryLookup: FactoryLookup)
   extends Memoize2Impl[IScope, PozInt, Boolean](factoryLookup.version)(writesNeighboursRepository) {
 
-  def funcCalculate(scope: IScope, neighbourId: PozInt): Future[Boolean] =
+  override def funcCalculate(scope: IScope, neighbourId: PozInt): Future[Boolean] =
     async {
       if (scope.hasHeightRemaining) {
         val possibleNeighbourIds = factoryLookup.convert(neighbourId).nodesToChooseFrom
