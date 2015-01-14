@@ -22,32 +22,32 @@ final class PopulateUiSpec extends TestComposition with OneServerPerSuite with O
   //  }
 
 
-  "go to page" must {
-    "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication {
-      val page = new PopulatePage(port)
-
-      go to page
-
-      eventually(timeout = browserTimeout) {
-        pageTitle mustBe page.title
-      }
-    }
-
-    "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication {
-      val page = new PopulatePage(port)
-      go to page
-      // Must be on a page before you can set a cookie.
-      val key = Play.langCookieName
-      val value = "cy" // Code for Welsh
-      add cookie(key, value)
-
-      go to page
-
-      eventually(timeout = browserTimeout) {
-        pageTitle mustBe page.titleCy
-      }
-    }
-  }
+//  "go to page" must {
+//    "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication {
+//      val page = new PopulatePage(port)
+//
+//      go to page
+//
+//      eventually(timeout = browserTimeout) {
+//        pageTitle mustBe page.title
+//      }
+//    }
+//
+//    "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication {
+//      val page = new PopulatePage(port)
+//      go to page
+//      // Must be on a page before you can set a cookie.
+//      val key = Play.langCookieName
+//      val value = "cy" // Code for Welsh
+//      add cookie(key, value)
+//
+//      go to page
+//
+//      eventually(timeout = browserTimeout) {
+//        pageTitle mustBe page.titleCy
+//      }
+//    }
+//  }
 
   "submit button" must {
     "return expected json when valid data is submitted" taggedAs UiTag in new WithApplication {
@@ -69,17 +69,17 @@ final class PopulateUiSpec extends TestComposition with OneServerPerSuite with O
       }
     }
 
-    "display validation error messages when invalid data is submitted " taggedAs UiTag in new WithApplication {
-      val page = new PopulatePage(port)
-      val invalid = "-1"
-      go to page
-      page.maxFuncsInObject.value = invalid
-
-      submit()
-
-      eventually(timeout = browserTimeout) {
-        pageSource must include(page.validationSummary)
-      }
-    }
+//    "display validation error messages when invalid data is submitted " taggedAs UiTag in new WithApplication {
+//      val page = new PopulatePage(port)
+//      val invalid = "-1"
+//      go to page
+//      page.maxFuncsInObject.value = invalid
+//
+//      submit()
+//
+//      eventually(timeout = browserTimeout) {
+//        pageSource must include(page.validationSummary)
+//      }
+//    }
   }
 }

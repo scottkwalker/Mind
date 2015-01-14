@@ -13,7 +13,7 @@ final class TypeTreeSpec extends TestComposition {
 
   "hasNoEmpty" must {
     "return true given it can terminates in under N steps" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
       val instruction = Object(nodes = Seq.empty, name = "o0")
       val typeTree = new TypeTree(Seq(instruction))
 
@@ -21,7 +21,7 @@ final class TypeTreeSpec extends TestComposition {
     }
 
     "return false given it cannot terminate in under N steps" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
       val instruction = mock[Instruction]
       when(instruction.hasNoEmpty(any[Scope])).thenReturn(false)
       val typeTree = new TypeTree(Seq(instruction))
@@ -30,7 +30,7 @@ final class TypeTreeSpec extends TestComposition {
     }
 
     "return true given none empty" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
       val instruction = Object(nodes = Seq.empty, name = "o0")
       val typeTree = new TypeTree(Seq(instruction))
 
@@ -38,7 +38,7 @@ final class TypeTreeSpec extends TestComposition {
     }
 
     "return false given empty root node" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
       val typeTree = new TypeTree(Seq(Empty()))
       typeTree.hasNoEmpty(scope) must equal(false)
     }
@@ -84,7 +84,8 @@ final class TypeTreeSpec extends TestComposition {
         maxFuncsInObject = 1,
         maxParamsInFunc = 1,
         height = 10,
-        maxObjectsInTree = 1)
+        maxObjectsInTree = 1,
+        maxHeight = 10)
       val empty = Empty()
       val injector = testInjector(new StubReplaceEmpty)
       val instance = TypeTree(nodes = Seq(empty))

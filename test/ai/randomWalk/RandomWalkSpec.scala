@@ -36,7 +36,8 @@ final class RandomWalkSpec extends TestComposition {
         maxFuncsInObject = 1,
         maxParamsInFunc = 2,
         height = 5,
-        maxObjectsInTree = 1)
+        maxObjectsInTree = 1,
+        maxHeight = 10)
 
       try {
         for (i <- 1 to 10) {

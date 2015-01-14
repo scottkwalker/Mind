@@ -33,6 +33,10 @@ final class ScopeSpec extends TestComposition {
         case _ => fail("must have matched")
       }
     }
+
+    "throw if height > maxHeight" in {
+      a[RuntimeException] must be thrownBy Scope(height = 1, maxHeight = 0)
+    }
   }
 
   "incrementVals" must {
@@ -91,7 +95,7 @@ final class ScopeSpec extends TestComposition {
 
   "decrementHeight" must {
     "return expected" in {
-      Scope(height = 2).decrementHeight match {
+      Scope(height = 2, maxHeight = 10).decrementHeight match {
         case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree, maxHeight) =>
           numVals must equal(0)
           numFuncs must equal(0)
@@ -101,7 +105,7 @@ final class ScopeSpec extends TestComposition {
           maxFuncs must equal(0)
           maxParamsInFunc must equal(0)
           maxObjectsInTree must equal(0)
-          maxHeight must equal(0)
+          maxHeight must equal(10)
         case _ => fail("must have matched")
       }
     }
@@ -109,7 +113,7 @@ final class ScopeSpec extends TestComposition {
 
   "fluent interface" must {
     "return expected" in {
-      Scope(height = 2).
+      Scope(height = 2, maxHeight = 10).
         incrementVals.
         incrementFuncs.
         incrementObjects.
@@ -123,7 +127,7 @@ final class ScopeSpec extends TestComposition {
           maxFuncs must equal(0)
           maxParamsInFunc must equal(0)
           maxObjectsInTree must equal(0)
-          maxHeight must equal(0)
+          maxHeight must equal(10)
         case _ => fail("must have matched")
       }
     }

@@ -24,7 +24,7 @@ final class AddOperatorSpec extends TestComposition {
 
   "hasNoEmpty" must {
     "true given child nodes can terminate in under N steps" in {
-      val scope = Scope(height = 2)
+      val scope = Scope(height = 2, maxHeight = 10)
       val terminal = ValueRef("v")
 
       AddOperator(terminal, terminal).hasNoEmpty(scope) must equal(true)
@@ -39,7 +39,7 @@ final class AddOperatorSpec extends TestComposition {
     }
 
     "false given child nodes cannot terminate in under N steps" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
       val nonTerminal = mock[Instruction]
       when(nonTerminal.hasNoEmpty(any[Scope])).thenReturn(false)
 
@@ -47,28 +47,28 @@ final class AddOperatorSpec extends TestComposition {
     }
 
     "true when no nodes are empty" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
       val nonEmpty = ValueRef("v")
 
       AddOperator(nonEmpty, nonEmpty).hasNoEmpty(scope) must equal(true)
     }
 
     "false when left node is empty" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
       val nonEmpty = ValueRef("stub")
 
       AddOperator(Empty(), nonEmpty).hasNoEmpty(scope) must equal(false)
     }
 
     "false when right node is empty" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
       val nonEmpty = ValueRef("stub")
 
       AddOperator(nonEmpty, Empty()).hasNoEmpty(scope) must equal(false)
     }
 
     "false given contains a node that is not valid for this level" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
       val valid = mock[Instruction]
       when(valid.hasNoEmpty(any[Scope])).thenReturn(true)
       val invalid = Object(Seq.empty, "ObjectM0")

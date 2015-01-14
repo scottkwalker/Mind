@@ -1,6 +1,6 @@
 package models.common
 
-import play.api.data.Forms.{mapping, number, _}
+import play.api.data.Forms._
 import play.api.libs.json.Json
 
 final case class Scope(numVals: Int = 0,
@@ -12,6 +12,8 @@ final case class Scope(numVals: Int = 0,
                        maxParamsInFunc: Int = 0,
                        maxObjectsInTree: Int = 0,
                        maxHeight: Int = 0) extends IScope {
+
+  require(height <= maxHeight, s"scope's height ($height) must not be greater than max height ($maxHeight)")
 
   def incrementVals: IScope = copy(numVals = numVals + 1)
 
@@ -83,6 +85,10 @@ object Scope {
     val MaxObjectsInTreeMaxLength = 2
 
     val MaxHeightId = "maxHeight"
+    val MaxHeightMin = 0
+    val MaxHeightMax = 99
+    val MaxHeightMinLength = 1
+    val MaxHeightMaxLength = 2
 
     val MappingMax = mapping(
       s"$NumValsId" -> ignored(NumValsMin),
@@ -93,7 +99,7 @@ object Scope {
       s"$MaxFuncsInObjectId" -> number(min = MaxFuncsInObjectMin, max = MaxFuncsInObjectMax),
       s"$MaxParamsInFuncId" -> number(min = MaxParamsInFuncMin, max = MaxParamsInFuncMax),
       s"$MaxObjectsInTreeId" -> number(min = MaxObjectsInTreeMin, max = MaxObjectsInTreeMax),
-      s"$MaxHeightId" -> number(min = HeightMin, max = HeightMax)
+      s"$MaxHeightId" -> number(min = MaxHeightMin, max = MaxHeightMax)
     )(Scope.apply)(Scope.unapply)
 
     val MappingWithCurrentAndMax = mapping(
@@ -105,9 +111,8 @@ object Scope {
       s"$MaxFuncsInObjectId" -> number(min = MaxFuncsInObjectMin, max = MaxFuncsInObjectMax),
       s"$MaxParamsInFuncId" -> number(min = MaxParamsInFuncMin, max = MaxParamsInFuncMax),
       s"$MaxObjectsInTreeId" -> number(min = MaxObjectsInTreeMin, max = MaxObjectsInTreeMax),
-      s"$MaxHeightId" -> number(min = HeightMin, max = HeightMax)
+      s"$MaxHeightId" -> number(min = MaxHeightMin, max = MaxHeightMax)
     )(Scope.apply)(Scope.unapply)
   }
 
 }
-

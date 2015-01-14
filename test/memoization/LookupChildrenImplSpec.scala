@@ -67,7 +67,7 @@ final class LookupChildrenImplSpec extends TestComposition {
   }
 
   private def build = {
-    val scope = Scope(height = 3)
+    val scope = Scope(height = 3, maxHeight = 10)
     val factoryIdToFactory = mock[FactoryLookup]
     val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory)) // Override an implementation returned by IoC with a stubbed version.
     (injector.getInstance(classOf[LookupChildren]), scope, factoryIdToFactory)

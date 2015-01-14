@@ -60,7 +60,7 @@ final class PopulateUnitSpec extends TestComposition {
     populate.present(emptyRequest)
   }
 
-  private val scopeDefault = Scope(
+  private def scopeDefault = Scope(
     numVals = 1,
     numFuncs = 2,
     numObjects = 3,
@@ -68,7 +68,8 @@ final class PopulateUnitSpec extends TestComposition {
     maxExpressionsInFunc = 5,
     maxFuncsInObject = 6,
     maxParamsInFunc = 7,
-    maxObjectsInTree = 8
+    maxObjectsInTree = 8,
+    maxHeight = 10
   )
 
   private def requestWithDefaults(scope: Scope = scopeDefault) = {

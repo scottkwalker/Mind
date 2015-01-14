@@ -23,14 +23,14 @@ final class ValueRefSpec extends TestComposition {
     }
 
     "true given a non-empty name" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
       val name = "a"
 
       ValueRef(name).hasNoEmpty(scope) must equal(true)
     }
 
     "false given an empty name" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
       val name = ""
 
       ValueRef(name).hasNoEmpty(scope) must equal(false)

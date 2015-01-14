@@ -44,7 +44,7 @@ final class CreateNodeImplSpec extends TestComposition {
   }
 
   private def build = {
-    val scope = Scope(height = 10)
+    val scope = Scope(height = 10, maxHeight = 10)
     val instruction = mock[Instruction]
     val replaceEmpty = mock[ReplaceEmpty]
     when(replaceEmpty.create(scope)).thenReturn(Future.successful(instruction))

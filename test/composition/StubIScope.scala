@@ -16,7 +16,8 @@ final class StubIScope(
       maxExpressionsInFunc = 2,
       maxFuncsInObject = 3,
       maxParamsInFunc = 2,
-      maxObjectsInTree = 3)
+      maxObjectsInTree = 3,
+      maxHeight = 10)
     bind(classOf[IScope]).toInstance(scope)
   }
 }

@@ -13,7 +13,7 @@ final class ObjectSpec extends TestComposition {
 
   "hasNoEmpty" must {
     "true given it can terminates in under N steps" in {
-      val scope = Scope(height = 4)
+      val scope = Scope(height = 4, maxHeight = 10)
       // This has to be a real instead of a mock as we will be exact-matching on the type.
       val instruction = FunctionM(params = Seq.empty,
         nodes = Seq.empty,
@@ -33,7 +33,7 @@ final class ObjectSpec extends TestComposition {
     }
 
     "false given it cannot terminate in under N steps" in {
-      val scope = Scope(height = 3)
+      val scope = Scope(height = 3, maxHeight = 10)
       val instruction = mock[Instruction]
       when(instruction.hasNoEmpty(any[Scope])).thenReturn(false)
       val objectDef = Object(Seq(instruction), name)
@@ -42,7 +42,7 @@ final class ObjectSpec extends TestComposition {
     }
 
     "true given no empty nodes" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
       // This has to be a real instead of a mock as we will be exact-matching on the type.
       val instruction = FunctionM(params = Seq.empty,
         nodes = Seq.empty,
@@ -53,13 +53,13 @@ final class ObjectSpec extends TestComposition {
     }
 
     "false given single empty method node" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
       val objectDef = Object(Seq(Empty()), name)
       objectDef.hasNoEmpty(scope) must equal(false)
     }
 
     "false given empty method node in a sequence" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
       val instruction = mock[Instruction]
       when(instruction.hasNoEmpty(any[Scope])).thenReturn(true)
       val objectDef = Object(Seq(instruction, Empty()), name)
@@ -110,7 +110,8 @@ final class ObjectSpec extends TestComposition {
         maxFuncsInObject = 1,
         maxParamsInFunc = 1,
         height = 5,
-        maxObjectsInTree = 1)
+        maxObjectsInTree = 1,
+        maxHeight = 10)
       val empty = Empty()
       val injector = testInjector(new StubReplaceEmpty)
       val objectDef = Object(nodes = Seq(empty),

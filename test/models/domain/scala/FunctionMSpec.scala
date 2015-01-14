@@ -13,7 +13,7 @@ final class FunctionMSpec extends TestComposition {
 
   "hasNoEmpty" must {
     "false given an empty name" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
       val node = mock[Instruction]
       when(node.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException("should not have been called"))
       FunctionM(params = params,
@@ -22,7 +22,7 @@ final class FunctionMSpec extends TestComposition {
     }
 
     "true given it can terminate in under N steps" in {
-      val scope = Scope(height = 3)
+      val scope = Scope(height = 3, maxHeight = 10)
 
       FunctionM(params = params,
         nodes = Seq(nonEmpty, nonEmpty),
@@ -40,7 +40,7 @@ final class FunctionMSpec extends TestComposition {
     }
 
     "false given it cannot terminate in under N steps" in {
-      val scope = Scope(height = 2)
+      val scope = Scope(height = 2, maxHeight = 10)
       val nonTerminal = mock[Instruction]
       when(nonTerminal.hasNoEmpty(any[Scope])).thenReturn(false)
 
@@ -50,7 +50,7 @@ final class FunctionMSpec extends TestComposition {
     }
 
     "true given no empty nodes" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
 
       FunctionM(params = params,
         nodes = Seq(nonEmpty, nonEmpty),
@@ -58,7 +58,7 @@ final class FunctionMSpec extends TestComposition {
     }
 
     "false given an empty node" in {
-      val scope = Scope(height = 10)
+      val scope = Scope(height = 10, maxHeight = 10)
 
       FunctionM(params = params,
         nodes = Seq(nonEmpty, Empty()),
@@ -131,7 +131,8 @@ final class FunctionMSpec extends TestComposition {
         maxFuncsInObject = 1,
         maxParamsInFunc = 1,
         height = 5,
-        maxObjectsInTree = 1)
+        maxObjectsInTree = 1,
+        maxHeight = 10)
       val empty = Empty()
       val injector = testInjector(new StubReplaceEmpty)
       val functionM = FunctionM(params = Seq(empty),

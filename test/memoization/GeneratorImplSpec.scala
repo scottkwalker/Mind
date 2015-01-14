@@ -29,8 +29,8 @@ class GeneratorImplSpec extends TestComposition {
       when(scope.maxFuncsInObject).thenReturn(1)
       val (lookupChildren, generator) = build
       whenReady(generator.generate(scope)) { r =>
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numFuncs = 0)), any[PozInt])
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numFuncs = 1)), any[PozInt])
+        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numFuncs = 0, maxFuncsInObject = 1)), any[PozInt])
+        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numFuncs = 1, maxFuncsInObject = 1)), any[PozInt])
       }
     }
 
@@ -39,8 +39,8 @@ class GeneratorImplSpec extends TestComposition {
       when(scope.maxParamsInFunc).thenReturn(1)
       val (lookupChildren, generator) = build
       whenReady(generator.generate(scope)) { r =>
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numVals = 0)), any[PozInt])
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numVals = 1)), any[PozInt])
+        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numVals = 0, maxParamsInFunc = 1)), any[PozInt])
+        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numVals = 1, maxParamsInFunc = 1)), any[PozInt])
       }
     }
 
@@ -49,18 +49,18 @@ class GeneratorImplSpec extends TestComposition {
       when(scope.maxObjectsInTree).thenReturn(1)
       val (lookupChildren, generator) = build
       whenReady(generator.generate(scope)) { r =>
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numObjects = 0)), any[PozInt])
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numObjects = 1)), any[PozInt])
+        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numObjects = 0, maxObjectsInTree = 1)), any[PozInt])
+        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numObjects = 1, maxObjectsInTree = 1)), any[PozInt])
       }
     }
 
     "call lookupChildren.fetch once for each scope height" in {
       val scope = mock[IScope]
-      when(scope.height).thenReturn(1)
+      when(scope.maxHeight).thenReturn(1)
       val (lookupChildren, generator) = build
       whenReady(generator.generate(scope)) { r =>
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(height = 0)), any[PozInt])
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(height = 1)), any[PozInt])
+        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(height = 0, maxHeight = 1)), any[PozInt])
+        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(height = 1, maxHeight = 1)), any[PozInt])
       }
     }
   }
