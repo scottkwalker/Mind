@@ -11,7 +11,7 @@ import play.api.libs.json._
 import replaceEmpty.{AddOperatorFactory, AddOperatorFactoryImpl, ValueRefFactory, ValueRefFactoryImpl}
 import utils.PozInt
 
-class RepositorySpec extends TestComposition {
+final class RepositorySpec extends TestComposition {
 
   "apply" must {
     "return true for ids that are valid for this scope" in {

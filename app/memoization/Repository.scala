@@ -11,7 +11,7 @@ import utils.PozInt
 
 import scala.language.implicitConversions
 
-class Repository @Inject()(factoryLookup: FactoryLookup)
+final class Repository @Inject()(factoryLookup: FactoryLookup)
   extends Memoize2Impl[IScope, PozInt, Boolean](factoryLookup.version)(writesNeighboursRepository) {
 
   override def funcCalculate(scope: IScope, neighbourId: PozInt): Boolean =
