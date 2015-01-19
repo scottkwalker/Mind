@@ -31,6 +31,8 @@ class RepositoryWithFutures @Inject()(factoryLookup: FactoryLookup)
       }
       else false
     }
+
+  override def size: Int = cache.size
 }
 
 object RepositoryWithFutures {

@@ -18,6 +18,8 @@ final class Memoize2ImplSpec extends TestComposition {
         override def funcCalculate(i: Int, j: Int): Future[Int] = Future.successful {
           i + j
         }
+
+        override def size = ???
       }
       val a = adder(1, 1)
       val b = adder(1, 2)
@@ -43,6 +45,8 @@ final class Memoize2ImplSpec extends TestComposition {
       val adder = spy(new Adder)
       val memoizer = new Memoize2Impl[Int, Int, Future[Int]] {
         override def funcCalculate(i: Int, j: Int): Future[Int] = adder(i, j)
+
+        override def size = ???
       }
       val a1 = memoizer(1, 1)
       val a2 = memoizer(1, 1)
@@ -85,6 +89,8 @@ final class Memoize2ImplSpec extends TestComposition {
       val adder = spy(new Adder)
       val memoizer = new Memoize2Impl[Int, Int, Future[Int]] {
         override def funcCalculate(i: Int, j: Int): Future[Int] = adder(i, j)
+
+        override def size = ???
       }
 
       whenReady(memoizer(5, 1), browserTimeout) { r =>
@@ -105,6 +111,8 @@ final class Memoize2ImplSpec extends TestComposition {
       val throwWhenCalled = spy(new ThrowWhenCalled)
       val memoizeThrowWhenCalled = new Memoize2Impl[Int, Int, Future[Int]] {
         override def funcCalculate(i: Int, j: Int): Future[Int] = throwWhenCalled(i, j)
+
+        override def size = ???
       }
 
       a[RuntimeException] must be thrownBy Await.result(memoizeThrowWhenCalled(5, 0), finiteTimeout)
@@ -117,6 +125,8 @@ final class Memoize2ImplSpec extends TestComposition {
         override def funcCalculate(i: Int, j: Int): Future[Int] = Future.successful {
           i + j
         }
+
+        override def size = ???
       }
       val a = adder(1, 1)
       val b = adder(1, 2)
@@ -190,6 +200,8 @@ final class Memoize2ImplSpec extends TestComposition {
     "return 0 when empty" in {
       val memo = new Memoize2Impl[Int, Int, Int] {
         override def funcCalculate(i: Int, j: Int): Int = i + j
+
+        override def size = cache.size
       }
       memo.size must equal(0)
     }
@@ -197,6 +209,8 @@ final class Memoize2ImplSpec extends TestComposition {
     "return 1 when only one entry" in {
       val memo = new Memoize2Impl[Int, Int, Int] {
         override def funcCalculate(i: Int, j: Int): Int = i + j
+
+        override def size = cache.size
       }
 
       memo(1, 1)
@@ -207,6 +221,8 @@ final class Memoize2ImplSpec extends TestComposition {
     "return 3 when 3 entries" in {
       val adder = new Memoize2Impl[Int, Int, Int] {
         override def funcCalculate(i: Int, j: Int): Int = i + j
+
+        override def size = cache.size
       }
 
       adder(1, 1)
@@ -245,6 +261,8 @@ final class Memoize2ImplSpec extends TestComposition {
     override def funcCalculate(key: Int, key2: Int): Int = throw new Exception("funcCalculate must not be called as the result must have been retrieved from the json")
 
     def replaceCache(newCache: Map[String, Either[CountDownLatch, Int]]) = cache = newCache
+
+    override def size: Int = ???
   }
 
   class ThrowIfNotMemoizedWithFuture() extends Memoize2Impl[Int, Int, Future[Int]]() {
@@ -252,6 +270,8 @@ final class Memoize2ImplSpec extends TestComposition {
     override def funcCalculate(key: Int, key2: Int): Future[Int] = throw new Exception("funcCalculate must not be called as the result must have been retrieved from the json")
 
     def replaceCache(newCache: Map[String, Either[CountDownLatch, Future[Int]]]) = cache = newCache
+
+    override def size: Int = ???
   }
 
   object ThrowIfNotMemoizedWithFuture {

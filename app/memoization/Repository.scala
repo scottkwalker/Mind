@@ -26,6 +26,8 @@ final class Repository @Inject()(factoryLookup: FactoryLookup)
       }
     }
     else false
+
+  override def size: Int = cache.size
 }
 
 object Repository {
