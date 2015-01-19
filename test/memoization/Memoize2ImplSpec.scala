@@ -165,7 +165,7 @@ final class Memoize2ImplSpec extends TestComposition {
         )
       )
 
-      val asObj = Memoize2Impl.read[ThrowIfNotMemoized](json)
+      val asObj = Memoize2Impl.read[ThrowIfNotMemoizedWithFuture](json)
 
       val a = asObj(1, 1)
       val b = asObj(1, 2)
@@ -182,11 +182,53 @@ final class Memoize2ImplSpec extends TestComposition {
     "throw when invalid json" in {
       val json = JsObject(Seq.empty)
 
-      a[JsonValidationException] must be thrownBy Memoize2Impl.read[ThrowIfNotMemoized](json)
+      a[JsonValidationException] must be thrownBy Memoize2Impl.read[ThrowIfNotMemoizedWithFuture](json)
     }
   }
 
-  private implicit val mapOfStringToInt = new Writes[Map[String, Either[CountDownLatch, Future[Int]]]] {
+  "size" must {
+    "return 0 when empty" in {
+      val memo = new Memoize2Impl[Int, Int, Int] {
+        override def funcCalculate(i: Int, j: Int): Int = i + j
+      }
+      memo.size must equal(0)
+    }
+
+    "return 1 when only one entry" in {
+      val memo = new Memoize2Impl[Int, Int, Int] {
+        override def funcCalculate(i: Int, j: Int): Int = i + j
+      }
+
+      memo(1, 1)
+
+      memo.size must equal(1)
+    }
+
+    "return 3 when 3 entries" in {
+      val adder = new Memoize2Impl[Int, Int, Int] {
+        override def funcCalculate(i: Int, j: Int): Int = i + j
+      }
+
+      adder(1, 1)
+      adder(2, 2)
+      adder(3, 3)
+
+      adder.size must equal(3)
+    }
+  }
+
+  private implicit val mapOfStringToInt = new Writes[Map[String, Either[CountDownLatch, Int]]] {
+    def writes(cache: Map[String, Either[CountDownLatch, Int]]): JsValue = {
+      val computedKeyValues = cache.flatMap {
+        case (k, Right(v)) =>
+          Some(k -> v) // Only store the computed values (the 'right-side').
+        case _ => None
+      }
+      Json.toJson(computedKeyValues)
+    }
+  }
+
+  private implicit val mapOfStringToFutureInt = new Writes[Map[String, Either[CountDownLatch, Future[Int]]]] {
     def writes(cache: Map[String, Either[CountDownLatch, Future[Int]]]): JsValue = {
       val computedKeyValues = cache.flatMap {
         case (k, Right(v)) if v.isCompleted =>
@@ -198,22 +240,40 @@ final class Memoize2ImplSpec extends TestComposition {
     }
   }
 
-  class ThrowIfNotMemoized() extends Memoize2Impl[Int, Int, Future[Int]]() {
+  class ThrowIfNotMemoized() extends Memoize2Impl[Int, Int, Int]() {
 
-    override def funcCalculate(key: Int, key2: Int): Future[Int] = throw new Exception("fAsync must not be called as the result must have been retrieved from the json")
+    override def funcCalculate(key: Int, key2: Int): Int = throw new Exception("funcCalculate must not be called as the result must have been retrieved from the json")
+
+    def replaceCache(newCache: Map[String, Either[CountDownLatch, Int]]) = cache = newCache
+  }
+
+  class ThrowIfNotMemoizedWithFuture() extends Memoize2Impl[Int, Int, Future[Int]]() {
+
+    override def funcCalculate(key: Int, key2: Int): Future[Int] = throw new Exception("funcCalculate must not be called as the result must have been retrieved from the json")
 
     def replaceCache(newCache: Map[String, Either[CountDownLatch, Future[Int]]]) = cache = newCache
   }
 
-  object ThrowIfNotMemoized {
+  object ThrowIfNotMemoizedWithFuture {
 
     implicit val readJson: Reads[ThrowIfNotMemoized] =
       (__ \ "cache").read[Map[String, Int]].map {
         keyValueMap =>
           val cache = keyValueMap.map {
-            case (k, v) => k -> Right[CountDownLatch, Future[Int]](Future.successful(v))
+            case (k, v) => k -> Right[CountDownLatch, Int](v)
           }
           val memo = new ThrowIfNotMemoized()
+          memo.replaceCache(cache)
+          memo
+      }
+
+    implicit val readJsonWithFutures: Reads[ThrowIfNotMemoizedWithFuture] =
+      (__ \ "cache").read[Map[String, Int]].map {
+        keyValueMap =>
+          val cache = keyValueMap.map {
+            case (k, v) => k -> Right[CountDownLatch, Future[Int]](Future.successful(v))
+          }
+          val memo = new ThrowIfNotMemoizedWithFuture()
           memo.replaceCache(cache)
           memo
       }

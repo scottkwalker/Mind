@@ -2,17 +2,19 @@ package memoization
 
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.{CountDownLatch, TimeUnit}
+
 import com.twitter.conversions.time._
 import com.twitter.util._
 import composition.TestComposition
 import org.mockito.Mockito._
 import play.api.libs.json.Json._
 import play.api.libs.json._
+
 import scala.annotation.tailrec
 
 final class Memoize1ImplSpec extends TestComposition {
 
-  // TODO convert from twitter Futures to scala futures
+  // TODO remove twitter Futures, use to scala futures
   "apply" must {
     "return the same result when called twice" in {
       val memoizePlusOne = new Memoize1Impl[Int, Int] {
@@ -251,6 +253,36 @@ final class Memoize1ImplSpec extends TestComposition {
         )
 
       )
+    }
+  }
+
+  "size" must {
+    "return 0 when empty" in {
+      val memoizePlusOne = new Memoize1Impl[Int, Int] {
+        def f(i: Int): Int = i + 1
+      }
+
+      memoizePlusOne.size must equal(0)
+    }
+    "return 1 when only one entry" in {
+      val memoizePlusOne = new Memoize1Impl[Int, Int] {
+        def f(i: Int): Int = i + 1
+      }
+
+      memoizePlusOne(1)
+
+      memoizePlusOne.size must equal(1)
+    }
+    "return 3 when 3 entries" in {
+      val memoizePlusOne = new Memoize1Impl[Int, Int] {
+        def f(i: Int): Int = i + 1
+      }
+
+      memoizePlusOne(1)
+      memoizePlusOne(2)
+      memoizePlusOne(3)
+
+      memoizePlusOne.size must equal(3)
     }
   }
 

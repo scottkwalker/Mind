@@ -1,8 +1,10 @@
 package memoization
 
 import java.util.concurrent.CountDownLatch
+
 import play.api.libs.json._
 import serialization.JsonDeserialiser
+
 import scala.annotation.tailrec
 
 abstract class Memoize2Impl[TKey1, TKey2, TOutput](
@@ -111,6 +113,8 @@ abstract class Memoize2Impl[TKey1, TKey2, TOutput](
    */
   // Combine keys into a delimited string as strings are lowest common denominator.
   private[this] def combineKeys(implicit key1: TKey1, key2: TKey2) = s"$key1|$key2"
+
+  override def size: Int = cache.size
 }
 
 object Memoize2Impl {

@@ -101,4 +101,6 @@ abstract class Memoize1Impl[-TKey, +TOutput]()
         latch.countDown()
         calculated
     }
+
+  override def size: Int = cache.size
 }

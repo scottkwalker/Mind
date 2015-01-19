@@ -9,4 +9,6 @@ trait Memoize1[-TKey, +TOutput] {
   def apply(key: TKey): TOutput
 
   def write: JsValue
+
+  def size: Int
 }
