@@ -3,7 +3,7 @@ package memoization
 import java.util.concurrent.CountDownLatch
 
 import composition.TestComposition
-import memoization.NeighboursRepository.readsNeighboursRepository
+import memoization.Repository.readsNeighboursRepository
 import models.common.Scope
 import models.domain.scala.FactoryLookup
 import org.mockito.Mockito._
@@ -11,10 +11,7 @@ import play.api.libs.json._
 import replaceEmpty.{AddOperatorFactory, AddOperatorFactoryImpl, ValueRefFactory, ValueRefFactoryImpl}
 import utils.PozInt
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-
-class NeighboursRepositorySpec extends TestComposition {
+class RepositorySpec extends TestComposition {
 
   "apply" must {
     "return true for ids that are valid for this scope" in {
@@ -22,10 +19,8 @@ class NeighboursRepositorySpec extends TestComposition {
       val a = sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
       val b = sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
 
-      whenReady(Future.sequence(Seq(a, b)), browserTimeout) { r =>
-        r(0) must equal(false)
-        r(1) must equal(true)
-      }
+      a must equal(false)
+      b must equal(true)
     }
 
     "only runs the function once for the same input" in {
@@ -35,21 +30,19 @@ class NeighboursRepositorySpec extends TestComposition {
       val c = sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
       val d = sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
 
-      whenReady(Future.sequence(Seq(a, b, c, d)), browserTimeout) { r =>
-        r(0) must equal(true)
-        r(1) must equal(true)
-        r(2) must equal(false)
-        r(3) must equal(false)
-        verify(factoryIdToFactory, times(1)).convert(AddOperatorFactoryImpl.id)
-        verify(factoryIdToFactory, times(1)).convert(ValueRefFactoryImpl.id)
-      }
+      a must equal(true)
+      b must equal(true)
+      c must equal(false)
+      d must equal(false)
+      verify(factoryIdToFactory, times(1)).convert(AddOperatorFactoryImpl.id)
+      verify(factoryIdToFactory, times(1)).convert(ValueRefFactoryImpl.id)
     }
   }
 
   "write macro inception" must {
     "write expected json for no computed values" in {
-      val cache = Map[String, Either[CountDownLatch, Future[Boolean]]]()
-      NeighboursRepository.writesNeighboursRepository.writes(cache) must equal(
+      val cache = Map[String, Either[CountDownLatch, Boolean]]()
+      Repository.writesNeighboursRepository.writes(cache) must equal(
         JsObject(
           Seq.empty
         )
@@ -58,9 +51,9 @@ class NeighboursRepositorySpec extends TestComposition {
 
     "write expected json for one computed value" in {
       val cache = Map(
-        s"Scope(0,0,0,1,0,0,0,0,1)|${ValueRefFactoryImpl.id}" -> Right(Future.successful(true))
+        s"Scope(0,0,0,1,0,0,0,0,1)|${ValueRefFactoryImpl.id}" -> Right(true)
       )
-      NeighboursRepository.writesNeighboursRepository.writes(cache) must equal(
+      Repository.writesNeighboursRepository.writes(cache) must equal(
         JsObject(
           Seq(
             (s"Scope(0,0,0,1,0,0,0,0,1)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
@@ -71,11 +64,11 @@ class NeighboursRepositorySpec extends TestComposition {
 
     "write expected json for many computed values" in {
       val cache = Map(
-        s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}" -> Right(Future.successful(false)),
-        s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(Future.successful(false)),
-        s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(Future.successful(true))
+        s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}" -> Right(false),
+        s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(false),
+        s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(true)
       )
-      NeighboursRepository.writesNeighboursRepository.writes(cache) must equal(
+      Repository.writesNeighboursRepository.writes(cache) must equal(
         JsObject(
           Seq(
             (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
@@ -89,10 +82,10 @@ class NeighboursRepositorySpec extends TestComposition {
     "ignore values that have not finished computation" in {
       val cache = Map(
         s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}" -> Left(new CountDownLatch(0)), // This value is still being computed so should not appear in the output.
-        s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(Future.successful(false)),
-        s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(Future.successful(true))
+        s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(false),
+        s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(true)
       )
-      NeighboursRepository.writesNeighboursRepository.writes(cache) must equal(
+      Repository.writesNeighboursRepository.writes(cache) must equal(
         JsObject(
           Seq(
             (s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
@@ -121,44 +114,41 @@ class NeighboursRepositorySpec extends TestComposition {
 
     "write expected json for one computed value" in {
       val (sut, _) = createSut()
-      whenReady(sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id), browserTimeout) { r =>
-        r must equal(true) // Check the calculated value is correct before continuing to test it is written correctly.
-        sut.write must equal(
-          JsObject(
-            Seq(
-              "versioning" -> JsString(version),
-              "cache" -> JsObject(
-                Seq(
-                  (s"Scope(0,0,0,1,0,0,0,0,1)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
-                )
+      val result = sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
+      result must equal(true) // Check the calculated value is correct before continuing to test it is written correctly.
+      sut.write must equal(
+        JsObject(
+          Seq(
+            "versioning" -> JsString(version),
+            "cache" -> JsObject(
+              Seq(
+                (s"Scope(0,0,0,1,0,0,0,0,1)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
               )
             )
           )
         )
-      }
+      )
     }
 
     "write expected json for many computed values" in {
       val (sut, _) = createSut()
-      val a = sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
-      val b = sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
+      sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
+      sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
 
-      whenReady(Future.sequence(Seq(a, b)), browserTimeout) { r =>
-        sut.write must equal(
-          JsObject(
-            Seq(
-              "versioning" -> JsString(version),
-              "cache" -> JsObject(
-                Seq(
-                  (s"Scope(0,0,0,1,0,0,0,0,1)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
-                  (s"Scope(0,0,0,0,0,0,0,0,1)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
-                  (s"Scope(0,0,0,1,0,0,0,0,1)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
-                )
+      sut.write must equal(
+        JsObject(
+          Seq(
+            "versioning" -> JsString(version),
+            "cache" -> JsObject(
+              Seq(
+                (s"Scope(0,0,0,1,0,0,0,0,1)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
+                (s"Scope(0,0,0,0,0,0,0,0,1)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
+                (s"Scope(0,0,0,1,0,0,0,0,1)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
               )
             )
           )
         )
-      }
+      )
     }
   }
 
@@ -177,14 +167,12 @@ class NeighboursRepositorySpec extends TestComposition {
         )
       )
       val readsFromJson = readsNeighboursRepository(factoryLookupStub)
-      val asObj: NeighboursRepository = Memoize2Impl.read[NeighboursRepository](json)(readsFromJson)
+      val asObj: Repository = Memoize2Impl.read[Repository](json)(readsFromJson)
       val a = asObj.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
       val b = asObj.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
 
-      whenReady(Future.sequence(Seq(a, b)), browserTimeout) { r =>
-        r(0) must equal(false)
-        r(1) must equal(true)
-      }
+      a must equal(false)
+      b must equal(true)
     }
 
     "throw RuntimeException when versioning string doesn't match what we intend to use" in {
@@ -203,7 +191,7 @@ class NeighboursRepositorySpec extends TestComposition {
       )
       val readsFromJson = readsNeighboursRepository(factoryLookupStub)
 
-      a[RuntimeException] must be thrownBy Memoize2Impl.read[NeighboursRepository](json)(readsFromJson)
+      a[RuntimeException] must be thrownBy Memoize2Impl.read[Repository](json)(readsFromJson)
     }
   }
 
@@ -211,7 +199,7 @@ class NeighboursRepositorySpec extends TestComposition {
 
   private def createSut() = {
     val factoryLookup = factoryLookupStub
-    val sut = new NeighboursRepository(factoryLookup = factoryLookup)
+    val sut = new Repository(factoryLookup = factoryLookup)
     (sut, factoryLookup)
   }
 
