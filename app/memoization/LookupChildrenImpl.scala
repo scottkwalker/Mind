@@ -8,7 +8,7 @@ import utils.PozInt
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final class LookupChildrenImpl @Inject()(override val factoryLookup: FactoryLookup, repository: RepositoryWithFutures) extends LookupChildren {
+final class LookupChildrenImpl @Inject()(override val factoryLookup: FactoryLookup, override val repository: RepositoryWithFutures) extends LookupChildren {
 
   override def fetch(scope: IScope, childrenToChooseFrom: Set[PozInt]): Future[Set[ReplaceEmpty]] = {
     fetchFromRepository(scope, childrenToChooseFrom).map(_.map(factoryLookup.convert))
@@ -19,6 +19,8 @@ final class LookupChildrenImpl @Inject()(override val factoryLookup: FactoryLook
     val nodesToChooseFrom = factory.nodesToChooseFrom
     fetchFromRepository(scope, nodesToChooseFrom)
   }
+
+  override def size = repository.size
 
   private def fetchFromRepository(scope: IScope, neighbours: Set[PozInt]): Future[Set[PozInt]] = {
     val neighbourValues = neighbours.map { neighbourId =>

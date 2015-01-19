@@ -6,7 +6,7 @@ import models.common.{IScope, LookupChildrenRequest, Scope}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify}
 import play.api.libs.json.Json
-import play.api.test.Helpers.{BAD_REQUEST, OK, contentAsString}
+import play.api.test.Helpers._
 import play.api.test.{FakeRequest, WithApplication}
 import replaceEmpty.TypeTreeFactoryImpl
 import utils.PozInt
@@ -30,7 +30,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
   "calculate" must {
     "return bad request when submission is empty" in new WithApplication {
       val emptyRequest = FakeRequest().withFormUrlEncodedBody()
-      val result = legalChildren.calculate(emptyRequest)
+      val result = legalChildren().calculate(emptyRequest)
       whenReady(result, browserTimeout) { r =>
         r.header.status must equal(BAD_REQUEST)
       }
@@ -38,7 +38,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
 
     "return ok when submission is valid" in new WithApplication {
       val validRequest = requestWithDefaults()
-      val result = legalChildren.calculate(validRequest)
+      val result = legalChildren().calculate(validRequest)
       whenReady(result, browserTimeout) { r =>
         r.header.status must equal(OK)
       }
@@ -46,7 +46,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
 
     "return seq of ids when submission is valid and legal moves are found" in new WithApplication {
       val validRequest = requestWithDefaults()
-      val result = legalChildren.calculate(validRequest)
+      val result = legalChildren().calculate(validRequest)
       whenReady(result, browserTimeout) { r =>
         r.body.map { b =>
           Json.parse(b) must equal(Seq(TypeTreeFactoryImpl.id))
@@ -56,7 +56,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
 
     "return empty seq when submission is valid but no matches are in scope" in new WithApplication {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
-      val result = legalChildren.calculate(validRequest)
+      val result = legalChildren().calculate(validRequest)
       whenReady(result, browserTimeout) { r =>
         r.body.map { b =>
           Json.parse(b) must equal(Seq.empty)
@@ -67,7 +67,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
     "call lookupChildren.fetch when submission is valid" in new WithApplication {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
       val lookupChildren = mock[LookupChildren]
-      val injector = testInjector(new StubLookupChildren(lookupChildren))
+      val injector = testInjector(new StubLookupChildren(lookupChildren = lookupChildren))
       val sut = injector.getInstance(classOf[LegalChildren])
 
       val result = sut.calculate(validRequest)
@@ -77,13 +77,30 @@ final class LegalChildrenUnitSpec extends TestComposition {
     }
   }
 
-  private def legalChildren =
-    testInjector(new StubLookupChildren()).
+  "size" must {
+    "return 0 when repository is empty" in {
+      val result = legalChildren(size = 0).size(FakeRequest())
+      contentAsString(result)(timeout) must equal("repository size: 0")
+    }
+
+    "return 1 when repository has 1 item" in {
+      val result = legalChildren(size = 1).size(FakeRequest())
+      contentAsString(result)(timeout) must equal("repository size: 1")
+    }
+    
+    "return 3 when repository has 3 items" in {
+      val result = legalChildren(size = 3).size(FakeRequest())
+      contentAsString(result)(timeout) must equal("repository size: 3")
+    }
+  }
+
+  private def legalChildren(size: Int = 0) =
+    testInjector(new StubLookupChildren(size = size)).
       getInstance(classOf[LegalChildren])
 
   private def present = {
     val emptyRequest = FakeRequest()
-    legalChildren.present(emptyRequest)
+    legalChildren().present(emptyRequest)
   }
 
   private def scopeDefault = Scope(
