@@ -20,7 +20,9 @@ final class LookupChildrenImpl @Inject()(override val factoryLookup: FactoryLook
     fetchFromRepository(scope, nodesToChooseFrom)
   }
 
-  override def size = repository.size
+  override def size: Int = repository.size
+
+  override def sizeOfCalculated: Int = size
 
   private def fetchFromRepository(scope: IScope, neighbours: Set[PozInt]): Future[Set[PozInt]] = {
     val neighbourValues = neighbours.map { neighbourId =>

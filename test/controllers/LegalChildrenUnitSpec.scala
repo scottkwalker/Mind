@@ -107,8 +107,12 @@ final class LegalChildrenUnitSpec extends TestComposition {
     }
   }
 
-  "runningSize" must {
-    "call lookupChildren.size" in pending
+  "sizeOfCalculated" must {
+    "call lookupChildren.sizeOfCalculated" in {
+      val (legalChildren, lookupChildren) = build(size = 0)
+      legalChildren.sizeOfCalculated(FakeRequest())
+      verify(lookupChildren, times(1)).sizeOfCalculated
+    }
   }
 
   private def build(size: Int = 0) = {

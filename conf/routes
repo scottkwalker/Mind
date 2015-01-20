@@ -2,14 +2,15 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET         /                                @controllers.Application.index
-GET         /mind/intro                      @controllers.Intro.present
-GET         /mind/health-check               @controllers.HealthCheck.respond
-GET         /mind/legal-children             @controllers.LegalChildren.present
-POST        /mind/legal-children             @controllers.LegalChildren.calculate
-GET         /mind/legal-children/size        @controllers.LegalChildren.size
-GET         /mind/populate                   @controllers.Populate.present
-POST        /mind/populate                   @controllers.Populate.calculate
+GET         /                                              @controllers.Application.index
+GET         /mind/intro                                    @controllers.Intro.present
+GET         /mind/health-check                             @controllers.HealthCheck.respond
+GET         /mind/legal-children                           @controllers.LegalChildren.present
+POST        /mind/legal-children                           @controllers.LegalChildren.calculate
+GET         /mind/legal-children/size                      @controllers.LegalChildren.size
+GET         /mind/legal-children/size-of-calculated        @controllers.LegalChildren.sizeOfCalculated
+GET         /mind/populate                                 @controllers.Populate.present
+POST        /mind/populate                                 @controllers.Populate.calculate
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                    controllers.Assets.at(path="/public", file)
+GET         /assets/*file                                  controllers.Assets.at(path="/public", file)

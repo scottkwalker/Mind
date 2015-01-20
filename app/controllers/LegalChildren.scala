@@ -39,4 +39,8 @@ final class LegalChildren @Inject()(lookupChildren: LookupChildren) extends Cont
   def size = Action { implicit request =>
     Ok(s"repository size: ${lookupChildren.size}")
   }
+
+  def sizeOfCalculated = Action { implicit request =>
+    Ok(s"size-of-calculated: ${lookupChildren.sizeOfCalculated}")
+  }
 }
