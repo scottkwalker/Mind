@@ -16,7 +16,7 @@ class GeneratorImplSpec extends TestComposition {
       val (_, generator) = build
       val scope = mock[IScope]
       whenReady(generator.generate(scope)) {
-        _ must equal(true)
+        _ must equal(1)
       }
     }
 
@@ -71,7 +71,7 @@ class GeneratorImplSpec extends TestComposition {
       val (_, generator) = buildWithoutFutures
       val scope = mock[IScope]
       whenReady(generator.generate(scope)) {
-        _ must equal(true)
+        _ must equal(1)
       }
     }
 

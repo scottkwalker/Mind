@@ -6,5 +6,5 @@ import scala.concurrent.Future
 
 trait Generator {
 
-  def generate(maxScope: IScope): Future[Boolean]
+  def generate(maxScope: IScope): Future[Int]
 }
