@@ -1,6 +1,7 @@
 package memoization
 
 import java.util.concurrent.CountDownLatch
+
 import com.google.inject.Inject
 import memoization.RepositoryWithFutures.writesNeighboursRepository
 import models.common.IScope
@@ -8,6 +9,7 @@ import models.domain.scala.FactoryLookup
 import play.api.libs.json._
 import utils.PozInt
 import utils.Timeout.finiteTimeout
+
 import scala.async.Async.{async, await}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{Await, Future}
@@ -33,6 +35,8 @@ class RepositoryWithFutures @Inject()(factoryLookup: FactoryLookup)
     }
 
   override def size: Int = cache.size
+
+  override def sizeOfCalculated: Int = cache.size
 }
 
 object RepositoryWithFutures {

@@ -1,7 +1,6 @@
 package memoization
 
 import play.api.libs.json.JsValue
-import scala.concurrent.Future
 
 trait Memoize2[-TKey1, -TKey2, +TOutput] {
 
@@ -11,5 +10,8 @@ trait Memoize2[-TKey1, -TKey2, +TOutput] {
 
   def write: JsValue
 
-  def size: Int // Take care when the TOutput is of type Future as you may not intend to block.
+  // Take care when the TOutput is of type Future as you may not intend to block.
+  def size: Int
+
+  def sizeOfCalculated: Int
 }

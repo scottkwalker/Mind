@@ -20,6 +20,8 @@ final class Memoize2ImplSpec extends TestComposition {
         }
 
         override def size = ???
+
+        override def sizeOfCalculated = ???
       }
       val a = adder(1, 1)
       val b = adder(1, 2)
@@ -47,6 +49,8 @@ final class Memoize2ImplSpec extends TestComposition {
         override def funcCalculate(i: Int, j: Int): Future[Int] = adder(i, j)
 
         override def size = ???
+
+        override def sizeOfCalculated = ???
       }
       val a1 = memoizer(1, 1)
       val a2 = memoizer(1, 1)
@@ -91,6 +95,8 @@ final class Memoize2ImplSpec extends TestComposition {
         override def funcCalculate(i: Int, j: Int): Future[Int] = adder(i, j)
 
         override def size = ???
+
+        override def sizeOfCalculated = ???
       }
 
       whenReady(memoizer(5, 1), browserTimeout) { r =>
@@ -113,6 +119,8 @@ final class Memoize2ImplSpec extends TestComposition {
         override def funcCalculate(i: Int, j: Int): Future[Int] = throwWhenCalled(i, j)
 
         override def size = ???
+
+        override def sizeOfCalculated = ???
       }
 
       a[RuntimeException] must be thrownBy Await.result(memoizeThrowWhenCalled(5, 0), finiteTimeout)
@@ -127,6 +135,8 @@ final class Memoize2ImplSpec extends TestComposition {
         }
 
         override def size = ???
+
+        override def sizeOfCalculated = ???
       }
       val a = adder(1, 1)
       val b = adder(1, 2)
@@ -202,6 +212,8 @@ final class Memoize2ImplSpec extends TestComposition {
         override def funcCalculate(i: Int, j: Int): Int = i + j
 
         override def size = cache.size
+
+        override def sizeOfCalculated = ???
       }
       memo.size must equal(0)
     }
@@ -211,6 +223,8 @@ final class Memoize2ImplSpec extends TestComposition {
         override def funcCalculate(i: Int, j: Int): Int = i + j
 
         override def size = cache.size
+
+        override def sizeOfCalculated = ???
       }
 
       memo(1, 1)
@@ -223,6 +237,8 @@ final class Memoize2ImplSpec extends TestComposition {
         override def funcCalculate(i: Int, j: Int): Int = i + j
 
         override def size = cache.size
+
+        override def sizeOfCalculated = ???
       }
 
       adder(1, 1)
@@ -263,6 +279,8 @@ final class Memoize2ImplSpec extends TestComposition {
     def replaceCache(newCache: Map[String, Either[CountDownLatch, Int]]) = cache = newCache
 
     override def size: Int = ???
+
+    override def sizeOfCalculated = ???
   }
 
   class ThrowIfNotMemoizedWithFuture() extends Memoize2Impl[Int, Int, Future[Int]]() {
@@ -272,6 +290,8 @@ final class Memoize2ImplSpec extends TestComposition {
     def replaceCache(newCache: Map[String, Either[CountDownLatch, Future[Int]]]) = cache = newCache
 
     override def size: Int = ???
+
+    override def sizeOfCalculated = ???
   }
 
   object ThrowIfNotMemoizedWithFuture {
