@@ -3,7 +3,7 @@ package memoization
 import java.util.concurrent.CountDownLatch
 
 import com.google.inject.Inject
-import memoization.RepositoryWithFutures.writesNeighboursRepository
+import memoization.RepositoryWithFutures.writes
 import models.common.IScope
 import models.domain.scala.FactoryLookup
 import play.api.libs.json._
@@ -16,7 +16,7 @@ import scala.concurrent.{Await, Future}
 import scala.language.implicitConversions
 
 class RepositoryWithFutures @Inject()(factoryLookup: FactoryLookup)
-  extends Memoize2Impl[IScope, PozInt, Future[Boolean]](factoryLookup.version)(writesNeighboursRepository) {
+  extends Memoize2Impl[IScope, PozInt, Future[Boolean]](factoryLookup.version)(writes) {
 
   override def funcCalculate(scope: IScope, neighbourId: PozInt): Future[Boolean] =
     async {
@@ -41,7 +41,7 @@ class RepositoryWithFutures @Inject()(factoryLookup: FactoryLookup)
 
 object RepositoryWithFutures {
 
-  private[memoization] implicit val writesNeighboursRepository = new Writes[Map[String, Either[CountDownLatch, Future[Boolean]]]] {
+  private[memoization] implicit val writes = new Writes[Map[String, Either[CountDownLatch, Future[Boolean]]]] {
     def writes(cache: Map[String, Either[CountDownLatch, Future[Boolean]]]): JsValue = {
       def computedKeyValues: Map[String, Boolean] = cache.flatMap {
         case (key, Right(value)) if value.isCompleted =>
@@ -53,7 +53,7 @@ object RepositoryWithFutures {
     }
   }
 
-  private[memoization] implicit def readsNeighboursRepository(factoryLookup: FactoryLookup): Reads[RepositoryWithFutures] =
+  private[memoization] implicit def reads(factoryLookup: FactoryLookup): Reads[RepositoryWithFutures] =
     (__ \ "versioning").read[String].flatMap[RepositoryWithFutures] {
       case versioningFromFile =>
         require(versioningFromFile == factoryLookup.version, s"version info from file ($versioningFromFile) did not match the intended versioning (${factoryLookup.version})")

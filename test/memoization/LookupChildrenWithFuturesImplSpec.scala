@@ -1,8 +1,8 @@
 package memoization
 
 import com.google.inject.{Key, AbstractModule}
-import composition.StubFactoryIdToFactory._
-import composition.{StubRepository, StubFactoryIdToFactory, TestComposition}
+import composition.StubFactoryLookup._
+import composition.{StubFactoryLookup, StubRepository, StubFactoryLookup$, TestComposition}
 import models.common.{IScope, Scope}
 import models.domain.scala.FactoryLookup
 import org.mockito.Matchers.any
@@ -102,7 +102,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
   private def build = {
     val scope = Scope(height = 1, maxHeight = 1)
     val factoryIdToFactory = mock[FactoryLookup]
-    val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory)) // Override an implementation returned by IoC with a stubbed version.
+    val injector = testInjector(new StubFactoryLookup(factoryIdToFactory)) // Override an implementation returned by IoC with a stubbed version.
     (injector.getInstance(classOf[LookupChildrenWithFutures]), scope, factoryIdToFactory)
   }
 
@@ -110,7 +110,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
     val scope = Scope(height = 1, maxHeight = 1)
     val factoryIdToFactory = mock[FactoryLookup]
     val repositoryWithFutures = mock[Memoize2[IScope, PozInt, Future[Boolean]]]
-    val injector = testInjector(new StubFactoryIdToFactory(factoryIdToFactory), new StubRepository(repositoryWithFutures)) // Override an implementation returned by IoC with a stubbed version.
+    val injector = testInjector(new StubFactoryLookup(factoryIdToFactory), new StubRepository(repositoryWithFutures)) // Override an implementation returned by IoC with a stubbed version.
     (injector.getInstance(classOf[LookupChildrenWithFutures]), scope, factoryIdToFactory, injector.getInstance(new Key [Memoize2[IScope, PozInt, Future[Boolean]]](){}))
   }
 }

@@ -3,7 +3,7 @@ package memoization
 import java.util.concurrent.CountDownLatch
 
 import composition.TestComposition
-import memoization.RepositoryWithFutures.readsNeighboursRepository
+import memoization.RepositoryWithFutures.reads
 import models.common.Scope
 import models.domain.scala.FactoryLookup
 import org.mockito.Mockito._
@@ -49,7 +49,7 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
   "write macro inception" must {
     "write expected json for no computed values" in {
       val cache = Map[String, Either[CountDownLatch, Future[Boolean]]]()
-      RepositoryWithFutures.writesNeighboursRepository.writes(cache) must equal(
+      RepositoryWithFutures.writes.writes(cache) must equal(
         JsObject(
           Seq.empty
         )
@@ -60,7 +60,7 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
       val cache = Map(
         s"Scope(0,0,0,1,0,0,0,0,1)|${ValueRefFactoryImpl.id}" -> Right(Future.successful(true))
       )
-      RepositoryWithFutures.writesNeighboursRepository.writes(cache) must equal(
+      RepositoryWithFutures.writes.writes(cache) must equal(
         JsObject(
           Seq(
             (s"Scope(0,0,0,1,0,0,0,0,1)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
@@ -75,7 +75,7 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
         s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(Future.successful(false)),
         s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(Future.successful(true))
       )
-      RepositoryWithFutures.writesNeighboursRepository.writes(cache) must equal(
+      RepositoryWithFutures.writes.writes(cache) must equal(
         JsObject(
           Seq(
             (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
@@ -92,7 +92,7 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
         s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(Future.successful(false)),
         s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(Future.successful(true))
       )
-      RepositoryWithFutures.writesNeighboursRepository.writes(cache) must equal(
+      RepositoryWithFutures.writes.writes(cache) must equal(
         JsObject(
           Seq(
             (s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
@@ -176,7 +176,7 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
           )
         )
       )
-      val readsFromJson = readsNeighboursRepository(factoryLookupStub)
+      val readsFromJson = reads(factoryLookupStub)
       val asObj: RepositoryWithFutures = Memoize2Impl.read[RepositoryWithFutures](json)(readsFromJson)
       val a = asObj.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
       val b = asObj.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
@@ -201,7 +201,7 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
           )
         )
       )
-      val readsFromJson = readsNeighboursRepository(factoryLookupStub)
+      val readsFromJson = reads(factoryLookupStub)
 
       a[RuntimeException] must be thrownBy Memoize2Impl.read[RepositoryWithFutures](json)(readsFromJson)
     }

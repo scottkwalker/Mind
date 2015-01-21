@@ -1,13 +1,13 @@
 package composition
 
 import com.google.inject.AbstractModule
-import composition.StubFactoryIdToFactory._
+import composition.StubFactoryLookup._
 import models.domain.scala.FactoryLookup
 import replaceEmpty.ReplaceEmpty
 import org.mockito.Mockito.{mock, when}
 import utils.PozInt
 
-final class StubFactoryIdToFactory(factoryLookup: FactoryLookup) extends AbstractModule {
+final class StubFactoryLookup(factoryLookup: FactoryLookup) extends AbstractModule {
 
   def configure(): Unit = {
     // Id -> factory
@@ -23,7 +23,7 @@ final class StubFactoryIdToFactory(factoryLookup: FactoryLookup) extends Abstrac
   }
 }
 
-object StubFactoryIdToFactory {
+object StubFactoryLookup {
 
   val fakeFactoryDoesNotTerminateId = PozInt(0)
   val fakeFactoryTerminates1Id = PozInt(1)
