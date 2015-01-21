@@ -33,9 +33,10 @@ libraryDependencies ++= Seq(
   "org.scalatestplus" %% "play" % "1.2.0" % "test" withSources() withJavadoc(),
   "com.twitter" %% "util-core" % "6.22.1" withSources() withJavadoc(),
   "org.scala-lang" % "scala-compiler" % "2.11.4" withSources() withJavadoc(),
-  "org.scala-lang.modules" %% "scala-async" % "0.9.2" withSources() withJavadoc()//,
+  "org.scala-lang.modules" %% "scala-async" % "0.9.2" withSources() withJavadoc(),
 //  "org.scalactic" %% "scalactic" % "2.2.1" withSources() withJavadoc(),
 //  "com.typesafe" %% "abide-core" % "0.1-SNAPSHOT" % "abide"
+  "org.scala-lang" % "scala-compiler" % scalaVersion.value
 )
 
 scalacOptions += "-feature"
