@@ -38,7 +38,7 @@ libraryDependencies ++= Seq(
 //  "com.typesafe" %% "abide-core" % "0.1-SNAPSHOT" % "abide"
 )
 
-scalacOptions ++= Seq("-feature")
+scalacOptions += "-feature"
 
 ScoverageKeys.coverageExcludedPackages := "<empty>;Reverse.*;fitness.Eval;views;views.html;views.html.widgets"
 
@@ -54,3 +54,15 @@ showCurrentGitBranch // https://github.com/sbt/sbt-git
 
 fork in Test := false 	// Fixes Exception in thread "Thread-4" java.io.EOFException
 			//	at java.io.ObjectInputStream$BlockDataInputStream.peekByte(ObjectInputStream.java:2601)
+
+
+// Scalaxy/Streams compiler plugin
+// https://github.com/ochafik/Scalaxy
+
+autoCompilerPlugins := true
+
+addCompilerPlugin("com.nativelibs4java" %% "scalaxy-streams" % "0.3.4")
+
+scalacOptions += "-Xplugin-require:scalaxy-streams"
+
+scalacOptions ++= Seq("-optimise", "-Yinline-warnings", "-Yclosure-elim", "-Yinline")
