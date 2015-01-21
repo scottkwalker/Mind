@@ -1,11 +1,14 @@
 language: scala
 scala:
-   - 2.11.4
+   - 2.11.5
 jdk:
   - oraclejdk8
 matrix:
   fast_finish: true
 notifications:
   email: false
-script: "sbt clean coverage test"
-after_success: "sbt coveralls"
+script:
+  - travis_retry sbt compile
+  - sbt coverage test
+after_success:
+  - sbt coveralls
