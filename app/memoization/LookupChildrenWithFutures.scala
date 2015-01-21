@@ -10,8 +10,6 @@ trait LookupChildrenWithFutures {
 
   val factoryLookup: FactoryLookup
 
-  val repository: Memoize2[IScope, PozInt, Future[Boolean]]
-
   def fetch(scope: IScope, childrenToChooseFrom: Set[PozInt]): Future[Set[ReplaceEmpty]]
 
   def fetch(scope: IScope, parent: PozInt): Future[Set[PozInt]]

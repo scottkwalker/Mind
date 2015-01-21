@@ -11,7 +11,7 @@ import scala.concurrent.Future
 
 final class LookupChildrenWithFuturesWithFuturesImpl @Inject()(
                                                      override val factoryLookup: FactoryLookup,
-                                                     override val repository: Memoize2[IScope, PozInt, Future[Boolean]]
+                                                     repository: Memoize2[IScope, PozInt, Future[Boolean]]
                                                      ) extends LookupChildrenWithFutures {
 
   override def fetch(scope: IScope, childrenToChooseFrom: Set[PozInt]): Future[Set[ReplaceEmpty]] = {
