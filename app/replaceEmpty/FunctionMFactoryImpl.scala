@@ -1,7 +1,7 @@
 package replaceEmpty
 
 import com.google.inject.Inject
-import memoization.LookupChildren
+import memoization.LookupChildrenWithFutures
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.FunctionM
@@ -14,7 +14,7 @@ import scala.concurrent.Future
 
 case class FunctionMFactoryImpl @Inject()(
                                            creator: CreateSeqNodes,
-                                           lookupChildren: LookupChildren
+                                           lookupChildren: LookupChildrenWithFutures
                                            ) extends FunctionMFactory with UpdateScopeIncrementFuncs {
 
   override val nodesToChooseFrom = Set(AddOperatorFactoryImpl.id, ValueRefFactoryImpl.id)

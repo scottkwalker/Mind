@@ -1,7 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
-import memoization.LookupChildren
+import memoization.LookupChildrenWithFutures
 import models.common.LookupChildrenRequest
 import play.api.data.Form
 import play.api.libs.json.Json.toJson
@@ -11,7 +11,7 @@ import utils.PozInt
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final class LegalChildren @Inject()(lookupChildren: LookupChildren) extends Controller {
+final class LegalChildren @Inject()(lookupChildren: LookupChildrenWithFutures) extends Controller {
 
   private[controllers] val form = Form(
     LookupChildrenRequest.Form.Mapping

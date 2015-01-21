@@ -5,7 +5,7 @@ import models.common.{IScope, Scope}
 
 import scala.concurrent.Future
 
-class GeneratorImpl @Inject()(lookupChildren: LookupChildren) extends Generator {
+class GeneratorImpl @Inject()(lookupChildren: LookupChildrenWithFutures) extends Generator {
 
   override def generate(maxScope: IScope): Future[Int] = {
     for {

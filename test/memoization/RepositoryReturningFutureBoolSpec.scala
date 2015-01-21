@@ -14,7 +14,7 @@ import utils.PozInt
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final class RepositoryWithFuturesSpec extends TestComposition {
+final class RepositoryReturningFutureBoolSpec extends TestComposition {
 
   "apply" must {
     "return true for ids that are valid for this scope" in {

@@ -1,14 +1,17 @@
 package composition
 
-import com.google.inject.AbstractModule
-import memoization.RepositoryWithFutures
+import com.google.inject.{AbstractModule, TypeLiteral}
+import memoization.Memoize2
+import models.common.IScope
 import org.mockito.Mockito._
+import utils.PozInt
 
-final class StubRepository(val repositoryWithFutures: RepositoryWithFutures) extends AbstractModule {
+import scala.concurrent.Future
+
+final class StubRepository(val repositoryWithFutures: Memoize2[IScope, PozInt, Future[Boolean]]) extends AbstractModule {
 
   def configure(): Unit = {
-    val repositoryWithFutures = mock(classOf[RepositoryWithFutures])
     when(repositoryWithFutures.size).thenReturn(0)
-    bind(classOf[RepositoryWithFutures]).toInstance(repositoryWithFutures)
+    bind(new TypeLiteral[Memoize2[IScope, PozInt, Future[Boolean]]]() {}).toInstance(repositoryWithFutures)
   }
 }

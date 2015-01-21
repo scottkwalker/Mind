@@ -1,7 +1,7 @@
 package replaceEmpty
 
 import com.google.inject.Inject
-import memoization.LookupChildren
+import memoization.LookupChildrenWithFutures
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.Object
@@ -12,7 +12,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 case class ObjectFactoryImpl @Inject()(
                                            creator: CreateSeqNodes,
-                                           lookupChildren: LookupChildren
+                                           lookupChildren: LookupChildrenWithFutures
                                            ) extends ObjectFactory with UpdateScopeIncrementObjects {
 
   override val nodesToChooseFrom = Set(FunctionMFactoryImpl.id)

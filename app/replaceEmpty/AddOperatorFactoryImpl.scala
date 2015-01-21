@@ -1,7 +1,7 @@
 package replaceEmpty
 
 import com.google.inject.Inject
-import memoization.LookupChildren
+import memoization.LookupChildrenWithFutures
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.AddOperator
@@ -12,7 +12,7 @@ import scala.concurrent.Future
 
 case class AddOperatorFactoryImpl @Inject()(
                                              creator: CreateNode,
-                                             lookupChildren: LookupChildren
+                                             lookupChildren: LookupChildrenWithFutures
                                              ) extends AddOperatorFactory with UpdateScopeNoChange {
 
   override val nodesToChooseFrom = Set(ValueRefFactoryImpl.id)

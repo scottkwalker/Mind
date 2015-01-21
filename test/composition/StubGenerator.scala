@@ -1,7 +1,7 @@
 package composition
 
 import com.google.inject.AbstractModule
-import memoization.{Generator, LookupChildren}
+import memoization.{Generator, LookupChildrenWithFutures}
 import models.common.IScope
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{mock, when}

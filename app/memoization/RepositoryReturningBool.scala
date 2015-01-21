@@ -3,7 +3,7 @@ package memoization
 import java.util.concurrent.CountDownLatch
 
 import com.google.inject.Inject
-import memoization.Repository.writesNeighboursRepository
+import memoization.RepositoryReturningBool.writes
 import models.common.IScope
 import models.domain.scala.FactoryLookup
 import play.api.libs.json._
@@ -11,8 +11,8 @@ import utils.PozInt
 
 import scala.language.implicitConversions
 
-final class Repository @Inject()(factoryLookup: FactoryLookup)
-  extends Memoize2Impl[IScope, PozInt, Boolean](factoryLookup.version)(writesNeighboursRepository) {
+final class RepositoryReturningBool @Inject()(factoryLookup: FactoryLookup)
+  extends Memoize2Impl[IScope, PozInt, Boolean](factoryLookup.version)(writes) {
 
   override def funcCalculate(scope: IScope, neighbourId: PozInt): Boolean =
     if (scope.hasHeightRemaining) {
@@ -31,9 +31,9 @@ final class Repository @Inject()(factoryLookup: FactoryLookup)
   override def sizeOfCalculated: Int = cache.size // TODO must be a count of only those which have been calculated
 }
 
-object Repository {
+object RepositoryReturningBool {
 
-  private[memoization] implicit val writesNeighboursRepository = new Writes[Map[String, Either[CountDownLatch, Boolean]]] {
+  private[memoization] implicit val writes = new Writes[Map[String, Either[CountDownLatch, Boolean]]] {
     def writes(cache: Map[String, Either[CountDownLatch, Boolean]]): JsValue = {
       def computedKeyValues: Map[String, Boolean] = cache.flatMap {
         case (key, Right(value)) =>
@@ -44,8 +44,8 @@ object Repository {
     }
   }
 
-  private[memoization] implicit def readsNeighboursRepository(factoryLookup: FactoryLookup): Reads[Repository] =
-    (__ \ "versioning").read[String].flatMap[Repository] {
+  private[memoization] implicit def reads(factoryLookup: FactoryLookup): Reads[RepositoryReturningBool] =
+    (__ \ "versioning").read[String].flatMap[RepositoryReturningBool] {
       case versioningFromFile =>
         require(versioningFromFile == factoryLookup.version, s"version info from file ($versioningFromFile) did not match the intended versioning (${factoryLookup.version})")
         (__ \ "cache").read[Map[String, Boolean]].map {
@@ -54,7 +54,7 @@ object Repository {
               case (key, value) => key -> Right[CountDownLatch, Boolean](value)
             }
 
-            val neighboursRepository = new Repository(factoryLookup)
+            val neighboursRepository = new RepositoryReturningBool(factoryLookup)
             neighboursRepository.cache = cache // Overwrite the empty cache with values from the file.
             neighboursRepository
         }

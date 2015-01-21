@@ -1,7 +1,7 @@
 package replaceEmpty
 
 import com.google.inject.Inject
-import memoization.LookupChildren
+import memoization.LookupChildrenWithFutures
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.TypeTree
@@ -13,7 +13,7 @@ import scala.concurrent.Future
 
 case class TypeTreeFactoryImpl @Inject()(
                                           creator: CreateSeqNodes,
-                                          lookupChildren: LookupChildren
+                                          lookupChildren: LookupChildrenWithFutures
                                           ) extends TypeTreeFactory with UpdateScopeThrows {
 
   override val nodesToChooseFrom = Set(ObjectFactoryImpl.id)

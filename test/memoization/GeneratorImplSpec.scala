@@ -121,28 +121,28 @@ class GeneratorImplSpec extends TestComposition {
     }
   }
 
-  private def build: (LookupChildren, Generator) = {
+  private def build: (LookupChildrenWithFutures, Generator) = {
     val lookupChildren = buildLookupChildren
     val generator = testInjector(new StubLookupChildren(lookupChildren)).getInstance(classOf[Generator])
     (lookupChildren, generator)
   }
 
-  private def buildWithoutFutures: (LookupChildren, Generator) = {
+  private def buildWithoutFutures: (LookupChildrenWithFutures, Generator) = {
     val lookupChildren = buildLookupChildren
     val generator = testInjector(new StubLookupChildren(lookupChildren)).getInstance(classOf[Generator])
     (lookupChildren, generator)
   }
 
-  private def buildLookupChildren: LookupChildren = {
+  private def buildLookupChildren: LookupChildrenWithFutures = {
     val factoryLookup: FactoryLookup = mock[FactoryLookup]
     when(factoryLookup.factories).thenReturn(Set(new PozInt(0)))
-    val lookupChildren: LookupChildren = mock[LookupChildren]
+    val lookupChildren: LookupChildrenWithFutures = mock[LookupChildrenWithFutures]
     when(lookupChildren.factoryLookup).thenReturn(factoryLookup)
     lookupChildren
   }
 
-  private def verfifyLookupChildrenCalled(scope: IScope, expected: Int = 2, builder: => (LookupChildren, Generator)) = {
-    val (lookupChildren: LookupChildren, generator: Generator) = builder
+  private def verfifyLookupChildrenCalled(scope: IScope, expected: Int = 2, builder: => (LookupChildrenWithFutures, Generator)) = {
+    val (lookupChildren: LookupChildrenWithFutures, generator: Generator) = builder
     generator.generate(scope).map { _ =>
       verify(lookupChildren, times(expected)).fetch(any[IScope], any[PozInt])
     }

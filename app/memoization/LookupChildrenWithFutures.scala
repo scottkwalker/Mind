@@ -6,11 +6,11 @@ import replaceEmpty.ReplaceEmpty
 import utils.PozInt
 import scala.concurrent.Future
 
-trait LookupChildren {
+trait LookupChildrenWithFutures {
 
   val factoryLookup: FactoryLookup
 
-  val repository: RepositoryWithFutures
+  val repository: Memoize2[IScope, PozInt, Future[Boolean]]
 
   def fetch(scope: IScope, childrenToChooseFrom: Set[PozInt]): Future[Set[ReplaceEmpty]]
 

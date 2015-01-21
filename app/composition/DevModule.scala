@@ -1,11 +1,14 @@
 package composition
 
 import _root_.ai.{RandomNumberGenerator, RandomNumberGeneratorImpl}
-import com.google.inject.AbstractModule
+import com.google.inject.{TypeLiteral, AbstractModule}
 import memoization._
 import models.common.{IScope, Scope}
 import models.domain.scala.{FactoryLookup, FactoryLookupImpl, Empty}
 import replaceEmpty._
+import utils.PozInt
+
+import scala.concurrent.Future
 
 final class DevModule() extends AbstractModule {
 
@@ -19,12 +22,12 @@ final class DevModule() extends AbstractModule {
     bind(classOf[CreateSeqNodes]).to(classOf[CreateSeqNodesImpl]).asEagerSingleton()
     bind(classOf[RandomNumberGenerator]).to(classOf[RandomNumberGeneratorImpl]).asEagerSingleton()
     bind(classOf[FactoryLookup]).to(classOf[FactoryLookupImpl]).asEagerSingleton()
-    bind(classOf[LookupChildren]).to(classOf[LookupChildrenWithFuturesImpl]).asEagerSingleton()
+    bind(new TypeLiteral [Memoize2[IScope, PozInt, Future[Boolean]]] () {}).to(classOf[RepositoryReturningFutureBool]).asEagerSingleton()
+    bind(classOf[LookupChildrenWithFutures]).to(classOf[LookupChildrenWithFuturesWithFuturesImpl]).asEagerSingleton()
     bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl]).asEagerSingleton()
     bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl]).asEagerSingleton()
     bind(classOf[IntegerMFactory]).to(classOf[IntegerMFactoryImpl]).asEagerSingleton()
     bind(classOf[ValDclInFunctionParamFactory]).to(classOf[ValDclInFunctionParamFactoryImpl]).asEagerSingleton()
-    bind(classOf[RepositoryWithFutures]).asEagerSingleton()
     bind(classOf[Generator]).to(classOf[GeneratorImpl]).asEagerSingleton()
   }
 }

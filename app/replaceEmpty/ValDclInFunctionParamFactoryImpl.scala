@@ -1,7 +1,7 @@
 package replaceEmpty
 
 import com.google.inject.Inject
-import memoization.LookupChildren
+import memoization.LookupChildrenWithFutures
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.ValDclInFunctionParam
@@ -12,7 +12,7 @@ import scala.concurrent.Future
 
 case class ValDclInFunctionParamFactoryImpl @Inject()(
                                                        creator: CreateNode,
-                                                       lookupChildren: LookupChildren
+                                                       lookupChildren: LookupChildrenWithFutures
                                                        ) extends ValDclInFunctionParamFactory with UpdateScopeIncrementVals {
 
   override val nodesToChooseFrom = Set(IntegerMFactoryImpl.id)

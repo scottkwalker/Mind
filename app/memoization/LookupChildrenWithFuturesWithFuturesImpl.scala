@@ -5,10 +5,14 @@ import models.common.IScope
 import models.domain.scala.FactoryLookup
 import replaceEmpty._
 import utils.PozInt
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final class LookupChildrenWithFuturesImpl @Inject()(override val factoryLookup: FactoryLookup, override val repository: RepositoryWithFutures) extends LookupChildren {
+final class LookupChildrenWithFuturesWithFuturesImpl @Inject()(
+                                                     override val factoryLookup: FactoryLookup,
+                                                     override val repository: Memoize2[IScope, PozInt, Future[Boolean]]
+                                                     ) extends LookupChildrenWithFutures {
 
   override def fetch(scope: IScope, childrenToChooseFrom: Set[PozInt]): Future[Set[ReplaceEmpty]] = {
     fetchFromRepository(scope, childrenToChooseFrom).map(_.map(factoryLookup.convert))
