@@ -36,11 +36,11 @@ final class LegalChildren @Inject()(lookupChildren: LookupChildrenWithFutures) e
     )
   }
 
-  def size = Action { implicit request =>
+  def size = Action {
     Ok(s"repository size: ${lookupChildren.size}")
   }
 
-  def sizeOfCalculated = Action { implicit request =>
+  def sizeOfCalculated = Action {
     Ok(s"size-of-calculated: ${lookupChildren.sizeOfCalculated}")
   }
 }
