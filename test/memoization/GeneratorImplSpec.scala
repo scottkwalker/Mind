@@ -1,150 +1,91 @@
 package memoization
 
-import composition.{StubLookupChildren, TestComposition}
-import models.common.{Scope, IScope}
+import composition.StubFactoryLookup.numberOfFactories
+import composition._
+import models.common.{IScope, Scope}
 import models.domain.scala.FactoryLookup
 import org.mockito.Matchers
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import utils.PozInt
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class GeneratorImplSpec extends TestComposition {
 
-  "generate (with futures)" must {
-    "return true" in {
-      val (_, generator) = build
-      val scope = mock[IScope]
-      whenReady(generator.generate(scope)) {
-        _ must equal(1)
-      }
-    }
-
-    "call lookupChildren.fetch once for each factory (when scope has no values)" in {
-      val scope = mock[IScope]
-      verfifyLookupChildrenCalled(scope = scope, expected = 1, builder = build)
-    }
-
-    "call lookupChildren.fetch once for each scope maxFuncsInObject" in {
-      val scope = mock[IScope]
-      when(scope.maxFuncsInObject).thenReturn(1)
-      val (lookupChildren, generator) = build
-      whenReady(generator.generate(scope)) { r =>
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numFuncs = 0, maxFuncsInObject = 1): IScope), any[PozInt])
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numFuncs = 1, maxFuncsInObject = 1): IScope), any[PozInt])
-      }
-    }
-
-    "call lookupChildren.fetch once for each scope maxParamsInFunc" in {
-      val scope = mock[IScope]
-      when(scope.maxParamsInFunc).thenReturn(1)
-      val (lookupChildren, generator) = build
-      whenReady(generator.generate(scope)) { r =>
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numVals = 0, maxParamsInFunc = 1): IScope), any[PozInt])
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numVals = 1, maxParamsInFunc = 1): IScope), any[PozInt])
-      }
-    }
-
-    "call lookupChildren.fetch once for each scope maxObjectsInTree" in {
-      val scope = mock[IScope]
-      when(scope.maxObjectsInTree).thenReturn(1)
-      val (lookupChildren, generator) = build
-      whenReady(generator.generate(scope)) { r =>
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numObjects = 0, maxObjectsInTree = 1): IScope), any[PozInt])
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numObjects = 1, maxObjectsInTree = 1): IScope), any[PozInt])
-      }
-    }
-
-    "call lookupChildren.fetch once for each scope height" in {
-      val scope = mock[IScope]
-      when(scope.maxHeight).thenReturn(1)
-      val (lookupChildren, generator) = build
-      whenReady(generator.generate(scope)) { r =>
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(height = 0, maxHeight = 1): IScope), any[PozInt])
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(height = 1, maxHeight = 1): IScope), any[PozInt])
-      }
-    }
-  }
-
   "generate (without futures)" must {
-    "return true" in {
-      val (_, generator) = buildWithoutFutures
+    "return expected message" in {
+      val (_, generator, _) = buildWithoutFutures
       val scope = mock[IScope]
-      whenReady(generator.generate(scope)) {
-        _ must equal(1)
+      whenReady(generator.calculateAndUpdate(scope)) {
+        _ must equal(numberOfFactories)
       }
     }
 
-    "call lookupChildren.fetch once for each factory (when scope has no values)" in {
+    "call repository.add once for each factory (when scope has no values)" in {
       val scope = mock[IScope]
-      verfifyLookupChildrenCalled(scope = scope, expected = 1, builder = buildWithoutFutures)
+      verfifyRepositoryAddCalled(scope = scope, expected = 1, builder = buildWithoutFutures)
     }
 
-    "call lookupChildren.fetch once for each scope maxFuncsInObject" in {
+    "call repository.add once for each scope maxFuncsInObject" in {
       val scope = mock[IScope]
       when(scope.maxFuncsInObject).thenReturn(1)
-      val (lookupChildren, generator) = buildWithoutFutures
-      whenReady(generator.generate(scope)) { r =>
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numFuncs = 0, maxFuncsInObject = 1): IScope), any[PozInt])
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numFuncs = 1, maxFuncsInObject = 1): IScope), any[PozInt])
+      when(scope.maxHeight).thenReturn(1)
+      val (_, generator, repository) = buildWithoutFutures
+      whenReady(generator.calculateAndUpdate(scope)) { r =>
+        verify(repository, atLeastOnce).add(Matchers.eq(Scope(numFuncs = 0, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
+        verify(repository, atLeastOnce).add(Matchers.eq(Scope(numFuncs = 1, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
       }
     }
 
-    "call lookupChildren.fetch once for each scope maxParamsInFunc" in {
+    "call repository.add once for each scope maxParamsInFunc" in {
       val scope = mock[IScope]
       when(scope.maxParamsInFunc).thenReturn(1)
-      val (lookupChildren, generator) = buildWithoutFutures
-      whenReady(generator.generate(scope)) { r =>
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numVals = 0, maxParamsInFunc = 1): IScope), any[PozInt])
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numVals = 1, maxParamsInFunc = 1): IScope), any[PozInt])
+      when(scope.maxHeight).thenReturn(1)
+      val (_, generator, repository) = buildWithoutFutures
+      whenReady(generator.calculateAndUpdate(scope)) { r =>
+        verify(repository, atLeastOnce).add(Matchers.eq(Scope(numVals = 0, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
+        verify(repository, atLeastOnce).add(Matchers.eq(Scope(numVals = 1, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
       }
     }
 
-    "call lookupChildren.fetch once for each scope maxObjectsInTree" in {
+    "call repository.add once for each scope maxObjectsInTree" in {
       val scope = mock[IScope]
       when(scope.maxObjectsInTree).thenReturn(1)
-      val (lookupChildren, generator) = buildWithoutFutures
-      whenReady(generator.generate(scope)) { r =>
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numObjects = 0, maxObjectsInTree = 1): IScope), any[PozInt])
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(numObjects = 1, maxObjectsInTree = 1): IScope), any[PozInt])
+      when(scope.maxHeight).thenReturn(1)
+      val (_, generator, repository) = buildWithoutFutures
+      whenReady(generator.calculateAndUpdate(scope)) { r =>
+        verify(repository, atLeastOnce).add(Matchers.eq(Scope(numObjects = 0, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
+        verify(repository, atLeastOnce).add(Matchers.eq(Scope(numObjects = 1, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
       }
     }
 
-    "call lookupChildren.fetch once for each scope height" in {
+    "call repository.add once for each scope height" in {
       val scope = mock[IScope]
       when(scope.maxHeight).thenReturn(1)
-      val (lookupChildren, generator) = buildWithoutFutures
-      whenReady(generator.generate(scope)) { r =>
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(height = 0, maxHeight = 1): IScope), any[PozInt])
-        verify(lookupChildren, times(1)).fetch(Matchers.eq(Scope(height = 1, maxHeight = 1): IScope), any[PozInt])
+      val (_, generator, repository) = buildWithoutFutures
+      whenReady(generator.calculateAndUpdate(scope)) { r =>
+        verify(repository, atLeastOnce).add(Matchers.eq(Scope(height = 1, maxHeight = 1): IScope), any[PozInt])
       }
     }
   }
 
-  private def build: (LookupChildrenWithFutures, Generator) = {
-    val lookupChildren = buildLookupChildren
-    val generator = testInjector(new StubLookupChildren(lookupChildren)).getInstance(classOf[Generator])
-    (lookupChildren, generator)
-  }
-
-  private def buildWithoutFutures: (LookupChildrenWithFutures, Generator) = {
-    val lookupChildren = buildLookupChildren
-    val generator = testInjector(new StubLookupChildren(lookupChildren)).getInstance(classOf[Generator])
-    (lookupChildren, generator)
-  }
-
-  private def buildLookupChildren: LookupChildrenWithFutures = {
+  private def buildWithoutFutures: (LookupChildren, Generator, Memoize2WithSet[IScope, PozInt]) = {
+    val lookupChildren: LookupChildren = mock[LookupChildren]
+    val repository = mock[Memoize2WithSet[IScope, PozInt]]
     val factoryLookup: FactoryLookup = mock[FactoryLookup]
-    when(factoryLookup.factories).thenReturn(Set(new PozInt(0)))
-    val lookupChildren: LookupChildrenWithFutures = mock[LookupChildrenWithFutures]
-    when(lookupChildren.factoryLookup).thenReturn(factoryLookup)
-    lookupChildren
+    val generator = testInjector(
+      new StubFactoryLookup(factoryLookup),
+      new StubLookupChildren(lookupChildren, size = numberOfFactories),
+      new StubRepository(repository)
+    ).getInstance(classOf[Generator])
+    (lookupChildren, generator, repository)
   }
 
-  private def verfifyLookupChildrenCalled(scope: IScope, expected: Int = 2, builder: => (LookupChildrenWithFutures, Generator)) = {
-    val (lookupChildren: LookupChildrenWithFutures, generator: Generator) = builder
-    generator.generate(scope).map { _ =>
-      verify(lookupChildren, times(expected)).fetch(any[IScope], any[PozInt])
+  private def verfifyRepositoryAddCalled(scope: IScope, expected: Int = 2, builder: => (LookupChildren, Generator, Memoize2WithSet[IScope, PozInt])) = {
+    val (_, generator: Generator, repository: Memoize2WithSet[IScope, PozInt]) = builder
+    generator.calculateAndUpdate(scope).map { _ =>
+      verify(repository, times(expected)).add(any[IScope], any[PozInt])
     }
   }
 }

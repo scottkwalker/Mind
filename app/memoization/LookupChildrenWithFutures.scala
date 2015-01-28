@@ -10,9 +10,9 @@ trait LookupChildrenWithFutures {
 
   val factoryLookup: FactoryLookup
 
-  def fetch(scope: IScope, childrenToChooseFrom: Set[PozInt]): Future[Set[ReplaceEmpty]]
+  def getOrInsert(scope: IScope, childrenToChooseFrom: Set[PozInt]): Future[Set[ReplaceEmpty]]
 
-  def fetch(scope: IScope, parent: PozInt): Future[Set[PozInt]]
+  def getOrInsert(scope: IScope, parent: PozInt): Future[Set[PozInt]]
 
   def size: Int
 

@@ -2,7 +2,7 @@ package memoization
 
 import com.google.inject.{Key, AbstractModule}
 import composition.StubFactoryLookup._
-import composition.{StubFactoryLookup, StubRepository, StubFactoryLookup$, TestComposition}
+import composition.{StubFactoryLookup, StubRepositoryWithFuture, StubFactoryLookup$, TestComposition}
 import models.common.{IScope, Scope}
 import models.domain.scala.FactoryLookup
 import org.mockito.Matchers.any
@@ -18,7 +18,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
     "does not call FactoryIdToFactory.convert with ReplaceEmpty as the repository already contains the ids" in {
       val (lookupChildren, scope, factoryIdToFactory) = build
 
-      val result = lookupChildren.fetch(scope = scope, childrenToChooseFrom = Set(fakeFactoryTerminates1Id))
+      val result = lookupChildren.getOrInsert(scope = scope, childrenToChooseFrom = Set(fakeFactoryTerminates1Id))
 
       whenReady(result, browserTimeout) { _ => verify(factoryIdToFactory, never).convert(any[ReplaceEmpty])}
     }
@@ -26,7 +26,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
     "call FactoryIdToFactory.convert(factory) for only the nodes that can terminate" in {
       val (lookupChildren, scope, factoryIdToFactory) = build
 
-      val result = lookupChildren.fetch(scope = scope, childrenToChooseFrom = Set(fakeFactoryTerminates1Id))
+      val result = lookupChildren.getOrInsert(scope = scope, childrenToChooseFrom = Set(fakeFactoryTerminates1Id))
 
       whenReady(result, browserTimeout) { _ => verify(factoryIdToFactory, times(2)).convert(fakeFactoryTerminates1Id)}
     }
@@ -34,7 +34,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
     "return only the factories of nodes that can terminate" in {
       val (lookupChildren, scope, _) = build
 
-      val result = lookupChildren.fetch(scope = scope,
+      val result = lookupChildren.getOrInsert(scope = scope,
         childrenToChooseFrom = Set(fakeFactoryDoesNotTerminateId,
           fakeFactoryTerminates1Id,
           fakeFactoryDoesNotTerminateId,
@@ -51,7 +51,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
     "call FactoryIdToFactory.convert(id) for only the nodes that can terminate" in {
       val (lookupChildren, scope, factoryIdToFactory) = build
 
-      val result = lookupChildren.fetch(scope = scope, parent = fakeFactoryHasChildrenId)
+      val result = lookupChildren.getOrInsert(scope = scope, parent = fakeFactoryHasChildrenId)
 
       whenReady(result, browserTimeout) { _ =>
         verify(factoryIdToFactory, times(1)).convert(fakeFactoryHasChildrenId)
@@ -62,7 +62,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
     "return only the ids of nodes that can terminate" in {
       val (lookupChildren, scope, _) = build
 
-      val result = lookupChildren.fetch(scope = scope, parent = fakeFactoryHasChildrenId)
+      val result = lookupChildren.getOrInsert(scope = scope, parent = fakeFactoryHasChildrenId)
 
       whenReady(result, browserTimeout) {
         _ must equal(Set(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
@@ -84,7 +84,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
 
     "return 2 when repository has 2 items" in {
       val (lookupChildren, scope, _) = build
-      val result = lookupChildren.fetch(scope = scope, parent = fakeFactoryHasChildrenId)
+      val result = lookupChildren.getOrInsert(scope = scope, parent = fakeFactoryHasChildrenId)
       whenReady(result, browserTimeout) { r =>
         lookupChildren.size must equal(2)
       }
@@ -110,7 +110,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
     val scope = Scope(height = 1, maxHeight = 1)
     val factoryIdToFactory = mock[FactoryLookup]
     val repositoryWithFutures = mock[Memoize2[IScope, PozInt, Future[Boolean]]]
-    val injector = testInjector(new StubFactoryLookup(factoryIdToFactory), new StubRepository(repositoryWithFutures)) // Override an implementation returned by IoC with a stubbed version.
+    val injector = testInjector(new StubFactoryLookup(factoryIdToFactory), new StubRepositoryWithFuture(repositoryWithFutures)) // Override an implementation returned by IoC with a stubbed version.
     (injector.getInstance(classOf[LookupChildrenWithFutures]), scope, factoryIdToFactory, injector.getInstance(new Key [Memoize2[IScope, PozInt, Future[Boolean]]](){}))
   }
 }

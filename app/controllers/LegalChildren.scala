@@ -1,17 +1,14 @@
 package controllers
 
 import com.google.inject.Inject
-import memoization.LookupChildrenWithFutures
+import memoization.LookupChildren
 import models.common.LookupChildrenRequest
 import play.api.data.Form
 import play.api.libs.json.Json.toJson
 import play.api.mvc.{Action, Controller}
 import utils.PozInt
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-
-final class LegalChildren @Inject()(lookupChildren: LookupChildrenWithFutures) extends Controller {
+final class LegalChildren @Inject()(lookupChildren: LookupChildren) extends Controller {
 
   private[controllers] val form = Form(
     LookupChildrenRequest.Form.Mapping
@@ -21,17 +18,16 @@ final class LegalChildren @Inject()(lookupChildren: LookupChildrenWithFutures) e
     Ok(views.html.legalChildren(form))
   }
 
-  def calculate = Action.async { implicit request =>
+  def calculate = Action { implicit request =>
     form.bindFromRequest.fold(
       invalidForm => {
-        Future.successful(BadRequest(views.html.legalChildren(invalidForm)))
+        BadRequest(views.html.legalChildren(invalidForm))
       },
       validForm => {
-        lookupChildren.fetch(scope = validForm.scope, parent = PozInt(validForm.currentNode)).map { result =>
-          Ok(toJson(result.map {
-            _.value
-          })).as(JSON)
-        }
+        val scope = validForm.scope
+        val parent = PozInt(validForm.currentNode)
+        val children = lookupChildren.get(scope = scope, parent = parent)
+        Ok(toJson(children.map(_.value))).as(JSON)
       }
     )
   }

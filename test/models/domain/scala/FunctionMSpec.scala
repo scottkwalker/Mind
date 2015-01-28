@@ -15,7 +15,7 @@ final class FunctionMSpec extends TestComposition {
     "false given an empty name" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val node = mock[Instruction]
-      when(node.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException("should not have been called"))
+      when(node.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
       FunctionM(params = params,
         nodes = Seq(node, node),
         name = "").hasNoEmpty(scope) must equal(false)
@@ -32,7 +32,7 @@ final class FunctionMSpec extends TestComposition {
     "false given it cannot terminate in 0 steps" in {
       val scope = Scope(height = 0)
       val node = mock[Instruction]
-      when(node.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException("should not have been called"))
+      when(node.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
 
       FunctionM(params = params,
         nodes = Seq(node, node),

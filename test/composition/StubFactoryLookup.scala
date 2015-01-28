@@ -3,8 +3,8 @@ package composition
 import com.google.inject.AbstractModule
 import composition.StubFactoryLookup._
 import models.domain.scala.FactoryLookup
-import replaceEmpty.ReplaceEmpty
 import org.mockito.Mockito.{mock, when}
+import replaceEmpty.ReplaceEmpty
 import utils.PozInt
 
 final class StubFactoryLookup(factoryLookup: FactoryLookup) extends AbstractModule {
@@ -18,6 +18,7 @@ final class StubFactoryLookup(factoryLookup: FactoryLookup) extends AbstractModu
     // Factory -> Id
     when(factoryLookup.convert(fakeFactoryTerminates1)).thenReturn(fakeFactoryTerminates1Id)
     when(factoryLookup.convert(fakeFactoryTerminates2)).thenReturn(fakeFactoryTerminates2Id)
+    when(factoryLookup.factories).thenReturn(Set(fakeFactoryDoesNotTerminateId, fakeFactoryTerminates1Id, fakeFactoryTerminates2Id, fakeFactoryHasChildrenId))
 
     bind(classOf[FactoryLookup]).toInstance(factoryLookup)
   }
@@ -25,6 +26,7 @@ final class StubFactoryLookup(factoryLookup: FactoryLookup) extends AbstractModu
 
 object StubFactoryLookup {
 
+  val numberOfFactories = 4
   val fakeFactoryDoesNotTerminateId = PozInt(0)
   val fakeFactoryTerminates1Id = PozInt(1)
   val fakeFactoryTerminates2Id = PozInt(2)

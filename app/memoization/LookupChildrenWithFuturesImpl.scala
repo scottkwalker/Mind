@@ -9,16 +9,16 @@ import utils.PozInt
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final class LookupChildrenWithFuturesWithFuturesImpl @Inject()(
+final class LookupChildrenWithFuturesImpl @Inject()(
                                                      override val factoryLookup: FactoryLookup,
                                                      repository: Memoize2[IScope, PozInt, Future[Boolean]]
                                                      ) extends LookupChildrenWithFutures {
 
-  override def fetch(scope: IScope, childrenToChooseFrom: Set[PozInt]): Future[Set[ReplaceEmpty]] = {
+  override def getOrInsert(scope: IScope, childrenToChooseFrom: Set[PozInt]): Future[Set[ReplaceEmpty]] = {
     fetchFromRepository(scope, childrenToChooseFrom).map(_.map(factoryLookup.convert))
   }
 
-  override def fetch(scope: IScope, parent: PozInt): Future[Set[PozInt]] = {
+  override def getOrInsert(scope: IScope, parent: PozInt): Future[Set[PozInt]] = {
     val factory = factoryLookup.convert(parent)
     val nodesToChooseFrom = factory.nodesToChooseFrom
     fetchFromRepository(scope, nodesToChooseFrom)

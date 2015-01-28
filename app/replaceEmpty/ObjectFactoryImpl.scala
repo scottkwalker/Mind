@@ -26,7 +26,7 @@ case class ObjectFactoryImpl @Inject()(
 
   override def createNodes(scope: IScope, acc: Seq[Instruction] = Seq.empty): Future[AccumulateInstructions] = {
     creator.create(
-      possibleChildren = lookupChildren.fetch(scope, nodesToChooseFrom),
+      possibleChildren = lookupChildren.getOrInsert(scope, nodesToChooseFrom),
       scope = scope,
       acc = acc,
       factoryLimit = scope.maxFuncsInObject

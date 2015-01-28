@@ -19,7 +19,7 @@ case class ValDclInFunctionParamFactoryImpl @Inject()(
 
   override def create(scope: IScope): Future[Instruction] = async {
     val name = "v" + scope.numVals
-    val ln = lookupChildren.fetch(scope, nodesToChooseFrom)
+    val ln = lookupChildren.getOrInsert(scope, nodesToChooseFrom)
     val (_, primitiveType) = await(creator.create(ln, scope))
 
     ValDclInFunctionParam(name = name,

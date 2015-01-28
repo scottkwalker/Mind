@@ -25,7 +25,7 @@ final class Populate @Inject()(generator: Generator) extends Controller {
         Future.successful(BadRequest(views.html.populate(invalidForm)))
       },
       validForm => {
-        generator.generate(maxScope = validForm.maxScope).map { result =>
+        generator.calculateAndUpdate(maxScope = validForm.maxScope).map { result =>
           Ok(s"generator returned $result")
         }
       }

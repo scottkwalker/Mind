@@ -18,7 +18,7 @@ case class AddOperatorFactoryImpl @Inject()(
   override val nodesToChooseFrom = Set(ValueRefFactoryImpl.id)
 
   override def create(scope: IScope): Future[Instruction] = async {
-    val possibleNodes = lookupChildren.fetch(scope, nodesToChooseFrom)
+    val possibleNodes = lookupChildren.getOrInsert(scope, nodesToChooseFrom)
     val (updatedScope, left) = await(creator.create(possibleNodes, scope))
     val (_, right) = await(creator.create(possibleNodes, updatedScope))
     AddOperator(left = left,
