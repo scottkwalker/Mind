@@ -48,7 +48,7 @@ final class ValueRefSpec extends TestComposition {
 
       whenReady(result) {
         _ must equal(valueRef)
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 

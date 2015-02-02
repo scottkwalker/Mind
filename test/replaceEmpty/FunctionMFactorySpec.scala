@@ -15,9 +15,9 @@ final class FunctionMFactorySpec extends TestComposition {
 
       val result = factory.create(scope = scope)
 
-      whenReady(result, browserTimeout) { result =>
+      whenReady(result) { result =>
         result mustBe a[FunctionM]
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "return expected given scope with 0 functions" in {
@@ -25,10 +25,10 @@ final class FunctionMFactorySpec extends TestComposition {
 
       val result = factory.create(scope = scope)
 
-      whenReady(result, browserTimeout) {
+      whenReady(result) {
         case FunctionM(_, _, name) => name must equal("f0")
         case _ => fail("wrong type")
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "return expected given scope with 1 functions" in {
@@ -36,10 +36,10 @@ final class FunctionMFactorySpec extends TestComposition {
 
       val result = factory.create(scope = scope)
 
-      whenReady(result, browserTimeout) {
+      whenReady(result) {
         case FunctionM(_, _, name) => name must equal("f1")
         case _ => fail("wrong type")
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "returns 3 children given scope with 3 maxExpressionsInFunc (and rng mocked)" in {
@@ -47,10 +47,10 @@ final class FunctionMFactorySpec extends TestComposition {
 
       val result = factory.create(scope = scope)
 
-      whenReady(result, browserTimeout) {
+      whenReady(result) {
         case FunctionM(_, children, _) => children.length must equal(3)
         case _ => fail("wrong type")
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 

@@ -22,10 +22,10 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
       val a = sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
       val b = sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
 
-      whenReady(Future.sequence(Seq(a, b)), browserTimeout) { r =>
+      whenReady(Future.sequence(Seq(a, b))) { r =>
         r(0) must equal(false)
         r(1) must equal(true)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "only runs the function once for the same input" in {
@@ -35,14 +35,14 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
       val c = sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
       val d = sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
 
-      whenReady(Future.sequence(Seq(a, b, c, d)), browserTimeout) { r =>
+      whenReady(Future.sequence(Seq(a, b, c, d))) { r =>
         r(0) must equal(true)
         r(1) must equal(true)
         r(2) must equal(false)
         r(3) must equal(false)
         verify(factoryIdToFactory, times(1)).convert(AddOperatorFactoryImpl.id)
         verify(factoryIdToFactory, times(1)).convert(ValueRefFactoryImpl.id)
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 
@@ -121,7 +121,7 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
 
     "write expected json for one computed value" in {
       val (sut, _) = createSut()
-      whenReady(sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id), browserTimeout) { r =>
+      whenReady(sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)) { r =>
         r must equal(true) // Check the calculated value is correct before continuing to test it is written correctly.
         sut.write must equal(
           JsObject(
@@ -135,7 +135,7 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
             )
           )
         )
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "write expected json for many computed values" in {
@@ -143,7 +143,7 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
       val a = sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
       val b = sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
 
-      whenReady(Future.sequence(Seq(a, b)), browserTimeout) { r =>
+      whenReady(Future.sequence(Seq(a, b))) { r =>
         sut.write must equal(
           JsObject(
             Seq(
@@ -158,7 +158,7 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
             )
           )
         )
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 
@@ -181,10 +181,10 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
       val a = asObj.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
       val b = asObj.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
 
-      whenReady(Future.sequence(Seq(a, b)), browserTimeout) { r =>
+      whenReady(Future.sequence(Seq(a, b))) { r =>
         r(0) must equal(false)
         r(1) must equal(true)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "throw RuntimeException when versioning string doesn't match what we intend to use" in {

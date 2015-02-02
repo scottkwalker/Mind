@@ -28,9 +28,9 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
 
       go to page
 
-      eventually(timeout = browserTimeout) {
+      eventually {
         pageTitle mustBe page.title
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication {
@@ -43,9 +43,9 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
 
       go to page
 
-      eventually(timeout = browserTimeout) {
+      eventually {
         pageTitle mustBe page.titleCy
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 
@@ -69,9 +69,9 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
 
       submit()
 
-      eventually(timeout = browserTimeout) {
+      eventually {
         pageSource must equal(expected)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
 //    "return expected json when valid data is submitted" taggedAs UiTag in new WithApplication {
@@ -93,9 +93,9 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
 //
 //      submit()
 //
-//      eventually(timeout = browserTimeout) {
+//      eventually {
 //        pageSource must equal(expected)
-//      }
+//      }(config = whenReadyPatienceConfig)
 //    }
 
     "display validation error messages when invalid data is submitted " taggedAs UiTag in new WithApplication {
@@ -106,9 +106,9 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
 
       submit()
 
-      eventually(timeout = browserTimeout) {
+      eventually {
         pageSource must include(page.validationSummary)
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 }

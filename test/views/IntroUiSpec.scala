@@ -13,9 +13,9 @@ final class IntroUiSpec extends TestComposition with OneServerPerSuite with OneB
 
       go to page
 
-      eventually(timeout = browserTimeout) {
+      eventually {
         pageTitle mustBe page.title
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 
@@ -29,8 +29,8 @@ final class IntroUiSpec extends TestComposition with OneServerPerSuite with OneB
 
     go to page
 
-    eventually(timeout = browserTimeout) {
+    eventually {
       pageTitle mustBe page.titleCy
-    }
+    }(config = whenReadyPatienceConfig)
   }
 }

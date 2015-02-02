@@ -15,7 +15,7 @@ final class AddOperatorFactorySpec extends TestComposition {
 
       whenReady(instruction) { result =>
         result mustBe a[AddOperator]
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 }

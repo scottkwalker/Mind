@@ -17,9 +17,9 @@ final class CreateNodeImplSpec extends TestComposition {
 
       val sut = CreateNodeImpl(ai)
 
-      whenReady(sut.create(possibleChildren, scope), browserTimeout) { _ =>
+      whenReady(sut.create(possibleChildren, scope)) { _ =>
         verify(ai, times(1)).chooseChild(possibleChildren)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "calls updateScope" in {
@@ -29,7 +29,7 @@ final class CreateNodeImplSpec extends TestComposition {
 
       whenReady(sut.create(possibleChildren, scope)) { _ =>
         verify(replaceEmpty, times(1)).updateScope(scope)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "calls create on factory" in {
@@ -39,7 +39,7 @@ final class CreateNodeImplSpec extends TestComposition {
 
       whenReady(sut.create(possibleChildren, scope)) { _ =>
         verify(replaceEmpty, times(1)).create(scope)
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 

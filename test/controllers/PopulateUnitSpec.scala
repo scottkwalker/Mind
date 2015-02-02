@@ -13,9 +13,9 @@ final class PopulateUnitSpec extends TestComposition {
 
   "present" must {
     "return 200" in new WithApplication {
-      whenReady(present, browserTimeout) { r =>
+      whenReady(present) { r =>
         r.header.status must equal(OK)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "contain a form that POSTs to the expected action" in new WithApplication {
@@ -27,17 +27,17 @@ final class PopulateUnitSpec extends TestComposition {
     "return bad request when submission is empty" in new WithApplication {
       val emptyRequest = FakeRequest().withFormUrlEncodedBody()
       val result = populate.calculate(emptyRequest)
-      whenReady(result, browserTimeout) { r =>
+      whenReady(result) { r =>
         r.header.status must equal(BAD_REQUEST)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "return ok when submission is valid" in new WithApplication {
       val validRequest = requestWithDefaults()
       val result = populate.calculate(validRequest)
-      whenReady(result, browserTimeout) { r =>
+      whenReady(result) { r =>
         r.header.status must equal(OK)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "call lookupChildren.fetch when submission is valid" in new WithApplication {
@@ -47,9 +47,9 @@ final class PopulateUnitSpec extends TestComposition {
       val sut = injector.getInstance(classOf[Populate])
 
       val result = sut.calculate(validRequest)
-      whenReady(result, browserTimeout) { r =>
+      whenReady(result) { r =>
         verify(generator, times(1)).calculateAndUpdate(any[IScope])
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 

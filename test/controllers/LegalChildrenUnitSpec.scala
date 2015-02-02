@@ -17,9 +17,9 @@ final class LegalChildrenUnitSpec extends TestComposition {
 
   "present" must {
     "return 200" in new WithApplication {
-      whenReady(present, browserTimeout) { r =>
+      whenReady(present) { r =>
         r.header.status must equal(OK)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "contain a form that POSTs to the expected action" in new WithApplication {
@@ -32,40 +32,40 @@ final class LegalChildrenUnitSpec extends TestComposition {
       val emptyRequest = FakeRequest().withFormUrlEncodedBody()
       val (legalChildren, _) = build(size = 0)
       val result = legalChildren.calculate(emptyRequest)
-      whenReady(result, browserTimeout) { r =>
+      whenReady(result) { r =>
         r.header.status must equal(BAD_REQUEST)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "return ok when submission is valid" in new WithApplication {
       val validRequest = requestWithDefaults()
       val (legalChildren, _) = build(size = 0)
       val result = legalChildren.calculate(validRequest)
-      whenReady(result, browserTimeout) { r =>
+      whenReady(result) { r =>
         r.header.status must equal(OK)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "return seq of ids when submission is valid and legal moves are found" in new WithApplication {
       val validRequest = requestWithDefaults()
       val (legalChildren, _) = build(size = 0)
       val result = legalChildren.calculate(validRequest)
-      whenReady(result, browserTimeout) { r =>
+      whenReady(result) { r =>
         r.body.map { b =>
           Json.parse(b) must equal(Seq(TypeTreeFactoryImpl.id))
         }
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "return empty seq when submission is valid but no matches are in scope" in new WithApplication {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
       val (legalChildren, _) = build(size = 0)
       val result = legalChildren.calculate(validRequest)
-      whenReady(result, browserTimeout) { r =>
+      whenReady(result) { r =>
         r.body.map { b =>
           Json.parse(b) must equal(Seq.empty)
         }
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "call lookupChildren.calculate when submission is valid" in new WithApplication {
@@ -75,9 +75,9 @@ final class LegalChildrenUnitSpec extends TestComposition {
       val sut = injector.getInstance(classOf[LegalChildren])
 
       val result = sut.calculate(validRequest)
-      whenReady(result, browserTimeout) { r =>
+      whenReady(result) { r =>
         verify(lookupChildren, times(1)).get(any[IScope], any[PozInt])
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 

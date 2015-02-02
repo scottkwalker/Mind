@@ -64,9 +64,9 @@ final class PopulateUiSpec extends TestComposition with OneServerPerSuite with O
 
       submit()
 
-      eventually(timeout = browserTimeout) {
+      eventually {
         pageSource must equal(expected)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
 //    "display validation error messages when invalid data is submitted " taggedAs UiTag in new WithApplication {

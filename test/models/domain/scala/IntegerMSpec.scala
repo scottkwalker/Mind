@@ -28,7 +28,7 @@ final class IntegerMSpec extends TestComposition {
 
       whenReady(result) {
         _ must equal(integerM)
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 

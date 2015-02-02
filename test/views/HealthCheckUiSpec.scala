@@ -13,9 +13,9 @@ final class HealthCheckUiSpec extends TestComposition with OneServerPerSuite wit
 
       go to page
 
-      eventually(timeout = browserTimeout) {
+      eventually {
         pageTitle mustBe page.title
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication {
@@ -28,9 +28,9 @@ final class HealthCheckUiSpec extends TestComposition with OneServerPerSuite wit
 
       go to page
 
-      eventually(timeout = browserTimeout) {
+      eventually {
         pageTitle mustBe page.titleCy
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 }

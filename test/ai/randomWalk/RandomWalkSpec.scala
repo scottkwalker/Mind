@@ -46,7 +46,7 @@ final class RandomWalkSpec extends TestComposition {
             case typeTree: TypeTree =>
               val f = new AddTwoInts(typeTree)
               f.fitness
-          }
+          }(config = whenReadyPatienceConfig)
         }
       }
       catch {

@@ -23,7 +23,7 @@ final class IntegerMFactorySpec extends TestComposition {
       // Assert
       whenReady(instruction) { result =>
         result mustBe a[IntegerM]
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 

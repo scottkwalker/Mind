@@ -20,7 +20,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
 
       val result = lookupChildren.getOrInsert(scope = scope, childrenToChooseFrom = Set(fakeFactoryTerminates1Id))
 
-      whenReady(result, browserTimeout) { _ => verify(factoryIdToFactory, never).convert(any[ReplaceEmpty])}
+      whenReady(result) { _ => verify(factoryIdToFactory, never).convert(any[ReplaceEmpty])}(config = whenReadyPatienceConfig)
     }
 
     "call FactoryIdToFactory.convert(factory) for only the nodes that can terminate" in {
@@ -28,7 +28,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
 
       val result = lookupChildren.getOrInsert(scope = scope, childrenToChooseFrom = Set(fakeFactoryTerminates1Id))
 
-      whenReady(result, browserTimeout) { _ => verify(factoryIdToFactory, times(2)).convert(fakeFactoryTerminates1Id)}
+      whenReady(result) { _ => verify(factoryIdToFactory, times(2)).convert(fakeFactoryTerminates1Id)}(config = whenReadyPatienceConfig)
     }
 
     "return only the factories of nodes that can terminate" in {
@@ -41,9 +41,9 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
           fakeFactoryTerminates2Id)
       )
 
-      whenReady(result, browserTimeout) {
+      whenReady(result) {
         _ must equal(Set(fakeFactoryTerminates1, fakeFactoryTerminates2))
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 
@@ -53,10 +53,10 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
 
       val result = lookupChildren.getOrInsert(scope = scope, parent = fakeFactoryHasChildrenId)
 
-      whenReady(result, browserTimeout) { _ =>
+      whenReady(result) { _ =>
         verify(factoryIdToFactory, times(1)).convert(fakeFactoryHasChildrenId)
         verify(factoryIdToFactory, times(1)).convert(fakeFactoryTerminates1Id)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "return only the ids of nodes that can terminate" in {
@@ -64,9 +64,9 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
 
       val result = lookupChildren.getOrInsert(scope = scope, parent = fakeFactoryHasChildrenId)
 
-      whenReady(result, browserTimeout) {
+      whenReady(result) {
         _ must equal(Set(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 
@@ -85,7 +85,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
     "return 2 when repository has 2 items" in {
       val (lookupChildren, scope, _) = build
       val result = lookupChildren.getOrInsert(scope = scope, parent = fakeFactoryHasChildrenId)
-      whenReady(result, browserTimeout) { r =>
+      whenReady(result) { r =>
         lookupChildren.size must equal(2)
       }
     }

@@ -27,11 +27,11 @@ final class Memoize2ImplSpec extends TestComposition {
 
       val result = Future.sequence(Seq(a, b, c))
 
-      whenReady(result, browserTimeout) { r =>
+      whenReady(result) { r =>
         r(0) must equal(2)
         r(1) must equal(3)
         r(2) must equal(4)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "only runs the function once for the same input (adder)" in {
@@ -59,7 +59,7 @@ final class Memoize2ImplSpec extends TestComposition {
 
       val result = Future.sequence(Seq(a1, a2, b1, b2, c1, c2, d1, d2))
 
-      whenReady(result, browserTimeout) { r =>
+      whenReady(result) { r =>
         r(0) must equal(2)
         r(1) must equal(2)
         r(2) must equal(3)
@@ -73,7 +73,7 @@ final class Memoize2ImplSpec extends TestComposition {
         verify(adder, times(1))(1, 2)
         verify(adder, times(1))(1, 3)
         verify(adder, times(1))(2, 2)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "only executes the memoized computation once per input" in {
@@ -93,9 +93,9 @@ final class Memoize2ImplSpec extends TestComposition {
         override def size = ???
       }
 
-      whenReady(memoizer(5, 1), browserTimeout) { r =>
+      whenReady(memoizer(5, 1)) { r =>
         verify(adder, times(1))(5, 1)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "handles exceptions during computations" in {
@@ -134,7 +134,7 @@ final class Memoize2ImplSpec extends TestComposition {
 
       val result = Future.sequence(Seq(a, b, c))
 
-      whenReady(result, browserTimeout) { r =>
+      whenReady(result) { r =>
         r(0) must equal(2)
         r(1) must equal(3)
         r(2) must equal(4)
@@ -155,7 +155,7 @@ final class Memoize2ImplSpec extends TestComposition {
             )
           )
         )
-      }
+      }(config = whenReadyPatienceConfig)
     }
   }
 
@@ -182,11 +182,11 @@ final class Memoize2ImplSpec extends TestComposition {
       val c = asObj(2, 2)
       val result = Future.sequence(Seq(a, b, c))
 
-      whenReady(result, browserTimeout) { r =>
+      whenReady(result) { r =>
         r(0) must equal(2)
         r(1) must equal(3)
         r(2) must equal(4)
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "throw when invalid json" in {

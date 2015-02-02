@@ -17,19 +17,19 @@ final class TypeTreeFactorySpec extends TestComposition {
 
       val result = typeTreeFactory.create(scope)
 
-      whenReady(result, browserTimeout) { result =>
+      whenReady(result) { result =>
         result mustBe a[TypeTree]
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "returns 3 children given scope with 3 maxFuncsInObject (and rng mocked)" in {
       val (typeTreeFactory, scope) = build(nextInt = 3)
       val result = typeTreeFactory.create(scope = scope)
 
-      whenReady(result, browserTimeout) {
+      whenReady(result) {
         case TypeTree(child) => child.length must equal(3)
         case _ => fail("wrong type")
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "returns 4 children given 1 premade and scope with 3 maxFuncsInObject (and rng mocked)" in {
@@ -43,12 +43,12 @@ final class TypeTreeFactorySpec extends TestComposition {
 
       val result = typeTreeFactory.create(scope = scope, premadeChildren = premadeChildren)
 
-      whenReady(result, browserTimeout) {
+      whenReady(result) {
         case TypeTree(child) =>
           child.length must equal(4) // 3 generated and 1 premade
           child.last must equal(premadeNode) // The premade are concatenated to the end of the seq
         case _ => fail("wrong type")
-      }
+      }(config = whenReadyPatienceConfig)
     }
 
     "throw if you ask updateScope" in {
