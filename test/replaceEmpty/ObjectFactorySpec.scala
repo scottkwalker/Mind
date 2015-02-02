@@ -17,7 +17,7 @@ final class ObjectFactorySpec extends TestComposition {
 
       whenReady(result) { result =>
         result mustBe an[Object]
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "returns expected given scope with 0 existing objects" in {
@@ -28,7 +28,7 @@ final class ObjectFactorySpec extends TestComposition {
       whenReady(result) {
         case Object(_, name) => name must equal("o0")
         case _ => fail("wrong type")
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "returns expected given scope with 1 existing objects" in {
@@ -39,7 +39,7 @@ final class ObjectFactorySpec extends TestComposition {
       whenReady(result) {
         case Object(_, name) => name must equal("o1")
         case _ => fail("wrong type")
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "returns 3 children given scope with 3 maxExpressionsInFunc (and rng mocked)" in {
@@ -50,7 +50,7 @@ final class ObjectFactorySpec extends TestComposition {
       whenReady(result) {
         case Object(child, _) => child.length must equal(3)
         case _ => fail("wrong type")
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 

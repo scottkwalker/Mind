@@ -25,7 +25,7 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
       whenReady(Future.sequence(Seq(a, b))) { r =>
         r(0) must equal(false)
         r(1) must equal(true)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "only runs the function once for the same input" in {
@@ -42,7 +42,7 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
         r(3) must equal(false)
         verify(factoryIdToFactory, times(1)).convert(AddOperatorFactoryImpl.id)
         verify(factoryIdToFactory, times(1)).convert(ValueRefFactoryImpl.id)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 
@@ -135,7 +135,7 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
             )
           )
         )
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "write expected json for many computed values" in {
@@ -158,7 +158,7 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
             )
           )
         )
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 
@@ -184,7 +184,7 @@ final class RepositoryReturningFutureBoolSpec extends TestComposition {
       whenReady(Future.sequence(Seq(a, b))) { r =>
         r(0) must equal(false)
         r(1) must equal(true)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "throw RuntimeException when versioning string doesn't match what we intend to use" in {

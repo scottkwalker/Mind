@@ -62,7 +62,7 @@ final class TypeTreeSpec extends TestComposition {
       val instance = TypeTree(Seq(instruction))
 
       val result = instance.replaceEmpty(scope)(injector)
-      whenReady(result) { _ => verify(instruction, times(1)).replaceEmpty(any[Scope])(any[Injector])}(config = whenReadyPatienceConfig)
+      whenReady(result) { _ => verify(instruction, times(1)).replaceEmpty(any[Scope])(any[Injector])}(config = patienceConfig)
     }
 
     "return same when no empty nodes" in {
@@ -76,7 +76,7 @@ final class TypeTreeSpec extends TestComposition {
 
       whenReady(result) {
         _ must equal(instance)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "return without empty nodes given there were empty nodes" in {
@@ -99,7 +99,7 @@ final class TypeTreeSpec extends TestComposition {
             case _ => fail("not a seq")
           }
         case _ => fail("wrong type")
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "throw when passed empty seq (no empty or non-empty)" in {

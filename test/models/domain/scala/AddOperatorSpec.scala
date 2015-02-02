@@ -87,7 +87,7 @@ final class AddOperatorSpec extends TestComposition {
 
       val result = instance.replaceEmpty(scope)(i)
 
-      whenReady(result) { _ => verify(nonEmpty, times(2)).replaceEmpty(any[Scope])(any[Injector])}(config = whenReadyPatienceConfig)
+      whenReady(result) { _ => verify(nonEmpty, times(2)).replaceEmpty(any[Scope])(any[Injector])}(config = patienceConfig)
     }
 
     "returns same when no empty nodes" in {
@@ -101,7 +101,7 @@ final class AddOperatorSpec extends TestComposition {
 
       whenReady(result) {
         _ must equal(instance)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -117,7 +117,7 @@ final class AddOperatorSpec extends TestComposition {
         case AddOperator(left, right) =>
           left mustBe a[ValueRef]
           right mustBe a[ValueRef]
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 

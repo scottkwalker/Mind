@@ -1,13 +1,14 @@
 package views
 
 import composition.TestComposition
+import org.scalatest.concurrent.IntegrationPatience
 import org.scalatestplus.play._
 import play.api.Play
 import play.api.libs.json.{JsArray, JsNumber}
 import play.api.test.WithApplication
 import replaceEmpty.AddOperatorFactoryImpl
 
-final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
+final class LegalChildrenUiSpec extends TestComposition with IntegrationPatience with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
 
   // To enable testing on all browsers https://www.playframework.com/documentation/2.2.x/ScalaFunctionalTestingWithScalaTest
   //with OneServerPerSuite with AllBrowsersPerSuite {
@@ -30,7 +31,7 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
 
       eventually {
         pageTitle mustBe page.title
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication {
@@ -45,7 +46,7 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
 
       eventually {
         pageTitle mustBe page.titleCy
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 
@@ -71,7 +72,7 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
 
       eventually {
         pageSource must equal(expected)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
 //    "return expected json when valid data is submitted" taggedAs UiTag in new WithApplication {
@@ -108,7 +109,7 @@ final class LegalChildrenUiSpec extends TestComposition with OneServerPerSuite w
 
       eventually {
         pageSource must include(page.validationSummary)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 }

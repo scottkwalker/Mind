@@ -73,7 +73,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
 
       val result = valDclInFunctionParam.replaceEmpty(scope)(injector)
 
-      whenReady(result) { _ => verify(instruction, times(1)).replaceEmpty(any[Scope])(any[Injector])}(config = whenReadyPatienceConfig)
+      whenReady(result) { _ => verify(instruction, times(1)).replaceEmpty(any[Scope])(any[Injector])}(config = patienceConfig)
     }
 
     "returns same when no empty nodes" in {
@@ -90,7 +90,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
 
       whenReady(result) {
         _ must equal(valDclInFunctionParam)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -107,7 +107,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
           name2 must equal("a")
           primitiveType mustBe an[IntegerM]
         case _ => fail("wrong type")
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 

@@ -43,7 +43,7 @@ final class LegalGamerSpec extends TestComposition {
           case typeTree: TypeTree =>
             val f = new AddTwoInts(typeTree)
             f.fitness
-        }(config = whenReadyPatienceConfig)
+        }(config = patienceConfig)
       }
       catch {
         case e: Throwable => fail("must not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)

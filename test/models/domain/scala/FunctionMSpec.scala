@@ -105,7 +105,7 @@ final class FunctionMSpec extends TestComposition {
       whenReady(result) { _ =>
         verify(param, times(1)).replaceEmpty(any[Scope])(any[Injector])
         verify(node, times(1)).replaceEmpty(any[Scope])(any[Injector])
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "returns same when no empty nodes" in {
@@ -123,7 +123,7 @@ final class FunctionMSpec extends TestComposition {
 
       whenReady(result) {
         _ must equal(instance)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -150,7 +150,7 @@ final class FunctionMSpec extends TestComposition {
             case Seq(nSeq) => nSeq mustBe a[AddOperator]
           }
           n must equal(name)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "throw when passed empty params seq (no empty or non-empty)" in {

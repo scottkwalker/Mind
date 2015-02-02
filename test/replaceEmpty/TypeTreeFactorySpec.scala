@@ -19,7 +19,7 @@ final class TypeTreeFactorySpec extends TestComposition {
 
       whenReady(result) { result =>
         result mustBe a[TypeTree]
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "returns 3 children given scope with 3 maxFuncsInObject (and rng mocked)" in {
@@ -29,7 +29,7 @@ final class TypeTreeFactorySpec extends TestComposition {
       whenReady(result) {
         case TypeTree(child) => child.length must equal(3)
         case _ => fail("wrong type")
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "returns 4 children given 1 premade and scope with 3 maxFuncsInObject (and rng mocked)" in {
@@ -48,7 +48,7 @@ final class TypeTreeFactorySpec extends TestComposition {
           child.length must equal(4) // 3 generated and 1 premade
           child.last must equal(premadeNode) // The premade are concatenated to the end of the seq
         case _ => fail("wrong type")
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "throw if you ask updateScope" in {

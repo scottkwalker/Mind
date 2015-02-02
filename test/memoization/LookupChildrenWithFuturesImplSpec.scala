@@ -20,7 +20,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
 
       val result = lookupChildren.getOrInsert(scope = scope, childrenToChooseFrom = Set(fakeFactoryTerminates1Id))
 
-      whenReady(result) { _ => verify(factoryIdToFactory, never).convert(any[ReplaceEmpty])}(config = whenReadyPatienceConfig)
+      whenReady(result) { _ => verify(factoryIdToFactory, never).convert(any[ReplaceEmpty])}(config = patienceConfig)
     }
 
     "call FactoryIdToFactory.convert(factory) for only the nodes that can terminate" in {
@@ -28,7 +28,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
 
       val result = lookupChildren.getOrInsert(scope = scope, childrenToChooseFrom = Set(fakeFactoryTerminates1Id))
 
-      whenReady(result) { _ => verify(factoryIdToFactory, times(2)).convert(fakeFactoryTerminates1Id)}(config = whenReadyPatienceConfig)
+      whenReady(result) { _ => verify(factoryIdToFactory, times(2)).convert(fakeFactoryTerminates1Id)}(config = patienceConfig)
     }
 
     "return only the factories of nodes that can terminate" in {
@@ -43,7 +43,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
 
       whenReady(result) {
         _ must equal(Set(fakeFactoryTerminates1, fakeFactoryTerminates2))
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 
@@ -56,7 +56,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
       whenReady(result) { _ =>
         verify(factoryIdToFactory, times(1)).convert(fakeFactoryHasChildrenId)
         verify(factoryIdToFactory, times(1)).convert(fakeFactoryTerminates1Id)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "return only the ids of nodes that can terminate" in {
@@ -66,7 +66,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
 
       whenReady(result) {
         _ must equal(Set(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 

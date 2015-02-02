@@ -19,7 +19,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
     "return 200" in new WithApplication {
       whenReady(present) { r =>
         r.header.status must equal(OK)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "contain a form that POSTs to the expected action" in new WithApplication {
@@ -34,7 +34,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
       val result = legalChildren.calculate(emptyRequest)
       whenReady(result) { r =>
         r.header.status must equal(BAD_REQUEST)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "return ok when submission is valid" in new WithApplication {
@@ -43,7 +43,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
       val result = legalChildren.calculate(validRequest)
       whenReady(result) { r =>
         r.header.status must equal(OK)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "return seq of ids when submission is valid and legal moves are found" in new WithApplication {
@@ -54,7 +54,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
         r.body.map { b =>
           Json.parse(b) must equal(Seq(TypeTreeFactoryImpl.id))
         }
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "return empty seq when submission is valid but no matches are in scope" in new WithApplication {
@@ -65,7 +65,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
         r.body.map { b =>
           Json.parse(b) must equal(Seq.empty)
         }
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "call lookupChildren.calculate when submission is valid" in new WithApplication {
@@ -77,7 +77,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
       val result = sut.calculate(validRequest)
       whenReady(result) { r =>
         verify(lookupChildren, times(1)).get(any[IScope], any[PozInt])
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 

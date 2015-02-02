@@ -1,11 +1,12 @@
 package views
 
 import composition.TestComposition
+import org.scalatest.concurrent.IntegrationPatience
 import org.scalatestplus.play._
 import play.api.Play
 import play.api.test.WithApplication
 
-final class IntroUiSpec extends TestComposition with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
+final class IntroUiSpec extends TestComposition with IntegrationPatience with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
 
   "go to page" must {
     "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication {
@@ -15,7 +16,7 @@ final class IntroUiSpec extends TestComposition with OneServerPerSuite with OneB
 
       eventually {
         pageTitle mustBe page.title
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 
@@ -31,6 +32,6 @@ final class IntroUiSpec extends TestComposition with OneServerPerSuite with OneB
 
     eventually {
       pageTitle mustBe page.titleCy
-    }(config = whenReadyPatienceConfig)
+    }(config = patienceConfig)
   }
 }

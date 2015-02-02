@@ -19,7 +19,7 @@ class GeneratorImplSpec extends TestComposition {
       val scope = mock[IScope]
       whenReady(generator.calculateAndUpdate(scope)) {
         _ must equal(numberOfFactories)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "call repository.add once for each factory (when scope has no values)" in {
@@ -35,7 +35,7 @@ class GeneratorImplSpec extends TestComposition {
       whenReady(generator.calculateAndUpdate(scope)) { r =>
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(numFuncs = 0, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(numFuncs = 1, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "call repository.add once for each scope maxParamsInFunc" in {
@@ -46,7 +46,7 @@ class GeneratorImplSpec extends TestComposition {
       whenReady(generator.calculateAndUpdate(scope)) { r =>
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(numVals = 0, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(numVals = 1, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "call repository.add once for each scope maxObjectsInTree" in {
@@ -57,7 +57,7 @@ class GeneratorImplSpec extends TestComposition {
       whenReady(generator.calculateAndUpdate(scope)) { r =>
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(numObjects = 0, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(numObjects = 1, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "call repository.add once for each scope height" in {
@@ -66,7 +66,7 @@ class GeneratorImplSpec extends TestComposition {
       val (_, generator, repository) = buildWithoutFutures
       whenReady(generator.calculateAndUpdate(scope)) { r =>
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(height = 1, maxHeight = 1): IScope), any[PozInt])
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 

@@ -17,7 +17,7 @@ final class FunctionMFactorySpec extends TestComposition {
 
       whenReady(result) { result =>
         result mustBe a[FunctionM]
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "return expected given scope with 0 functions" in {
@@ -28,7 +28,7 @@ final class FunctionMFactorySpec extends TestComposition {
       whenReady(result) {
         case FunctionM(_, _, name) => name must equal("f0")
         case _ => fail("wrong type")
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "return expected given scope with 1 functions" in {
@@ -39,7 +39,7 @@ final class FunctionMFactorySpec extends TestComposition {
       whenReady(result) {
         case FunctionM(_, _, name) => name must equal("f1")
         case _ => fail("wrong type")
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "returns 3 children given scope with 3 maxExpressionsInFunc (and rng mocked)" in {
@@ -50,7 +50,7 @@ final class FunctionMFactorySpec extends TestComposition {
       whenReady(result) {
         case FunctionM(_, children, _) => children.length must equal(3)
         case _ => fail("wrong type")
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 

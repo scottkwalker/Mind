@@ -31,7 +31,7 @@ final class Memoize2ImplSpec extends TestComposition {
         r(0) must equal(2)
         r(1) must equal(3)
         r(2) must equal(4)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "only runs the function once for the same input (adder)" in {
@@ -73,7 +73,7 @@ final class Memoize2ImplSpec extends TestComposition {
         verify(adder, times(1))(1, 2)
         verify(adder, times(1))(1, 3)
         verify(adder, times(1))(2, 2)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "only executes the memoized computation once per input" in {
@@ -95,7 +95,7 @@ final class Memoize2ImplSpec extends TestComposition {
 
       whenReady(memoizer(5, 1)) { r =>
         verify(adder, times(1))(5, 1)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "handles exceptions during computations" in {
@@ -155,7 +155,7 @@ final class Memoize2ImplSpec extends TestComposition {
             )
           )
         )
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 
@@ -186,7 +186,7 @@ final class Memoize2ImplSpec extends TestComposition {
         r(0) must equal(2)
         r(1) must equal(3)
         r(2) must equal(4)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "throw when invalid json" in {

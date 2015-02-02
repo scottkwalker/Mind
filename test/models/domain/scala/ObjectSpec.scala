@@ -88,7 +88,7 @@ final class ObjectSpec extends TestComposition {
 
       val result = objectDef.replaceEmpty(scope)(injector)
 
-      whenReady(result) { r => verify(instruction, times(1)).replaceEmpty(any[Scope])(any[Injector])}(config = whenReadyPatienceConfig)
+      whenReady(result) { r => verify(instruction, times(1)).replaceEmpty(any[Scope])(any[Injector])}(config = patienceConfig)
     }
 
     "returns same when no empty nodes" in {
@@ -102,7 +102,7 @@ final class ObjectSpec extends TestComposition {
 
       whenReady(result) {
         _ must equal(objectDef)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "returns without empty nodes given there were empty nodes" in {
@@ -127,7 +127,7 @@ final class ObjectSpec extends TestComposition {
           }
           name2 must equal(name)
         case _ => fail("wrong type")
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "throw when passed empty seq (no empty or non-empty)" in {

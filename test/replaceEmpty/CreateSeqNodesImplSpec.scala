@@ -24,7 +24,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       whenReady(result) { r =>
         verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
         r.instructions.length must equal(1)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "calls create on factory twice given space for 2 func in obj and mocked rng the same" in {
@@ -38,7 +38,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       whenReady(result) { r =>
         verify(createNode, times(2)).create(possibleChildren = possibleChildren, scope = scope)
         r.instructions.length must equal(2)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "calls create on factory once given space for 2 func in obj but rng mocked to 1" in {
@@ -52,7 +52,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       whenReady(result) { r =>
         verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
         r.instructions.length must equal(1)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "calls create on factory once given space for 2 func in obj and a rng mocked to 2 but 1 pre-made node already added" in {
@@ -67,7 +67,7 @@ final class CreateSeqNodesImplSpec extends TestComposition {
       whenReady(result) { r =>
         verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
         r.instructions.length must equal(2)
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 

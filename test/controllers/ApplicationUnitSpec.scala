@@ -11,7 +11,7 @@ final class ApplicationUnitSpec extends TestComposition {
       val result = application.index(FakeRequest())
       whenReady(result) { r =>
         r.header.headers.get(LOCATION) must equal(Some(routes.Intro.present().url))
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 

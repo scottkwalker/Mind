@@ -13,7 +13,7 @@ final class ValueRefFactorySpec extends TestComposition {
 
       whenReady(instruction) { result =>
         result mustBe a[ValueRef]
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "return expected given scope with 0 vals" in {
@@ -21,7 +21,7 @@ final class ValueRefFactorySpec extends TestComposition {
 
       whenReady(instruction) {
         case ValueRef(name) => name must equal("v0")
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "return expected given scope with 1 val" in {
@@ -30,7 +30,7 @@ final class ValueRefFactorySpec extends TestComposition {
       whenReady(instruction) {
         case ValueRef(name) => name must equal("v0")
         case _ => fail("wrong type")
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 

@@ -15,7 +15,7 @@ final class ValDclInFunctionParamFactorySpec extends TestComposition {
 
       whenReady(instruction) { result =>
         result mustBe a[ValDclInFunctionParam]
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "returns expected given scope with 0 vals" in {
@@ -28,7 +28,7 @@ final class ValDclInFunctionParamFactorySpec extends TestComposition {
           name must equal("v0")
           primitiveType mustBe a[IntegerM]
         case _ => fail("wrong type")
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "returns expected given scope with 1 val" in {
@@ -41,7 +41,7 @@ final class ValDclInFunctionParamFactorySpec extends TestComposition {
           name must equal("v1")
           primitiveType mustBe a[IntegerM]
         case _ => fail("wrong type")
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 

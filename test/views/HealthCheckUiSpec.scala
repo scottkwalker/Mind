@@ -1,11 +1,12 @@
 package views
 
 import composition.TestComposition
+import org.scalatest.concurrent.IntegrationPatience
 import org.scalatestplus.play._
 import play.api.Play
 import play.api.test.WithApplication
 
-final class HealthCheckUiSpec extends TestComposition with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
+final class HealthCheckUiSpec extends TestComposition with IntegrationPatience with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
 
   "go to page" must {
     "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication {
@@ -15,7 +16,7 @@ final class HealthCheckUiSpec extends TestComposition with OneServerPerSuite wit
 
       eventually {
         pageTitle mustBe page.title
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
 
     "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication {
@@ -30,7 +31,7 @@ final class HealthCheckUiSpec extends TestComposition with OneServerPerSuite wit
 
       eventually {
         pageTitle mustBe page.titleCy
-      }(config = whenReadyPatienceConfig)
+      }(config = patienceConfig)
     }
   }
 }
