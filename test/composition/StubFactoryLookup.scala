@@ -7,7 +7,7 @@ import org.mockito.Mockito.{mock, when}
 import replaceEmpty.ReplaceEmpty
 import utils.PozInt
 
-final class StubFactoryLookup(factoryLookup: FactoryLookup) extends AbstractModule {
+final class StubFactoryLookup(factoryLookup: FactoryLookup = mock(classOf[FactoryLookup])) extends AbstractModule {
 
   def configure(): Unit = {
     // Id -> factory

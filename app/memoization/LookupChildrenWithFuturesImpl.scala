@@ -14,11 +14,11 @@ final class LookupChildrenWithFuturesImpl @Inject()(
                                                      repository: Memoize2[IScope, PozInt, Future[Boolean]]
                                                      ) extends LookupChildrenWithFutures {
 
-  override def getOrInsert(scope: IScope, childrenToChooseFrom: Set[PozInt]): Future[Set[ReplaceEmpty]] = {
+  override def get(scope: IScope, childrenToChooseFrom: Set[PozInt]): Future[Set[ReplaceEmpty]] = {
     fetchFromRepository(scope, childrenToChooseFrom).map(_.map(factoryLookup.convert))
   }
 
-  override def getOrInsert(scope: IScope, parent: PozInt): Future[Set[PozInt]] = {
+  override def get(scope: IScope, parent: PozInt): Future[Set[PozInt]] = {
     val factory = factoryLookup.convert(parent)
     val nodesToChooseFrom = factory.nodesToChooseFrom
     fetchFromRepository(scope, nodesToChooseFrom)

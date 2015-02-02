@@ -32,7 +32,7 @@ case class FunctionMFactoryImpl @Inject()(
 
   override def createParams(scope: IScope): Future[AccumulateInstructions] = {
     creator.create(
-      possibleChildren = lookupChildren.getOrInsert(scope, childrenToChooseFromForParams),
+      possibleChildren = lookupChildren.get(scope, childrenToChooseFromForParams),
       scope = scope,
       acc = Seq.empty,
       factoryLimit = scope.maxParamsInFunc
@@ -41,7 +41,7 @@ case class FunctionMFactoryImpl @Inject()(
 
   override def createNodes(scope: IScope): Future[AccumulateInstructions] = {
     creator.create(
-      possibleChildren = lookupChildren.getOrInsert(scope, nodesToChooseFrom),
+      possibleChildren = lookupChildren.get(scope, nodesToChooseFrom),
       scope = scope,
       acc = Seq.empty,
       factoryLimit = scope.maxExpressionsInFunc
