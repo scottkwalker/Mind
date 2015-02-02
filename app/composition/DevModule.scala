@@ -12,7 +12,7 @@ import scala.concurrent.Future
 
 final class DevModule() extends AbstractModule {
 
-  def configure(): Unit = {
+  override def configure(): Unit = {
     bind(classOf[Empty]).asEagerSingleton()
     bind(classOf[TypeTreeFactory]).to(classOf[TypeTreeFactoryImpl]).asEagerSingleton()
     bind(classOf[ObjectFactory]).to(classOf[ObjectFactoryImpl]).asEagerSingleton()
