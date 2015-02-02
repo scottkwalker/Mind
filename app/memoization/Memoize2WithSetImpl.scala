@@ -58,7 +58,7 @@ abstract class Memoize2WithSetImpl[TKey1, TKey2](
 
   override def size: Int = cache.size
 
-  override def sizeOfCalculated: Int = cache.size // TODO must be a count of only those which have been calculated
+  override def sizeOfCalculated: Int = cache.size // TODO remove
 }
 
 object Memoize2WithSetImpl {

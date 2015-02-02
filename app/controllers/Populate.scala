@@ -26,7 +26,7 @@ final class Populate @Inject()(generator: Generator) extends Controller {
       },
       validForm => {
         generator.calculateAndUpdate(maxScope = validForm.maxScope).map { result =>
-          Ok(s"generator returned $result")
+          Ok(s"repository now contains $result")
         }
       }
     )

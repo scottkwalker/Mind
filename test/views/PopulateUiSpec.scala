@@ -52,18 +52,18 @@ final class PopulateUiSpec extends TestComposition with OneServerPerSuite with O
   "submit button" must {
     "return expected json when valid data is submitted" taggedAs UiTag in new WithApplication {
       val page = new PopulatePage(port)
-      val expected = "generator returned 0"
+      val expected = "repository now contains 2"
       val valid = "1"
       go to page
       // Fill in the fields
       page.height.value = valid
-      page.maxFuncsInObject.value = valid
-      page.maxParamsInFunc.value = valid
-      page.maxObjectsInTree.value = valid
+      page.maxFuncsInObject.value = "0"
+      page.maxParamsInFunc.value = "0"
+      page.maxObjectsInTree.value = "0"
       page.maxHeight.value = valid
 
       submit()
-
+      
       eventually(timeout = browserTimeout) {
         pageSource must equal(expected)
       }
