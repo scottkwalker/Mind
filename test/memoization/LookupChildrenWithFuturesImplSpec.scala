@@ -91,14 +91,6 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
     }
   }
 
-  "sizeOfCalculated" must {
-    "calls repository.sizeOfCalculated" in {
-      val (lookupChildren, _, _, repositoryWithFutures) = buildWithStubbedRepository
-      lookupChildren.sizeOfCalculated
-      verify(repositoryWithFutures, times(1)).sizeOfCalculated
-    }
-  }
-
   private def build = {
     val scope = Scope(height = 1, maxHeight = 1)
     val factoryIdToFactory = mock[FactoryLookup]

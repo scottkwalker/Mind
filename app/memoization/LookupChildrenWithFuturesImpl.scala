@@ -26,8 +26,6 @@ final class LookupChildrenWithFuturesImpl @Inject()(
 
   override def size: Int = repository.size
 
-  override def sizeOfCalculated: Int = repository.sizeOfCalculated
-
   private def fetchFromRepository(scope: IScope, neighbours: Set[PozInt]): Future[Set[PozInt]] = {
     val neighbourValues = neighbours.map { neighbourId =>
       repository.apply(key1 = scope, key2 = neighbourId). // Get value from repository

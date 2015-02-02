@@ -8,7 +8,6 @@ GET         /mind/health-check                             @controllers.HealthCh
 GET         /mind/legal-children                           @controllers.LegalChildren.present
 POST        /mind/legal-children                           @controllers.LegalChildren.calculate
 GET         /mind/legal-children/size                      @controllers.LegalChildren.size
-GET         /mind/legal-children/size-of-calculated        @controllers.LegalChildren.sizeOfCalculated
 GET         /mind/populate                                 @controllers.Populate.present
 POST        /mind/populate                                 @controllers.Populate.calculate
 

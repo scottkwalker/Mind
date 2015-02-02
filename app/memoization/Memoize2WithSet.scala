@@ -14,6 +14,4 @@ trait Memoize2WithSet[TKey1, TKey2] {
 
   // Take care when the TOutput is of type Future as you may not intend to block.
   def size: Int
-
-  def sizeOfCalculated: Int
 }

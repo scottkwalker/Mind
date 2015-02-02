@@ -17,8 +17,6 @@ final class Memoize2WithSetImplSpec extends TestComposition {
     "return false when key is not in cache" in {
       val sut = new Memoize2WithSetImpl[Int, Int](versioning = "test") {
         override def size = ???
-
-        override def sizeOfCalculated = ???
       }
       sut.add(Set.empty[String])
       sut.apply(0, 0) must equal(false)
@@ -27,8 +25,6 @@ final class Memoize2WithSetImplSpec extends TestComposition {
     "return true when key is in cache" in {
       val sut = new Memoize2WithSetImpl[Int, Int](versioning = "test") {
         override def size = ???
-
-        override def sizeOfCalculated = ???
       }
       sut.add(Set("0|0"))
       sut.apply(0, 0) must equal(true)
@@ -39,8 +35,6 @@ final class Memoize2WithSetImplSpec extends TestComposition {
     "turn map into Json" in {
       val sut = new Memoize2WithSetImpl[Int, Int](versioning = "test") {
         override def size = ???
-
-        override def sizeOfCalculated = ???
       }
       sut.add(Set("1|1", "1|2", "2|2"))
 

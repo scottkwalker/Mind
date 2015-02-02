@@ -57,8 +57,6 @@ abstract class Memoize2WithSetImpl[TKey1, TKey2](
   private[this] def combineKeys(implicit key1: TKey1, key2: TKey2) = s"$key1|$key2"
 
   override def size: Int = cache.size
-
-  override def sizeOfCalculated: Int = cache.size // TODO remove
 }
 
 object Memoize2WithSetImpl {

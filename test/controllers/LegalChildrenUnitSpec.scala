@@ -107,14 +107,6 @@ final class LegalChildrenUnitSpec extends TestComposition {
     }
   }
 
-  "sizeOfCalculated" must {
-    "call lookupChildren.sizeOfCalculated" in {
-      val (legalChildren, lookupChildren) = build(size = 0)
-      legalChildren.sizeOfCalculated(FakeRequest())
-      verify(lookupChildren, times(1)).sizeOfCalculated
-    }
-  }
-
   private def build(size: Int = 0) = {
     val injector = testInjector(new StubLookupChildren(size = size))
     (injector.getInstance(classOf[LegalChildren]), injector.getInstance(classOf[LookupChildren]))

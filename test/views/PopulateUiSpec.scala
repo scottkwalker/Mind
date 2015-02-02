@@ -63,7 +63,7 @@ final class PopulateUiSpec extends TestComposition with OneServerPerSuite with O
       page.maxHeight.value = valid
 
       submit()
-      
+
       eventually(timeout = browserTimeout) {
         pageSource must equal(expected)
       }

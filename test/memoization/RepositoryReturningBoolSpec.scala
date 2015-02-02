@@ -201,14 +201,6 @@ final class RepositoryReturningBoolSpec extends TestComposition {
     "return 3 when cache contains 3 items" in pending
   }
 
-  "sizeOfCalculated" must {
-    "return 0 when cache empty" in pending
-      // Need to override the repository with a value mocked to return false to isCompleted
-    "return 0 when cache has 2 items but 0 have been calculated" in pending
-    "return 1 when cache has 2 items but has only calculated 1 item" in pending
-    "return 2 when cache has 2 items and has calculated 2 items" in pending
-  }
-
   private val scope = Scope(height = 1, maxHeight = 1)
 
   private def createSut() = {

@@ -15,6 +15,4 @@ trait LookupChildrenWithFutures {
   def getOrInsert(scope: IScope, parent: PozInt): Future[Set[PozInt]]
 
   def size: Int
-
-  def sizeOfCalculated: Int
 }

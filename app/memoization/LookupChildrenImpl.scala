@@ -23,8 +23,6 @@ final class LookupChildrenImpl @Inject()(
 
   override def size: Int = repository.size
 
-  override def sizeOfCalculated: Int = repository.sizeOfCalculated
-
   private def fetchFromRepository(scope: IScope, neighbours: Set[PozInt]): Set[PozInt] =
     neighbours.
       filter(neighbourId => repository.apply(key1 = scope, key2 = neighbourId)) // Get value from repository

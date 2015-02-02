@@ -12,6 +12,4 @@ trait Memoize2[-TKey1, -TKey2, +TOutput] {
 
   // Take care when the TOutput is of type Future as you may not intend to block.
   def size: Int
-
-  def sizeOfCalculated: Int
 }

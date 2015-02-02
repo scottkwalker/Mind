@@ -14,6 +14,4 @@ trait LookupChildren {
   def get(scope: IScope, parent: PozInt): Set[PozInt]
 
   def size: Int
-
-  def sizeOfCalculated: Int
 }

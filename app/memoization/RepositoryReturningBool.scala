@@ -28,7 +28,6 @@ final class RepositoryReturningBool @Inject()(factoryLookup: FactoryLookup)
     else false
 
   override def size: Int = cache.size
-  override def sizeOfCalculated: Int = cache.size // TODO must be a count of only those which have been calculated
 }
 
 object RepositoryReturningBool {
