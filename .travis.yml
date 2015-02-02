@@ -9,6 +9,6 @@ notifications:
   email: false
 script:
   - travis_retry sbt compile
-  - sbt coverage test
+  - sbt -DspanScaleFactor=5.0 coverage test
 after_success:
   - sbt coveralls
