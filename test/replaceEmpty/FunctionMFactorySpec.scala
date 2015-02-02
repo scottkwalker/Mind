@@ -42,16 +42,7 @@ final class FunctionMFactorySpec extends TestComposition {
       }(config = patienceConfig)
     }
 
-    "returns 3 children given scope with 3 maxExpressionsInFunc (and rng mocked)" in {
-      val (factory, scope) = functionMFactory(nextInt = 3)
-
-      val result = factory.create(scope = scope)
-
-      whenReady(result) {
-        case FunctionM(_, children, _) => children.length must equal(3)
-        case _ => fail("wrong type")
-      }(config = patienceConfig)
-    }
+    "calls CreateSeqNodes.create" in pending
   }
 
   "updateScope" must {

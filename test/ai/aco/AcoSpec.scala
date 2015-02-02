@@ -1,7 +1,7 @@
 package ai.aco
 
 import ai.{RandomNumberGenerator, SelectionStrategy}
-import composition.ai.aco.AcoModule
+import composition.ai.aco.AcoBinding
 import composition.{StubRng, TestComposition}
 import fitness.AddTwoInts
 import models.common.Scope
@@ -14,7 +14,7 @@ final class AcoSpec extends TestComposition {
   "chooseChild" must {
     "returns expected instance given only one valid choice" in {
       val randomNumberGenerator = mock[RandomNumberGenerator]
-      val selectionStrategy = testInjector(new AcoModule, new StubRng(randomNumberGenerator)).getInstance(classOf[SelectionStrategy])
+      val selectionStrategy = testInjector(new AcoBinding, new StubRng(randomNumberGenerator)).getInstance(classOf[SelectionStrategy])
       val node = mock[ReplaceEmpty]
       val possibleChildren = Set(node)
 
@@ -67,7 +67,7 @@ final class AcoSpec extends TestComposition {
     "call random number generator nextInt" in {
       val expected = 2
       val randomNumberGenerator = mock[RandomNumberGenerator]
-      val injector = testInjector(new AcoModule, new StubRng(randomNumberGenerator))
+      val injector = testInjector(new AcoBinding, new StubRng(randomNumberGenerator))
       val selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
 
       selectionStrategy.chooseIndex(expected)
@@ -76,7 +76,7 @@ final class AcoSpec extends TestComposition {
     }
   }
 
-  private def injector = testInjector(new AcoModule)
+  private def injector = testInjector(new AcoBinding)
 
   private def selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
 }

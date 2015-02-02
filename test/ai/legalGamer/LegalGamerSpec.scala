@@ -1,6 +1,7 @@
 package ai.legalGamer
 
 import ai.{RandomNumberGenerator, SelectionStrategy}
+import composition.ai.legalGamer.LegalGamerBinding
 import composition.{StubRng, TestComposition}
 import fitness.AddTwoInts
 import models.common.Scope
@@ -79,7 +80,7 @@ final class LegalGamerSpec extends TestComposition {
     }
   }
 
-  private def injector = testInjector()
+  private def injector = testInjector(new LegalGamerBinding)
 
   private def selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
 }

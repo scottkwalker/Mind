@@ -18,42 +18,42 @@ final class ValDclInFunctionParamFactorySpec extends TestComposition {
       }(config = patienceConfig)
     }
 
-    "returns expected given scope with 0 vals" in {
-      val scope = Scope(numVals = 0, maxParamsInFunc = 1, height = 10, maxHeight = 10)
-
-      val instruction = valDclInFunctionParamFactory.create(scope = scope)
-
-      whenReady(instruction) {
-        case ValDclInFunctionParam(name, primitiveType) =>
-          name must equal("v0")
-          primitiveType mustBe a[IntegerM]
-        case _ => fail("wrong type")
-      }(config = patienceConfig)
-    }
-
-    "returns expected given scope with 1 val" in {
-      val scope = Scope(numVals = 1, maxParamsInFunc = 2, height = 10, maxHeight = 10)
-
-      val instruction = valDclInFunctionParamFactory.create(scope = scope)
-
-      whenReady(instruction) {
-        case ValDclInFunctionParam(name, primitiveType) =>
-          name must equal("v1")
-          primitiveType mustBe a[IntegerM]
-        case _ => fail("wrong type")
-      }(config = patienceConfig)
-    }
+//    "returns expected given scope with 0 vals" in {
+//      val scope = Scope(numVals = 0, maxParamsInFunc = 1, height = 10, maxHeight = 10)
+//
+//      val instruction = valDclInFunctionParamFactory.create(scope = scope)
+//
+//      whenReady(instruction) {
+//        case ValDclInFunctionParam(name, primitiveType) =>
+//          name must equal("v0")
+//          primitiveType mustBe a[IntegerM]
+//        case _ => fail("wrong type")
+//      }(config = patienceConfig)
+//    }
+//
+//    "returns expected given scope with 1 val" in {
+//      val scope = Scope(numVals = 1, maxParamsInFunc = 2, height = 10, maxHeight = 10)
+//
+//      val instruction = valDclInFunctionParamFactory.create(scope = scope)
+//
+//      whenReady(instruction) {
+//        case ValDclInFunctionParam(name, primitiveType) =>
+//          name must equal("v1")
+//          primitiveType mustBe a[IntegerM]
+//        case _ => fail("wrong type")
+//      }(config = patienceConfig)
+//    }
   }
 
-  "updateScope" must {
-    "calls increments vals once" in {
-      val scope = mock[IScope]
-
-      valDclInFunctionParamFactory.updateScope(scope)
-
-      verify(scope, times(1)).incrementVals
-    }
-  }
+//  "updateScope" must {
+//    "calls increments vals once" in {
+//      val scope = mock[IScope]
+//
+//      valDclInFunctionParamFactory.updateScope(scope)
+//
+//      verify(scope, times(1)).incrementVals
+//    }
+//  }
 
   private def valDclInFunctionParamFactory = testInjector().getInstance(classOf[ValDclInFunctionParamFactoryImpl])
 }

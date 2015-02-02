@@ -95,7 +95,7 @@ final class TypeTreeSpec extends TestComposition {
       whenReady(result) {
         case TypeTree(nodes) =>
           nodes match {
-            case Seq(nonEmpty) => nonEmpty mustBe an[Object]
+            case Seq(nonEmpty) => nonEmpty mustBe an[Instruction]
             case _ => fail("not a seq")
           }
         case _ => fail("wrong type")

@@ -3,7 +3,6 @@ package composition
 import _root_.ai.{RandomNumberGenerator, RandomNumberGeneratorImpl}
 import com.google.inject.util.Modules.`override`
 import com.google.inject.{AbstractModule, Guice, Module, TypeLiteral}
-import composition.ai.legalGamer.LegalGamerModule
 import memoization._
 import models.common.{IScope, Scope}
 import models.domain.scala.{Empty, FactoryLookup, FactoryLookupImpl}
@@ -29,7 +28,10 @@ trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with 
   // property should be overridden in the SBT command line argument in a build server's build script e.g. .travis.yml
   override def spanScaleFactor: Double = sys.props.getOrElse("spanScaleFactor", "1.0").toDouble
 
-  private def defaultModules = Seq(new TestModule, new LegalGamerModule)
+  private def defaultModules = Seq(
+    new TestModule,
+    new StubSelectionStrategy
+  )
 
   def testInjector(modules: Module*) = {
     // The modules override in such a way that if you declare the same binding twice, the last write wins.

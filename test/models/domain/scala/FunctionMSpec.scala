@@ -144,10 +144,10 @@ final class FunctionMSpec extends TestComposition {
       whenReady(result) {
         case FunctionM(p2, n2, n) =>
           p2 match {
-            case Seq(pSeq) => pSeq mustBe a[ValDclInFunctionParam]
+            case Seq(pSeq) => pSeq mustBe a[Instruction]
           }
           n2 match {
-            case Seq(nSeq) => nSeq mustBe a[AddOperator]
+            case Seq(nSeq) => nSeq mustBe a[Instruction]
           }
           n must equal(name)
       }(config = patienceConfig)

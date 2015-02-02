@@ -1,7 +1,7 @@
 package ai.randomWalk
 
 import ai.{RandomNumberGenerator, SelectionStrategy}
-import composition.ai.randomWalk.RandomWalkModule
+import composition.ai.randomWalk.RandomWalkBinding
 import composition.{StubRng, TestComposition}
 import fitness.AddTwoInts
 import models.common.Scope
@@ -14,7 +14,7 @@ final class RandomWalkSpec extends TestComposition {
   "chooseChild" must {
     "return expected type given only one valid choice" in {
       val randomNumberGenerator = mock[RandomNumberGenerator]
-      val sut = testInjector(new RandomWalkModule, new StubRng(randomNumberGenerator)).getInstance(classOf[SelectionStrategy])
+      val sut = testInjector(new RandomWalkBinding, new StubRng(randomNumberGenerator)).getInstance(classOf[SelectionStrategy])
       val node = mock[ReplaceEmpty]
       val possibleChildren = Set(node)
 
@@ -67,7 +67,7 @@ final class RandomWalkSpec extends TestComposition {
     "call random number generator nextInt" in {
       val expected = 2
       val randomNumberGenerator = mock[RandomNumberGenerator]
-      val injector = testInjector(new RandomWalkModule, new StubRng(randomNumberGenerator))
+      val injector = testInjector(new RandomWalkBinding, new StubRng(randomNumberGenerator))
       val selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
 
       selectionStrategy.chooseIndex(expected)
@@ -76,7 +76,7 @@ final class RandomWalkSpec extends TestComposition {
     }
   }
 
-  private def injector = testInjector(new RandomWalkModule)
+  private def injector = testInjector(new RandomWalkBinding)
 
   private def selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
 }

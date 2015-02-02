@@ -22,17 +22,9 @@ final class TypeTreeFactorySpec extends TestComposition {
       }(config = patienceConfig)
     }
 
-    "returns 3 children given scope with 3 maxFuncsInObject (and rng mocked)" in {
-      val (typeTreeFactory, scope) = build(nextInt = 3)
-      val result = typeTreeFactory.create(scope = scope)
+    "calls CreateSeqNodes.create" in pending
 
-      whenReady(result) {
-        case TypeTree(child) => child.length must equal(3)
-        case _ => fail("wrong type")
-      }(config = patienceConfig)
-    }
-
-    "returns 4 children given 1 premade and scope with 3 maxFuncsInObject (and rng mocked)" in {
+    "returns 2 children given 1 premade and 1 generated (by mocked dependency)" in {
       val premadeNode = mock[Instruction]
       val premadeChildren = {
         val replaceEmpty = mock[ReplaceEmpty]
@@ -45,7 +37,7 @@ final class TypeTreeFactorySpec extends TestComposition {
 
       whenReady(result) {
         case TypeTree(child) =>
-          child.length must equal(4) // 3 generated and 1 premade
+          child.length must equal(2) // 1 generated and 1 premade
           child.last must equal(premadeNode) // The premade are concatenated to the end of the seq
         case _ => fail("wrong type")
       }(config = patienceConfig)

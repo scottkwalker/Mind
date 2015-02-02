@@ -21,7 +21,6 @@ case class ValDclInFunctionParamFactoryImpl @Inject()(
     val name = "v" + scope.numVals
     val ln = lookupChildren.get(scope, nodesToChooseFrom)
     val (_, primitiveType) = await(creator.create(ln, scope))
-
     ValDclInFunctionParam(name = name,
       primitiveType = primitiveType) // TODO need to make more types.
   }

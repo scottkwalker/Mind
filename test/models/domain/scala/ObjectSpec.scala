@@ -122,7 +122,7 @@ final class ObjectSpec extends TestComposition {
       whenReady(result) {
         case Object(n2, name2) =>
           n2 match {
-            case Seq(nSeq) => nSeq mustBe a[FunctionM]
+            case Seq(nSeq) => nSeq mustBe a[Instruction]
             case _ => fail("not a Seq")
           }
           name2 must equal(name)
