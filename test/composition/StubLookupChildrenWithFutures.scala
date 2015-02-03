@@ -1,18 +1,23 @@
 package composition
 
 import com.google.inject.AbstractModule
-import memoization.{Memoize2Impl, RepositoryWithFutures, Memoize2, LookupChildrenWithFutures}
+import memoization.LookupChildrenWithFutures
 import models.common.IScope
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{mock, when}
+import org.mockito.Mockito.when
+import org.scalatest.mock.MockitoSugar
 import utils.PozInt
+
 import scala.concurrent.Future
 
-final class StubLookupChildrenWithFutures(lookupChildren: LookupChildrenWithFutures = mock(classOf[LookupChildrenWithFutures]), size: Int = 0) extends AbstractModule {
+final class StubLookupChildrenWithFutures(size: Int = 0) extends AbstractModule with MockitoSugar {
 
-  def configure(): Unit = {
+  val stub = {
+    val lookupChildren: LookupChildrenWithFutures = mock[LookupChildrenWithFutures]
     when(lookupChildren.get(any[IScope], any[PozInt])).thenReturn(Future.successful(Set.empty[PozInt]))
     when(lookupChildren.size).thenReturn(size)
-    bind(classOf[LookupChildrenWithFutures]).toInstance(lookupChildren)
+    lookupChildren
   }
+
+  def configure(): Unit = bind(classOf[LookupChildrenWithFutures]).toInstance(stub)
 }
