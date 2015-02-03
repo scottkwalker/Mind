@@ -9,11 +9,14 @@ import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import utils.PozInt
 
-final class StubRepositoryBinding(repository: Memoize2WithSet[IScope, PozInt] = mock(classOf[Memoize2WithSet[IScope, PozInt]])) extends AbstractModule with MockitoSugar {
+final class StubRepositoryBinding extends AbstractModule with MockitoSugar {
 
-  def configure(): Unit = {
+  val stub = {
+    val repository: Memoize2WithSet[IScope, PozInt] = mock[Memoize2WithSet[IScope, PozInt]]
     when(repository.size).thenReturn(numberOfFactories)
     when(repository.apply(any[IScope], any[PozInt])).thenReturn(true) // Stub that value is always found.
-    bind(new TypeLiteral[Memoize2WithSet[IScope, PozInt]]() {}).toInstance(repository)
+    repository
   }
+
+  def configure(): Unit = bind(new TypeLiteral[Memoize2WithSet[IScope, PozInt]]() {}).toInstance(stub)
 }

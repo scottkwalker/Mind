@@ -102,10 +102,10 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
   private def buildWithStubbedRepository = {
     val scope = Scope(height = 1, maxHeight = 1)
     val factoryIdToFactory = new StubFactoryLookupBinding
-    val repositoryWithFutures = mock[Memoize2[IScope, PozInt, Future[Boolean]]]
+    val repositoryWithFutures = new StubRepositoryWithFuture
     val injector = testInjector(
       factoryIdToFactory, // Override an implementation returned by IoC with a stubbed version.
-      new StubRepositoryWithFuture(repositoryWithFutures)
+      repositoryWithFutures
     )
     (injector.getInstance(classOf[LookupChildrenWithFutures]), scope, factoryIdToFactory.stub, injector.getInstance(new Key[Memoize2[IScope, PozInt, Future[Boolean]]]() {}))
   }
