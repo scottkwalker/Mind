@@ -1,10 +1,9 @@
 package memoization
 
-import com.google.inject.{Key, AbstractModule}
+import com.google.inject.Key
 import composition.StubFactoryLookup._
-import composition.{StubFactoryLookup, StubRepositoryWithFuture, StubFactoryLookup$, TestComposition}
+import composition.{StubFactoryLookup, StubRepositoryWithFuture, TestComposition}
 import models.common.{IScope, Scope}
-import models.domain.scala.FactoryLookup
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
 import replaceEmpty.ReplaceEmpty
@@ -93,16 +92,21 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
 
   private def build = {
     val scope = Scope(height = 1, maxHeight = 1)
-    val factoryIdToFactory = mock[FactoryLookup]
-    val injector = testInjector(new StubFactoryLookup(factoryIdToFactory)) // Override an implementation returned by IoC with a stubbed version.
-    (injector.getInstance(classOf[LookupChildrenWithFutures]), scope, factoryIdToFactory)
+    val factoryIdToFactory = new StubFactoryLookup
+    val injector = testInjector(
+      factoryIdToFactory // Override an implementation returned by IoC with a stubbed version.
+    )
+    (injector.getInstance(classOf[LookupChildrenWithFutures]), scope, factoryIdToFactory.stub)
   }
 
   private def buildWithStubbedRepository = {
     val scope = Scope(height = 1, maxHeight = 1)
-    val factoryIdToFactory = mock[FactoryLookup]
+    val factoryIdToFactory = new StubFactoryLookup
     val repositoryWithFutures = mock[Memoize2[IScope, PozInt, Future[Boolean]]]
-    val injector = testInjector(new StubFactoryLookup(factoryIdToFactory), new StubRepositoryWithFuture(repositoryWithFutures)) // Override an implementation returned by IoC with a stubbed version.
-    (injector.getInstance(classOf[LookupChildrenWithFutures]), scope, factoryIdToFactory, injector.getInstance(new Key [Memoize2[IScope, PozInt, Future[Boolean]]](){}))
+    val injector = testInjector(
+      factoryIdToFactory, // Override an implementation returned by IoC with a stubbed version.
+      new StubRepositoryWithFuture(repositoryWithFutures)
+    )
+    (injector.getInstance(classOf[LookupChildrenWithFutures]), scope, factoryIdToFactory.stub, injector.getInstance(new Key[Memoize2[IScope, PozInt, Future[Boolean]]]() {}))
   }
 }

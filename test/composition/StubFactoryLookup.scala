@@ -4,12 +4,14 @@ import com.google.inject.AbstractModule
 import composition.StubFactoryLookup._
 import models.domain.scala.FactoryLookup
 import org.mockito.Mockito.{mock, when}
+import org.scalatest.mock.MockitoSugar
 import replaceEmpty.ReplaceEmpty
 import utils.PozInt
 
-final class StubFactoryLookup(factoryLookup: FactoryLookup = mock(classOf[FactoryLookup])) extends AbstractModule {
+final class StubFactoryLookup extends AbstractModule with MockitoSugar {
 
-  def configure(): Unit = {
+  val stub = {
+    val factoryLookup: FactoryLookup = mock[FactoryLookup]
     // Id -> factory
     when(factoryLookup.convert(fakeFactoryDoesNotTerminateId)).thenReturn(fNot)
     when(factoryLookup.convert(fakeFactoryTerminates1Id)).thenReturn(fakeFactoryTerminates1)
@@ -19,9 +21,10 @@ final class StubFactoryLookup(factoryLookup: FactoryLookup = mock(classOf[Factor
     when(factoryLookup.convert(fakeFactoryTerminates1)).thenReturn(fakeFactoryTerminates1Id)
     when(factoryLookup.convert(fakeFactoryTerminates2)).thenReturn(fakeFactoryTerminates2Id)
     when(factoryLookup.factories).thenReturn(Set(fakeFactoryDoesNotTerminateId, fakeFactoryTerminates1Id, fakeFactoryTerminates2Id, fakeFactoryHasChildrenId))
-
-    bind(classOf[FactoryLookup]).toInstance(factoryLookup)
+    factoryLookup
   }
+
+  def configure(): Unit = bind(classOf[FactoryLookup]).toInstance(stub)
 }
 
 object StubFactoryLookup {

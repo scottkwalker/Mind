@@ -73,9 +73,9 @@ class GeneratorImplSpec extends TestComposition {
   private def buildWithoutFutures: (LookupChildren, Generator, Memoize2WithSet[IScope, PozInt]) = {
     val lookupChildren: LookupChildren = mock[LookupChildren]
     val repository = mock[Memoize2WithSet[IScope, PozInt]]
-    val factoryLookup: FactoryLookup = mock[FactoryLookup]
+    val factoryLookup = new StubFactoryLookup
     val generator = testInjector(
-      new StubFactoryLookup(factoryLookup),
+      factoryLookup,
       new StubLookupChildren(lookupChildren, size = numberOfFactories),
       new StubRepository(repository)
     ).getInstance(classOf[Generator])
