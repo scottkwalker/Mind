@@ -42,13 +42,15 @@ final class PopulateUnitSpec extends TestComposition {
 
     "call lookupChildren.fetch when submission is valid" in new WithApplication {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
-      val generator = mock[Generator]
-      val injector = testInjector(new StubGenerator(generator))
+      val generator = new StubGenerator
+      val injector = testInjector(
+        generator
+      )
       val sut = injector.getInstance(classOf[Populate])
 
       val result = sut.calculate(validRequest)
       whenReady(result) { r =>
-        verify(generator, times(1)).calculateAndUpdate(any[IScope])
+        verify(generator.stub, times(1)).calculateAndUpdate(any[IScope])
       }(config = patienceConfig)
     }
   }

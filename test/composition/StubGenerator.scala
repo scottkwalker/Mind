@@ -1,19 +1,21 @@
 package composition
 
 import com.google.inject.AbstractModule
-import memoization.{Generator, LookupChildrenWithFutures}
+import memoization.Generator
 import models.common.IScope
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{mock, when}
-import org.mockito.internal.stubbing.answers.DoesNothing
-import utils.PozInt
+import org.mockito.Mockito.when
+import org.scalatest.mock.MockitoSugar
 
 import scala.concurrent.Future
 
-final class StubGenerator(generator: Generator = mock(classOf[Generator])) extends AbstractModule {
+final class StubGenerator extends AbstractModule with MockitoSugar {
 
-  def configure(): Unit = {
+  val stub = {
+    val generator: Generator = mock[Generator]
     when(generator.calculateAndUpdate(any[IScope])).thenReturn(Future.successful(1))
-    bind(classOf[Generator]).toInstance(generator)
+    generator
   }
+
+  def configure(): Unit = bind(classOf[Generator]).toInstance(stub)
 }
