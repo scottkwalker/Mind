@@ -6,7 +6,11 @@ import play.filters.gzip.GzipFilter
 
 trait Composition {
 
-  lazy val injector = Guice.createInjector(new DevModule, new LegalGamerBinding)
+  lazy val injector = Guice.createInjector(
+    new DevModule,
+    new LegalGamerBinding,
+    new CreateSeqNodesBinding
+  )
 
   lazy val filters = Array(
     new GzipFilter()

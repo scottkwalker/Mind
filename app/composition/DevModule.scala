@@ -10,7 +10,7 @@ import utils.PozInt
 
 import scala.concurrent.Future
 
-final class DevModule() extends AbstractModule {
+final class DevModule extends AbstractModule {
 
   override def configure(): Unit = {
     bind(classOf[Empty]).asEagerSingleton()
@@ -19,7 +19,6 @@ final class DevModule() extends AbstractModule {
     bind(classOf[ValueRefFactory]).to(classOf[ValueRefFactoryImpl]).asEagerSingleton()
     bind(classOf[IScope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1))
     bind(classOf[CreateNode]).to(classOf[CreateNodeImpl]).asEagerSingleton()
-    bind(classOf[CreateSeqNodes]).to(classOf[CreateSeqNodesImpl]).asEagerSingleton()
     bind(classOf[RandomNumberGenerator]).to(classOf[RandomNumberGeneratorImpl]).asEagerSingleton()
     bind(classOf[FactoryLookup]).to(classOf[FactoryLookupImpl]).asEagerSingleton()
     bind(new TypeLiteral [Memoize2[IScope, PozInt, Boolean]] () {}).to(classOf[RepositoryReturningBool]).asEagerSingleton()
