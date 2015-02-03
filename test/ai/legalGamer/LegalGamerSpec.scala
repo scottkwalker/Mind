@@ -12,8 +12,10 @@ final class LegalGamerSpec extends TestComposition {
 
   "chooseChild" must {
     "return expected type given only one valid choice" in {
-      val randomNumberGenerator = mock[RandomNumberGenerator]
-      val selectionStrategy = testInjector(new StubRngBinding(randomNumberGenerator)).getInstance(classOf[SelectionStrategy])
+      val randomNumberGenerator = new StubRngBinding
+      val selectionStrategy = testInjector(
+        randomNumberGenerator
+      ).getInstance(classOf[SelectionStrategy])
       val node = mock[ReplaceEmpty]
       val possibleChildren = Set(node)
 

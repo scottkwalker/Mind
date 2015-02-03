@@ -17,7 +17,5 @@ final class StubRepositoryWithFuture extends AbstractModule with MockitoSugar {
     repositoryWithFutures
   }
 
-  def configure(): Unit = {
-    bind(new TypeLiteral[Memoize2[IScope, PozInt, Future[Boolean]]]() {}).toInstance(stub)
-  }
+  def configure(): Unit = bind(new TypeLiteral[Memoize2[IScope, PozInt, Future[Boolean]]]() {}).toInstance(stub)
 }

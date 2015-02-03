@@ -13,7 +13,7 @@ import scala.concurrent.Future
 
 final class StubSelectionStrategyBinding extends AbstractModule with MockitoSugar {
 
-  def configure(): Unit = {
+  val stub = {
     val scope = Scope(height = 10, maxHeight = 10)
     val instruction = mock[Instruction]
     val replaceEmpty = mock[ReplaceEmpty]
@@ -25,6 +25,8 @@ final class StubSelectionStrategyBinding extends AbstractModule with MockitoSuga
     when(selectionStrategy.chooseChild(any[Future[Set[ReplaceEmpty]]])).thenReturn(Future.successful(replaceEmpty))
     when(selectionStrategy.canAddAnother(any[Int], any[Int])).thenReturn(false)
     when(selectionStrategy.generateLengthOfSeq(any[Int])).thenReturn(1)
-    bind(classOf[SelectionStrategy]).toInstance(selectionStrategy)
+    selectionStrategy
   }
+
+  def configure(): Unit = bind(classOf[SelectionStrategy]).toInstance(stub)
 }

@@ -13,8 +13,11 @@ final class RandomWalkSpec extends TestComposition {
 
   "chooseChild" must {
     "return expected type given only one valid choice" in {
-      val randomNumberGenerator = mock[RandomNumberGenerator]
-      val sut = testInjector(new RandomWalkBinding, new StubRngBinding(randomNumberGenerator)).getInstance(classOf[SelectionStrategy])
+      val randomNumberGenerator = new StubRngBinding
+      val sut = testInjector(
+        new RandomWalkBinding,
+        randomNumberGenerator
+      ).getInstance(classOf[SelectionStrategy])
       val node = mock[ReplaceEmpty]
       val possibleChildren = Set(node)
 
@@ -66,13 +69,16 @@ final class RandomWalkSpec extends TestComposition {
 
     "call random number generator nextInt" in {
       val expected = 2
-      val randomNumberGenerator = mock[RandomNumberGenerator]
-      val injector = testInjector(new RandomWalkBinding, new StubRngBinding(randomNumberGenerator))
+      val randomNumberGenerator = new StubRngBinding
+      val injector = testInjector(
+        new RandomWalkBinding,
+        randomNumberGenerator
+      )
       val selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
 
       selectionStrategy.chooseIndex(expected)
 
-      verify(randomNumberGenerator, times(1)).nextInt(expected)
+      verify(randomNumberGenerator.stub, times(1)).nextInt(expected)
     }
   }
 

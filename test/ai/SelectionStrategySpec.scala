@@ -74,10 +74,10 @@ final class SelectionStrategySpec extends TestComposition {
   }
 
   private def selectionStrategy(nextBoolean: Boolean = true, nextInt: Int) = {
-    val rng = mock[RandomNumberGenerator]
-    when(rng.nextBoolean).thenReturn(nextBoolean)
-    when(rng.nextInt(any[Int])).thenReturn(nextInt)
-    val ioc = testInjector(new StubRngBinding(rng))
+    val randomNumberGenerator = new StubRngBinding(nextBoolean = nextBoolean, nextInt = nextInt)
+    val ioc = testInjector(
+      randomNumberGenerator
+    )
     (ioc.getInstance(classOf[Aco]), ioc.getInstance(classOf[RandomNumberGenerator]))
   }
 }

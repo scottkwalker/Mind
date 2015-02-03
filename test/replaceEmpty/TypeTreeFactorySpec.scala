@@ -60,10 +60,9 @@ final class TypeTreeFactorySpec extends TestComposition {
 
   private def build(nextInt: Int = 0) = {
     val createSeqNodes = new StubCreateSeqNodesBinding
-    val rng: RandomNumberGenerator = mock[RandomNumberGenerator]
-    when(rng.nextInt(any[Int])).thenReturn(nextInt)
+    val randomNumberGenerator = new StubRngBinding(nextInt = nextInt)
     val injector = testInjector(
-      new StubRngBinding(randomNumberGenerator = rng),
+      randomNumberGenerator,
       new StubIScopeBinding,
       createSeqNodes
     )
