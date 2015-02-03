@@ -2,13 +2,14 @@ package composition
 
 import com.google.inject.AbstractModule
 import models.common.{IScope, Scope}
+import org.scalatest.mock.MockitoSugar
 
 final class StubIScopeBinding(
-                        numFuncs: Int = 0,
-                        numObjects: Int = 0
-                        ) extends AbstractModule {
+                               numFuncs: Int = 0,
+                               numObjects: Int = 0
+                               ) extends AbstractModule with MockitoSugar {
 
-  def configure(): Unit = {
+  val stub = {
     val scope: IScope = Scope(
       numFuncs = numFuncs,
       numObjects = numObjects,
@@ -18,6 +19,8 @@ final class StubIScopeBinding(
       maxParamsInFunc = 2,
       maxObjectsInTree = 3,
       maxHeight = 10)
-    bind(classOf[IScope]).toInstance(scope)
+    scope
   }
+
+  def configure(): Unit = bind(classOf[IScope]).toInstance(stub)
 }
