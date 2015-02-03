@@ -10,5 +10,11 @@ final class RandomNumberGeneratorImplSpec extends TestComposition {
     }
   }
 
+  "nextInt" must {
+    "return an int when called" in {
+      randomNumberGenerator.nextInt(1) mustBe a[java.lang.Integer]
+    }
+  }
+
   private def randomNumberGenerator = testInjector().getInstance(classOf[RandomNumberGenerator])
 }
