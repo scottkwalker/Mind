@@ -68,13 +68,14 @@ final class FunctionMFactorySpec extends TestComposition {
   }
 
   private def functionMFactory(nextInt: Int = 0, numFuncs: Int = 0) = {
-    val createSeqNodes = new StubCreateSeqNodesBinding
     val randomNumberGenerator = new StubRngBinding(nextInt = nextInt)
+    val scope = new StubIScopeBinding(numFuncs = numFuncs)
+    val createSeqNodes = new StubCreateSeqNodesBinding
     val injector = testInjector(
       randomNumberGenerator,
-      new StubIScopeBinding(numFuncs = numFuncs),
+      scope,
       createSeqNodes
     )
-    (injector.getInstance(classOf[FunctionMFactoryImpl]), injector.getInstance(classOf[IScope]), createSeqNodes.stub)
+    (injector.getInstance(classOf[FunctionMFactoryImpl]), scope.stub, createSeqNodes.stub)
   }
 }

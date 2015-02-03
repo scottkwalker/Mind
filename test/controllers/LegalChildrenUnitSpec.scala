@@ -110,8 +110,11 @@ final class LegalChildrenUnitSpec extends TestComposition {
   }
 
   private def build(size: Int = 0) = {
-    val injector = testInjector(new StubLookupChildrenBinding(size = size))
-    (injector.getInstance(classOf[LegalChildren]), injector.getInstance(classOf[LookupChildren]))
+    val lookupChildren= new StubLookupChildrenBinding(size = size)
+    val injector = testInjector(
+      lookupChildren
+    )
+    (injector.getInstance(classOf[LegalChildren]), lookupChildren.stub)
   }
 
   private def present = {

@@ -78,6 +78,6 @@ final class SelectionStrategySpec extends TestComposition {
     val ioc = testInjector(
       randomNumberGenerator
     )
-    (ioc.getInstance(classOf[Aco]), ioc.getInstance(classOf[RandomNumberGenerator]))
+    (ioc.getInstance(classOf[Aco]), randomNumberGenerator.stub)
   }
 }

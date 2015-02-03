@@ -68,13 +68,14 @@ final class ObjectFactorySpec extends TestComposition {
   }
 
   private def build(nextInt: Int = 0, numObjects: Int = 1) = {
-    val createSeqNodes = new StubCreateSeqNodesBinding
     val randomNumberGenerator = new StubRngBinding(nextInt = nextInt)
+    val scope = new StubIScopeBinding(numObjects = numObjects)
+    val createSeqNodes = new StubCreateSeqNodesBinding
     val injector = testInjector(
       randomNumberGenerator,
-      new StubIScopeBinding(numObjects = numObjects),
+      scope,
       createSeqNodes
     )
-    (injector.getInstance(classOf[ObjectFactoryImpl]), injector.getInstance(classOf[IScope]), createSeqNodes.stub)
+    (injector.getInstance(classOf[ObjectFactoryImpl]), scope.stub, createSeqNodes.stub)
   }
 }

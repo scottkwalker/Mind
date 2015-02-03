@@ -59,13 +59,14 @@ final class TypeTreeFactorySpec extends TestComposition {
   }
 
   private def build(nextInt: Int = 0) = {
-    val createSeqNodes = new StubCreateSeqNodesBinding
     val randomNumberGenerator = new StubRngBinding(nextInt = nextInt)
+    val scope = new StubIScopeBinding
+    val createSeqNodes = new StubCreateSeqNodesBinding
     val injector = testInjector(
       randomNumberGenerator,
-      new StubIScopeBinding,
+      scope,
       createSeqNodes
     )
-    (injector.getInstance(classOf[TypeTreeFactory]), injector.getInstance(classOf[IScope]), createSeqNodes.stub)
+    (injector.getInstance(classOf[TypeTreeFactory]), scope.stub, createSeqNodes.stub)
   }
 }
