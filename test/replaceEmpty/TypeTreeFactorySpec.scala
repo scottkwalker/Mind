@@ -1,7 +1,7 @@
 package replaceEmpty
 
 import ai.RandomNumberGenerator
-import composition.{StubIScope, StubRng, TestComposition}
+import composition.{StubCreateSeqNodesBinding, StubIScope, StubRng, TestComposition}
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.TypeTree
@@ -13,7 +13,7 @@ final class TypeTreeFactorySpec extends TestComposition {
 
   "create" must {
     "returns instance of this type" in {
-      val (typeTreeFactory, scope) = build()
+      val (typeTreeFactory, scope, _) = build()
 
       val result = typeTreeFactory.create(scope)
 
@@ -22,7 +22,15 @@ final class TypeTreeFactorySpec extends TestComposition {
       }(config = patienceConfig)
     }
 
-    "calls CreateSeqNodes.create" in pending
+    "calls CreateSeqNodes.create" in {
+      val (typeTreeFactory, scope, createSeqNodes) = build()
+
+      val result = typeTreeFactory.create(scope, Seq.empty)
+
+      whenReady(result) { r =>
+        verify(createSeqNodes, times(1)).create(any[Future[Set[ReplaceEmpty]]], any[IScope], any[Seq[Instruction]], any[Int])
+      }(config = patienceConfig)
+    }
 
     "returns 2 children given 1 premade and 1 generated (by mocked dependency)" in {
       val premadeNode = mock[Instruction]
@@ -31,7 +39,7 @@ final class TypeTreeFactorySpec extends TestComposition {
         when(replaceEmpty.create(any[IScope])).thenReturn(Future.successful(premadeNode))
         Seq(replaceEmpty)
       }
-      val (typeTreeFactory, scope) = build(nextInt = 3)
+      val (typeTreeFactory, scope, _) = build(nextInt = 3)
 
       val result = typeTreeFactory.create(scope = scope, premadeChildren = premadeChildren)
 
@@ -45,15 +53,20 @@ final class TypeTreeFactorySpec extends TestComposition {
 
     "throw if you ask updateScope" in {
       val scope = mock[IScope]
-      val (typeTreeFactory, _) = build()
+      val (typeTreeFactory, _, _) = build()
       a[RuntimeException] must be thrownBy typeTreeFactory.updateScope(scope)
     }
   }
 
   private def build(nextInt: Int = 0) = {
+    val createSeqNodes = new StubCreateSeqNodesBinding
     val rng: RandomNumberGenerator = mock[RandomNumberGenerator]
     when(rng.nextInt(any[Int])).thenReturn(nextInt)
-    val injector = testInjector(new StubRng(randomNumberGenerator = rng), new StubIScope)
-    (injector.getInstance(classOf[TypeTreeFactory]), injector.getInstance(classOf[IScope]))
+    val injector = testInjector(
+      new StubRng(randomNumberGenerator = rng),
+      new StubIScope,
+      createSeqNodes
+    )
+    (injector.getInstance(classOf[TypeTreeFactory]), injector.getInstance(classOf[IScope]), createSeqNodes.stub)
   }
 }
