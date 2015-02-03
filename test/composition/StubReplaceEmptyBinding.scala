@@ -18,5 +18,5 @@ final class StubReplaceEmptyBinding extends AbstractModule {
     node
   }
 
-  def configure(): Unit = bind(classOf[ReplaceEmpty]).toInstance(stub)
+  override def configure(): Unit = bind(classOf[ReplaceEmpty]).toInstance(stub)
 }

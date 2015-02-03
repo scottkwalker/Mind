@@ -24,7 +24,7 @@ final class StubFactoryLookupBinding extends AbstractModule with MockitoSugar {
     factoryLookup
   }
 
-  def configure(): Unit = bind(classOf[FactoryLookup]).toInstance(stub)
+  override def configure(): Unit = bind(classOf[FactoryLookup]).toInstance(stub)
 }
 
 object StubFactoryLookupBinding {

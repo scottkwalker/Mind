@@ -21,5 +21,5 @@ final class StubCreateSeqNodesBinding extends AbstractModule with MockitoSugar {
     createSeqNodes
   }
 
-  def configure(): Unit = bind(classOf[CreateSeqNodes]).toInstance(stub)
+  override def configure(): Unit = bind(classOf[CreateSeqNodes]).toInstance(stub)
 }

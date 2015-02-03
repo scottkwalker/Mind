@@ -19,5 +19,5 @@ final class StubLookupChildrenWithFutures(size: Int = 0) extends AbstractModule 
     lookupChildren
   }
 
-  def configure(): Unit = bind(classOf[LookupChildrenWithFutures]).toInstance(stub)
+  override def configure(): Unit = bind(classOf[LookupChildrenWithFutures]).toInstance(stub)
 }

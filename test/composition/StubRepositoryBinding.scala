@@ -18,5 +18,5 @@ final class StubRepositoryBinding extends AbstractModule with MockitoSugar {
     repository
   }
 
-  def configure(): Unit = bind(new TypeLiteral[Memoize2WithSet[IScope, PozInt]]() {}).toInstance(stub)
+  override def configure(): Unit = bind(new TypeLiteral[Memoize2WithSet[IScope, PozInt]]() {}).toInstance(stub)
 }

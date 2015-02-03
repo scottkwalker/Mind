@@ -15,5 +15,5 @@ final class StubRngBinding(nextBoolean: Boolean = true, nextInt: Int = 0) extend
     rng
   }
 
-  def configure(): Unit = bind(classOf[RandomNumberGenerator]).toInstance(stub)
+  override def configure(): Unit = bind(classOf[RandomNumberGenerator]).toInstance(stub)
 }

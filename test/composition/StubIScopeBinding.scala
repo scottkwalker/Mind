@@ -22,5 +22,5 @@ final class StubIScopeBinding(
     scope
   }
 
-  def configure(): Unit = bind(classOf[IScope]).toInstance(stub)
+  override def configure(): Unit = bind(classOf[IScope]).toInstance(stub)
 }

@@ -28,5 +28,5 @@ final class StubSelectionStrategyBinding extends AbstractModule with MockitoSuga
     selectionStrategy
   }
 
-  def configure(): Unit = bind(classOf[SelectionStrategy]).toInstance(stub)
+  override def configure(): Unit = bind(classOf[SelectionStrategy]).toInstance(stub)
 }

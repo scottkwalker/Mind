@@ -17,5 +17,5 @@ final class StubGeneratorBinding extends AbstractModule with MockitoSugar {
     generator
   }
 
-  def configure(): Unit = bind(classOf[Generator]).toInstance(stub)
+  override def configure(): Unit = bind(classOf[Generator]).toInstance(stub)
 }
