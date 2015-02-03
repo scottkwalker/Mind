@@ -3,7 +3,7 @@ package composition
 import com.google.inject.AbstractModule
 import models.common.{IScope, Scope}
 
-final class StubIScope(
+final class StubIScopeBinding(
                         numFuncs: Int = 0,
                         numObjects: Int = 0
                         ) extends AbstractModule {

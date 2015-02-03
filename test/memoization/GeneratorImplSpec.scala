@@ -1,6 +1,6 @@
 package memoization
 
-import composition.StubFactoryLookup.numberOfFactories
+import composition.StubFactoryLookupBinding.numberOfFactories
 import composition._
 import models.common.{IScope, Scope}
 import models.domain.scala.FactoryLookup
@@ -73,11 +73,11 @@ class GeneratorImplSpec extends TestComposition {
   private def buildWithoutFutures: (LookupChildren, Generator, Memoize2WithSet[IScope, PozInt]) = {
     val lookupChildren: LookupChildren = mock[LookupChildren]
     val repository = mock[Memoize2WithSet[IScope, PozInt]]
-    val factoryLookup = new StubFactoryLookup
+    val factoryLookup = new StubFactoryLookupBinding
     val generator = testInjector(
       factoryLookup,
-      new StubLookupChildren(lookupChildren, size = numberOfFactories),
-      new StubRepository(repository)
+      new StubLookupChildrenBinding(lookupChildren, size = numberOfFactories),
+      new StubRepositoryBinding(repository)
     ).getInstance(classOf[Generator])
     (lookupChildren, generator, repository)
   }

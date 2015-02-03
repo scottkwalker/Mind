@@ -30,7 +30,7 @@ trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with 
 
   private def defaultModules = Seq(
     new TestModule,
-    new StubSelectionStrategy,
+    new StubSelectionStrategyBinding,
     new StubCreateSeqNodesBinding
   )
 

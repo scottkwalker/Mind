@@ -1,7 +1,7 @@
 package composition
 
 import com.google.inject.{AbstractModule, TypeLiteral}
-import composition.StubFactoryLookup.numberOfFactories
+import composition.StubFactoryLookupBinding.numberOfFactories
 import memoization.Memoize2WithSet
 import models.common.IScope
 import org.mockito.Matchers.any
@@ -9,7 +9,7 @@ import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import utils.PozInt
 
-final class StubRepository(repository: Memoize2WithSet[IScope, PozInt] = mock(classOf[Memoize2WithSet[IScope, PozInt]])) extends AbstractModule with MockitoSugar {
+final class StubRepositoryBinding(repository: Memoize2WithSet[IScope, PozInt] = mock(classOf[Memoize2WithSet[IScope, PozInt]])) extends AbstractModule with MockitoSugar {
 
   def configure(): Unit = {
     when(repository.size).thenReturn(numberOfFactories)

@@ -11,7 +11,7 @@ import replaceEmpty.ReplaceEmpty
 
 import scala.concurrent.Future
 
-final class StubSelectionStrategy extends AbstractModule with MockitoSugar {
+final class StubSelectionStrategyBinding extends AbstractModule with MockitoSugar {
 
   def configure(): Unit = {
     val scope = Scope(height = 10, maxHeight = 10)

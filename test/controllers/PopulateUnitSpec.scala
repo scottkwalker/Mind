@@ -1,6 +1,6 @@
 package controllers
 
-import composition.{StubGenerator, TestComposition}
+import composition.{StubGeneratorBinding, TestComposition}
 import memoization.Generator
 import models.common.{IScope, PopulateRequest, Scope}
 import org.mockito.Matchers.any
@@ -42,7 +42,7 @@ final class PopulateUnitSpec extends TestComposition {
 
     "call lookupChildren.fetch when submission is valid" in new WithApplication {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
-      val generator = new StubGenerator
+      val generator = new StubGeneratorBinding
       val injector = testInjector(
         generator
       )

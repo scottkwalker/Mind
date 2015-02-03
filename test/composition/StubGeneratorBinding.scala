@@ -9,7 +9,7 @@ import org.scalatest.mock.MockitoSugar
 
 import scala.concurrent.Future
 
-final class StubGenerator extends AbstractModule with MockitoSugar {
+final class StubGeneratorBinding extends AbstractModule with MockitoSugar {
 
   val stub = {
     val generator: Generator = mock[Generator]

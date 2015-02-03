@@ -7,7 +7,7 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito.{mock, when}
 import utils.PozInt
 
-final class StubLookupChildren(lookupChildren: LookupChildren = mock(classOf[LookupChildren]), size: Int = 0) extends AbstractModule {
+final class StubLookupChildrenBinding(lookupChildren: LookupChildren = mock(classOf[LookupChildren]), size: Int = 0) extends AbstractModule {
 
   def build = {
     when(lookupChildren.get(any[IScope], any[PozInt])).thenReturn(Set.empty[PozInt])

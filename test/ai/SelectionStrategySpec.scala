@@ -1,7 +1,7 @@
 package ai
 
 import ai.aco.Aco
-import composition.{StubRng, TestComposition}
+import composition.{StubRngBinding, TestComposition}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{when, _}
 import replaceEmpty.ReplaceEmpty
@@ -77,7 +77,7 @@ final class SelectionStrategySpec extends TestComposition {
     val rng = mock[RandomNumberGenerator]
     when(rng.nextBoolean).thenReturn(nextBoolean)
     when(rng.nextInt(any[Int])).thenReturn(nextInt)
-    val ioc = testInjector(new StubRng(rng))
+    val ioc = testInjector(new StubRngBinding(rng))
     (ioc.getInstance(classOf[Aco]), ioc.getInstance(classOf[RandomNumberGenerator]))
   }
 }

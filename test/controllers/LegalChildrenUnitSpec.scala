@@ -1,6 +1,6 @@
 package controllers
 
-import composition.{StubLookupChildren, StubLookupChildrenWithFutures, TestComposition}
+import composition.{StubLookupChildrenBinding, StubLookupChildrenWithFutures, TestComposition}
 import memoization.{LookupChildren, LookupChildrenWithFutures}
 import models.common.{IScope, LookupChildrenRequest, Scope}
 import org.mockito.Matchers.any
@@ -71,7 +71,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
     "call lookupChildren.calculate when submission is valid" in new WithApplication {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
       val lookupChildren = mock[LookupChildren]
-      val injector = testInjector(new StubLookupChildren(lookupChildren = lookupChildren))
+      val injector = testInjector(new StubLookupChildrenBinding(lookupChildren = lookupChildren))
       val sut = injector.getInstance(classOf[LegalChildren])
 
       val result = sut.calculate(validRequest)
@@ -108,7 +108,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
   }
 
   private def build(size: Int = 0) = {
-    val injector = testInjector(new StubLookupChildren(size = size))
+    val injector = testInjector(new StubLookupChildrenBinding(size = size))
     (injector.getInstance(classOf[LegalChildren]), injector.getInstance(classOf[LookupChildren]))
   }
 

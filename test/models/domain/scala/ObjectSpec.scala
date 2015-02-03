@@ -1,7 +1,7 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import composition.{StubReplaceEmpty, TestComposition}
+import composition.{StubReplaceEmptyBinding, TestComposition}
 import models.common.{IScope, Scope}
 import models.domain.Instruction
 import org.mockito.Matchers._
@@ -113,7 +113,7 @@ final class ObjectSpec extends TestComposition {
         maxObjectsInTree = 1,
         maxHeight = 10)
       val empty = Empty()
-      val injector = testInjector(new StubReplaceEmpty)
+      val injector = testInjector(new StubReplaceEmptyBinding)
       val objectDef = Object(nodes = Seq(empty),
         name = name)
 

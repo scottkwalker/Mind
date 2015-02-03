@@ -8,7 +8,7 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito.{mock, when}
 import scala.concurrent.Future
 
-final class StubReplaceEmpty extends AbstractModule {
+final class StubReplaceEmptyBinding extends AbstractModule {
 
   def configure(): Unit = {
     val instruction: Instruction = mock(classOf[Instruction])

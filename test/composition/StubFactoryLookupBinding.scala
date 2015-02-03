@@ -1,14 +1,14 @@
 package composition
 
 import com.google.inject.AbstractModule
-import composition.StubFactoryLookup._
+import composition.StubFactoryLookupBinding._
 import models.domain.scala.FactoryLookup
 import org.mockito.Mockito.{mock, when}
 import org.scalatest.mock.MockitoSugar
 import replaceEmpty.ReplaceEmpty
 import utils.PozInt
 
-final class StubFactoryLookup extends AbstractModule with MockitoSugar {
+final class StubFactoryLookupBinding extends AbstractModule with MockitoSugar {
 
   val stub = {
     val factoryLookup: FactoryLookup = mock[FactoryLookup]
@@ -27,7 +27,7 @@ final class StubFactoryLookup extends AbstractModule with MockitoSugar {
   def configure(): Unit = bind(classOf[FactoryLookup]).toInstance(stub)
 }
 
-object StubFactoryLookup {
+object StubFactoryLookupBinding {
 
   val numberOfFactories = 4
   val fakeFactoryDoesNotTerminateId = PozInt(0)

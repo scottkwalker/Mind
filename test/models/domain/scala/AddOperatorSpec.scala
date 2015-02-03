@@ -1,7 +1,7 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import composition.{StubReplaceEmpty, TestComposition}
+import composition.{StubReplaceEmptyBinding, TestComposition}
 import models.common.{IScope, Scope}
 import models.domain.Instruction
 import org.mockito.Matchers._
@@ -108,7 +108,7 @@ final class AddOperatorSpec extends TestComposition {
       val scope = mock[IScope]
       when(scope.numVals).thenReturn(1)
       val empty: Instruction = Empty()
-      val injector = testInjector(new StubReplaceEmpty)
+      val injector = testInjector(new StubReplaceEmptyBinding)
       val instance = AddOperator(empty, empty)
 
       val result = instance.replaceEmpty(scope)(injector)

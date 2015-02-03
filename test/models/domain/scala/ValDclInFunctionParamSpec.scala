@@ -1,7 +1,7 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import composition.{StubReplaceEmpty, TestComposition}
+import composition.{StubReplaceEmptyBinding, TestComposition}
 import models.common.{IScope, Scope}
 import models.domain.Instruction
 import org.mockito.Matchers._
@@ -97,7 +97,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val scope = mock[IScope]
       val name = "a"
       val primitiveTypeEmpty = Empty()
-      val injector = testInjector(new StubReplaceEmpty)
+      val injector = testInjector(new StubReplaceEmptyBinding)
       val valDclInFunctionParam = ValDclInFunctionParam(name, primitiveTypeEmpty)
 
       val result = valDclInFunctionParam.replaceEmpty(scope)(injector)

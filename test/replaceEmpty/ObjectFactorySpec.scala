@@ -1,7 +1,7 @@
 package replaceEmpty
 
 import ai.RandomNumberGenerator
-import composition.{StubCreateSeqNodesBinding, StubIScope, StubRng, TestComposition}
+import composition.{StubCreateSeqNodesBinding, StubIScopeBinding, StubRngBinding, TestComposition}
 import models.common.{IScope, Scope}
 import models.domain.Instruction
 import models.domain.scala.Object
@@ -72,8 +72,8 @@ final class ObjectFactorySpec extends TestComposition {
     val rng: RandomNumberGenerator = mock[RandomNumberGenerator]
     when(rng.nextInt(any[Int])).thenReturn(nextInt)
     val injector = testInjector(
-      new StubRng(randomNumberGenerator = rng),
-      new StubIScope(numObjects = numObjects),
+      new StubRngBinding(randomNumberGenerator = rng),
+      new StubIScopeBinding(numObjects = numObjects),
       createSeqNodes
     )
     (injector.getInstance(classOf[ObjectFactoryImpl]), injector.getInstance(classOf[IScope]), createSeqNodes.stub)

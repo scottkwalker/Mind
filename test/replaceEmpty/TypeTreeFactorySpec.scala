@@ -1,7 +1,7 @@
 package replaceEmpty
 
 import ai.RandomNumberGenerator
-import composition.{StubCreateSeqNodesBinding, StubIScope, StubRng, TestComposition}
+import composition.{StubCreateSeqNodesBinding, StubIScopeBinding, StubRngBinding, TestComposition}
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.TypeTree
@@ -63,8 +63,8 @@ final class TypeTreeFactorySpec extends TestComposition {
     val rng: RandomNumberGenerator = mock[RandomNumberGenerator]
     when(rng.nextInt(any[Int])).thenReturn(nextInt)
     val injector = testInjector(
-      new StubRng(randomNumberGenerator = rng),
-      new StubIScope,
+      new StubRngBinding(randomNumberGenerator = rng),
+      new StubIScopeBinding,
       createSeqNodes
     )
     (injector.getInstance(classOf[TypeTreeFactory]), injector.getInstance(classOf[IScope]), createSeqNodes.stub)
