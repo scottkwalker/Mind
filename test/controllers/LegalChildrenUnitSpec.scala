@@ -70,13 +70,15 @@ final class LegalChildrenUnitSpec extends TestComposition {
 
     "call lookupChildren.calculate when submission is valid" in new WithApplication {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
-      val lookupChildren = mock[LookupChildren]
-      val injector = testInjector(new StubLookupChildrenBinding(lookupChildren = lookupChildren))
+      val lookupChildren = new StubLookupChildrenBinding
+      val injector = testInjector(
+        lookupChildren
+      )
       val sut = injector.getInstance(classOf[LegalChildren])
 
       val result = sut.calculate(validRequest)
       whenReady(result) { r =>
-        verify(lookupChildren, times(1)).get(any[IScope], any[PozInt])
+        verify(lookupChildren.stub, times(1)).get(any[IScope], any[PozInt])
       }(config = patienceConfig)
     }
   }

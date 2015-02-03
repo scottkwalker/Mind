@@ -71,15 +71,15 @@ class GeneratorImplSpec extends TestComposition {
   }
 
   private def buildWithoutFutures: (LookupChildren, Generator, Memoize2WithSet[IScope, PozInt]) = {
-    val lookupChildren: LookupChildren = mock[LookupChildren]
+    val lookupChildren = new StubLookupChildrenBinding(size = numberOfFactories)
     val repository = mock[Memoize2WithSet[IScope, PozInt]]
     val factoryLookup = new StubFactoryLookupBinding
     val generator = testInjector(
       factoryLookup,
-      new StubLookupChildrenBinding(lookupChildren, size = numberOfFactories),
+      lookupChildren,
       new StubRepositoryBinding(repository)
     ).getInstance(classOf[Generator])
-    (lookupChildren, generator, repository)
+    (lookupChildren.stub, generator, repository)
   }
 
   private def verfifyRepositoryAddCalled(scope: IScope, expected: Int = 2, builder: => (LookupChildren, Generator, Memoize2WithSet[IScope, PozInt])) = {
