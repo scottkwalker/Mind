@@ -2,7 +2,7 @@ package memoization
 
 import com.google.inject.Key
 import composition.StubFactoryLookupBinding._
-import composition.{LookupChildrenWithFuturesBinding, StubFactoryLookupBinding, StubRepositoryWithFuture, TestComposition}
+import composition._
 import models.common.{IScope, Scope}
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
@@ -14,24 +14,24 @@ import scala.concurrent.Future
 final class LookupChildrenWithFuturesImplSpec extends TestComposition {
 
   "fetch with neighbours" must {
-    "does not call FactoryIdToFactory.convert with ReplaceEmpty as the repository already contains the ids" in {
-      val (lookupChildren, scope, factoryIdToFactory) = build
+    "does not call factoryLookup.convert with ReplaceEmpty as the repository already contains the ids" in {
+      val (lookupChildren, scope, factoryLookup) = build()
 
       val result = lookupChildren.get(scope = scope, childrenToChooseFrom = Set(fakeFactoryTerminates1Id))
 
-      whenReady(result) { _ => verify(factoryIdToFactory, never).convert(any[ReplaceEmpty])}(config = patienceConfig)
+      whenReady(result) { _ => verify(factoryLookup, never).convert(any[ReplaceEmpty])}(config = patienceConfig)
     }
 
-    "call FactoryIdToFactory.convert(factory) for only the nodes that can terminate" in {
-      val (lookupChildren, scope, factoryIdToFactory) = build
+    "call factoryLookup.convert(factory) for only the nodes that can terminate" in {
+      val (lookupChildren, scope, factoryLookup) = buildWithRealRepository
 
       val result = lookupChildren.get(scope = scope, childrenToChooseFrom = Set(fakeFactoryTerminates1Id))
 
-      whenReady(result) { _ => verify(factoryIdToFactory, times(2)).convert(fakeFactoryTerminates1Id)}(config = patienceConfig)
+      whenReady(result) { _ => verify(factoryLookup, times(2)).convert(fakeFactoryTerminates1Id)}(config = patienceConfig)
     }
 
     "return only the factories of nodes that can terminate" in {
-      val (lookupChildren, scope, _) = build
+      val (lookupChildren, scope, _) = buildWithRealRepository
 
       val result = lookupChildren.get(scope = scope,
         childrenToChooseFrom = Set(fakeFactoryDoesNotTerminateId,
@@ -47,19 +47,19 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
   }
 
   "fetch with current node" must {
-    "call FactoryIdToFactory.convert(id) for only the nodes that can terminate" in {
-      val (lookupChildren, scope, factoryIdToFactory) = build
+    "call factoryLookup.convert(id) for only the nodes that can terminate" in {
+      val (lookupChildren, scope, factoryLookup) = buildWithRealRepository
 
       val result = lookupChildren.get(scope = scope, parent = fakeFactoryHasChildrenId)
 
       whenReady(result) { _ =>
-        verify(factoryIdToFactory, times(1)).convert(fakeFactoryHasChildrenId)
-        verify(factoryIdToFactory, times(1)).convert(fakeFactoryTerminates1Id)
+        verify(factoryLookup, times(1)).convert(fakeFactoryHasChildrenId)
+        verify(factoryLookup, times(1)).convert(fakeFactoryTerminates1Id)
       }(config = patienceConfig)
     }
 
     "return only the ids of nodes that can terminate" in {
-      val (lookupChildren, scope, _) = build
+      val (lookupChildren, scope, _) = build()
 
       val result = lookupChildren.get(scope = scope, parent = fakeFactoryHasChildrenId)
 
@@ -77,12 +77,12 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
     }
 
     "return 0 when empty" in {
-      val (lookupChildren, _, _) = build
+      val (lookupChildren, _, _) = build()
       lookupChildren.size must equal(0)
     }
 
     "return 2 when repository has 2 items" in {
-      val (lookupChildren, scope, _) = build
+      val (lookupChildren, scope, _) = build(size = 2)
       val result = lookupChildren.get(scope = scope, parent = fakeFactoryHasChildrenId)
       whenReady(result) { r =>
         lookupChildren.size must equal(2)
@@ -90,25 +90,35 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
     }
   }
 
-  private def build = {
+  private def build(size: Int = 0) = {
     val scope = Scope(height = 1, maxHeight = 1)
-    val factoryIdToFactory = new StubFactoryLookupBinding
+    val factoryLookup = new StubFactoryLookupBinding
     val injector = testInjector(
-      factoryIdToFactory, // Override an implementation returned by IoC with a stubbed version.
+      factoryLookup, // Override an implementation returned by IoC with a stubbed version.
+      new StubRepositoryWithFuture(size = size),
       new LookupChildrenWithFuturesBinding
     )
-    (injector.getInstance(classOf[LookupChildrenWithFutures]), scope, factoryIdToFactory.stub)
+    (injector.getInstance(classOf[LookupChildrenWithFutures]), scope, factoryLookup.stub)
   }
 
   private def buildWithStubbedRepository = {
     val scope = Scope(height = 1, maxHeight = 1)
-    val factoryIdToFactory = new StubFactoryLookupBinding
-    val repositoryWithFutures = new StubRepositoryWithFuture
+    val factoryLookup = new StubFactoryLookupBinding
     val injector = testInjector(
-      factoryIdToFactory, // Override an implementation returned by IoC with a stubbed version.
-      repositoryWithFutures,
+      factoryLookup, // Override an implementation returned by IoC with a stubbed version.
       new LookupChildrenWithFuturesBinding
     )
-    (injector.getInstance(classOf[LookupChildrenWithFutures]), scope, factoryIdToFactory.stub, injector.getInstance(new Key[Memoize2[IScope, PozInt, Future[Boolean]]]() {}))
+    (injector.getInstance(classOf[LookupChildrenWithFutures]), scope, factoryLookup.stub, injector.getInstance(new Key[Memoize2[IScope, PozInt, Future[Boolean]]]() {}))
+  }
+
+  private def buildWithRealRepository = {
+    val scope = Scope(height = 1, maxHeight = 1)
+    val factoryLookup = new StubFactoryLookupBinding
+    val injector = testInjector(
+      factoryLookup, // Override an implementation returned by IoC with a stubbed version.
+      new RepositoryWithFuturesBinding,
+      new LookupChildrenWithFuturesBinding
+    )
+    (injector.getInstance(classOf[LookupChildrenWithFutures]), scope, factoryLookup.stub)
   }
 }

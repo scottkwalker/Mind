@@ -21,7 +21,6 @@ final class DevModule extends AbstractModule {
     bind(classOf[RandomNumberGenerator]).to(classOf[RandomNumberGeneratorImpl]).asEagerSingleton()
     bind(classOf[FactoryLookup]).to(classOf[FactoryLookupImpl]).asEagerSingleton()
     bind(new TypeLiteral[Memoize2[IScope, PozInt, Boolean]]() {}).to(classOf[RepositoryReturningBool]).asEagerSingleton()
-    bind(new TypeLiteral[Memoize2[IScope, PozInt, Future[Boolean]]]() {}).to(classOf[RepositoryReturningFutureBool]).asEagerSingleton()
     bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl]).asEagerSingleton()
     bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl]).asEagerSingleton()
     bind(classOf[IntegerMFactory]).to(classOf[IntegerMFactoryImpl]).asEagerSingleton()

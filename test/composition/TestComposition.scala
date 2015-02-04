@@ -37,6 +37,7 @@ trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with 
     new StubLookupChildrenWithFutures,
     new StubReplaceEmptyBinding,
     new StubRepositoryBinding,
+    new StubRepositoryWithFuture,
     new StubRngBinding,
     new StubSelectionStrategyBinding
   )
@@ -58,12 +59,10 @@ trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with 
       bind(classOf[CreateNode]).to(classOf[CreateNodeImpl]).asEagerSingleton()
       bind(classOf[FactoryLookup]).to(classOf[FactoryLookupImpl]).asEagerSingleton()
       bind(new TypeLiteral[Memoize2[IScope, PozInt, Boolean]]() {}).to(classOf[RepositoryReturningBool]).asEagerSingleton()
-      bind(new TypeLiteral[Memoize2[IScope, PozInt, Future[Boolean]]]() {}).to(classOf[RepositoryReturningFutureBool]).asEagerSingleton()
       bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl]).asEagerSingleton()
       bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl]).asEagerSingleton()
       bind(classOf[IntegerMFactory]).to(classOf[IntegerMFactoryImpl]).asEagerSingleton()
       bind(classOf[ValDclInFunctionParamFactory]).to(classOf[ValDclInFunctionParamFactoryImpl]).asEagerSingleton()
-//      bind(new TypeLiteral[Memoize2WithSet[IScope, PozInt]]() {}).to(classOf[RepositoryWithSetImpl]).asEagerSingleton()
     }
   }
 

@@ -13,7 +13,8 @@ trait Composition {
     new GeneratorBinding,
     new LookupChildrenBinding,
     new LookupChildrenWithFuturesBinding,
-    new RepositoryBinding
+    new RepositoryBinding,
+    new RepositoryWithFuturesBinding
   )
 
   lazy val filters = Array(
