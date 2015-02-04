@@ -76,7 +76,8 @@ class GeneratorImplSpec extends TestComposition {
     val generator = testInjector(
       factoryLookup,
       lookupChildren,
-      repository
+      repository,
+      new GeneratorBinding
     ).getInstance(classOf[Generator])
     (lookupChildren.stub, generator, repository.stub)
   }
