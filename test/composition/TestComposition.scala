@@ -31,7 +31,7 @@ trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with 
   private def defaultModules = Seq(
     new TestModule,
     new StubCreateSeqNodesBinding,
-
+    new StubFactoryLookupBinding,
     new StubGeneratorBinding,
     new StubLookupChildrenBinding,
     new StubLookupChildrenWithFutures,
@@ -57,7 +57,6 @@ trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with 
       bind(classOf[ValueRefFactory]).to(classOf[ValueRefFactoryImpl]).asEagerSingleton()
       bind(classOf[IScope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1))
       bind(classOf[CreateNode]).to(classOf[CreateNodeImpl]).asEagerSingleton()
-      bind(classOf[FactoryLookup]).to(classOf[FactoryLookupImpl]).asEagerSingleton()
       bind(new TypeLiteral[Memoize2[IScope, PozInt, Boolean]]() {}).to(classOf[RepositoryReturningBool]).asEagerSingleton()
       bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl]).asEagerSingleton()
       bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl]).asEagerSingleton()

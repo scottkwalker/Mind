@@ -1,6 +1,6 @@
 package models.domain.scala
 
-import composition.TestComposition
+import composition.{FactoryLookupBinding, TestComposition}
 import replaceEmpty._
 import utils.PozInt
 
@@ -57,6 +57,6 @@ final class FactoryLookupImplSpec extends TestComposition {
     }
   }
 
-  private val injector = testInjector()
+  private val injector = testInjector(new FactoryLookupBinding)
   private val factoryLookup = injector.getInstance(classOf[FactoryLookup])
 }

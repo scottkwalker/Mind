@@ -10,6 +10,7 @@ trait Composition {
     new DevModule,
     new LegalGamerBinding,
     new CreateSeqNodesBinding,
+    new FactoryLookupBinding,
     new GeneratorBinding,
     new LookupChildrenBinding,
     new LookupChildrenWithFuturesBinding,
