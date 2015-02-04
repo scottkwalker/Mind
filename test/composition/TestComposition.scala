@@ -36,6 +36,7 @@ trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with 
     new StubLookupChildrenBinding,
     new StubLookupChildrenWithFutures,
     new StubReplaceEmptyBinding,
+    new StubRepositoryBinding,
     new StubRngBinding,
     new StubSelectionStrategyBinding
   )
@@ -62,7 +63,7 @@ trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with 
       bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl]).asEagerSingleton()
       bind(classOf[IntegerMFactory]).to(classOf[IntegerMFactoryImpl]).asEagerSingleton()
       bind(classOf[ValDclInFunctionParamFactory]).to(classOf[ValDclInFunctionParamFactoryImpl]).asEagerSingleton()
-      bind(new TypeLiteral[Memoize2WithSet[IScope, PozInt]]() {}).to(classOf[RepositoryWithSetImpl]).asEagerSingleton()
+//      bind(new TypeLiteral[Memoize2WithSet[IScope, PozInt]]() {}).to(classOf[RepositoryWithSetImpl]).asEagerSingleton()
     }
   }
 

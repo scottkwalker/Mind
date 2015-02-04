@@ -1,7 +1,6 @@
 package composition
 
 import com.google.inject.{AbstractModule, TypeLiteral}
-import composition.StubFactoryLookupBinding.numberOfFactories
 import memoization.Memoize2WithSet
 import models.common.IScope
 import org.mockito.Matchers.any
@@ -13,7 +12,7 @@ final class StubRepositoryBinding extends AbstractModule with MockitoSugar {
 
   val stub = {
     val repository: Memoize2WithSet[IScope, PozInt] = mock[Memoize2WithSet[IScope, PozInt]]
-    when(repository.size).thenReturn(numberOfFactories)
+    when(repository.size).thenReturn(4)
     when(repository.apply(any[IScope], any[PozInt])).thenReturn(true) // Stub that value is always found.
     repository
   }

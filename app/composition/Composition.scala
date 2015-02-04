@@ -12,7 +12,8 @@ trait Composition {
     new CreateSeqNodesBinding,
     new GeneratorBinding,
     new LookupChildrenBinding,
-    new LookupChildrenWithFuturesBinding
+    new LookupChildrenWithFuturesBinding,
+    new RepositoryBinding
   )
 
   lazy val filters = Array(
