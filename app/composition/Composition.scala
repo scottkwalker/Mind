@@ -10,7 +10,8 @@ trait Composition {
     new DevModule,
     new LegalGamerBinding,
     new CreateSeqNodesBinding,
-    new GeneratorBinding
+    new GeneratorBinding,
+    new LookupChildrenBinding
   )
 
   lazy val filters = Array(
