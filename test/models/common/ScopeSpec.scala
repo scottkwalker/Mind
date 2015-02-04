@@ -169,16 +169,6 @@ final class ScopeSpec extends TestComposition {
     }
   }
 
-  "IoC create" must {
-    "return a new instance with injected values" in {
-      val injector = testInjector()
-      val sut = injector.getInstance(classOf[IScope])
-
-      sut.maxFuncsInObject must equal(10)
-      sut.maxExpressionsInFunc must equal(2)
-    }
-  }
-
   "serialize" must {
     "return expected json" in {
       Json.toJson(asModel) must equal(asJson)
