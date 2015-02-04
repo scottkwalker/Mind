@@ -3,7 +3,7 @@ package composition
 import com.google.inject.util.Modules.`override`
 import com.google.inject.{AbstractModule, Guice, Module, TypeLiteral}
 import memoization.{Memoize2, RepositoryReturningBool}
-import models.common.{IScope, Scope}
+import models.common.IScope
 import models.domain.scala.Empty
 import org.scalatest.concurrent.{Eventually, ScalaFutures}
 import org.scalatest.mock.MockitoSugar
@@ -28,6 +28,7 @@ trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with 
 
   private def defaultModules = Seq(
     new TestModule,
+    new StubCreateNodeBinding,
     new StubCreateSeqNodesBinding,
     new StubFactoryLookupBinding,
     new StubGeneratorBinding,
@@ -53,7 +54,6 @@ trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with 
       bind(classOf[TypeTreeFactory]).to(classOf[TypeTreeFactoryImpl]).asEagerSingleton()
       bind(classOf[ObjectFactory]).to(classOf[ObjectFactoryImpl]).asEagerSingleton()
       bind(classOf[ValueRefFactory]).to(classOf[ValueRefFactoryImpl]).asEagerSingleton()
-      bind(classOf[CreateNode]).to(classOf[CreateNodeImpl]).asEagerSingleton()
       bind(new TypeLiteral[Memoize2[IScope, PozInt, Boolean]]() {}).to(classOf[RepositoryReturningBool]).asEagerSingleton()
       bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl]).asEagerSingleton()
       bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl]).asEagerSingleton()

@@ -8,10 +8,11 @@ trait Composition {
 
   lazy val injector = Guice.createInjector(
     new DevModule,
-    new LegalGamerBinding,
+    new CreateNodeBinding,
     new CreateSeqNodesBinding,
     new FactoryLookupBinding,
     new GeneratorBinding,
+    new LegalGamerBinding,
     new LookupChildrenBinding,
     new LookupChildrenWithFuturesBinding,
     new RandomNumberGeneratorBinding,
