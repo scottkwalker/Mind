@@ -1,8 +1,8 @@
 package replaceEmpty
 
 import ai.SelectionStrategy
-import composition.TestComposition
-import models.common.Scope
+import composition.{StubReplaceEmptyBinding, StubSelectionStrategyBinding, TestComposition}
+import models.common.{IScope, Scope}
 import models.domain.Instruction
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
@@ -44,14 +44,12 @@ final class CreateNodeImplSpec extends TestComposition {
   }
 
   private def build = {
-    val scope = Scope(height = 10, maxHeight = 10)
-    val instruction = mock[Instruction]
-    val replaceEmpty = mock[ReplaceEmpty]
-    when(replaceEmpty.create(scope)).thenReturn(Future.successful(instruction))
-    when(replaceEmpty.updateScope(scope)).thenReturn(scope)
-    val ai = mock[SelectionStrategy]
-    when(ai.chooseChild(any[Future[Set[ReplaceEmpty]]])).thenReturn(Future.successful(replaceEmpty))
-    val possibleChildren = Future.successful(Set(replaceEmpty))
-    (replaceEmpty, scope, ai, possibleChildren)
+    val selectionStrategyBinding = new StubSelectionStrategyBinding
+    val possibleChildren = Future.successful(Set(selectionStrategyBinding.stubReplaceEmpty))
+    testInjector(
+      selectionStrategyBinding
+    ).getInstance(classOf[CreateNode])
+
+    (selectionStrategyBinding.stubReplaceEmpty, Scope(), selectionStrategyBinding.stub, possibleChildren)
   }
 }
