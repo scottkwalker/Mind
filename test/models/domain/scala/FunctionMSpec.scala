@@ -134,7 +134,7 @@ final class FunctionMSpec extends TestComposition {
         maxObjectsInTree = 1,
         maxHeight = 10)
       val empty = Empty()
-      val injector = testInjector(new StubReplaceEmptyBinding)
+      val injector = testInjector()
       val functionM = FunctionM(params = Seq(empty),
         nodes = Seq(Empty()),
         name = name)

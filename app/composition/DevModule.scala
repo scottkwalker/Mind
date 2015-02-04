@@ -1,10 +1,10 @@
 package composition
 
 import _root_.ai.{RandomNumberGenerator, RandomNumberGeneratorImpl}
-import com.google.inject.{TypeLiteral, AbstractModule}
+import com.google.inject.{AbstractModule, TypeLiteral}
 import memoization._
-import models.common.{IScope, Scope}
-import models.domain.scala.{FactoryLookup, FactoryLookupImpl, Empty}
+import models.common.IScope
+import models.domain.scala.{Empty, FactoryLookup, FactoryLookupImpl}
 import replaceEmpty._
 import utils.PozInt
 
@@ -20,12 +20,12 @@ final class DevModule extends AbstractModule {
     bind(classOf[CreateNode]).to(classOf[CreateNodeImpl]).asEagerSingleton()
     bind(classOf[RandomNumberGenerator]).to(classOf[RandomNumberGeneratorImpl]).asEagerSingleton()
     bind(classOf[FactoryLookup]).to(classOf[FactoryLookupImpl]).asEagerSingleton()
-    bind(new TypeLiteral [Memoize2[IScope, PozInt, Boolean]] () {}).to(classOf[RepositoryReturningBool]).asEagerSingleton()
-    bind(new TypeLiteral [Memoize2[IScope, PozInt, Future[Boolean]]] () {}).to(classOf[RepositoryReturningFutureBool]).asEagerSingleton()
+    bind(new TypeLiteral[Memoize2[IScope, PozInt, Boolean]]() {}).to(classOf[RepositoryReturningBool]).asEagerSingleton()
+    bind(new TypeLiteral[Memoize2[IScope, PozInt, Future[Boolean]]]() {}).to(classOf[RepositoryReturningFutureBool]).asEagerSingleton()
     bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl]).asEagerSingleton()
     bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl]).asEagerSingleton()
     bind(classOf[IntegerMFactory]).to(classOf[IntegerMFactoryImpl]).asEagerSingleton()
     bind(classOf[ValDclInFunctionParamFactory]).to(classOf[ValDclInFunctionParamFactoryImpl]).asEagerSingleton()
-    bind(new TypeLiteral [Memoize2WithSet[IScope, PozInt]] () {}).to(classOf[RepositoryWithSetImpl]).asEagerSingleton()
+    bind(new TypeLiteral[Memoize2WithSet[IScope, PozInt]]() {}).to(classOf[RepositoryWithSetImpl]).asEagerSingleton()
   }
 }

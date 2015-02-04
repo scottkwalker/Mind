@@ -108,7 +108,7 @@ final class AddOperatorSpec extends TestComposition {
       val scope = mock[IScope]
       when(scope.numVals).thenReturn(1)
       val empty: Instruction = Empty()
-      val injector = testInjector(new StubReplaceEmptyBinding)
+      val injector = testInjector()
       val instance = AddOperator(empty, empty)
 
       val result = instance.replaceEmpty(scope)(injector)

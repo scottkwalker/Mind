@@ -97,7 +97,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val scope = mock[IScope]
       val name = "a"
       val primitiveTypeEmpty = Empty()
-      val injector = testInjector(new StubReplaceEmptyBinding)
+      val injector = testInjector()
       val valDclInFunctionParam = ValDclInFunctionParam(name, primitiveTypeEmpty)
 
       val result = valDclInFunctionParam.replaceEmpty(scope)(injector)

@@ -35,6 +35,7 @@ trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with 
     new StubGeneratorBinding,
     new StubLookupChildrenBinding,
     new StubLookupChildrenWithFutures,
+    new StubReplaceEmptyBinding,
     new StubRngBinding,
     new StubSelectionStrategyBinding
   )

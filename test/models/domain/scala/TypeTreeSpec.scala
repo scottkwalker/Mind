@@ -87,7 +87,7 @@ final class TypeTreeSpec extends TestComposition {
         maxObjectsInTree = 1,
         maxHeight = 10)
       val empty = Empty()
-      val injector = testInjector(new StubReplaceEmptyBinding)
+      val injector = testInjector()
       val instance = TypeTree(nodes = Seq(empty))
 
       val result = instance.replaceEmpty(scope)(injector)
