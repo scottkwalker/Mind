@@ -4,7 +4,6 @@ import ai.SelectionStrategy
 import ai.legalGamer.LegalGamer
 import com.google.inject.AbstractModule
 
-
 final class LegalGamerBinding extends AbstractModule {
 
   def configure(): Unit = {

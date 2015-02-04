@@ -14,6 +14,7 @@ trait Composition {
     new GeneratorBinding,
     new LookupChildrenBinding,
     new LookupChildrenWithFuturesBinding,
+    new RandomNumberGeneratorBinding,
     new RepositoryBinding,
     new RepositoryWithFuturesBinding
   )

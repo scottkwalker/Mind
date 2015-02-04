@@ -1,18 +1,16 @@
 package composition
 
-import _root_.ai.{RandomNumberGenerator, RandomNumberGeneratorImpl}
 import com.google.inject.util.Modules.`override`
 import com.google.inject.{AbstractModule, Guice, Module, TypeLiteral}
-import memoization._
+import memoization.{Memoize2, RepositoryReturningBool}
 import models.common.{IScope, Scope}
-import models.domain.scala.{Empty, FactoryLookup, FactoryLookupImpl}
+import models.domain.scala.Empty
 import org.scalatest.concurrent.{Eventually, ScalaFutures}
 import org.scalatest.mock.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import replaceEmpty._
 import utils.PozInt
 
-import scala.concurrent.Future
 import scala.concurrent.duration.{FiniteDuration, SECONDS}
 
 trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with Eventually {

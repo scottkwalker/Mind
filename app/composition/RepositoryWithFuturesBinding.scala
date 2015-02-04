@@ -1,7 +1,7 @@
 package composition
 
 import com.google.inject.{AbstractModule, TypeLiteral}
-import memoization.{RepositoryReturningFutureBool, Memoize2, Memoize2WithSet, RepositoryWithSetImpl}
+import memoization.{Memoize2, RepositoryReturningFutureBool}
 import models.common.IScope
 import utils.PozInt
 
