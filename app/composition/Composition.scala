@@ -11,7 +11,8 @@ trait Composition {
     new LegalGamerBinding,
     new CreateSeqNodesBinding,
     new GeneratorBinding,
-    new LookupChildrenBinding
+    new LookupChildrenBinding,
+    new LookupChildrenWithFuturesBinding
   )
 
   lazy val filters = Array(

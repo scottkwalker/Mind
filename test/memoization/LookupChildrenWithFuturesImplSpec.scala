@@ -2,7 +2,7 @@ package memoization
 
 import com.google.inject.Key
 import composition.StubFactoryLookupBinding._
-import composition.{StubFactoryLookupBinding, StubRepositoryWithFuture, TestComposition}
+import composition.{LookupChildrenWithFuturesBinding, StubFactoryLookupBinding, StubRepositoryWithFuture, TestComposition}
 import models.common.{IScope, Scope}
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
@@ -94,7 +94,8 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
     val scope = Scope(height = 1, maxHeight = 1)
     val factoryIdToFactory = new StubFactoryLookupBinding
     val injector = testInjector(
-      factoryIdToFactory // Override an implementation returned by IoC with a stubbed version.
+      factoryIdToFactory, // Override an implementation returned by IoC with a stubbed version.
+      new LookupChildrenWithFuturesBinding
     )
     (injector.getInstance(classOf[LookupChildrenWithFutures]), scope, factoryIdToFactory.stub)
   }
@@ -105,7 +106,8 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
     val repositoryWithFutures = new StubRepositoryWithFuture
     val injector = testInjector(
       factoryIdToFactory, // Override an implementation returned by IoC with a stubbed version.
-      repositoryWithFutures
+      repositoryWithFutures,
+      new LookupChildrenWithFuturesBinding
     )
     (injector.getInstance(classOf[LookupChildrenWithFutures]), scope, factoryIdToFactory.stub, injector.getInstance(new Key[Memoize2[IScope, PozInt, Future[Boolean]]]() {}))
   }
