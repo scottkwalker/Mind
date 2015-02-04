@@ -1,7 +1,6 @@
 package replaceEmpty
 
-import ai.RandomNumberGenerator
-import composition.{StubCreateSeqNodesBinding, StubIScopeBinding, StubRngBinding, TestComposition}
+import composition.{StubCreateSeqNodesBinding, StubRngBinding, TestComposition}
 import models.common.{IScope, Scope}
 import models.domain.Instruction
 import models.domain.scala.Object
@@ -14,9 +13,9 @@ final class ObjectFactorySpec extends TestComposition {
 
   "create" must {
     "returns instance of this type" in {
-      val (objectFactory, scope, _) = build()
+      val (objectFactory, _) = build()
 
-      val result = objectFactory.create(scope = scope)
+      val result = objectFactory.create(scope = Scope())
 
       whenReady(result) { result =>
         result mustBe an[Object]
@@ -24,9 +23,9 @@ final class ObjectFactorySpec extends TestComposition {
     }
 
     "returns expected given scope with 0 existing objects" in {
-      val (objectFactory, scope, _) = build(numObjects = 0)
+      val (objectFactory, _) = build()
 
-      val result = objectFactory.create(scope = scope)
+      val result = objectFactory.create(scope = Scope())
 
       whenReady(result) {
         case Object(_, name) => name must equal("o0")
@@ -35,9 +34,9 @@ final class ObjectFactorySpec extends TestComposition {
     }
 
     "returns expected given scope with 1 existing objects" in {
-      val (objectFactory, scope, _) = build(numObjects = 1)
+      val (objectFactory, _) = build()
 
-      val result = objectFactory.create(scope = scope)
+      val result = objectFactory.create(scope = Scope(numObjects = 1))
 
       whenReady(result) {
         case Object(_, name) => name must equal("o1")
@@ -46,9 +45,9 @@ final class ObjectFactorySpec extends TestComposition {
     }
 
     "calls CreateSeqNodes.create once" in {
-      val (objectFactory, scope, createSeqNodes) = build(numObjects = 1)
+      val (objectFactory, createSeqNodes) = build()
 
-      val result = objectFactory.create(scope = scope)
+      val result = objectFactory.create(scope = Scope())
 
       whenReady(result) { r =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[ReplaceEmpty]]], any[IScope], any[Seq[Instruction]], any[Int])
@@ -59,7 +58,7 @@ final class ObjectFactorySpec extends TestComposition {
   "updateScope" must {
     "call increment objects" in {
       val scope = mock[IScope]
-      val (objectFactory, _, _) = build()
+      val (objectFactory, _) = build()
 
       objectFactory.updateScope(scope)
 
@@ -67,15 +66,13 @@ final class ObjectFactorySpec extends TestComposition {
     }
   }
 
-  private def build(nextInt: Int = 0, numObjects: Int = 1) = {
+  private def build(nextInt: Int = 0) = {
     val randomNumberGenerator = new StubRngBinding(nextInt = nextInt)
-    val scope = new StubIScopeBinding(numObjects = numObjects)
     val createSeqNodes = new StubCreateSeqNodesBinding
     val injector = testInjector(
       randomNumberGenerator,
-      scope,
       createSeqNodes
     )
-    (injector.getInstance(classOf[ObjectFactoryImpl]), scope.stub, createSeqNodes.stub)
+    (injector.getInstance(classOf[ObjectFactoryImpl]), createSeqNodes.stub)
   }
 }

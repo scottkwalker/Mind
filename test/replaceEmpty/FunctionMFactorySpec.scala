@@ -1,8 +1,7 @@
 package replaceEmpty
 
-import ai.RandomNumberGenerator
-import composition.{StubCreateSeqNodesBinding, StubIScopeBinding, StubRngBinding, TestComposition}
-import models.common.IScope
+import composition.{StubCreateSeqNodesBinding, StubRngBinding, TestComposition}
+import models.common.{IScope, Scope}
 import models.domain.Instruction
 import models.domain.scala.FunctionM
 import org.mockito.Matchers._
@@ -14,9 +13,9 @@ final class FunctionMFactorySpec extends TestComposition {
 
   "create" must {
     "return instance of this type" in {
-      val (factory, scope, _) = functionMFactory()
+      val (factory, _) = functionMFactory()
 
-      val result = factory.create(scope = scope)
+      val result = factory.create(scope = Scope())
 
       whenReady(result) { result =>
         result mustBe a[FunctionM]
@@ -24,9 +23,9 @@ final class FunctionMFactorySpec extends TestComposition {
     }
 
     "return expected given scope with 0 functions" in {
-      val (factory, scope, _) = functionMFactory()
+      val (factory, _) = functionMFactory()
 
-      val result = factory.create(scope = scope)
+      val result = factory.create(scope = Scope())
 
       whenReady(result) {
         case FunctionM(_, _, name) => name must equal("f0")
@@ -35,9 +34,9 @@ final class FunctionMFactorySpec extends TestComposition {
     }
 
     "return expected given scope with 1 functions" in {
-      val (factory, scope, _) = functionMFactory(numFuncs = 1)
+      val (factory, _) = functionMFactory()
 
-      val result = factory.create(scope = scope)
+      val result = factory.create(scope = Scope(numFuncs = 1))
 
       whenReady(result) {
         case FunctionM(_, _, name) => name must equal("f1")
@@ -46,9 +45,9 @@ final class FunctionMFactorySpec extends TestComposition {
     }
 
     "calls CreateSeqNodes.create twice (once for params and once for nodes)" in {
-      val (factory, scope, createSeqNodes) = functionMFactory()
+      val (factory, createSeqNodes) = functionMFactory()
 
-      val result = factory.create(scope = scope)
+      val result = factory.create(scope = Scope())
 
       whenReady(result) { r =>
         verify(createSeqNodes, times(2)).create(any[Future[Set[ReplaceEmpty]]], any[IScope], any[Seq[Instruction]], any[Int])
@@ -59,7 +58,7 @@ final class FunctionMFactorySpec extends TestComposition {
   "updateScope" must {
     "call increment functions" in {
       val scope = mock[IScope]
-      val (factory, _, _) = functionMFactory()
+      val (factory, _) = functionMFactory()
 
       factory.updateScope(scope = scope)
 
@@ -67,15 +66,13 @@ final class FunctionMFactorySpec extends TestComposition {
     }
   }
 
-  private def functionMFactory(nextInt: Int = 0, numFuncs: Int = 0) = {
+  private def functionMFactory(nextInt: Int = 0) = {
     val randomNumberGenerator = new StubRngBinding(nextInt = nextInt)
-    val scope = new StubIScopeBinding(numFuncs = numFuncs)
     val createSeqNodes = new StubCreateSeqNodesBinding
     val injector = testInjector(
       randomNumberGenerator,
-      scope,
       createSeqNodes
     )
-    (injector.getInstance(classOf[FunctionMFactoryImpl]), scope.stub, createSeqNodes.stub)
+    (injector.getInstance(classOf[FunctionMFactoryImpl]), createSeqNodes.stub)
   }
 }

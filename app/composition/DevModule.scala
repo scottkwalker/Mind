@@ -17,7 +17,6 @@ final class DevModule extends AbstractModule {
     bind(classOf[TypeTreeFactory]).to(classOf[TypeTreeFactoryImpl]).asEagerSingleton()
     bind(classOf[ObjectFactory]).to(classOf[ObjectFactoryImpl]).asEagerSingleton()
     bind(classOf[ValueRefFactory]).to(classOf[ValueRefFactoryImpl]).asEagerSingleton()
-    bind(classOf[IScope]).toInstance(Scope(maxExpressionsInFunc = 2, maxFuncsInObject = 10, maxParamsInFunc = 2, maxObjectsInTree = 1))
     bind(classOf[CreateNode]).to(classOf[CreateNodeImpl]).asEagerSingleton()
     bind(classOf[RandomNumberGenerator]).to(classOf[RandomNumberGeneratorImpl]).asEagerSingleton()
     bind(classOf[FactoryLookup]).to(classOf[FactoryLookupImpl]).asEagerSingleton()
