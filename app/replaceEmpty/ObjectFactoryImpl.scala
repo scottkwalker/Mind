@@ -15,7 +15,7 @@ case class ObjectFactoryImpl @Inject()(
                                            lookupChildren: LookupChildrenWithFutures
                                            ) extends ObjectFactory with UpdateScopeIncrementObjects {
 
-  override val nodesToChooseFrom = Set(FunctionMFactoryImpl.id)
+  override val nodesToChooseFrom = Set(FunctionMFactory.id)
 
   override def create(scope: IScope): Future[Instruction] = async {
     val nodesWithoutEmpties = await(createNodes(scope))

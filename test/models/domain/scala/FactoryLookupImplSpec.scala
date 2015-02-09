@@ -29,7 +29,7 @@ final class FactoryLookupImplSpec extends TestComposition {
 
     "return expected id for FunctionMFactory" in {
       val factory = injector.getInstance(classOf[FunctionMFactory])
-      factoryLookup.convert(factory) must equal(FunctionMFactoryImpl.id)
+      factoryLookup.convert(factory) must equal(FunctionMFactory.id)
     }
 
     "return expected id for IntegerMFactory" in {

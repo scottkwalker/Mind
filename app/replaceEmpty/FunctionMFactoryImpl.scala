@@ -48,8 +48,3 @@ case class FunctionMFactoryImpl @Inject()(
     )
   }
 }
-
-object FunctionMFactoryImpl {
-
-  val id = PozInt(2)
-}
