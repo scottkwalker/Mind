@@ -1,9 +1,9 @@
 package ai
 
 import ai.aco.Aco
-import composition.{StubRngBinding, TestComposition}
-import org.mockito.Matchers.any
-import org.mockito.Mockito.{when, _}
+import composition.StubRngBinding
+import composition.TestComposition
+import org.mockito.Mockito._
 import replaceEmpty.ReplaceEmpty
 
 import scala.concurrent.Future

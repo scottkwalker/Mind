@@ -1,7 +1,8 @@
 package controllers
 
 import composition.TestComposition
-import models.common.LookupChildrenRequest.Form.{CurrentNodeId, ScopeId}
+import models.common.LookupChildrenRequest.Form.CurrentNodeId
+import models.common.LookupChildrenRequest.Form.ScopeId
 import models.common.Scope.Form._
 
 final class LegalChildrenFormSpec extends TestComposition {
@@ -148,15 +149,15 @@ final class LegalChildrenFormSpec extends TestComposition {
   private def legalChildren = testInjector().getInstance(classOf[LegalChildren])
 
   private def formBuilder(numVals: String,
-                                    numFuncs: String,
-                                    numObjects: String,
-                                    height: String,
-                                    maxExpressionsInFunc: String,
-                                    maxFuncsInObject: String,
-                                    maxParamsInFunc: String,
-                                    maxObjectsInTree: String,
-                                    maxHeight: String,
-                                    currentNode: String) = {
+                          numFuncs: String,
+                          numObjects: String,
+                          height: String,
+                          maxExpressionsInFunc: String,
+                          maxFuncsInObject: String,
+                          maxParamsInFunc: String,
+                          maxObjectsInTree: String,
+                          maxHeight: String,
+                          currentNode: String) = {
     legalChildren.form.bind(
       Map(
         s"$ScopeId.$NumValsId" -> numVals,

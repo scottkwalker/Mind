@@ -3,9 +3,12 @@ package models.domain.scala
 import com.google.inject.Injector
 import models.common.IScope
 import models.domain.Instruction
-import replaceEmpty.{AccumulateInstructions, TypeTreeFactory, UpdateScopeThrows}
+import replaceEmpty.AccumulateInstructions
+import replaceEmpty.TypeTreeFactory
+import replaceEmpty.UpdateScopeThrows
 
-import scala.async.Async.{async, await}
+import scala.async.Async.async
+import scala.async.Async.await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 

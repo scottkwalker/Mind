@@ -1,8 +1,12 @@
 import java.io.File
+
 import com.typesafe.config.ConfigFactory
 import composition.Composition
 import filters.WithFilters
-import play.api.{Application, Configuration, GlobalSettings, Mode}
+import play.api.Application
+import play.api.Configuration
+import play.api.GlobalSettings
+import play.api.Mode
 
 object Global extends GlobalLike
 

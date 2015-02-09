@@ -6,7 +6,8 @@ import models.domain.Instruction
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
-import replaceEmpty.{CreateNode, ReplaceEmpty}
+import replaceEmpty.CreateNode
+import replaceEmpty.ReplaceEmpty
 
 import scala.concurrent.Future
 

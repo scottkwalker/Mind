@@ -1,14 +1,8 @@
 package memoization
 
-import java.util.concurrent.CountDownLatch
-
 import composition.TestComposition
-import org.mockito.Mockito._
 import play.api.libs.json._
 import serialization.JsonValidationException
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{Await, Future}
 
 final class Memoize2WithSetImplSpec extends TestComposition {
 
@@ -93,36 +87,37 @@ final class Memoize2WithSetImplSpec extends TestComposition {
     }
   }
 
-      "size" must {
-        "return 0 when empty" in {
-          val memo = new Memoize2WithSetImpl[Int, Int] {}
-          memo.size must equal(0)
-        }
+  "size" must {
+    "return 0 when empty" in {
+      val memo = new Memoize2WithSetImpl[Int, Int] {}
+      memo.size must equal(0)
+    }
 
-        "return 1 when only one entry" in {
-          val memo = new Memoize2WithSetImpl[Int, Int] {}
-          memo.add(Set("1|1"))
+    "return 1 when only one entry" in {
+      val memo = new Memoize2WithSetImpl[Int, Int] {}
+      memo.add(Set("1|1"))
 
-          memo.size must equal(1)
-        }
+      memo.size must equal(1)
+    }
 
-        "return 3 when 3 entries" in {
-          val memo = new Memoize2WithSetImpl[Int, Int] {}
-          memo.add(Set("1|1", "2|2", "3|3"))
-          memo.size must equal(3)
-        }
+    "return 3 when 3 entries" in {
+      val memo = new Memoize2WithSetImpl[Int, Int] {}
+      memo.add(Set("1|1", "2|2", "3|3"))
+      memo.size must equal(3)
+    }
+  }
+
+  class Dummy extends Memoize2WithSetImpl[Int, Int]() {}
+
+  object Dummy {
+
+    implicit val readJson: Reads[Dummy] =
+      (__ \ "cache").read[Set[String]].map {
+        setOfKeys =>
+          val repo = new Dummy()
+          repo.add(setOfKeys)
+          repo
       }
+  }
 
-      class Dummy extends Memoize2WithSetImpl[Int, Int]() {}
-
-      object Dummy {
-
-        implicit val readJson: Reads[Dummy] =
-          (__ \ "cache").read[Set[String]].map {
-            setOfKeys =>
-              val repo = new Dummy()
-              repo.add(setOfKeys)
-              repo
-          }
-      }
 }

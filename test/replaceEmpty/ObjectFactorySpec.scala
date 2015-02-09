@@ -1,7 +1,10 @@
 package replaceEmpty
 
-import composition.{StubCreateSeqNodesBinding, StubRngBinding, TestComposition}
-import models.common.{IScope, Scope}
+import composition.StubCreateSeqNodesBinding
+import composition.StubRngBinding
+import composition.TestComposition
+import models.common.IScope
+import models.common.Scope
 import models.domain.Instruction
 import models.domain.scala.Object
 import org.mockito.Matchers._

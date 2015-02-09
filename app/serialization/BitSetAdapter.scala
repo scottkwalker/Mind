@@ -1,6 +1,7 @@
 package serialization
 
 import play.api.libs.json._
+
 import scala.collection.immutable.BitSet
 
 object BitSetAdapter {

@@ -3,7 +3,8 @@ package memoization
 import com.google.inject.Key
 import composition.StubFactoryLookupBinding._
 import composition._
-import models.common.{IScope, Scope}
+import models.common.IScope
+import models.common.Scope
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
 import replaceEmpty.ReplaceEmpty

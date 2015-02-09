@@ -1,8 +1,11 @@
 package controllers
 
 import composition.TestComposition
-import play.api.test.{WithApplication, FakeRequest}
-import play.api.test.Helpers.{OK, charset, contentAsString, contentType, status}
+import play.api.test.FakeRequest
+import play.api.test.Helpers.OK
+import play.api.test.Helpers.charset
+import play.api.test.Helpers.contentType
+import play.api.test.Helpers.status
 
 final class HealthCheckUnitSpec extends TestComposition {
 

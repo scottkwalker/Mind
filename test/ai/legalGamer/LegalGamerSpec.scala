@@ -1,11 +1,17 @@
 package ai.legalGamer
 
-import ai.{RandomNumberGenerator, SelectionStrategy}
+import ai.SelectionStrategy
 import composition.ai.legalGamer.LegalGamerBinding
-import composition.{StubRngBinding, TestComposition}
+import composition.StubRngBinding
+import composition.TestComposition
 import fitness.AddTwoInts
 import models.common.Scope
-import models.domain.scala.{Empty, FunctionM, IntegerM, Object, TypeTree, ValDclInFunctionParam}
+import models.domain.scala.Empty
+import models.domain.scala.FunctionM
+import models.domain.scala.IntegerM
+import models.domain.scala.Object
+import models.domain.scala.TypeTree
+import models.domain.scala.ValDclInFunctionParam
 import replaceEmpty.ReplaceEmpty
 
 final class LegalGamerSpec extends TestComposition {

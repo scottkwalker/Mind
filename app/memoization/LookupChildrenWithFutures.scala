@@ -4,6 +4,7 @@ import models.common.IScope
 import models.domain.scala.FactoryLookup
 import replaceEmpty.ReplaceEmpty
 import utils.PozInt
+
 import scala.concurrent.Future
 
 trait LookupChildrenWithFutures {

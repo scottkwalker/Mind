@@ -4,7 +4,8 @@ import com.google.inject.Inject
 import memoization.Generator
 import models.common.PopulateRequest
 import play.api.data.Form
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.Action
+import play.api.mvc.Controller
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

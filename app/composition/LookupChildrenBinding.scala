@@ -1,7 +1,8 @@
 package composition
 
 import com.google.inject.AbstractModule
-import memoization.{LookupChildren, LookupChildrenImpl}
+import memoization.LookupChildren
+import memoization.LookupChildrenImpl
 
 final class LookupChildrenBinding extends AbstractModule {
 

@@ -3,9 +3,11 @@ package models.domain.scala
 import com.google.inject.Injector
 import models.common.IScope
 import models.domain.Instruction
-import replaceEmpty.{UpdateScopeNoChange, ValueRefFactory}
+import replaceEmpty.UpdateScopeNoChange
+import replaceEmpty.ValueRefFactory
 
-import scala.async.Async.{async, await}
+import scala.async.Async.async
+import scala.async.Async.await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 

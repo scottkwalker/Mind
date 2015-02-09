@@ -1,6 +1,7 @@
 package models.common
 
-import play.api.data.Forms.{mapping, number}
+import play.api.data.Forms.mapping
+import play.api.data.Forms.number
 import play.api.libs.json.Json
 
 final case class LookupChildrenRequest(scope: Scope, currentNode: Int)

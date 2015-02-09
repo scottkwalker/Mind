@@ -1,8 +1,11 @@
 package serialization
 
 import composition.TestComposition
-import play.api.libs.json.{JsNumber, JsArray, JsObject, Json}
+import play.api.libs.json.JsArray
+import play.api.libs.json.JsNumber
+import play.api.libs.json.JsObject
 import serialization.BitSetAdapter.readJsonBitMaskToBitset
+
 import scala.collection.immutable.BitSet
 
 final class JsonDeserialiserSpec extends TestComposition {
@@ -23,5 +26,5 @@ final class JsonDeserialiserSpec extends TestComposition {
   }
 
   private val dataAsBitSet = BitSet.empty + 3 + 4 + 4 + 100 + 101
-  private val asJson = JsObject(fields = Seq(("bitMask", JsArray(Seq(JsNumber(24),JsNumber(206158430208L))))))
+  private val asJson = JsObject(fields = Seq(("bitMask", JsArray(Seq(JsNumber(24), JsNumber(206158430208L))))))
 }

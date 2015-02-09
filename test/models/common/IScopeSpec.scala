@@ -2,7 +2,9 @@ package models.common
 
 import composition.TestComposition
 import models.common.Scope.Form._
-import play.api.libs.json.{JsNumber, JsObject, Json}
+import play.api.libs.json.JsNumber
+import play.api.libs.json.JsObject
+import play.api.libs.json.Json
 import serialization.JsonDeserialiser
 
 final class IScopeSpec extends TestComposition {

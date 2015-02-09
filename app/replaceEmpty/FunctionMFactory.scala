@@ -1,7 +1,6 @@
 package replaceEmpty
 
 import models.common.IScope
-import models.domain.Instruction
 import utils.PozInt
 
 import scala.concurrent.Future

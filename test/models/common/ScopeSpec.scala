@@ -5,7 +5,8 @@ import java.util.concurrent.CountDownLatch
 //import com.fasterxml.jackson.annotation.JsonFormat
 
 import composition.TestComposition
-import play.api.libs.json.Json.{JsValueWrapper, obj}
+import play.api.libs.json.Json.JsValueWrapper
+import play.api.libs.json.Json.obj
 import play.api.libs.json._
 import serialization.JsonDeserialiser
 

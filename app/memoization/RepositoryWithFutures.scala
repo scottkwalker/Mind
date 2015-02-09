@@ -10,9 +10,11 @@ import play.api.libs.json._
 import utils.PozInt
 import utils.Timeout.finiteTimeout
 
-import scala.async.Async.{async, await}
+import scala.async.Async.async
+import scala.async.Async.await
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Await
+import scala.concurrent.Future
 import scala.language.implicitConversions
 
 class RepositoryWithFutures @Inject()(factoryLookup: FactoryLookup)

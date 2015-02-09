@@ -1,9 +1,11 @@
 package views
 
-import models.common.LookupChildrenRequest.Form.{CurrentNodeId, ScopeId}
+import models.common.LookupChildrenRequest.Form.CurrentNodeId
+import models.common.LookupChildrenRequest.Form.ScopeId
 import models.common.Scope.Form._
 import org.openqa.selenium.WebDriver
-import org.scalatest.selenium.{Page, WebBrowser}
+import org.scalatest.selenium.Page
+import org.scalatest.selenium.WebBrowser
 
 class LegalChildrenPage(port: Int)(implicit driver: WebDriver) extends Page with WebBrowser {
 

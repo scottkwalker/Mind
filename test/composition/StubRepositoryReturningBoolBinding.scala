@@ -1,6 +1,7 @@
 package composition
 
-import com.google.inject.{AbstractModule, TypeLiteral}
+import com.google.inject.AbstractModule
+import com.google.inject.TypeLiteral
 import memoization.Memoize2
 import models.common.IScope
 import org.mockito.Matchers.any

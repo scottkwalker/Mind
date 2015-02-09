@@ -1,6 +1,7 @@
 package models.domain.scala
 
-import com.google.inject.{Inject, Injector}
+import com.google.inject.Inject
+import com.google.inject.Injector
 import models.common.IScope
 import models.domain.Instruction
 import replaceEmpty.UpdateScopeThrows

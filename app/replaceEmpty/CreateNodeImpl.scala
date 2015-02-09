@@ -4,7 +4,9 @@ import ai.SelectionStrategy
 import com.google.inject.Inject
 import models.common.IScope
 import models.domain.Instruction
-import scala.async.Async.{async, await}
+
+import scala.async.Async.async
+import scala.async.Async.await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 

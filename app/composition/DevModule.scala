@@ -1,9 +1,12 @@
 package composition
 
-import com.google.inject.{AbstractModule, TypeLiteral}
+import com.google.inject.AbstractModule
+import com.google.inject.TypeLiteral
 import memoization._
 import models.common.IScope
-import models.domain.scala.{Empty, FactoryLookup, FactoryLookupImpl}
+import models.domain.scala.Empty
+import models.domain.scala.FactoryLookup
+import models.domain.scala.FactoryLookupImpl
 import replaceEmpty._
 import utils.PozInt
 

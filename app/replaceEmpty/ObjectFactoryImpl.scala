@@ -5,15 +5,16 @@ import memoization.LookupChildrenWithFutures
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.Object
-import utils.PozInt
-import scala.async.Async.{async, await}
-import scala.concurrent.Future
+
+import scala.async.Async.async
+import scala.async.Async.await
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 case class ObjectFactoryImpl @Inject()(
-                                           creator: CreateSeqNodes,
-                                           lookupChildren: LookupChildrenWithFutures
-                                           ) extends ObjectFactory with UpdateScopeIncrementObjects {
+                                        creator: CreateSeqNodes,
+                                        lookupChildren: LookupChildrenWithFutures
+                                        ) extends ObjectFactory with UpdateScopeIncrementObjects {
 
   override val nodesToChooseFrom = Set(FunctionMFactory.id)
 

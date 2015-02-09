@@ -1,17 +1,23 @@
 package composition
 
 import com.google.inject.util.Modules.`override`
-import com.google.inject.{AbstractModule, Guice, Module, TypeLiteral}
-import memoization.{Memoize2, RepositoryReturningBool}
+import com.google.inject.AbstractModule
+import com.google.inject.Guice
+import com.google.inject.Module
+import com.google.inject.TypeLiteral
+import memoization.Memoize2
+import memoization.RepositoryReturningBool
 import models.common.IScope
 import models.domain.scala.Empty
-import org.scalatest.concurrent.{Eventually, ScalaFutures}
+import org.scalatest.concurrent.Eventually
+import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mock.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import replaceEmpty._
 import utils.PozInt
 
-import scala.concurrent.duration.{FiniteDuration, SECONDS}
+import scala.concurrent.duration.FiniteDuration
+import scala.concurrent.duration.SECONDS
 
 trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with Eventually {
 

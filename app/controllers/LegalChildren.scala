@@ -5,7 +5,8 @@ import memoization.LookupChildren
 import models.common.LookupChildrenRequest
 import play.api.data.Form
 import play.api.libs.json.Json.toJson
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.Action
+import play.api.mvc.Controller
 import utils.PozInt
 
 final class LegalChildren @Inject()(lookupChildren: LookupChildren) extends Controller {

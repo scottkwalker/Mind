@@ -1,13 +1,15 @@
 package models.domain.scala
 
 import com.google.inject.Injector
-import composition.{StubReplaceEmptyBinding, TestComposition}
-import models.common.{IScope, Scope}
+import composition.TestComposition
+import models.common.IScope
+import models.common.Scope
 import models.domain.Instruction
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Await
+import scala.concurrent.Future
 
 final class ObjectSpec extends TestComposition {
 

@@ -1,7 +1,9 @@
 package composition
 
-import com.google.inject.{AbstractModule, TypeLiteral}
-import memoization.{Memoize2WithSet, RepositoryWithSetImpl}
+import com.google.inject.AbstractModule
+import com.google.inject.TypeLiteral
+import memoization.Memoize2WithSet
+import memoization.RepositoryWithSetImpl
 import models.common.IScope
 import utils.PozInt
 

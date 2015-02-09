@@ -5,9 +5,10 @@ import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.IntegerM
 import utils.PozInt
+
 import scala.async.Async.async
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 case class IntegerMFactoryImpl @Inject()() extends IntegerMFactory with UpdateScopeNoChange {
 

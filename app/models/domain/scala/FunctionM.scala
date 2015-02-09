@@ -3,9 +3,12 @@ package models.domain.scala
 import com.google.inject.Injector
 import models.common.IScope
 import models.domain.Instruction
-import replaceEmpty.{AccumulateInstructions, FunctionMFactory, UpdateScopeIncrementFuncs}
+import replaceEmpty.AccumulateInstructions
+import replaceEmpty.FunctionMFactory
+import replaceEmpty.UpdateScopeIncrementFuncs
 
-import scala.async.Async.{async, await}
+import scala.async.Async.async
+import scala.async.Async.await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -36,7 +39,7 @@ final case class FunctionM(params: Seq[Instruction],
   private def replaceEmpty(initScope: IScope, initInstructions: Seq[Instruction], funcReplaceEmpty: (IScope) => Future[AccumulateInstructions])(implicit injector: Injector): Future[AccumulateInstructions] = {
     initInstructions.foldLeft(Future.successful(AccumulateInstructions(instructions = Seq.empty[Instruction], scope = initScope))) {
       (previousResult, currentInstruction) => previousResult.flatMap { previous =>
-          replaceEmpty(scope = previous.scope, currentInstruction = currentInstruction, acc = previous.instructions, funcReplaceEmpty = funcReplaceEmpty)
+        replaceEmpty(scope = previous.scope, currentInstruction = currentInstruction, acc = previous.instructions, funcReplaceEmpty = funcReplaceEmpty)
       }
     }
   }

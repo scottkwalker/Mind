@@ -1,6 +1,7 @@
 package composition
 
-import _root_.ai.{RandomNumberGenerator, RandomNumberGeneratorImpl}
+import _root_.ai.RandomNumberGenerator
+import _root_.ai.RandomNumberGeneratorImpl
 import com.google.inject.AbstractModule
 
 final class RandomNumberGeneratorBinding extends AbstractModule {

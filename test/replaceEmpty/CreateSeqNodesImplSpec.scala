@@ -1,9 +1,11 @@
 package replaceEmpty
 
 import ai.aco.Aco
-import ai.{RandomNumberGenerator, SelectionStrategy}
+import ai.RandomNumberGenerator
+import ai.SelectionStrategy
 import composition.TestComposition
-import models.common.{IScope, Scope}
+import models.common.IScope
+import models.common.Scope
 import models.domain.Instruction
 import org.mockito.Matchers.any
 import org.mockito.Mockito._

@@ -2,8 +2,9 @@ package views
 
 import models.common.PopulateRequest.Form.MaxScopeId
 import models.common.Scope.Form._
-import org.openqa.selenium.{By, WebDriver}
-import org.scalatest.selenium.{Page, WebBrowser}
+import org.openqa.selenium.WebDriver
+import org.scalatest.selenium.Page
+import org.scalatest.selenium.WebBrowser
 
 class PopulatePage(port: Int)(implicit driver: WebDriver) extends Page with WebBrowser {
 

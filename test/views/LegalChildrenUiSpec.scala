@@ -4,10 +4,9 @@ import composition.TestComposition
 import org.scalatest.concurrent.IntegrationPatience
 import org.scalatestplus.play._
 import play.api.Play
-import play.api.libs.json.{JsArray, JsNumber}
+import play.api.libs.json.JsArray
 import play.api.test.WithApplication
 import replaceEmpty.AddOperatorFactory
-import replaceEmpty.AddOperatorFactoryImpl
 
 final class LegalChildrenUiSpec extends TestComposition with IntegrationPatience with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
 
@@ -76,29 +75,29 @@ final class LegalChildrenUiSpec extends TestComposition with IntegrationPatience
       }(config = patienceConfig)
     }
 
-//    "return expected json when valid data is submitted" taggedAs UiTag in new WithApplication {
-//      val page = new LegalChildrenPage(port)
-//      val expected = JsArray(Seq(JsNumber(7))).toString()
-//      val valid = "1"
-//      go to page
-//      // Fill in the fields
-//      page.currentNode.value = AddOperatorFactory.id.value.toString
-//      page.numVals.value = valid
-//      page.numFuncs.value = valid
-//      page.numObjects.value = valid
-//      page.height.value = valid
-//      page.maxExpressionsInFunc.value = valid
-//      page.maxFuncsInObject.value = valid
-//      page.maxParamsInFunc.value = valid
-//      page.maxObjectsInTree.value = valid
-//      page.maxHeight.value = valid
-//
-//      submit()
-//
-//      eventually {
-//        pageSource must equal(expected)
-//      }(config = whenReadyPatienceConfig)
-//    }
+    //    "return expected json when valid data is submitted" taggedAs UiTag in new WithApplication {
+    //      val page = new LegalChildrenPage(port)
+    //      val expected = JsArray(Seq(JsNumber(7))).toString()
+    //      val valid = "1"
+    //      go to page
+    //      // Fill in the fields
+    //      page.currentNode.value = AddOperatorFactory.id.value.toString
+    //      page.numVals.value = valid
+    //      page.numFuncs.value = valid
+    //      page.numObjects.value = valid
+    //      page.height.value = valid
+    //      page.maxExpressionsInFunc.value = valid
+    //      page.maxFuncsInObject.value = valid
+    //      page.maxParamsInFunc.value = valid
+    //      page.maxObjectsInTree.value = valid
+    //      page.maxHeight.value = valid
+    //
+    //      submit()
+    //
+    //      eventually {
+    //        pageSource must equal(expected)
+    //      }(config = whenReadyPatienceConfig)
+    //    }
 
     "display validation error messages when invalid data is submitted " taggedAs UiTag in new WithApplication {
       val page = new LegalChildrenPage(port)

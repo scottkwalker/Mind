@@ -1,7 +1,8 @@
 package memoization
 
 import com.google.inject.Inject
-import models.common.{IScope, Scope}
+import models.common.IScope
+import models.common.Scope
 import models.domain.scala.FactoryLookup
 import utils.PozInt
 

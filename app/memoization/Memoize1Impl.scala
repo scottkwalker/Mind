@@ -1,7 +1,11 @@
 package memoization
 
 import java.util.concurrent.CountDownLatch
-import play.api.libs.json.{JsValue, Json, Writes}
+
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
+import play.api.libs.json.Writes
+
 import scala.annotation.tailrec
 
 abstract class Memoize1Impl[-TKey, +TOutput]()

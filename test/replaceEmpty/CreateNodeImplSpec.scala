@@ -1,10 +1,9 @@
 package replaceEmpty
 
-import ai.SelectionStrategy
-import composition.{CreateNodeBinding, StubReplaceEmptyBinding, StubSelectionStrategyBinding, TestComposition}
-import models.common.{IScope, Scope}
-import models.domain.Instruction
-import org.mockito.Matchers.any
+import composition.CreateNodeBinding
+import composition.StubSelectionStrategyBinding
+import composition.TestComposition
+import models.common.Scope
 import org.mockito.Mockito._
 
 import scala.concurrent.Future

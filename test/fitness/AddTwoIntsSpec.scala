@@ -2,7 +2,11 @@ package fitness
 
 import composition.TestComposition
 import models.domain.Instruction
-import models.domain.scala.{AddOperator, FunctionM, IntegerM, Object, _}
+import models.domain.scala.AddOperator
+import models.domain.scala.FunctionM
+import models.domain.scala.IntegerM
+import models.domain.scala.Object
+import models.domain.scala._
 import org.mockito.Mockito._
 
 final class AddTwoIntsSpec extends TestComposition {

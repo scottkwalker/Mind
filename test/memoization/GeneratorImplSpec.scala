@@ -2,7 +2,8 @@ package memoization
 
 import composition.StubFactoryLookupBinding.numberOfFactories
 import composition._
-import models.common.{IScope, Scope}
+import models.common.IScope
+import models.common.Scope
 import org.mockito.Matchers
 import org.mockito.Matchers._
 import org.mockito.Mockito._

@@ -1,12 +1,18 @@
 package ai.randomWalk
 
-import ai.{RandomNumberGenerator, SelectionStrategy}
+import ai.SelectionStrategy
 import composition.ai.randomWalk.RandomWalkBinding
-import composition.{StubRngBinding, TestComposition}
+import composition.StubRngBinding
+import composition.TestComposition
 import fitness.AddTwoInts
 import models.common.Scope
-import models.domain.scala.{FunctionM, IntegerM, TypeTree, Object, _}
-import org.mockito.Mockito.{times, verify}
+import models.domain.scala.FunctionM
+import models.domain.scala.IntegerM
+import models.domain.scala.Object
+import models.domain.scala.TypeTree
+import models.domain.scala._
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import replaceEmpty.ReplaceEmpty
 
 final class RandomWalkSpec extends TestComposition {

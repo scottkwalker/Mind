@@ -4,7 +4,8 @@ import com.google.inject.AbstractModule
 import models.common.Scope
 import models.domain.Instruction
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{mock, when}
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.when
 import replaceEmpty.ReplaceEmpty
 
 import scala.concurrent.Future

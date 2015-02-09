@@ -1,7 +1,8 @@
 package composition
 
 import com.google.inject.AbstractModule
-import models.domain.scala.{FactoryLookup, FactoryLookupImpl}
+import models.domain.scala.FactoryLookup
+import models.domain.scala.FactoryLookupImpl
 
 final class FactoryLookupBinding extends AbstractModule {
 

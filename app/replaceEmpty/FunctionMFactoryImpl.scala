@@ -5,11 +5,10 @@ import memoization.LookupChildrenWithFutures
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.FunctionM
-import utils.PozInt
 
+import scala.async.Async.async
+import scala.async.Async.await
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-import scala.async.Async.{async,await}
 import scala.concurrent.Future
 
 case class FunctionMFactoryImpl @Inject()(

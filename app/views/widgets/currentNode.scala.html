@@ -1,12 +1,14 @@
 @(field: play.api.data.Field)(implicit lang: Lang)
 
-@import models.common.LookupChildrenRequest.Form.{CurrentNodeId, CurrentNodeMinLength, CurrentNodeMaxLength}
+@import models.common.LookupChildrenRequest.Form.CurrentNodeId
+@import models.common.LookupChildrenRequest.Form.CurrentNodeMaxLength
+@import models.common.LookupChildrenRequest.Form.CurrentNodeMinLength
 @import views.html.widgets.inputText
 
 @inputText(field, args =
-    Map('_label -> Messages(CurrentNodeId),
-        '_showConstraints -> false,
-        'autofocus -> true,
-        'pattern -> s".{$CurrentNodeMinLength,$CurrentNodeMaxLength}"
-    )
+        Map('_label -> Messages(CurrentNodeId),
+            '_showConstraints -> false,
+            'autofocus -> true,
+            'pattern -> s".{$CurrentNodeMinLength,$CurrentNodeMaxLength}"
+        )
 )

@@ -3,7 +3,8 @@ package composition
 import com.google.inject.AbstractModule
 import composition.StubFactoryLookupBinding._
 import models.domain.scala.FactoryLookup
-import org.mockito.Mockito.{mock, when}
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
 import replaceEmpty.ReplaceEmpty
 import utils.PozInt

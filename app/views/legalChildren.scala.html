@@ -1,10 +1,12 @@
 @(currentForm: Form[models.common.LookupChildrenRequest])(implicit lang: Lang)
 
-@import models.common.LookupChildrenRequest.Form.{CurrentNodeId, ScopeId}
+@import models.common.LookupChildrenRequest.Form.CurrentNodeId
+@import models.common.LookupChildrenRequest.Form.ScopeId
 @import views.LegalChildren.SubmitId
 @import views.html.errorsSummary
 @import views.html.helper.form
-@import views.html.widgets.{currentNode, scope}
+@import views.html.widgets.currentNode
+@import views.html.widgets.scope
 
 <html>
     <head>

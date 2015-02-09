@@ -1,12 +1,19 @@
 package ai.aco
 
-import ai.{RandomNumberGenerator, SelectionStrategy}
+import ai.SelectionStrategy
 import composition.ai.aco.AcoBinding
-import composition.{StubRngBinding, TestComposition}
+import composition.StubRngBinding
+import composition.TestComposition
 import fitness.AddTwoInts
 import models.common.Scope
-import models.domain.scala.{Empty, FunctionM, IntegerM, TypeTree, Object, ValDclInFunctionParam}
-import org.mockito.Mockito.{times, verify}
+import models.domain.scala.Empty
+import models.domain.scala.FunctionM
+import models.domain.scala.IntegerM
+import models.domain.scala.Object
+import models.domain.scala.TypeTree
+import models.domain.scala.ValDclInFunctionParam
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import replaceEmpty.ReplaceEmpty
 
 final class AcoSpec extends TestComposition {

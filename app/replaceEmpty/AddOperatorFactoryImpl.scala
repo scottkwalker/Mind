@@ -5,8 +5,9 @@ import memoization.LookupChildrenWithFutures
 import models.common.IScope
 import models.domain.Instruction
 import models.domain.scala.AddOperator
-import utils.PozInt
-import scala.async.Async.{async, await}
+
+import scala.async.Async.async
+import scala.async.Async.await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 

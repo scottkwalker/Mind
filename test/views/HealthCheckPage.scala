@@ -1,7 +1,8 @@
 package views
 
 import org.openqa.selenium.WebDriver
-import org.scalatest.selenium.{Page, WebBrowser}
+import org.scalatest.selenium.Page
+import org.scalatest.selenium.WebBrowser
 
 class HealthCheckPage(port: Int)(implicit driver: WebDriver) extends Page with WebBrowser {
 

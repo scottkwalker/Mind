@@ -28,17 +28,23 @@ import java.net.URLClassLoader
 import java.security.MessageDigest
 import java.util.Random
 import java.util.jar.JarFile
+
 import com.twitter.conversions.string._
 import com.twitter.io.StreamIO
+import fitness.Eval.jvmId
+
 import scala.collection.mutable
 import scala.io.Source
 import scala.language.reflectiveCalls
-import scala.reflect.internal.util.{AbstractFileClassLoader, BatchSourceFile, Position}
-import scala.tools.nsc.io.{AbstractFile, VirtualDirectory}
+import scala.reflect.internal.util.AbstractFileClassLoader
+import scala.reflect.internal.util.BatchSourceFile
+import scala.reflect.internal.util.Position
+import scala.tools.nsc.io.AbstractFile
+import scala.tools.nsc.io.VirtualDirectory
 import scala.tools.nsc.reporters.AbstractReporter
-import scala.tools.nsc.{Global, Settings}
+import scala.tools.nsc.Global
+import scala.tools.nsc.Settings
 import scala.util.matching.Regex
-import fitness.Eval.jvmId
 
 /**
  * Evaluate a file or string and return the result.

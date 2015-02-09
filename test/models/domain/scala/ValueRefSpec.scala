@@ -2,7 +2,8 @@ package models.domain.scala
 
 import com.google.inject.Injector
 import composition.TestComposition
-import models.common.{IScope, Scope}
+import models.common.IScope
+import models.common.Scope
 
 final class ValueRefSpec extends TestComposition {
 

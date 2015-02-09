@@ -2,7 +2,8 @@ package controllers
 
 import composition.TestComposition
 import play.api.test.Helpers.LOCATION
-import play.api.test.{FakeRequest, WithApplication}
+import play.api.test.FakeRequest
+import play.api.test.WithApplication
 
 final class ApplicationUnitSpec extends TestComposition {
 

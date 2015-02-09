@@ -1,6 +1,7 @@
 package ai.randomWalk
 
-import ai.{RandomNumberGenerator, SelectionStrategy}
+import ai.RandomNumberGenerator
+import ai.SelectionStrategy
 import com.google.inject.Inject
 import replaceEmpty.ReplaceEmpty
 

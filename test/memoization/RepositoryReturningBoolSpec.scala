@@ -10,7 +10,6 @@ import org.mockito.Mockito._
 import play.api.libs.json._
 import replaceEmpty.AddOperatorFactory
 import replaceEmpty.ValueRefFactory
-import replaceEmpty.ValueRefFactory
 import utils.PozInt
 
 final class RepositoryReturningBoolSpec extends TestComposition {

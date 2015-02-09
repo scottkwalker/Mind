@@ -2,7 +2,9 @@ package controllers
 
 import composition.TestComposition
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{OK, contentAsString, status}
+import play.api.test.Helpers.OK
+import play.api.test.Helpers.contentAsString
+import play.api.test.Helpers.status
 
 final class IntroUnitSpec extends TestComposition {
 

@@ -2,13 +2,11 @@ package replaceEmpty
 
 import ai.SelectionStrategy
 import com.google.inject.Inject
-import models.common.{Scope, IScope}
+import models.common.IScope
 import models.domain.Instruction
-import models.domain.scala.Empty
-import utils.Timeout.finiteTimeout
-import scala.annotation.tailrec
-import scala.concurrent.{Await, Future}
+
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 final case class CreateSeqNodesImpl @Inject()(createNode: CreateNode, ai: SelectionStrategy) extends CreateSeqNodes {
 
@@ -22,9 +20,9 @@ final case class CreateSeqNodesImpl @Inject()(createNode: CreateNode, ai: Select
     val init = Future.successful(AccumulateInstructions(instructions = initAcc, scope = initScope))
     (1 to lengthOfSeq).foldLeft(init) {
       (previousResult, _) => previousResult.flatMap { prev =>
-          createNode.create(possibleChildren, prev.scope).map {
-            case (updatedScope, instruction) => AccumulateInstructions(instructions = prev.instructions :+ instruction, scope = updatedScope)
-          }
+        createNode.create(possibleChildren, prev.scope).map {
+          case (updatedScope, instruction) => AccumulateInstructions(instructions = prev.instructions :+ instruction, scope = updatedScope)
+        }
       }
     }
   }

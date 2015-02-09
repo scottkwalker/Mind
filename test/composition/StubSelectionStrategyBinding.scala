@@ -2,7 +2,8 @@ package composition
 
 import _root_.ai.SelectionStrategy
 import com.google.inject.AbstractModule
-import models.common.{IScope, Scope}
+import models.common.IScope
+import models.common.Scope
 import models.domain.Instruction
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when

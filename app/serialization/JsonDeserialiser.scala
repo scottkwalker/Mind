@@ -1,7 +1,9 @@
 package serialization
 
 import play.api.libs.json.Json.parse
-import play.api.libs.json.{JsValue, Json, Reads}
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
+import play.api.libs.json.Reads
 
 object JsonDeserialiser {
 
