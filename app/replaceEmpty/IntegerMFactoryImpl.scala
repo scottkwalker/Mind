@@ -17,8 +17,3 @@ case class IntegerMFactoryImpl @Inject()() extends IntegerMFactory with UpdateSc
     IntegerM()
   }
 }
-
-object IntegerMFactoryImpl {
-
-  val id = PozInt(3)
-}

@@ -34,7 +34,7 @@ final class FactoryLookupImplSpec extends TestComposition {
 
     "return expected id for IntegerMFactory" in {
       val factory = injector.getInstance(classOf[IntegerMFactory])
-      factoryLookup.convert(factory) must equal(IntegerMFactoryImpl.id)
+      factoryLookup.convert(factory) must equal(IntegerMFactory.id)
     }
 
     "return expected id for TypeTreeFactory" in {
@@ -49,12 +49,12 @@ final class FactoryLookupImplSpec extends TestComposition {
 
     "return expected id for ValDclInFunctionParamFactory" in {
       val factory = injector.getInstance(classOf[ValDclInFunctionParamFactory])
-      factoryLookup.convert(factory) must equal(ValDclInFunctionParamFactoryImpl.id)
+      factoryLookup.convert(factory) must equal(ValDclInFunctionParamFactory.id)
     }
 
     "return expected id for ValueRefFactory" in {
       val factory = injector.getInstance(classOf[ValueRefFactory])
-      factoryLookup.convert(factory) must equal(ValueRefFactoryImpl.id)
+      factoryLookup.convert(factory) must equal(ValueRefFactory.id)
     }
   }
 

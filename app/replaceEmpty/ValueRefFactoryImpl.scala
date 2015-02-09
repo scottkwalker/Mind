@@ -18,8 +18,3 @@ final case class ValueRefFactoryImpl @Inject()(ai: SelectionStrategy) extends Va
     ValueRef(index = ai.chooseIndex(scope.numVals))
   }
 }
-
-object ValueRefFactoryImpl {
-
-  val id = PozInt(7)
-}

@@ -15,7 +15,7 @@ case class ValDclInFunctionParamFactoryImpl @Inject()(
                                                        lookupChildren: LookupChildrenWithFutures
                                                        ) extends ValDclInFunctionParamFactory with UpdateScopeIncrementVals {
 
-  override val nodesToChooseFrom = Set(IntegerMFactoryImpl.id)
+  override val nodesToChooseFrom = Set(IntegerMFactory.id)
 
   override def create(scope: IScope): Future[Instruction] = async {
     val name = "v" + scope.numVals
@@ -24,9 +24,4 @@ case class ValDclInFunctionParamFactoryImpl @Inject()(
     ValDclInFunctionParam(name = name,
       primitiveType = primitiveType) // TODO need to make more types.
   }
-}
-
-object ValDclInFunctionParamFactoryImpl {
-
-  val id = PozInt(6)
 }

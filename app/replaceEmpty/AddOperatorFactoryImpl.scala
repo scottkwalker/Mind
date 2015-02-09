@@ -15,7 +15,7 @@ case class AddOperatorFactoryImpl @Inject()(
                                              lookupChildren: LookupChildrenWithFutures
                                              ) extends AddOperatorFactory with UpdateScopeNoChange {
 
-  override val nodesToChooseFrom = Set(ValueRefFactoryImpl.id)
+  override val nodesToChooseFrom = Set(ValueRefFactory.id)
 
   override def create(scope: IScope): Future[Instruction] = async {
     val possibleNodes = lookupChildren.get(scope, nodesToChooseFrom)
