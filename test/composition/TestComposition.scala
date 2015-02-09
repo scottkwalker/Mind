@@ -13,7 +13,7 @@ import org.scalatest.concurrent.Eventually
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mock.MockitoSugar
 import org.scalatestplus.play.PlaySpec
-import replaceEmpty._
+import decision._
 import utils.PozInt
 
 import scala.concurrent.duration.FiniteDuration

@@ -4,7 +4,7 @@ import com.google.inject.Injector
 import composition.TestComposition
 import models.common.IScope
 import models.common.Scope
-import models.domain.Instruction
+import models.domain.Step
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
@@ -24,7 +24,7 @@ final class TypeTreeSpec extends TestComposition {
 
     "return false given it cannot terminate in under N steps" in {
       val scope = Scope(height = 10, maxHeight = 10)
-      val instruction = mock[Instruction]
+      val instruction = mock[Step]
       when(instruction.hasNoEmpty(any[Scope])).thenReturn(false)
       val typeTree = new TypeTree(Seq(instruction))
 
@@ -48,33 +48,33 @@ final class TypeTreeSpec extends TestComposition {
     "return false when hasHeightRemaining returns false" in {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(false)
-      val instruction = mock[Instruction]
+      val instruction = mock[Step]
       val typeTree = new TypeTree(Seq(instruction))
 
       typeTree.hasNoEmpty(scope) must equal(false)
     }
   }
 
-  "replaceEmpty" must {
-    "calls replaceEmpty on non-empty child nodes" in {
+  "fillEmptySteps" must {
+    "calls fillEmptySteps on non-empty child nodes" in {
       val scope = mock[IScope]
       val injector = mock[Injector]
-      val instruction = mock[Instruction]
-      when(instruction.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
+      val instruction = mock[Step]
+      when(instruction.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
       val instance = TypeTree(Seq(instruction))
 
-      val result = instance.replaceEmpty(scope)(injector)
-      whenReady(result) { _ => verify(instruction, times(1)).replaceEmpty(any[Scope])(any[Injector])}(config = patienceConfig)
+      val result = instance.fillEmptySteps(scope)(injector)
+      whenReady(result) { _ => verify(instruction, times(1)).fillEmptySteps(any[Scope])(any[Injector])}(config = patienceConfig)
     }
 
     "return same when no empty nodes" in {
       val scope = mock[IScope]
       val injector = mock[Injector]
-      val instruction = mock[Instruction]
-      when(instruction.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
+      val instruction = mock[Step]
+      when(instruction.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
       val instance = new TypeTree(Seq(instruction))
 
-      val result = instance.replaceEmpty(scope)(injector)
+      val result = instance.fillEmptySteps(scope)(injector)
 
       whenReady(result) {
         _ must equal(instance)
@@ -92,12 +92,12 @@ final class TypeTreeSpec extends TestComposition {
       val injector = testInjector()
       val instance = TypeTree(nodes = Seq(empty))
 
-      val result = instance.replaceEmpty(scope)(injector)
+      val result = instance.fillEmptySteps(scope)(injector)
 
       whenReady(result) {
         case TypeTree(nodes) =>
           nodes match {
-            case Seq(nonEmpty) => nonEmpty mustBe an[Instruction]
+            case Seq(nonEmpty) => nonEmpty mustBe an[Step]
             case _ => fail("not a seq")
           }
         case _ => fail("wrong type")
@@ -109,13 +109,13 @@ final class TypeTreeSpec extends TestComposition {
       val injector = mock[Injector]
       val instance = new TypeTree(nodes = Seq.empty)
 
-      a[RuntimeException] must be thrownBy Await.result(instance.replaceEmpty(scope)(injector), finiteTimeout)
+      a[RuntimeException] must be thrownBy Await.result(instance.fillEmptySteps(scope)(injector), finiteTimeout)
     }
   }
 
   "height" must {
     "return 1 + child height when has one child" in {
-      val instruction = mock[Instruction]
+      val instruction = mock[Step]
       when(instruction.height).thenReturn(2)
       val typeTree = new TypeTree(Seq(instruction))
 
@@ -123,9 +123,9 @@ final class TypeTreeSpec extends TestComposition {
     }
 
     "return 1 + child height when has two children" in {
-      val instruction1 = mock[Instruction]
+      val instruction1 = mock[Step]
       when(instruction1.height).thenReturn(1)
-      val instruction2 = mock[Instruction]
+      val instruction2 = mock[Step]
       when(instruction2.height).thenReturn(2)
       val typeTree = new TypeTree(Seq(instruction1, instruction2))
 

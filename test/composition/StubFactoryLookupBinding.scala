@@ -6,7 +6,7 @@ import models.domain.scala.FactoryLookup
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
-import replaceEmpty.ReplaceEmpty
+import decision.Decision
 import utils.PozInt
 
 final class StubFactoryLookupBinding extends AbstractModule with MockitoSugar {
@@ -36,23 +36,23 @@ object StubFactoryLookupBinding {
   val fakeFactoryTerminates2Id = PozInt(2)
   val fakeFactoryHasChildrenId = PozInt(3)
   val fakeFactoryTerminates1 = {
-    val replaceEmpty = mock(classOf[ReplaceEmpty])
-    when(replaceEmpty.nodesToChooseFrom).thenReturn(Set.empty[PozInt])
-    replaceEmpty
+    val decision = mock(classOf[Decision])
+    when(decision.nodesToChooseFrom).thenReturn(Set.empty[PozInt])
+    decision
   }
   val fakeFactoryTerminates2 = {
-    val replaceEmpty = mock(classOf[ReplaceEmpty])
-    when(replaceEmpty.nodesToChooseFrom).thenReturn(Set.empty[PozInt])
-    replaceEmpty
+    val decision = mock(classOf[Decision])
+    when(decision.nodesToChooseFrom).thenReturn(Set.empty[PozInt])
+    decision
   }
-  val fNot: ReplaceEmpty = {
-    val replaceEmpty = mock(classOf[ReplaceEmpty])
-    when(replaceEmpty.nodesToChooseFrom).thenReturn(Set(fakeFactoryDoesNotTerminateId))
-    replaceEmpty
+  val fNot: Decision = {
+    val decision = mock(classOf[Decision])
+    when(decision.nodesToChooseFrom).thenReturn(Set(fakeFactoryDoesNotTerminateId))
+    decision
   }
-  val fakeFactoryHasChildren: ReplaceEmpty = {
-    val replaceEmpty = mock(classOf[ReplaceEmpty])
-    when(replaceEmpty.nodesToChooseFrom).thenReturn(Set(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
-    replaceEmpty
+  val fakeFactoryHasChildren: Decision = {
+    val decision = mock(classOf[Decision])
+    when(decision.nodesToChooseFrom).thenReturn(Set(fakeFactoryTerminates1Id, fakeFactoryTerminates2Id))
+    decision
   }
 }

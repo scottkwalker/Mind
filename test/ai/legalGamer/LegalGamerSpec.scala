@@ -12,7 +12,7 @@ import models.domain.scala.IntegerM
 import models.domain.scala.Object
 import models.domain.scala.TypeTree
 import models.domain.scala.ValDclInFunctionParam
-import replaceEmpty.ReplaceEmpty
+import decision.Decision
 
 final class LegalGamerSpec extends TestComposition {
 
@@ -22,10 +22,10 @@ final class LegalGamerSpec extends TestComposition {
       val selectionStrategy = testInjector(
         randomNumberGenerator
       ).getInstance(classOf[SelectionStrategy])
-      val node = mock[ReplaceEmpty]
+      val node = mock[Decision]
       val possibleChildren = Set(node)
 
-      selectionStrategy.chooseChild(possibleChildren) mustBe a[ReplaceEmpty]
+      selectionStrategy.chooseChild(possibleChildren) mustBe a[Decision]
     }
 
     "return code that can be compiled and evaluated" in {
@@ -47,7 +47,7 @@ final class LegalGamerSpec extends TestComposition {
         maxHeight = 10)
 
       try {
-        val result = premade.replaceEmpty(scope)(injector)
+        val result = premade.fillEmptySteps(scope)(injector)
         whenReady(result) {
           case typeTree: TypeTree =>
             val f = new AddTwoInts(typeTree)
@@ -60,7 +60,7 @@ final class LegalGamerSpec extends TestComposition {
     }
 
     "throw when sequence is empty" in {
-      a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Set.empty[ReplaceEmpty])
+      a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Set.empty[Decision])
     }
   }
 

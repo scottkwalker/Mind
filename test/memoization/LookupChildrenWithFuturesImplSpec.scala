@@ -7,7 +7,7 @@ import models.common.IScope
 import models.common.Scope
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
-import replaceEmpty.ReplaceEmpty
+import decision.Decision
 import utils.PozInt
 
 import scala.concurrent.Future
@@ -20,7 +20,7 @@ final class LookupChildrenWithFuturesImplSpec extends TestComposition {
 
       val result = lookupChildren.get(scope = scope, childrenToChooseFrom = Set(fakeFactoryTerminates1Id))
 
-      whenReady(result) { _ => verify(factoryLookup, never).convert(any[ReplaceEmpty])}(config = patienceConfig)
+      whenReady(result) { _ => verify(factoryLookup, never).convert(any[Decision])}(config = patienceConfig)
     }
 
     "call factoryLookup.convert(factory) for only the nodes that can terminate" in {

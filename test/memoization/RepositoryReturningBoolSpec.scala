@@ -8,8 +8,8 @@ import models.common.Scope
 import models.domain.scala.FactoryLookup
 import org.mockito.Mockito._
 import play.api.libs.json._
-import replaceEmpty.AddOperatorFactory
-import replaceEmpty.ValueRefFactory
+import decision.AddOperatorFactory
+import decision.ValueRefFactory
 import utils.PozInt
 
 final class RepositoryReturningBoolSpec extends TestComposition {

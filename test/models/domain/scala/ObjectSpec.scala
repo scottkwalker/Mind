@@ -4,7 +4,7 @@ import com.google.inject.Injector
 import composition.TestComposition
 import models.common.IScope
 import models.common.Scope
-import models.domain.Instruction
+import models.domain.Step
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
@@ -27,7 +27,7 @@ final class ObjectSpec extends TestComposition {
 
     "false given it cannot terminate in 0 steps" in {
       val scope = Scope(height = 0)
-      val instruction = mock[Instruction]
+      val instruction = mock[Step]
       when(instruction.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException)
       val objectDef = Object(Seq(instruction), name)
 
@@ -36,7 +36,7 @@ final class ObjectSpec extends TestComposition {
 
     "false given it cannot terminate in under N steps" in {
       val scope = Scope(height = 3, maxHeight = 10)
-      val instruction = mock[Instruction]
+      val instruction = mock[Step]
       when(instruction.hasNoEmpty(any[Scope])).thenReturn(false)
       val objectDef = Object(Seq(instruction), name)
 
@@ -62,7 +62,7 @@ final class ObjectSpec extends TestComposition {
 
     "false given empty method node in a sequence" in {
       val scope = Scope(height = 10, maxHeight = 10)
-      val instruction = mock[Instruction]
+      val instruction = mock[Step]
       when(instruction.hasNoEmpty(any[Scope])).thenReturn(true)
       val objectDef = Object(Seq(instruction, Empty()), name)
 
@@ -72,7 +72,7 @@ final class ObjectSpec extends TestComposition {
 
   "toRawScala" must {
     "return expected" in {
-      val instruction = mock[Instruction]
+      val instruction = mock[Step]
       when(instruction.toRaw).thenReturn("STUB")
       val objectDef = Object(Seq(instruction), name)
 
@@ -80,27 +80,27 @@ final class ObjectSpec extends TestComposition {
     }
   }
 
-  "replaceEmpty" must {
-    "calls replaceEmpty on non-empty child nodes" in {
+  "fillEmptySteps" must {
+    "calls fillEmptySteps on non-empty child nodes" in {
       val scope = mock[IScope]
       val injector = mock[Injector]
-      val instruction = mock[Instruction]
-      when(instruction.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
+      val instruction = mock[Step]
+      when(instruction.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
       val objectDef = Object(Seq(instruction), name = name)
 
-      val result = objectDef.replaceEmpty(scope)(injector)
+      val result = objectDef.fillEmptySteps(scope)(injector)
 
-      whenReady(result) { r => verify(instruction, times(1)).replaceEmpty(any[Scope])(any[Injector])}(config = patienceConfig)
+      whenReady(result) { r => verify(instruction, times(1)).fillEmptySteps(any[Scope])(any[Injector])}(config = patienceConfig)
     }
 
     "returns same when no empty nodes" in {
       val scope = mock[IScope]
       val injector = mock[Injector]
-      val instruction = mock[Instruction]
-      when(instruction.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
+      val instruction = mock[Step]
+      when(instruction.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
       val objectDef = Object(Seq(instruction), name)
 
-      val result = objectDef.replaceEmpty(scope)(injector)
+      val result = objectDef.fillEmptySteps(scope)(injector)
 
       whenReady(result) {
         _ must equal(objectDef)
@@ -119,12 +119,12 @@ final class ObjectSpec extends TestComposition {
       val objectDef = Object(nodes = Seq(empty),
         name = name)
 
-      val result = objectDef.replaceEmpty(scope)(injector)
+      val result = objectDef.fillEmptySteps(scope)(injector)
 
       whenReady(result) {
         case Object(n2, name2) =>
           n2 match {
-            case Seq(nSeq) => nSeq mustBe a[Instruction]
+            case Seq(nSeq) => nSeq mustBe a[Step]
             case _ => fail("not a Seq")
           }
           name2 must equal(name)
@@ -137,13 +137,13 @@ final class ObjectSpec extends TestComposition {
       val injector = mock[Injector]
       val instance = new Object(nodes = Seq.empty, name = name)
 
-      a[RuntimeException] must be thrownBy Await.result(instance.replaceEmpty(scope)(injector), finiteTimeout)
+      a[RuntimeException] must be thrownBy Await.result(instance.fillEmptySteps(scope)(injector), finiteTimeout)
     }
   }
 
   "height" must {
     "height returns 1 + child height when has 1 child" in {
-      val instruction = mock[Instruction]
+      val instruction = mock[Step]
       when(instruction.height).thenReturn(2)
       val objectDef = Object(Seq(instruction), name)
 
@@ -151,9 +151,9 @@ final class ObjectSpec extends TestComposition {
     }
 
     "height returns 1 + child height when has 2 children" in {
-      val instruction1 = mock[Instruction]
+      val instruction1 = mock[Step]
       when(instruction1.height).thenReturn(1)
-      val instruction2 = mock[Instruction]
+      val instruction2 = mock[Step]
       when(instruction2.height).thenReturn(2)
       val objectDef = Object(Seq(instruction1, instruction2), name)
 

@@ -3,7 +3,7 @@ package memoization
 import com.google.inject.Inject
 import models.common.IScope
 import models.domain.scala.FactoryLookup
-import replaceEmpty.ReplaceEmpty
+import decision.Decision
 import utils.PozInt
 
 final class LookupChildrenImpl @Inject()(
@@ -11,7 +11,7 @@ final class LookupChildrenImpl @Inject()(
                                           repository: Memoize2WithSet[IScope, PozInt]
                                           ) extends LookupChildren {
 
-  override def get(scope: IScope, childrenToChooseFrom: Set[PozInt]): Set[ReplaceEmpty] =
+  override def get(scope: IScope, childrenToChooseFrom: Set[PozInt]): Set[Decision] =
     fetchFromRepository(scope, childrenToChooseFrom).
       map(factoryLookup.convert)
 

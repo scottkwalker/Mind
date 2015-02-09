@@ -1,8 +1,8 @@
 package fitness
 
-import models.domain.Instruction
+import models.domain.Step
 
-final class AddTwoInts(val typeTree: Instruction) extends Fitness {
+final class AddTwoInts(val typeTree: Step) extends Fitness {
 
   override val maxFitness = 1.0d
 

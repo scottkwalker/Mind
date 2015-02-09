@@ -1,7 +1,7 @@
 package fitness
 
 import composition.TestComposition
-import models.domain.Instruction
+import models.domain.Step
 import models.domain.scala.AddOperator
 import models.domain.scala.FunctionM
 import models.domain.scala.IntegerM
@@ -13,7 +13,7 @@ final class AddTwoIntsSpec extends TestComposition {
 
   "Addition" must {
     "1 add 1 equals 2 with TypeTree that returns hard coded raw Scala" in {
-      val typeTree = mock[Instruction]
+      val typeTree = mock[Step]
       when(typeTree.toRaw).thenReturn("object o0 { def f0(a: Int, b: Int) = a + b }")
       val f = new AddTwoInts(typeTree)
       f.fitness must equal(f.maxFitness)

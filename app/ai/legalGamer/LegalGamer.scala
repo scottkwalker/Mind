@@ -3,12 +3,12 @@ package ai.legalGamer
 import ai.RandomNumberGenerator
 import ai.SelectionStrategy
 import com.google.inject.Inject
-import replaceEmpty.ReplaceEmpty
+import decision.Decision
 
 // Always chooses the first legal move available
 final case class LegalGamer @Inject()(rng: RandomNumberGenerator) extends SelectionStrategy {
 
-  override def chooseChild(possibleChildren: Set[ReplaceEmpty]): ReplaceEmpty = {
+  override def chooseChild(possibleChildren: Set[Decision]): Decision = {
     val index = chooseIndex(possibleChildren.size)
     possibleChildren.toSeq(index)
   }

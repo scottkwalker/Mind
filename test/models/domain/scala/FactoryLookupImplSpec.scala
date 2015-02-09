@@ -2,7 +2,7 @@ package models.domain.scala
 
 import composition.FactoryLookupBinding
 import composition.TestComposition
-import replaceEmpty._
+import decision._
 import utils.PozInt
 
 final class FactoryLookupImplSpec extends TestComposition {
@@ -19,7 +19,7 @@ final class FactoryLookupImplSpec extends TestComposition {
 
   "convert factory to id" must {
     "throw when id is not in the list" in {
-      a[RuntimeException] must be thrownBy factoryLookup.convert(mock[ReplaceEmpty])
+      a[RuntimeException] must be thrownBy factoryLookup.convert(mock[Decision])
     }
 
     "return expected id for AddOperatorFactory" in {

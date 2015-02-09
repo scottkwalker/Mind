@@ -14,7 +14,7 @@ import models.domain.scala.TypeTree
 import models.domain.scala.ValDclInFunctionParam
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
-import replaceEmpty.ReplaceEmpty
+import decision.Decision
 
 final class AcoSpec extends TestComposition {
 
@@ -25,10 +25,10 @@ final class AcoSpec extends TestComposition {
         new AcoBinding,
         randomNumberGenerator
       ).getInstance(classOf[SelectionStrategy])
-      val node = mock[ReplaceEmpty]
+      val node = mock[Decision]
       val possibleChildren = Set(node)
 
-      selectionStrategy.chooseChild(possibleChildren) mustBe a[ReplaceEmpty]
+      selectionStrategy.chooseChild(possibleChildren) mustBe a[Decision]
     }
 
     "return code that can be compiled and evaluated" in {
@@ -51,7 +51,7 @@ final class AcoSpec extends TestComposition {
 
       try {
         for (i <- 1 to 10) {
-          val result = premade.replaceEmpty(scope)(injector)
+          val result = premade.fillEmptySteps(scope)(injector)
           whenReady(result) {
             case typeTree: TypeTree =>
               val f = new AddTwoInts(typeTree)
@@ -65,7 +65,7 @@ final class AcoSpec extends TestComposition {
     }
 
     "throw when sequence is empty" in {
-      a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Set.empty[ReplaceEmpty])
+      a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Set.empty[Decision])
     }
   }
 

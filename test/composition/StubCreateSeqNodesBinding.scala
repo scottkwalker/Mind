@@ -2,13 +2,13 @@ package composition
 
 import com.google.inject.AbstractModule
 import models.common.IScope
-import models.domain.Instruction
+import models.domain.Step
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
-import replaceEmpty.AccumulateInstructions
-import replaceEmpty.CreateSeqNodes
-import replaceEmpty.ReplaceEmpty
+import decision.AccumulateInstructions
+import decision.CreateSeqNodes
+import decision.Decision
 
 import scala.concurrent.Future
 
@@ -16,10 +16,10 @@ final class StubCreateSeqNodesBinding extends AbstractModule with MockitoSugar {
 
   val stub = {
     val createSeqNodes: CreateSeqNodes = mock[CreateSeqNodes]
-    val instruction = mock[Instruction]
+    val instruction = mock[Step]
     val scope = mock[IScope]
     val accumulateInstructions = AccumulateInstructions(Seq(instruction), scope)
-    when(createSeqNodes.create(any[Future[Set[ReplaceEmpty]]], any[IScope], any[Seq[Instruction]], any[Int])).thenReturn(Future.successful(accumulateInstructions))
+    when(createSeqNodes.create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])).thenReturn(Future.successful(accumulateInstructions))
     createSeqNodes
   }
 

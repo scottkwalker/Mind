@@ -3,13 +3,13 @@ package ai.aco
 import ai.RandomNumberGenerator
 import ai.SelectionStrategy
 import com.google.inject.Inject
-import replaceEmpty.ReplaceEmpty
+import decision.Decision
 
 // Ant Colony Optimisation
 // https://en.wikipedia.org/wiki/Ant_colony_optimization_algorithms
 final case class Aco @Inject()(rng: RandomNumberGenerator) extends SelectionStrategy {
 
-  override def chooseChild(possibleChildren: Set[ReplaceEmpty]): ReplaceEmpty = {
+  override def chooseChild(possibleChildren: Set[Decision]): Decision = {
     val index = chooseIndex(possibleChildren.size)
     possibleChildren.toSeq(index)
   }

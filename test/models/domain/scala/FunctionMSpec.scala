@@ -4,7 +4,7 @@ import com.google.inject.Injector
 import composition.TestComposition
 import models.common.IScope
 import models.common.Scope
-import models.domain.Instruction
+import models.domain.Step
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
@@ -16,7 +16,7 @@ final class FunctionMSpec extends TestComposition {
   "hasNoEmpty" must {
     "false given an empty name" in {
       val scope = Scope(height = 10, maxHeight = 10)
-      val node = mock[Instruction]
+      val node = mock[Step]
       when(node.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
       FunctionM(params = params,
         nodes = Seq(node, node),
@@ -33,7 +33,7 @@ final class FunctionMSpec extends TestComposition {
 
     "false given it cannot terminate in 0 steps" in {
       val scope = Scope(height = 0)
-      val node = mock[Instruction]
+      val node = mock[Step]
       when(node.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
 
       FunctionM(params = params,
@@ -43,7 +43,7 @@ final class FunctionMSpec extends TestComposition {
 
     "false given it cannot terminate in under N steps" in {
       val scope = Scope(height = 2, maxHeight = 10)
-      val nonTerminal = mock[Instruction]
+      val nonTerminal = mock[Step]
       when(nonTerminal.hasNoEmpty(any[Scope])).thenReturn(false)
 
       FunctionM(params = params,
@@ -70,7 +70,7 @@ final class FunctionMSpec extends TestComposition {
 
   "toRawScala" must {
     "returns expected" in {
-      val node = mock[Instruction]
+      val node = mock[Step]
       when(node.toRaw).thenReturn("STUB")
 
       FunctionM(params = params,
@@ -79,7 +79,7 @@ final class FunctionMSpec extends TestComposition {
     }
 
     "throws if has no name" in {
-      val node = mock[Instruction]
+      val node = mock[Step]
       when(node.toRaw).thenReturn("STUB")
       val functionM = FunctionM(params = params,
         nodes = Seq(node),
@@ -89,39 +89,39 @@ final class FunctionMSpec extends TestComposition {
     }
   }
 
-  "replaceEmpty" must {
+  "fillEmptySteps" must {
 
-    "calls replaceEmpty on non-empty child nodes" in {
+    "calls fillEmptySteps on non-empty child nodes" in {
       val scope = mock[IScope]
       val injector = mock[Injector]
-      val param = mock[Instruction]
-      when(param.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(param)
-      val node = mock[Instruction]
-      when(node.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(node)
+      val param = mock[Step]
+      when(param.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(param)
+      val node = mock[Step]
+      when(node.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(node)
       val functionM = FunctionM(params = Seq(param),
         nodes = Seq(node),
         name = name)
 
-      val result = functionM.replaceEmpty(scope)(injector)
+      val result = functionM.fillEmptySteps(scope)(injector)
 
       whenReady(result) { _ =>
-        verify(param, times(1)).replaceEmpty(any[Scope])(any[Injector])
-        verify(node, times(1)).replaceEmpty(any[Scope])(any[Injector])
+        verify(param, times(1)).fillEmptySteps(any[Scope])(any[Injector])
+        verify(node, times(1)).fillEmptySteps(any[Scope])(any[Injector])
       }(config = patienceConfig)
     }
 
     "returns same when no empty nodes" in {
       val scope = mock[IScope]
       val injector = mock[Injector]
-      val param = mock[Instruction]
-      when(param.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(param)
-      val node = mock[Instruction]
-      when(node.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(node)
+      val param = mock[Step]
+      when(param.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(param)
+      val node = mock[Step]
+      when(node.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(node)
       val instance = FunctionM(params = Seq(param),
         nodes = Seq(node),
         name = name)
 
-      val result = instance.replaceEmpty(scope)(injector)
+      val result = instance.fillEmptySteps(scope)(injector)
 
       whenReady(result) {
         _ must equal(instance)
@@ -141,15 +141,15 @@ final class FunctionMSpec extends TestComposition {
         nodes = Seq(Empty()),
         name = name)
 
-      val result = functionM.replaceEmpty(scope)(injector)
+      val result = functionM.fillEmptySteps(scope)(injector)
 
       whenReady(result) {
         case FunctionM(p2, n2, n) =>
           p2 match {
-            case Seq(pSeq) => pSeq mustBe a[Instruction]
+            case Seq(pSeq) => pSeq mustBe a[Step]
           }
           n2 match {
-            case Seq(nSeq) => nSeq mustBe a[Instruction]
+            case Seq(nSeq) => nSeq mustBe a[Step]
           }
           n must equal(name)
       }(config = patienceConfig)
@@ -162,7 +162,7 @@ final class FunctionMSpec extends TestComposition {
         nodes = Seq(Empty()),
         name = name)
 
-      a[RuntimeException] must be thrownBy Await.result(functionM.replaceEmpty(scope)(injector), finiteTimeout)
+      a[RuntimeException] must be thrownBy Await.result(functionM.fillEmptySteps(scope)(injector), finiteTimeout)
     }
 
     "throw when passed empty nodes seq (no empty or non-empty)" in {
@@ -172,13 +172,13 @@ final class FunctionMSpec extends TestComposition {
         nodes = Seq.empty,
         name = name)
 
-      a[RuntimeException] must be thrownBy Await.result(functionM.replaceEmpty(scope)(injector), finiteTimeout)
+      a[RuntimeException] must be thrownBy Await.result(functionM.fillEmptySteps(scope)(injector), finiteTimeout)
     }
   }
 
   "height" must {
     "returns 1 + child height" in {
-      val node = mock[Instruction]
+      val node = mock[Step]
       when(node.height) thenReturn 2
 
       FunctionM(params = params,
@@ -187,9 +187,9 @@ final class FunctionMSpec extends TestComposition {
     }
 
     "returns 1 + child height when children have different depths" in {
-      val node1 = mock[Instruction]
+      val node1 = mock[Step]
       when(node1.height) thenReturn 1
-      val node2 = mock[Instruction]
+      val node2 = mock[Step]
       when(node2.height) thenReturn 2
 
       FunctionM(params = params,
@@ -202,7 +202,7 @@ final class FunctionMSpec extends TestComposition {
   private val params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM()))
 
   private def nonEmpty = {
-    val node = mock[Instruction]
+    val node = mock[Step]
     when(node.hasNoEmpty(any[Scope])).thenReturn(true)
     node
   }

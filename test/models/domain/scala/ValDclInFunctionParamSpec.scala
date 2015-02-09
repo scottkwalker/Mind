@@ -4,7 +4,7 @@ import com.google.inject.Injector
 import composition.TestComposition
 import models.common.IScope
 import models.common.Scope
-import models.domain.Instruction
+import models.domain.Step
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
@@ -14,7 +14,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
 
   "toRawScala" must {
     "return expected" in {
-      val instruction = mock[Instruction]
+      val instruction = mock[Step]
       when(instruction.toRaw).thenReturn("Int")
       val name = "a"
 
@@ -27,7 +27,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(false)
       val name = "a"
-      val instruction = mock[Instruction]
+      val instruction = mock[Step]
 
       ValDclInFunctionParam(name, instruction).hasNoEmpty(scope) must equal(false)
     }
@@ -36,7 +36,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(true)
       val name = ""
-      val instruction = mock[Instruction]
+      val instruction = mock[Step]
 
       ValDclInFunctionParam(name, instruction).hasNoEmpty(scope) must equal(false)
     }
@@ -45,7 +45,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(true)
       val name = "a"
-      val instruction = mock[Instruction]
+      val instruction = mock[Step]
       when(instruction.hasNoEmpty(any[Scope])).thenReturn(false)
 
       ValDclInFunctionParam(name, instruction).hasNoEmpty(scope) must equal(false)
@@ -61,20 +61,20 @@ final class ValDclInFunctionParamSpec extends TestComposition {
     }
   }
 
-  "replaceEmpty" must {
-    "calls replaceEmpty on non-empty child nodes" in {
+  "fillEmptySteps" must {
+    "calls fillEmptySteps on non-empty child nodes" in {
       val scope = mock[IScope]
       when(scope.incrementVals).thenReturn(scope)
       when(scope.decrementHeight).thenReturn(scope)
       val name = "a"
       val injector = mock[Injector]
-      val instruction = mock[Instruction]
-      when(instruction.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
+      val instruction = mock[Step]
+      when(instruction.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
       val valDclInFunctionParam = ValDclInFunctionParam(name, instruction)
 
-      val result = valDclInFunctionParam.replaceEmpty(scope)(injector)
+      val result = valDclInFunctionParam.fillEmptySteps(scope)(injector)
 
-      whenReady(result) { _ => verify(instruction, times(1)).replaceEmpty(any[Scope])(any[Injector])}(config = patienceConfig)
+      whenReady(result) { _ => verify(instruction, times(1)).fillEmptySteps(any[Scope])(any[Injector])}(config = patienceConfig)
     }
 
     "returns same when no empty nodes" in {
@@ -83,11 +83,11 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       when(scope.decrementHeight).thenReturn(scope)
       val name = "a"
       val injector = mock[Injector]
-      val instruction = mock[Instruction]
-      when(instruction.replaceEmpty(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
+      val instruction = mock[Step]
+      when(instruction.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
       val valDclInFunctionParam = ValDclInFunctionParam(name, instruction)
 
-      val result = valDclInFunctionParam.replaceEmpty(scope)(injector)
+      val result = valDclInFunctionParam.fillEmptySteps(scope)(injector)
 
       whenReady(result) {
         _ must equal(valDclInFunctionParam)
@@ -101,7 +101,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val injector = testInjector()
       val valDclInFunctionParam = ValDclInFunctionParam(name, primitiveTypeEmpty)
 
-      val result = valDclInFunctionParam.replaceEmpty(scope)(injector)
+      val result = valDclInFunctionParam.fillEmptySteps(scope)(injector)
 
       whenReady(result) {
         case ValDclInFunctionParam(name2, primitiveType) =>
@@ -115,7 +115,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
   "height" must {
     "returns 1 + child height" in {
       val name = "a"
-      val instruction = mock[Instruction]
+      val instruction = mock[Step]
       when(instruction.height).thenReturn(1)
 
       ValDclInFunctionParam(name, instruction).height must equal(2)

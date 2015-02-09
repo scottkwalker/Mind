@@ -1,8 +1,8 @@
 package composition
 
 import com.google.inject.AbstractModule
-import replaceEmpty.CreateNode
-import replaceEmpty.CreateNodeImpl
+import decision.CreateNode
+import decision.CreateNodeImpl
 
 final class CreateNodeBinding extends AbstractModule {
 

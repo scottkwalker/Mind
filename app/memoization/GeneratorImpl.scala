@@ -41,8 +41,8 @@ class GeneratorImpl @Inject()(
 
   override def calculateAndUpdate(scope: IScope, parent: PozInt): Boolean = {
     if (scope.hasHeightRemaining) {
-      val replaceEmpty = factoryLookup.convert(parent)
-      val nodesToChooseFrom = replaceEmpty.nodesToChooseFrom
+      val decision = factoryLookup.convert(parent)
+      val nodesToChooseFrom = decision.nodesToChooseFrom
       if (nodesToChooseFrom.isEmpty) {
         // If this parent at this scope has no children to choose from, then it is a terminal node.
         repository.add(key1 = scope, key2 = parent)

@@ -1,7 +1,7 @@
 package composition
 
 import com.google.inject.AbstractModule
-import replaceEmpty._
+import decision._
 
 final class CreateSeqNodesBinding extends AbstractModule {
 

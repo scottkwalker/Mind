@@ -1,6 +1,6 @@
 package ai
 
-import replaceEmpty.ReplaceEmpty
+import decision.Decision
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -9,11 +9,11 @@ trait SelectionStrategy {
 
   protected val rng: RandomNumberGenerator
 
-  def chooseChild(possibleChildren: Set[ReplaceEmpty]): ReplaceEmpty
+  def chooseChild(possibleChildren: Set[Decision]): Decision
 
   def chooseIndex(seqLength: Int): Int
 
-  def chooseChild(possibleChildren: Future[Set[ReplaceEmpty]]): Future[ReplaceEmpty] = {
+  def chooseChild(possibleChildren: Future[Set[Decision]]): Future[Decision] = {
     possibleChildren map { children =>
       require(children.nonEmpty, s"Sequence possibleChildren must not be empty otherwise we cannot pick a node from it, contained: $possibleChildren")
       chooseChild(children)

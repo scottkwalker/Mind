@@ -19,12 +19,12 @@ final class IntegerMSpec extends TestComposition {
     }
   }
 
-  "replaceEmpty" must {
+  "fillEmptySteps" must {
     "return same when no empty nodes" in {
       val s = mock[IScope]
       val injector = mock[Injector]
 
-      val result = integerM.replaceEmpty(s)(injector)
+      val result = integerM.fillEmptySteps(s)(injector)
 
       whenReady(result) {
         _ must equal(integerM)

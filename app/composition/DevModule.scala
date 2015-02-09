@@ -7,7 +7,7 @@ import models.common.IScope
 import models.domain.scala.Empty
 import models.domain.scala.FactoryLookup
 import models.domain.scala.FactoryLookupImpl
-import replaceEmpty._
+import decision._
 import utils.PozInt
 
 final class DevModule extends AbstractModule {
