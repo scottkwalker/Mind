@@ -42,8 +42,3 @@ case class TypeTreeFactoryImpl @Inject()(
     TypeTree(nodes.instructions)
   }
 }
-
-object TypeTreeFactoryImpl {
-
-  val id = PozInt(4)
-}

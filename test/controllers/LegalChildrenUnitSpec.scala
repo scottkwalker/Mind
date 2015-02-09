@@ -1,14 +1,18 @@
 package controllers
 
-import composition.{StubLookupChildrenBinding, StubLookupChildrenWithFutures, TestComposition}
-import memoization.{LookupChildren, LookupChildrenWithFutures}
-import models.common.{IScope, LookupChildrenRequest, Scope}
+import composition.StubLookupChildrenBinding
+import composition.TestComposition
+import models.common.IScope
+import models.common.LookupChildrenRequest
+import models.common.Scope
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{times, verify}
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import play.api.libs.json.Json
 import play.api.test.Helpers._
-import play.api.test.{FakeRequest, WithApplication}
-import replaceEmpty.TypeTreeFactoryImpl
+import play.api.test.FakeRequest
+import play.api.test.WithApplication
+import replaceEmpty.TypeTreeFactory
 import utils.PozInt
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -52,7 +56,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
       val result = legalChildren.calculate(validRequest)
       whenReady(result) { r =>
         r.body.map { b =>
-          Json.parse(b) must equal(Seq(TypeTreeFactoryImpl.id))
+          Json.parse(b) must equal(Seq(TypeTreeFactory.id))
         }
       }(config = patienceConfig)
     }
@@ -101,7 +105,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
       val result = legalChildren.size(FakeRequest())
       contentAsString(result)(timeout) must equal("repository size: 1")
     }
-    
+
     "return 3 when repository has 3 items" in {
       val (legalChildren, _) = build(size = 3)
       val result = legalChildren.size(FakeRequest())
@@ -110,7 +114,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
   }
 
   private def build(size: Int = 0) = {
-    val lookupChildren= new StubLookupChildrenBinding(size = size)
+    val lookupChildren = new StubLookupChildrenBinding(size = size)
     val injector = testInjector(
       lookupChildren
     )

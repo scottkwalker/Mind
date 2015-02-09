@@ -1,6 +1,7 @@
 package models.domain.scala
 
-import composition.{FactoryLookupBinding, TestComposition}
+import composition.FactoryLookupBinding
+import composition.TestComposition
 import replaceEmpty._
 import utils.PozInt
 
@@ -12,7 +13,7 @@ final class FactoryLookupImplSpec extends TestComposition {
     }
 
     "return expected factory" in {
-      factoryLookup.convert(TypeTreeFactoryImpl.id) mustBe a [TypeTreeFactory]
+      factoryLookup.convert(TypeTreeFactory.id) mustBe a[TypeTreeFactory]
     }
   }
 
@@ -38,7 +39,7 @@ final class FactoryLookupImplSpec extends TestComposition {
 
     "return expected id for TypeTreeFactory" in {
       val factory = injector.getInstance(classOf[TypeTreeFactory])
-      factoryLookup.convert(factory) must equal(TypeTreeFactoryImpl.id)
+      factoryLookup.convert(factory) must equal(TypeTreeFactory.id)
     }
 
     "return expected id for objectFactory" in {
