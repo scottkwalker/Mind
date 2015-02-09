@@ -17,7 +17,7 @@ case class FunctionMFactoryImpl @Inject()(
                                            lookupChildren: LookupChildrenWithFutures
                                            ) extends FunctionMFactory with UpdateScopeIncrementFuncs {
 
-  override val nodesToChooseFrom = Set(AddOperatorFactoryImpl.id, ValueRefFactoryImpl.id)
+  override val nodesToChooseFrom = Set(AddOperatorFactory.id, ValueRefFactoryImpl.id)
   private val childrenToChooseFromForParams = Set(ValDclInFunctionParamFactoryImpl.id)
 
   override def create(scope: IScope): Future[Instruction] = async {

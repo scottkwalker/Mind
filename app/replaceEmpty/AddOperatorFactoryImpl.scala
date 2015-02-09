@@ -25,8 +25,3 @@ case class AddOperatorFactoryImpl @Inject()(
       right = right)
   }
 }
-
-object AddOperatorFactoryImpl {
-
-  val id = PozInt(1)
-}

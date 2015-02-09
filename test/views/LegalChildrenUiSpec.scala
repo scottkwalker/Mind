@@ -6,6 +6,7 @@ import org.scalatestplus.play._
 import play.api.Play
 import play.api.libs.json.{JsArray, JsNumber}
 import play.api.test.WithApplication
+import replaceEmpty.AddOperatorFactory
 import replaceEmpty.AddOperatorFactoryImpl
 
 final class LegalChildrenUiSpec extends TestComposition with IntegrationPatience with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
@@ -57,7 +58,7 @@ final class LegalChildrenUiSpec extends TestComposition with IntegrationPatience
       val valid = "1"
       go to page
       // Fill in the fields
-      page.currentNode.value = AddOperatorFactoryImpl.id.value.toString
+      page.currentNode.value = AddOperatorFactory.id.value.toString
       page.numVals.value = valid
       page.numFuncs.value = valid
       page.numObjects.value = valid
@@ -81,7 +82,7 @@ final class LegalChildrenUiSpec extends TestComposition with IntegrationPatience
 //      val valid = "1"
 //      go to page
 //      // Fill in the fields
-//      page.currentNode.value = AddOperatorFactoryImpl.id.value.toString
+//      page.currentNode.value = AddOperatorFactory.id.value.toString
 //      page.numVals.value = valid
 //      page.numFuncs.value = valid
 //      page.numObjects.value = valid

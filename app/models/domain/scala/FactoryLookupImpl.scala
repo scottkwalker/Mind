@@ -12,11 +12,11 @@ final class FactoryLookupImpl @Inject()(addOperatorFactory: AddOperatorFactory,
                                         valDclInFunctionParamFactory: ValDclInFunctionParamFactory,
                                         valueRefFactory: ValueRefFactory) extends FactoryLookup {
 
-  override val factories: Set[PozInt] = Set(AddOperatorFactoryImpl.id, FunctionMFactory.id, IntegerMFactoryImpl.id, TypeTreeFactory.id, ObjectFactory.id, ValDclInFunctionParamFactoryImpl.id, ValueRefFactoryImpl.id)
+  override val factories: Set[PozInt] = Set(AddOperatorFactory.id, FunctionMFactory.id, IntegerMFactoryImpl.id, TypeTreeFactory.id, ObjectFactory.id, ValDclInFunctionParamFactoryImpl.id, ValueRefFactoryImpl.id)
   override val version: String = factories.mkString("|")
 
   override def convert(id: PozInt): ReplaceEmpty = id match {
-    case AddOperatorFactoryImpl.id => addOperatorFactory
+    case AddOperatorFactory.id => addOperatorFactory
     case FunctionMFactory.id => functionMFactory
     case IntegerMFactoryImpl.id => integerMFactory
     case TypeTreeFactory.id => typeTreeFactory
@@ -27,7 +27,7 @@ final class FactoryLookupImpl @Inject()(addOperatorFactory: AddOperatorFactory,
   }
 
   override def convert(factory: ReplaceEmpty): PozInt = factory match {
-    case `addOperatorFactory` => AddOperatorFactoryImpl.id
+    case `addOperatorFactory` => AddOperatorFactory.id
     case `functionMFactory` => FunctionMFactory.id
     case `integerMFactory` => IntegerMFactoryImpl.id
     case `typeTreeFactory` => TypeTreeFactory.id

@@ -8,7 +8,9 @@ import models.common.Scope
 import models.domain.scala.FactoryLookup
 import org.mockito.Mockito._
 import play.api.libs.json._
-import replaceEmpty.{AddOperatorFactory, AddOperatorFactoryImpl, ValueRefFactory, ValueRefFactoryImpl}
+import replaceEmpty.AddOperatorFactory
+import replaceEmpty.ValueRefFactory
+import replaceEmpty.ValueRefFactoryImpl
 import utils.PozInt
 
 final class RepositoryReturningBoolSpec extends TestComposition {
@@ -16,7 +18,7 @@ final class RepositoryReturningBoolSpec extends TestComposition {
   "apply" must {
     "return true for ids that are valid for this scope" in {
       val (sut, _) = createSut()
-      val a = sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
+      val a = sut.apply(key1 = scope, key2 = AddOperatorFactory.id)
       val b = sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
 
       a must equal(false)
@@ -27,14 +29,14 @@ final class RepositoryReturningBoolSpec extends TestComposition {
       val (sut, factoryIdToFactory) = createSut()
       val a = sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
       val b = sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
-      val c = sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
-      val d = sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
+      val c = sut.apply(key1 = scope, key2 = AddOperatorFactory.id)
+      val d = sut.apply(key1 = scope, key2 = AddOperatorFactory.id)
 
       a must equal(true)
       b must equal(true)
       c must equal(false)
       d must equal(false)
-      verify(factoryIdToFactory, times(1)).convert(AddOperatorFactoryImpl.id)
+      verify(factoryIdToFactory, times(1)).convert(AddOperatorFactory.id)
       verify(factoryIdToFactory, times(1)).convert(ValueRefFactoryImpl.id)
     }
   }
@@ -64,14 +66,14 @@ final class RepositoryReturningBoolSpec extends TestComposition {
 
     "write expected json for many computed values" in {
       val cache = Map(
-        s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}" -> Right(false),
+        s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactory.id}" -> Right(false),
         s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(false),
         s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(true)
       )
       RepositoryReturningBool.writes.writes(cache) must equal(
         JsObject(
           Seq(
-            (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
+            (s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactory.id}", JsBoolean(value = false)),
             (s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
             (s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
           )
@@ -81,7 +83,7 @@ final class RepositoryReturningBoolSpec extends TestComposition {
 
     "ignore values that have not finished computation" in {
       val cache = Map(
-        s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactoryImpl.id}" -> Left(new CountDownLatch(0)), // This value is still being computed so should not appear in the output.
+        s"Scope(0,0,0,1,0,0,0,0)|${AddOperatorFactory.id}" -> Left(new CountDownLatch(0)), // This value is still being computed so should not appear in the output.
         s"Scope(0,0,0,0,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(false),
         s"Scope(0,0,0,1,0,0,0,0)|${ValueRefFactoryImpl.id}" -> Right(true)
       )
@@ -132,7 +134,7 @@ final class RepositoryReturningBoolSpec extends TestComposition {
 
     "write expected json for many computed values" in {
       val (sut, _) = createSut()
-      sut.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
+      sut.apply(key1 = scope, key2 = AddOperatorFactory.id)
       sut.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
 
       sut.write must equal(
@@ -141,7 +143,7 @@ final class RepositoryReturningBoolSpec extends TestComposition {
             "versioning" -> JsString(version),
             "cache" -> JsObject(
               Seq(
-                (s"Scope(0,0,0,1,0,0,0,0,1)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
+                (s"Scope(0,0,0,1,0,0,0,0,1)|${AddOperatorFactory.id}", JsBoolean(value = false)),
                 (s"Scope(0,0,0,0,0,0,0,0,1)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
                 (s"Scope(0,0,0,1,0,0,0,0,1)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
               )
@@ -159,7 +161,7 @@ final class RepositoryReturningBoolSpec extends TestComposition {
           "versioning" -> JsString(version),
           "cache" -> JsObject(
             Seq(
-              (s"Scope(0,0,0,0,0,0,0,1,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
+              (s"Scope(0,0,0,0,0,0,0,1,0)|${AddOperatorFactory.id}", JsBoolean(value = false)),
               (s"Scope(0,0,0,1,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
               (s"Scope(0,0,0,0,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
             )
@@ -168,7 +170,7 @@ final class RepositoryReturningBoolSpec extends TestComposition {
       )
       val readsFromJson = reads(factoryLookupStub)
       val asObj: RepositoryReturningBool = Memoize2Impl.read[RepositoryReturningBool](json)(readsFromJson)
-      val a = asObj.apply(key1 = scope, key2 = AddOperatorFactoryImpl.id)
+      val a = asObj.apply(key1 = scope, key2 = AddOperatorFactory.id)
       val b = asObj.apply(key1 = scope, key2 = ValueRefFactoryImpl.id)
 
       a must equal(false)
@@ -182,7 +184,7 @@ final class RepositoryReturningBoolSpec extends TestComposition {
           "versioning" -> JsString(versioningWithoutAddOp),
           "cache" -> JsObject(
             Seq(
-              (s"Scope(0,0,0,0,0,0,0,1,0)|${AddOperatorFactoryImpl.id}", JsBoolean(value = false)),
+              (s"Scope(0,0,0,0,0,0,0,1,0)|${AddOperatorFactory.id}", JsBoolean(value = false)),
               (s"Scope(0,0,0,1,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = false)),
               (s"Scope(0,0,0,0,0,0,0,1,0)|${ValueRefFactoryImpl.id}", JsBoolean(value = true))
             )
@@ -209,10 +211,10 @@ final class RepositoryReturningBoolSpec extends TestComposition {
     (sut, factoryLookup)
   }
 
-  private val version = s"${AddOperatorFactoryImpl.id}|${ValueRefFactoryImpl.id}"
+  private val version = s"${AddOperatorFactory.id}|${ValueRefFactoryImpl.id}"
 
   private def factoryLookupStub = {
-    val addOperatorFactoryImpl = {
+    val addOperatorFactory = {
       val stub = mock[AddOperatorFactory]
       when(stub.nodesToChooseFrom).thenReturn(Set(ValueRefFactoryImpl.id))
       stub
@@ -225,7 +227,7 @@ final class RepositoryReturningBoolSpec extends TestComposition {
 
     val stub = mock[FactoryLookup]
     when(stub.version).thenReturn(version)
-    when(stub.convert(AddOperatorFactoryImpl.id)).thenReturn(addOperatorFactoryImpl)
+    when(stub.convert(AddOperatorFactory.id)).thenReturn(addOperatorFactory)
     when(stub.convert(ValueRefFactoryImpl.id)).thenReturn(valueRefFactoryImpl)
     stub
   }
