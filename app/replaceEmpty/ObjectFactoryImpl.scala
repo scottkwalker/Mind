@@ -33,8 +33,3 @@ case class ObjectFactoryImpl @Inject()(
     )
   }
 }
-
-object ObjectFactoryImpl {
-
-  val id = PozInt(5)
-}

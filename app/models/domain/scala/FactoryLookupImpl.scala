@@ -12,7 +12,7 @@ final class FactoryLookupImpl @Inject()(addOperatorFactory: AddOperatorFactory,
                                         valDclInFunctionParamFactory: ValDclInFunctionParamFactory,
                                         valueRefFactory: ValueRefFactory) extends FactoryLookup {
 
-  override val factories: Set[PozInt] = Set(AddOperatorFactoryImpl.id, FunctionMFactoryImpl.id, IntegerMFactoryImpl.id, TypeTreeFactory.id, ObjectFactoryImpl.id, ValDclInFunctionParamFactoryImpl.id, ValueRefFactoryImpl.id)
+  override val factories: Set[PozInt] = Set(AddOperatorFactoryImpl.id, FunctionMFactoryImpl.id, IntegerMFactoryImpl.id, TypeTreeFactory.id, ObjectFactory.id, ValDclInFunctionParamFactoryImpl.id, ValueRefFactoryImpl.id)
   override val version: String = factories.mkString("|")
 
   override def convert(id: PozInt): ReplaceEmpty = id match {
@@ -20,7 +20,7 @@ final class FactoryLookupImpl @Inject()(addOperatorFactory: AddOperatorFactory,
     case FunctionMFactoryImpl.id => functionMFactory
     case IntegerMFactoryImpl.id => integerMFactory
     case TypeTreeFactory.id => typeTreeFactory
-    case ObjectFactoryImpl.id => objectFactory
+    case ObjectFactory.id => objectFactory
     case ValDclInFunctionParamFactoryImpl.id => valDclInFunctionParamFactory
     case ValueRefFactoryImpl.id => valueRefFactory
     case _ => throw new RuntimeException(s"Unknown id for factory ${id.value}")
@@ -31,7 +31,7 @@ final class FactoryLookupImpl @Inject()(addOperatorFactory: AddOperatorFactory,
     case `functionMFactory` => FunctionMFactoryImpl.id
     case `integerMFactory` => IntegerMFactoryImpl.id
     case `typeTreeFactory` => TypeTreeFactory.id
-    case `objectFactory` => ObjectFactoryImpl.id
+    case `objectFactory` => ObjectFactory.id
     case `valDclInFunctionParamFactory` => ValDclInFunctionParamFactoryImpl.id
     case `valueRefFactory` => ValueRefFactoryImpl.id
     case _ => throw new RuntimeException("Unknown factory for id")
