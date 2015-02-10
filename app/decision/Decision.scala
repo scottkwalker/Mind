@@ -13,4 +13,8 @@ trait Decision {
   def createStep(scope: IScope): Future[Step]
 
   def updateScope(scope: IScope): IScope
+
+  def createParams(scope: IScope): Future[AccumulateInstructions]
+
+  def createNodes(scope: IScope): Future[AccumulateInstructions]
 }

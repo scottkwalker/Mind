@@ -18,4 +18,8 @@ final case class ValueRefFactoryImpl @Inject()(ai: SelectionStrategy) extends Va
   override def createStep(scope: IScope): Future[Step] = async {
     ValueRef(index = ai.chooseIndex(scope.numVals))
   }
+
+  override def createParams(scope: IScope): Future[AccumulateInstructions] = throw new RuntimeException("calling this method is not possible as there will be no params")
+
+  override def createNodes(scope: IScope): Future[AccumulateInstructions] = throw new RuntimeException("calling this method is not possible as there will be no child nodes")
 }

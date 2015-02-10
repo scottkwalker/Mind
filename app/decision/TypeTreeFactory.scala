@@ -9,8 +9,6 @@ import scala.concurrent.Future
 trait TypeTreeFactory extends Decision {
 
   def create(scope: IScope, premadeChildren: Seq[Decision]): Future[Step]
-
-  def createNodes(scope: IScope, acc: Seq[Step] = Seq.empty): Future[AccumulateInstructions]
 }
 
 object TypeTreeFactory {

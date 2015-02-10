@@ -5,12 +5,7 @@ import utils.PozInt
 
 import scala.concurrent.Future
 
-trait FunctionMFactory extends Decision {
-
-  def createParams(scope: IScope): Future[AccumulateInstructions]
-
-  def createNodes(scope: IScope): Future[AccumulateInstructions]
-}
+trait FunctionMFactory extends Decision
 
 object FunctionMFactory {
 

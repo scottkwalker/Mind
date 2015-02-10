@@ -27,7 +27,8 @@ case class TypeTreeFactoryImpl @Inject()(
     TypeTree(nodes)
   }
 
-  override def createNodes(scope: IScope, acc: Seq[Step] = Seq.empty): Future[AccumulateInstructions] = {
+  override def createNodes(scope: IScope): Future[AccumulateInstructions] = {
+    val acc: Seq[Step] = Seq.empty
     creator.create(
       possibleChildren = lookupChildren.get(scope, nodesToChooseFrom),
       scope = scope,
@@ -40,4 +41,6 @@ case class TypeTreeFactoryImpl @Inject()(
     val nodes = await(createNodes(scope))
     TypeTree(nodes.instructions)
   }
+
+  override def createParams(scope: IScope): Future[AccumulateInstructions] = throw new RuntimeException("calling this method is not possible as there will be no params")
 }
