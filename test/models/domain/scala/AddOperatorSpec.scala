@@ -116,8 +116,8 @@ final class AddOperatorSpec extends TestComposition {
 
       whenReady(result) {
         case AddOperator(left, right) =>
-          left mustBe a[ValueRef]
-          right mustBe a[ValueRef]
+          left mustBe a[Step]
+          right mustBe a[Step]
       }(config = patienceConfig)
     }
   }

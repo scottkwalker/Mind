@@ -28,9 +28,9 @@ final case class AddOperator(left: Step, right: Step) extends Step with UpdateSc
   }
 
   private def fillEmptySteps(scope: IScope, instruction: Step)(implicit injector: Injector): Future[Step] = {
-    lazy val factory = injector.getInstance(classOf[ValueRefFactory])
+    def decision = injector.getInstance(classOf[FactoryLookup]).convert(ValueRefFactory.id)
     instruction match {
-      case _: Empty => factory.createStep(scope)
+      case _: Empty => decision.createStep(scope)
       case nonEmpty: Step => nonEmpty.fillEmptySteps(scope.decrementHeight) // This node is non-empty but its children may not be, so do the same check on this node's children.
     }
   }

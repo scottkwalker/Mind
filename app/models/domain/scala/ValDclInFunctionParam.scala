@@ -26,8 +26,7 @@ final case class ValDclInFunctionParam(name: String, primitiveType: Step) extend
   override def fillEmptySteps(scope: IScope)(implicit injector: Injector): Future[Step] = async {
     val instruction = primitiveType match {
       case _: Empty =>
-//        val decision = injector.getInstance(classOf[IntegerMFactoryImpl])
-        val decision = injector.getInstance(classOf[FactoryLookup]).convert(IntegerMFactory.id)
+        def decision = injector.getInstance(classOf[FactoryLookup]).convert(IntegerMFactory.id)
         decision.createStep(scope)
       case nonEmpty: Step => nonEmpty.fillEmptySteps(updateScope(scope.decrementHeight))
     }
