@@ -14,11 +14,11 @@ import scala.concurrent.Future
 
 final case class TypeTree(nodes: Seq[Step]) extends Step with UpdateScopeThrows {
 
-  override def toRaw: String = nodes.map(f => f.toRaw).mkString(" ")
+  override def toCompilable: String = nodes.map(f => f.toCompilable).mkString(" ")
 
-  override def hasNoEmpty(scope: IScope): Boolean = scope.hasHeightRemaining && {
+  override def hasNoEmptySteps(scope: IScope): Boolean = scope.hasHeightRemaining && {
     nodes.forall {
-      case n: Object => n.hasNoEmpty(scope.decrementHeight)
+      case n: Object => n.hasNoEmptySteps(scope.decrementHeight)
       case _: Empty => false
       case _ => false
     }

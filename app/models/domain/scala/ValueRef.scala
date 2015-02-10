@@ -9,9 +9,9 @@ import scala.concurrent.Future
 
 final case class ValueRef(name: String) extends Step with UpdateScopeNoChange {
 
-  override def toRaw: String = name
+  override def toCompilable: String = name
 
-  override def hasNoEmpty(scope: IScope): Boolean = !name.isEmpty
+  override def hasNoEmptySteps(scope: IScope): Boolean = !name.isEmpty
 
   override def fillEmptySteps(scope: IScope)(implicit injector: Injector): Future[Step] = Future.successful(this)
 

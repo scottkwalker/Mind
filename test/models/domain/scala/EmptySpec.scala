@@ -7,16 +7,16 @@ import models.common.Scope
 
 final class EmptySpec extends TestComposition {
 
-  "toRaw" must {
+  "toCompilable" must {
     "throw if you ask toRawScala" in {
-      an[RuntimeException] must be thrownBy Empty().toRaw
+      an[RuntimeException] must be thrownBy Empty().toCompilable
     }
   }
 
-  "hasNoEmpty" must {
+  "hasNoEmptySteps" must {
     "return false" in {
       val scope = Scope(height = 10, maxHeight = 10)
-      Empty().hasNoEmpty(scope) must equal(false)
+      Empty().hasNoEmptySteps(scope) must equal(false)
     }
   }
 

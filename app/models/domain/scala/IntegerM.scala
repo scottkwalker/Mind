@@ -9,9 +9,9 @@ import scala.concurrent.Future
 
 final case class IntegerM() extends Step with UpdateScopeNoChange {
 
-  override def toRaw: String = "Int"
+  override def toCompilable: String = "Int"
 
-  override def hasNoEmpty(scope: IScope): Boolean = true
+  override def hasNoEmptySteps(scope: IScope): Boolean = true
 
   override def fillEmptySteps(scope: IScope)(implicit injector: Injector): Future[Step] = Future.successful(this)
 

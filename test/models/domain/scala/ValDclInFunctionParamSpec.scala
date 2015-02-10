@@ -1,6 +1,7 @@
 package models.domain.scala
 
 import com.google.inject.Injector
+import composition.FactoryLookupBinding
 import composition.TestComposition
 import models.common.IScope
 import models.common.Scope
@@ -12,24 +13,24 @@ import scala.concurrent.Future
 
 final class ValDclInFunctionParamSpec extends TestComposition {
 
-  "toRawScala" must {
+  "toCompilable" must {
     "return expected" in {
       val instruction = mock[Step]
-      when(instruction.toRaw).thenReturn("Int")
+      when(instruction.toCompilable).thenReturn("Int")
       val name = "a"
 
-      ValDclInFunctionParam(name, instruction).toRaw must equal("a: Int")
+      ValDclInFunctionParam(name, instruction).toCompilable must equal("a: Int")
     }
   }
 
-  "hasNoEmpty" must {
+  "hasNoEmptySteps" must {
     "false given it cannot terminate in under N steps" in {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(false)
       val name = "a"
       val instruction = mock[Step]
 
-      ValDclInFunctionParam(name, instruction).hasNoEmpty(scope) must equal(false)
+      ValDclInFunctionParam(name, instruction).hasNoEmptySteps(scope) must equal(false)
     }
 
     "false given an empty name" in {
@@ -38,7 +39,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val name = ""
       val instruction = mock[Step]
 
-      ValDclInFunctionParam(name, instruction).hasNoEmpty(scope) must equal(false)
+      ValDclInFunctionParam(name, instruction).hasNoEmptySteps(scope) must equal(false)
     }
 
     "false given an invalid child" in {
@@ -46,9 +47,9 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       when(scope.hasHeightRemaining).thenReturn(true)
       val name = "a"
       val instruction = mock[Step]
-      when(instruction.hasNoEmpty(any[Scope])).thenReturn(false)
+      when(instruction.hasNoEmptySteps(any[Scope])).thenReturn(false)
 
-      ValDclInFunctionParam(name, instruction).hasNoEmpty(scope) must equal(false)
+      ValDclInFunctionParam(name, instruction).hasNoEmptySteps(scope) must equal(false)
     }
 
     "true given it can terminate, has a non-empty name and valid child" in {
@@ -57,7 +58,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val name = "a"
       val instruction = IntegerM()
 
-      ValDclInFunctionParam(name, instruction).hasNoEmpty(scope) must equal(true)
+      ValDclInFunctionParam(name, instruction).hasNoEmptySteps(scope) must equal(true)
     }
   }
 
@@ -106,7 +107,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       whenReady(result) {
         case ValDclInFunctionParam(name2, primitiveType) =>
           name2 must equal("a")
-          primitiveType mustBe an[IntegerM]
+          primitiveType mustBe a[Step]
         case _ => fail("wrong type")
       }(config = patienceConfig)
     }

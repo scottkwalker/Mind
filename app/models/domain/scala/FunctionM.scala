@@ -16,14 +16,14 @@ final case class FunctionM(params: Seq[Step],
                            nodes: Seq[Step],
                            name: String) extends Step with UpdateScopeIncrementFuncs {
 
-  override def toRaw: String = {
+  override def toCompilable: String = {
     require(!name.isEmpty)
-    s"def $name${params.map(f => f.toRaw).mkString("(", ", ", ")")} = ${nodes.map(f => f.toRaw).mkString("{ ", " ", " }")}"
+    s"def $name${params.map(f => f.toCompilable).mkString("(", ", ", ")")} = ${nodes.map(f => f.toCompilable).mkString("{ ", " ", " }")}"
   }
 
-  override def hasNoEmpty(scope: IScope): Boolean = scope.hasHeightRemaining &&
+  override def hasNoEmptySteps(scope: IScope): Boolean = scope.hasHeightRemaining &&
     !name.isEmpty &&
-    nodes.forall(n => n.hasNoEmpty(scope.decrementHeight))
+    nodes.forall(n => n.hasNoEmptySteps(scope.decrementHeight))
 
   private def fillEmptySteps(scope: IScope, currentInstruction: Step, acc: Seq[Step], funcReplaceEmpty: (IScope) => Future[AccumulateInstructions])(implicit injector: Injector): Future[AccumulateInstructions] = {
     currentInstruction match {

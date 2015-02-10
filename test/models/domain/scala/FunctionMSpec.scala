@@ -13,14 +13,14 @@ import scala.concurrent.Future
 
 final class FunctionMSpec extends TestComposition {
 
-  "hasNoEmpty" must {
+  "hasNoEmptySteps" must {
     "false given an empty name" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val node = mock[Step]
-      when(node.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
+      when(node.hasNoEmptySteps(any[Scope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
       FunctionM(params = params,
         nodes = Seq(node, node),
-        name = "").hasNoEmpty(scope) must equal(false)
+        name = "").hasNoEmptySteps(scope) must equal(false)
     }
 
     "true given it can terminate in under N steps" in {
@@ -28,27 +28,27 @@ final class FunctionMSpec extends TestComposition {
 
       FunctionM(params = params,
         nodes = Seq(nonEmpty, nonEmpty),
-        name = name).hasNoEmpty(scope) must equal(true)
+        name = name).hasNoEmptySteps(scope) must equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
       val scope = Scope(height = 0)
       val node = mock[Step]
-      when(node.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
+      when(node.hasNoEmptySteps(any[Scope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
 
       FunctionM(params = params,
         nodes = Seq(node, node),
-        name = name).hasNoEmpty(scope) must equal(false)
+        name = name).hasNoEmptySteps(scope) must equal(false)
     }
 
     "false given it cannot terminate in under N steps" in {
       val scope = Scope(height = 2, maxHeight = 10)
       val nonTerminal = mock[Step]
-      when(nonTerminal.hasNoEmpty(any[Scope])).thenReturn(false)
+      when(nonTerminal.hasNoEmptySteps(any[Scope])).thenReturn(false)
 
       FunctionM(params = params,
         nodes = Seq(nonTerminal, nonTerminal),
-        name = name).hasNoEmpty(scope) must equal(false)
+        name = name).hasNoEmptySteps(scope) must equal(false)
     }
 
     "true given no empty nodes" in {
@@ -56,7 +56,7 @@ final class FunctionMSpec extends TestComposition {
 
       FunctionM(params = params,
         nodes = Seq(nonEmpty, nonEmpty),
-        name = name).hasNoEmpty(scope) must equal(true)
+        name = name).hasNoEmptySteps(scope) must equal(true)
     }
 
     "false given an empty node" in {
@@ -64,28 +64,28 @@ final class FunctionMSpec extends TestComposition {
 
       FunctionM(params = params,
         nodes = Seq(nonEmpty, Empty()),
-        name = name).hasNoEmpty(scope) must equal(false)
+        name = name).hasNoEmptySteps(scope) must equal(false)
     }
   }
 
-  "toRawScala" must {
+  "toCompilable" must {
     "returns expected" in {
       val node = mock[Step]
-      when(node.toRaw).thenReturn("STUB")
+      when(node.toCompilable).thenReturn("STUB")
 
       FunctionM(params = params,
         nodes = Seq(node),
-        name = name).toRaw must equal("def f0(a: Int, b: Int) = { STUB }")
+        name = name).toCompilable must equal("def f0(a: Int, b: Int) = { STUB }")
     }
 
     "throws if has no name" in {
       val node = mock[Step]
-      when(node.toRaw).thenReturn("STUB")
+      when(node.toCompilable).thenReturn("STUB")
       val functionM = FunctionM(params = params,
         nodes = Seq(node),
         name = "")
 
-      an[IllegalArgumentException] must be thrownBy functionM.toRaw
+      an[IllegalArgumentException] must be thrownBy functionM.toCompilable
     }
   }
 
@@ -203,7 +203,7 @@ final class FunctionMSpec extends TestComposition {
 
   private def nonEmpty = {
     val node = mock[Step]
-    when(node.hasNoEmpty(any[Scope])).thenReturn(true)
+    when(node.hasNoEmptySteps(any[Scope])).thenReturn(true)
     node
   }
 }

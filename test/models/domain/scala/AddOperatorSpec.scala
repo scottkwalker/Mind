@@ -12,69 +12,69 @@ import scala.concurrent.Future
 
 final class AddOperatorSpec extends TestComposition {
 
-  "toRawScala" must {
+  "toCompilable" must {
     "return expected" in {
       val left = mock[Step]
-      when(left.toRaw).thenReturn("STUB_A")
+      when(left.toCompilable).thenReturn("STUB_A")
       val right = mock[Step]
-      when(right.toRaw).thenReturn("STUB_B")
+      when(right.toCompilable).thenReturn("STUB_B")
 
-      AddOperator(left = left, right = right).toRaw must equal("STUB_A + STUB_B")
+      AddOperator(left = left, right = right).toCompilable must equal("STUB_A + STUB_B")
     }
   }
 
-  "hasNoEmpty" must {
+  "hasNoEmptySteps" must {
     "true given child nodes can terminate in under N steps" in {
       val scope = Scope(height = 2, maxHeight = 10)
       val terminal = ValueRef("v")
 
-      AddOperator(terminal, terminal).hasNoEmpty(scope) must equal(true)
+      AddOperator(terminal, terminal).hasNoEmptySteps(scope) must equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
       val scope = Scope(height = 0)
       val nonTerminal = mock[Step]
-      when(nonTerminal.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException)
+      when(nonTerminal.hasNoEmptySteps(any[Scope])).thenThrow(new RuntimeException)
 
-      AddOperator(nonTerminal, nonTerminal).hasNoEmpty(scope) must equal(false)
+      AddOperator(nonTerminal, nonTerminal).hasNoEmptySteps(scope) must equal(false)
     }
 
     "false given child nodes cannot terminate in under N steps" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val nonTerminal = mock[Step]
-      when(nonTerminal.hasNoEmpty(any[Scope])).thenReturn(false)
+      when(nonTerminal.hasNoEmptySteps(any[Scope])).thenReturn(false)
 
-      AddOperator(nonTerminal, nonTerminal).hasNoEmpty(scope) must equal(false)
+      AddOperator(nonTerminal, nonTerminal).hasNoEmptySteps(scope) must equal(false)
     }
 
     "true when no nodes are empty" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val nonEmpty = ValueRef("v")
 
-      AddOperator(nonEmpty, nonEmpty).hasNoEmpty(scope) must equal(true)
+      AddOperator(nonEmpty, nonEmpty).hasNoEmptySteps(scope) must equal(true)
     }
 
     "false when left node is empty" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val nonEmpty = ValueRef("stub")
 
-      AddOperator(Empty(), nonEmpty).hasNoEmpty(scope) must equal(false)
+      AddOperator(Empty(), nonEmpty).hasNoEmptySteps(scope) must equal(false)
     }
 
     "false when right node is empty" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val nonEmpty = ValueRef("stub")
 
-      AddOperator(nonEmpty, Empty()).hasNoEmpty(scope) must equal(false)
+      AddOperator(nonEmpty, Empty()).hasNoEmptySteps(scope) must equal(false)
     }
 
     "false given contains a node that is not valid for this level" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val valid = mock[Step]
-      when(valid.hasNoEmpty(any[Scope])).thenReturn(true)
+      when(valid.hasNoEmptySteps(any[Scope])).thenReturn(true)
       val invalid = Object(Seq.empty, "ObjectM0")
 
-      AddOperator(valid, invalid).hasNoEmpty(scope) must equal(false)
+      AddOperator(valid, invalid).hasNoEmptySteps(scope) must equal(false)
     }
   }
 

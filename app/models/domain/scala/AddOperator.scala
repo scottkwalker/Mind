@@ -13,12 +13,12 @@ import scala.concurrent.Future
 
 final case class AddOperator(left: Step, right: Step) extends Step with UpdateScopeNoChange {
 
-  override def toRaw: String = s"${left.toRaw} + ${right.toRaw}"
+  override def toCompilable: String = s"${left.toCompilable} + ${right.toCompilable}"
 
-  override def hasNoEmpty(scope: IScope): Boolean = {
+  override def hasNoEmptySteps(scope: IScope): Boolean = {
     def validate(instruction: Step, scope: IScope) = {
       instruction match {
-        case _: ValueRef => instruction.hasNoEmpty(scope.decrementHeight)
+        case _: ValueRef => instruction.hasNoEmptySteps(scope.decrementHeight)
         case _: Empty => false
         case _ => false
       }

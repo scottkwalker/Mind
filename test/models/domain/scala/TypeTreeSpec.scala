@@ -13,22 +13,22 @@ import scala.concurrent.Future
 
 final class TypeTreeSpec extends TestComposition {
 
-  "hasNoEmpty" must {
+  "hasNoEmptySteps" must {
     "return true given it can terminates in under N steps" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val instruction = Object(nodes = Seq.empty, name = "o0")
       val typeTree = new TypeTree(Seq(instruction))
 
-      typeTree.hasNoEmpty(scope) must equal(true)
+      typeTree.hasNoEmptySteps(scope) must equal(true)
     }
 
     "return false given it cannot terminate in under N steps" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val instruction = mock[Step]
-      when(instruction.hasNoEmpty(any[Scope])).thenReturn(false)
+      when(instruction.hasNoEmptySteps(any[Scope])).thenReturn(false)
       val typeTree = new TypeTree(Seq(instruction))
 
-      typeTree.hasNoEmpty(scope) must equal(false)
+      typeTree.hasNoEmptySteps(scope) must equal(false)
     }
 
     "return true given none empty" in {
@@ -36,13 +36,13 @@ final class TypeTreeSpec extends TestComposition {
       val instruction = Object(nodes = Seq.empty, name = "o0")
       val typeTree = new TypeTree(Seq(instruction))
 
-      typeTree.hasNoEmpty(scope) must equal(true)
+      typeTree.hasNoEmptySteps(scope) must equal(true)
     }
 
     "return false given empty root node" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val typeTree = new TypeTree(Seq(Empty()))
-      typeTree.hasNoEmpty(scope) must equal(false)
+      typeTree.hasNoEmptySteps(scope) must equal(false)
     }
 
     "return false when hasHeightRemaining returns false" in {
@@ -51,7 +51,7 @@ final class TypeTreeSpec extends TestComposition {
       val instruction = mock[Step]
       val typeTree = new TypeTree(Seq(instruction))
 
-      typeTree.hasNoEmpty(scope) must equal(false)
+      typeTree.hasNoEmptySteps(scope) must equal(false)
     }
   }
 

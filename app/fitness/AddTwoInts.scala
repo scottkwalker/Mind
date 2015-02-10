@@ -12,7 +12,7 @@ final class AddTwoInts(val typeTree: Step) extends Fitness {
     val expected = 3
 
     val evaluateAsScala = new Eval
-    evaluateAsScala.compile(typeTree.toRaw)
+    evaluateAsScala.compile(typeTree.toCompilable)
 
     val result = evaluateAsScala.inPlace[Int](s"o0.f0($left, $right)")
 

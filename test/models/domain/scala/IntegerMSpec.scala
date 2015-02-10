@@ -6,16 +6,16 @@ import models.common.IScope
 
 final class IntegerMSpec extends TestComposition {
 
-  "toRawScala" must {
+  "toCompilable" must {
     "return expected" in {
-      integerM.toRaw must equal("Int")
+      integerM.toCompilable must equal("Int")
     }
   }
 
-  "hasNoEmpty" must {
+  "hasNoEmptySteps" must {
     "returns true" in {
       val s = mock[IScope]
-      integerM.hasNoEmpty(s) must equal(true)
+      integerM.hasNoEmptySteps(s) must equal(true)
     }
   }
 

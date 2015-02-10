@@ -13,7 +13,7 @@ import scala.concurrent.Future
 
 final class ObjectSpec extends TestComposition {
 
-  "hasNoEmpty" must {
+  "hasNoEmptySteps" must {
     "true given it can terminates in under N steps" in {
       val scope = Scope(height = 4, maxHeight = 10)
       // This has to be a real instead of a mock as we will be exact-matching on the type.
@@ -22,25 +22,25 @@ final class ObjectSpec extends TestComposition {
         name = "f0")
       val objectDef = Object(Seq(instruction), name)
 
-      objectDef.hasNoEmpty(scope) must equal(true)
+      objectDef.hasNoEmptySteps(scope) must equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
       val scope = Scope(height = 0)
       val instruction = mock[Step]
-      when(instruction.hasNoEmpty(any[Scope])).thenThrow(new RuntimeException)
+      when(instruction.hasNoEmptySteps(any[Scope])).thenThrow(new RuntimeException)
       val objectDef = Object(Seq(instruction), name)
 
-      objectDef.hasNoEmpty(scope) must equal(false)
+      objectDef.hasNoEmptySteps(scope) must equal(false)
     }
 
     "false given it cannot terminate in under N steps" in {
       val scope = Scope(height = 3, maxHeight = 10)
       val instruction = mock[Step]
-      when(instruction.hasNoEmpty(any[Scope])).thenReturn(false)
+      when(instruction.hasNoEmptySteps(any[Scope])).thenReturn(false)
       val objectDef = Object(Seq(instruction), name)
 
-      objectDef.hasNoEmpty(scope) must equal(false)
+      objectDef.hasNoEmptySteps(scope) must equal(false)
     }
 
     "true given no empty nodes" in {
@@ -51,32 +51,32 @@ final class ObjectSpec extends TestComposition {
         name = "f0")
       val objectDef = Object(Seq(instruction), name)
 
-      objectDef.hasNoEmpty(scope) must equal(true)
+      objectDef.hasNoEmptySteps(scope) must equal(true)
     }
 
     "false given single empty method node" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val objectDef = Object(Seq(Empty()), name)
-      objectDef.hasNoEmpty(scope) must equal(false)
+      objectDef.hasNoEmptySteps(scope) must equal(false)
     }
 
     "false given empty method node in a sequence" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val instruction = mock[Step]
-      when(instruction.hasNoEmpty(any[Scope])).thenReturn(true)
+      when(instruction.hasNoEmptySteps(any[Scope])).thenReturn(true)
       val objectDef = Object(Seq(instruction, Empty()), name)
 
-      objectDef.hasNoEmpty(scope) must equal(false)
+      objectDef.hasNoEmptySteps(scope) must equal(false)
     }
   }
 
-  "toRawScala" must {
+  "toCompilable" must {
     "return expected" in {
       val instruction = mock[Step]
-      when(instruction.toRaw).thenReturn("STUB")
+      when(instruction.toCompilable).thenReturn("STUB")
       val objectDef = Object(Seq(instruction), name)
 
-      objectDef.toRaw must equal("object o0 { STUB }")
+      objectDef.toCompilable must equal("object o0 { STUB }")
     }
   }
 

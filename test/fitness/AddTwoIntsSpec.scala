@@ -14,7 +14,7 @@ final class AddTwoIntsSpec extends TestComposition {
   "Addition" must {
     "1 add 1 equals 2 with TypeTree that returns hard coded raw Scala" in {
       val typeTree = mock[Step]
-      when(typeTree.toRaw).thenReturn("object o0 { def f0(a: Int, b: Int) = a + b }")
+      when(typeTree.toCompilable).thenReturn("object o0 { def f0(a: Int, b: Int) = a + b }")
       val f = new AddTwoInts(typeTree)
       f.fitness must equal(f.maxFitness)
     }

@@ -11,11 +11,11 @@ trait Step {
   // Convert the Instruction into a raw code for its language, e.g. an add operator can be represented as + in Scala. If
   // the instruction has an arity > 0 then it will have to recursively call the child instructions to get their string
   // representation.
-  def toRaw: String
+  def toCompilable: String
 
   // Returns false if any child of this instruction is of type Empty, meaning that the tree is not in a state where it
   // can be output as raw code.
-  def hasNoEmpty(scope: IScope): Boolean
+  def hasNoEmptySteps(scope: IScope): Boolean
 
   // Recursively replace any child Instruction of type Empty with new values chosen by the AI.
   def fillEmptySteps(scope: IScope)(implicit injector: Injector): Future[Step]
