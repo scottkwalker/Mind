@@ -27,7 +27,7 @@ final class EmptySpec extends TestComposition {
 
       val instance = Empty()
 
-      a[RuntimeException] must be thrownBy instance.fillEmptySteps(scope)(factoryLookup)
+      a[RuntimeException] must be thrownBy instance.fillEmptySteps(scope, factoryLookup)
     }
   }
 

@@ -60,21 +60,21 @@ final class TypeTreeSpec extends TestComposition {
       val scope = mock[IScope]
       val injector = mock[FactoryLookup]
       val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope])(any[FactoryLookup])) thenReturn Future.successful(instruction)
+      when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
       val instance = TypeTree(Seq(instruction))
 
-      val result = instance.fillEmptySteps(scope)(injector)
-      whenReady(result) { _ => verify(instruction, times(1)).fillEmptySteps(any[Scope])(any[FactoryLookup])}(config = patienceConfig)
+      val result = instance.fillEmptySteps(scope, injector)
+      whenReady(result) { _ => verify(instruction, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])}(config = patienceConfig)
     }
 
     "return same when no empty nodes" in {
       val scope = mock[IScope]
       val injector = mock[FactoryLookup]
       val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope])(any[FactoryLookup])) thenReturn Future.successful(instruction)
+      when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
       val instance = new TypeTree(Seq(instruction))
 
-      val result = instance.fillEmptySteps(scope)(injector)
+      val result = instance.fillEmptySteps(scope, injector)
 
       whenReady(result) {
         _ must equal(instance)
@@ -92,7 +92,7 @@ final class TypeTreeSpec extends TestComposition {
       val injector = testInjector().getInstance(classOf[FactoryLookup])
       val instance = TypeTree(nodes = Seq(empty))
 
-      val result = instance.fillEmptySteps(scope)(injector)
+      val result = instance.fillEmptySteps(scope, injector)
 
       whenReady(result) {
         case TypeTree(nodes) =>
@@ -109,7 +109,7 @@ final class TypeTreeSpec extends TestComposition {
       val injector = mock[FactoryLookup]
       val instance = new TypeTree(nodes = Seq.empty)
 
-      a[RuntimeException] must be thrownBy Await.result(instance.fillEmptySteps(scope)(injector), finiteTimeout)
+      a[RuntimeException] must be thrownBy Await.result(instance.fillEmptySteps(scope, injector), finiteTimeout)
     }
   }
 

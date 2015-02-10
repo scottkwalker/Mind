@@ -70,12 +70,12 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val name = "a"
       val factoryLookup = mock[FactoryLookup]
       val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope])(any[FactoryLookup])) thenReturn Future.successful(instruction)
+      when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
       val valDclInFunctionParam = ValDclInFunctionParam(name, instruction)
 
-      val result = valDclInFunctionParam.fillEmptySteps(scope)(factoryLookup)
+      val result = valDclInFunctionParam.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(result) { _ => verify(instruction, times(1)).fillEmptySteps(any[Scope])(any[FactoryLookup])}(config = patienceConfig)
+      whenReady(result) { _ => verify(instruction, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])}(config = patienceConfig)
     }
 
     "returns same when no empty nodes" in {
@@ -85,10 +85,10 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val name = "a"
       val factoryLookup = mock[FactoryLookup]
       val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope])(any[FactoryLookup])) thenReturn Future.successful(instruction)
+      when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
       val valDclInFunctionParam = ValDclInFunctionParam(name, instruction)
 
-      val result = valDclInFunctionParam.fillEmptySteps(scope)(factoryLookup)
+      val result = valDclInFunctionParam.fillEmptySteps(scope, factoryLookup)
 
       whenReady(result) {
         _ must equal(valDclInFunctionParam)
@@ -102,7 +102,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val injector = testInjector().getInstance(classOf[FactoryLookup])
       val valDclInFunctionParam = ValDclInFunctionParam(name, primitiveTypeEmpty)
 
-      val result = valDclInFunctionParam.fillEmptySteps(scope)(injector)
+      val result = valDclInFunctionParam.fillEmptySteps(scope, injector)
 
       whenReady(result) {
         case ValDclInFunctionParam(name2, primitiveType) =>

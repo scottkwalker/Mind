@@ -95,18 +95,18 @@ final class FunctionMSpec extends TestComposition {
       val scope = mock[IScope]
       val factoryLookup = testInjector().getInstance(classOf[FactoryLookup])
       val param = mock[Step]
-      when(param.fillEmptySteps(any[Scope])(any[FactoryLookup])) thenReturn Future.successful(param)
+      when(param.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(param)
       val node = mock[Step]
-      when(node.fillEmptySteps(any[Scope])(any[FactoryLookup])) thenReturn Future.successful(node)
+      when(node.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(node)
       val functionM = FunctionM(params = Seq(param),
         nodes = Seq(node),
         name = name)
 
-      val result = functionM.fillEmptySteps(scope)(factoryLookup)
+      val result = functionM.fillEmptySteps(scope, factoryLookup)
 
       whenReady(result) { _ =>
-        verify(param, times(1)).fillEmptySteps(any[Scope])(any[FactoryLookup])
-        verify(node, times(1)).fillEmptySteps(any[Scope])(any[FactoryLookup])
+        verify(param, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])
+        verify(node, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])
       }(config = patienceConfig)
     }
 
@@ -114,14 +114,14 @@ final class FunctionMSpec extends TestComposition {
       val scope = mock[IScope]
       val factoryLookup = testInjector().getInstance(classOf[FactoryLookup])
       val param = mock[Step]
-      when(param.fillEmptySteps(any[Scope])(any[FactoryLookup])) thenReturn Future.successful(param)
+      when(param.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(param)
       val node = mock[Step]
-      when(node.fillEmptySteps(any[Scope])(any[FactoryLookup])) thenReturn Future.successful(node)
+      when(node.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(node)
       val instance = FunctionM(params = Seq(param),
         nodes = Seq(node),
         name = name)
 
-      val result = instance.fillEmptySteps(scope)(factoryLookup)
+      val result = instance.fillEmptySteps(scope, factoryLookup)
 
       whenReady(result) {
         _ must equal(instance)
@@ -141,7 +141,7 @@ final class FunctionMSpec extends TestComposition {
         nodes = Seq(Empty()),
         name = name)
 
-      val result = functionM.fillEmptySteps(scope)(factoryLookup)
+      val result = functionM.fillEmptySteps(scope, factoryLookup)
 
       whenReady(result) {
         case FunctionM(p2, n2, n) =>
@@ -163,7 +163,7 @@ final class FunctionMSpec extends TestComposition {
         nodes = Seq(Empty()),
         name = name)
 
-      a[RuntimeException] must be thrownBy Await.result(functionM.fillEmptySteps(scope)(factoryLookup), finiteTimeout)
+      a[RuntimeException] must be thrownBy Await.result(functionM.fillEmptySteps(scope, factoryLookup), finiteTimeout)
     }
 
     "throw when passed empty nodes seq (no empty or non-empty)" in {
@@ -173,7 +173,7 @@ final class FunctionMSpec extends TestComposition {
         nodes = Seq.empty,
         name = name)
 
-      a[RuntimeException] must be thrownBy Await.result(functionM.fillEmptySteps(scope)(factoryLookup), finiteTimeout)
+      a[RuntimeException] must be thrownBy Await.result(functionM.fillEmptySteps(scope, factoryLookup), finiteTimeout)
     }
   }
 

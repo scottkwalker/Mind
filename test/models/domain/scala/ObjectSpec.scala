@@ -85,22 +85,22 @@ final class ObjectSpec extends TestComposition {
       val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
       val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope])(any[FactoryLookup])) thenReturn Future.successful(instruction)
+      when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
       val objectDef = Object(Seq(instruction), name = name)
 
-      val result = objectDef.fillEmptySteps(scope)(factoryLookup)
+      val result = objectDef.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(result) { r => verify(instruction, times(1)).fillEmptySteps(any[Scope])(any[FactoryLookup])}(config = patienceConfig)
+      whenReady(result) { r => verify(instruction, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])}(config = patienceConfig)
     }
 
     "returns same when no empty nodes" in {
       val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
       val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope])(any[FactoryLookup])) thenReturn Future.successful(instruction)
+      when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
       val objectDef = Object(Seq(instruction), name)
 
-      val result = objectDef.fillEmptySteps(scope)(factoryLookup)
+      val result = objectDef.fillEmptySteps(scope, factoryLookup)
 
       whenReady(result) {
         _ must equal(objectDef)
@@ -119,7 +119,7 @@ final class ObjectSpec extends TestComposition {
       val objectDef = Object(nodes = Seq(empty),
         name = name)
 
-      val result = objectDef.fillEmptySteps(scope)(factoryLookup)
+      val result = objectDef.fillEmptySteps(scope, factoryLookup)
 
       whenReady(result) {
         case Object(n2, name2) =>
@@ -137,7 +137,7 @@ final class ObjectSpec extends TestComposition {
       val factoryLookup = mock[FactoryLookup]
       val instance = new Object(nodes = Seq.empty, name = name)
 
-      a[RuntimeException] must be thrownBy Await.result(instance.fillEmptySteps(scope)(factoryLookup), finiteTimeout)
+      a[RuntimeException] must be thrownBy Await.result(instance.fillEmptySteps(scope, factoryLookup), finiteTimeout)
     }
   }
 

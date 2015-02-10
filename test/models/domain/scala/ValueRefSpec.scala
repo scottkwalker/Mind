@@ -45,7 +45,7 @@ final class ValueRefSpec extends TestComposition {
       val factoryLookup = mock[FactoryLookup]
       val valueRef = ValueRef(name)
 
-      val result = valueRef.fillEmptySteps(scope)(factoryLookup)
+      val result = valueRef.fillEmptySteps(scope, factoryLookup)
 
       whenReady(result) {
         _ must equal(valueRef)

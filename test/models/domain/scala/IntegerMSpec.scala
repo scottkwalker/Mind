@@ -21,10 +21,10 @@ final class IntegerMSpec extends TestComposition {
 
   "fillEmptySteps" must {
     "return same when no empty nodes" in {
-      val s = mock[IScope]
+      val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
 
-      val result = integerM.fillEmptySteps(s)(factoryLookup)
+      val result = integerM.fillEmptySteps(scope, factoryLookup)
 
       whenReady(result) {
         _ must equal(integerM)

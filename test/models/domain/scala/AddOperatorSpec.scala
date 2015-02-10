@@ -83,22 +83,22 @@ final class AddOperatorSpec extends TestComposition {
       val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
       val nonEmpty = mock[Step]
-      when(nonEmpty.fillEmptySteps(any[Scope])(any[FactoryLookup])).thenReturn(Future.successful(nonEmpty))
+      when(nonEmpty.fillEmptySteps(any[Scope], any[FactoryLookup])).thenReturn(Future.successful(nonEmpty))
       val instance = AddOperator(nonEmpty, nonEmpty)
 
-      val result = instance.fillEmptySteps(scope)(factoryLookup)
+      val result = instance.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(result) { _ => verify(nonEmpty, times(2)).fillEmptySteps(any[Scope])(any[FactoryLookup])}(config = patienceConfig)
+      whenReady(result) { _ => verify(nonEmpty, times(2)).fillEmptySteps(any[Scope], any[FactoryLookup])}(config = patienceConfig)
     }
 
     "returns same when no empty nodes" in {
       val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
       val nonEmpty = mock[Step]
-      when(nonEmpty.fillEmptySteps(any[Scope])(any[FactoryLookup])).thenReturn(Future.successful(nonEmpty))
+      when(nonEmpty.fillEmptySteps(any[Scope], any[FactoryLookup])).thenReturn(Future.successful(nonEmpty))
       val instance = AddOperator(nonEmpty, nonEmpty)
 
-      val result = instance.fillEmptySteps(scope)(factoryLookup)
+      val result = instance.fillEmptySteps(scope, factoryLookup)
 
       whenReady(result) {
         _ must equal(instance)
@@ -112,7 +112,7 @@ final class AddOperatorSpec extends TestComposition {
       val factoryLookup = testInjector().getInstance(classOf[FactoryLookup])
       val instance = AddOperator(empty, empty)
 
-      val result = instance.fillEmptySteps(scope)(factoryLookup)
+      val result = instance.fillEmptySteps(scope, factoryLookup)
 
       whenReady(result) {
         case AddOperator(left, right) =>

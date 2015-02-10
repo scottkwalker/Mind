@@ -23,12 +23,12 @@ final case class ValDclInFunctionParam(name: String, primitiveType: Step) extend
     }
   }
 
-  override def fillEmptySteps(scope: IScope)(implicit factoryLookup: FactoryLookup): Future[Step] = async {
+  override def fillEmptySteps(scope: IScope, factoryLookup: FactoryLookup): Future[Step] = async {
     val instruction = primitiveType match {
       case _: Empty =>
         def decision = factoryLookup.convert(IntegerMFactory.id)
         decision.createStep(scope)
-      case nonEmpty: Step => nonEmpty.fillEmptySteps(updateScope(scope.decrementHeight))
+      case nonEmpty: Step => nonEmpty.fillEmptySteps(scope = updateScope(scope.decrementHeight), factoryLookup = factoryLookup)
     }
     ValDclInFunctionParam(name, await(instruction))
   }

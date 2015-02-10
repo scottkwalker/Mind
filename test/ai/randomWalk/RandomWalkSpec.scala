@@ -50,7 +50,7 @@ final class RandomWalkSpec extends TestComposition {
 
       try {
         for (i <- 1 to 10) {
-          val result = premade.fillEmptySteps(scope)(factoryLookup)
+          val result = premade.fillEmptySteps(scope, factoryLookup)
           whenReady(result) {
             case typeTree: TypeTree =>
               val f = new AddTwoInts(typeTree)

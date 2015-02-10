@@ -48,7 +48,7 @@ final class LegalGamerSpec extends TestComposition {
         maxHeight = 10)
 
       try {
-        val result = premade.fillEmptySteps(scope)(factoryLookup)
+        val result = premade.fillEmptySteps(scope, factoryLookup)
         whenReady(result) {
           case typeTree: TypeTree =>
             val f = new AddTwoInts(typeTree)
