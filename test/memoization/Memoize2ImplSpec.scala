@@ -7,8 +7,8 @@ import org.mockito.Mockito._
 import play.api.libs.json._
 import serialization.JsonValidationException
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Await
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 final class Memoize2ImplSpec extends TestComposition {

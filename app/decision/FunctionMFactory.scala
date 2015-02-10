@@ -1,9 +1,6 @@
 package decision
 
-import models.common.IScope
 import utils.PozInt
-
-import scala.concurrent.Future
 
 trait FunctionMFactory extends Decision
 

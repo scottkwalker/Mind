@@ -39,11 +39,11 @@ import scala.language.reflectiveCalls
 import scala.reflect.internal.util.AbstractFileClassLoader
 import scala.reflect.internal.util.BatchSourceFile
 import scala.reflect.internal.util.Position
+import scala.tools.nsc.Global
+import scala.tools.nsc.Settings
 import scala.tools.nsc.io.AbstractFile
 import scala.tools.nsc.io.VirtualDirectory
 import scala.tools.nsc.reporters.AbstractReporter
-import scala.tools.nsc.Global
-import scala.tools.nsc.Settings
 import scala.util.matching.Regex
 
 /**

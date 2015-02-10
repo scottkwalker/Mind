@@ -1,9 +1,9 @@
 package memoization
 
 import com.google.inject.Inject
+import decision.Decision
 import models.common.IScope
 import models.domain.scala.FactoryLookup
-import decision.Decision
 import utils.PozInt
 
 final class LookupChildrenImpl @Inject()(

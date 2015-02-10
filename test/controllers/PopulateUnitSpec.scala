@@ -9,10 +9,10 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import play.api.libs.json.Json
+import play.api.test.FakeRequest
 import play.api.test.Helpers.BAD_REQUEST
 import play.api.test.Helpers.OK
 import play.api.test.Helpers.contentAsString
-import play.api.test.FakeRequest
 import play.api.test.WithApplication
 
 final class PopulateUnitSpec extends TestComposition {

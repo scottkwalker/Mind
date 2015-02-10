@@ -1,9 +1,9 @@
 package memoization
 
 import com.google.inject.Inject
+import decision._
 import models.common.IScope
 import models.domain.scala.FactoryLookup
-import decision._
 import utils.PozInt
 
 import scala.concurrent.ExecutionContext.Implicits.global

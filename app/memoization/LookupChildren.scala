@@ -1,8 +1,8 @@
 package memoization
 
+import decision.Decision
 import models.common.IScope
 import models.domain.scala.FactoryLookup
-import decision.Decision
 import utils.PozInt
 
 trait LookupChildren {

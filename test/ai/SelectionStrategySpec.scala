@@ -3,8 +3,8 @@ package ai
 import ai.aco.Aco
 import composition.StubRngBinding
 import composition.TestComposition
-import org.mockito.Mockito._
 import decision.Decision
+import org.mockito.Mockito._
 
 import scala.concurrent.Future
 

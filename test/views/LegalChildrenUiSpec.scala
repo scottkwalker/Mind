@@ -1,12 +1,12 @@
 package views
 
 import composition.TestComposition
+import decision.AddOperatorFactory
 import org.scalatest.concurrent.IntegrationPatience
 import org.scalatestplus.play._
 import play.api.Play
 import play.api.libs.json.JsArray
 import play.api.test.WithApplication
-import decision.AddOperatorFactory
 
 final class LegalChildrenUiSpec extends TestComposition with IntegrationPatience with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
 

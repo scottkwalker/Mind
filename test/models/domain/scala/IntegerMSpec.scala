@@ -1,6 +1,5 @@
 package models.domain.scala
 
-import com.google.inject.Injector
 import composition.TestComposition
 import models.common.IScope
 

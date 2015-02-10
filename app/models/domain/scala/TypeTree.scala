@@ -1,11 +1,10 @@
 package models.domain.scala
 
-import com.google.inject.Injector
-import models.common.IScope
-import models.domain.Step
 import decision.AccumulateInstructions
 import decision.TypeTreeFactory
 import decision.UpdateScopeThrows
+import models.common.IScope
+import models.domain.Step
 
 import scala.async.Async.async
 import scala.async.Async.await

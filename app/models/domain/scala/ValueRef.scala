@@ -1,9 +1,8 @@
 package models.domain.scala
 
-import com.google.inject.Injector
+import decision.UpdateScopeNoChange
 import models.common.IScope
 import models.domain.Step
-import decision.UpdateScopeNoChange
 
 import scala.concurrent.Future
 

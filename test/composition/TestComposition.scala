@@ -1,10 +1,11 @@
 package composition
 
-import com.google.inject.util.Modules.`override`
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import com.google.inject.Module
 import com.google.inject.TypeLiteral
+import com.google.inject.util.Modules.`override`
+import decision._
 import memoization.Memoize2
 import memoization.RepositoryReturningBool
 import models.common.IScope
@@ -13,7 +14,6 @@ import org.scalatest.concurrent.Eventually
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mock.MockitoSugar
 import org.scalatestplus.play.PlaySpec
-import decision._
 import utils.PozInt
 
 import scala.concurrent.duration.FiniteDuration

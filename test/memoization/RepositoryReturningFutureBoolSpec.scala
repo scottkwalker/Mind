@@ -3,13 +3,13 @@ package memoization
 import java.util.concurrent.CountDownLatch
 
 import composition.TestComposition
+import decision.AddOperatorFactory
+import decision.ValueRefFactory
 import memoization.RepositoryWithFutures.reads
 import models.common.Scope
 import models.domain.scala.FactoryLookup
 import org.mockito.Mockito._
 import play.api.libs.json._
-import decision.AddOperatorFactory
-import decision.ValueRefFactory
 import utils.PozInt
 
 import scala.concurrent.ExecutionContext.Implicits.global

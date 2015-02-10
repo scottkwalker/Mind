@@ -1,8 +1,8 @@
 package memoization
 
-import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
 
 import com.twitter.conversions.time._
 import com.twitter.util._

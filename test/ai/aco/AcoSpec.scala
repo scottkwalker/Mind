@@ -1,9 +1,10 @@
 package ai.aco
 
 import ai.SelectionStrategy
-import composition.ai.aco.AcoBinding
 import composition.StubRngBinding
 import composition.TestComposition
+import composition.ai.aco.AcoBinding
+import decision.Decision
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.Empty
@@ -15,7 +16,6 @@ import models.domain.scala.TypeTree
 import models.domain.scala.ValDclInFunctionParam
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
-import decision.Decision
 
 final class AcoSpec extends TestComposition {
 

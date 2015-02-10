@@ -1,8 +1,6 @@
 package models.domain.scala
 
-import com.google.inject.Injector
 import decision.IntegerMFactory
-import decision.IntegerMFactoryImpl
 import decision.UpdateScopeIncrementVals
 import models.common.IScope
 import models.domain.Step

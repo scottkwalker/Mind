@@ -1,9 +1,10 @@
 package ai.randomWalk
 
 import ai.SelectionStrategy
-import composition.ai.randomWalk.RandomWalkBinding
 import composition.StubRngBinding
 import composition.TestComposition
+import composition.ai.randomWalk.RandomWalkBinding
+import decision.Decision
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.FunctionM
@@ -13,7 +14,6 @@ import models.domain.scala.TypeTree
 import models.domain.scala._
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
-import decision.Decision
 
 final class RandomWalkSpec extends TestComposition {
 

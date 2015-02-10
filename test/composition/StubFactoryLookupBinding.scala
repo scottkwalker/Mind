@@ -3,7 +3,7 @@ package composition
 import com.google.inject.AbstractModule
 import composition.StubFactoryLookupBinding._
 import decision.AccumulateInstructions
-import decision.IntegerMFactory
+import decision.Decision
 import models.common.IScope
 import models.domain.Step
 import models.domain.scala.FactoryLookup
@@ -11,7 +11,6 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
-import decision.Decision
 import utils.PozInt
 
 import scala.concurrent.Future
@@ -25,7 +24,7 @@ final class StubFactoryLookupBinding extends AbstractModule with MockitoSugar {
     when(factoryLookup.convert(fakeFactoryTerminates1Id)).thenReturn(fakeFactoryTerminates1)
     when(factoryLookup.convert(fakeFactoryTerminates2Id)).thenReturn(fakeFactoryTerminates2)
     when(factoryLookup.convert(fakeFactoryHasChildrenId)).thenReturn(fakeFactoryHasChildren)
-//    when(factoryLookup.convert(IntegerMFactory.id)).thenReturn(stubDecision)
+    //    when(factoryLookup.convert(IntegerMFactory.id)).thenReturn(stubDecision)
     when(factoryLookup.convert(any[PozInt])).thenReturn(stubDecision)
     // Factory -> Id
     when(factoryLookup.convert(fakeFactoryTerminates1)).thenReturn(fakeFactoryTerminates1Id)

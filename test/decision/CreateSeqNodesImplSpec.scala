@@ -1,8 +1,8 @@
 package decision
 
-import ai.aco.Aco
 import ai.RandomNumberGenerator
 import ai.SelectionStrategy
+import ai.aco.Aco
 import composition.TestComposition
 import models.common.IScope
 import models.common.Scope

@@ -1,12 +1,12 @@
 package composition
 
 import com.google.inject.AbstractModule
+import decision.Decision
 import models.common.Scope
 import models.domain.Step
 import org.mockito.Matchers.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.when
-import decision.Decision
 
 import scala.concurrent.Future
 

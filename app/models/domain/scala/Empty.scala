@@ -1,10 +1,9 @@
 package models.domain.scala
 
 import com.google.inject.Inject
-import com.google.inject.Injector
+import decision.UpdateScopeThrows
 import models.common.IScope
 import models.domain.Step
-import decision.UpdateScopeThrows
 
 import scala.concurrent.Future
 

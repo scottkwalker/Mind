@@ -1,13 +1,13 @@
 package composition
 
 import com.google.inject.AbstractModule
+import decision.CreateNode
+import decision.Decision
 import models.common.IScope
 import models.domain.Step
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
-import decision.CreateNode
-import decision.Decision
 
 import scala.concurrent.Future
 

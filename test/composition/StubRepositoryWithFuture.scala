@@ -2,6 +2,7 @@ package composition
 
 import com.google.inject.AbstractModule
 import com.google.inject.TypeLiteral
+import composition.StubFactoryLookupBinding._
 import memoization.Memoize2
 import models.common.IScope
 import org.mockito.Matchers
@@ -11,7 +12,6 @@ import org.scalatest.mock.MockitoSugar
 import utils.PozInt
 
 import scala.concurrent.Future
-import composition.StubFactoryLookupBinding._
 
 final class StubRepositoryWithFuture(size: Int = 0) extends AbstractModule with MockitoSugar {
 

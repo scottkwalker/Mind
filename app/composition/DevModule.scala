@@ -2,12 +2,12 @@ package composition
 
 import com.google.inject.AbstractModule
 import com.google.inject.TypeLiteral
+import decision._
 import memoization._
 import models.common.IScope
 import models.domain.scala.Empty
 import models.domain.scala.FactoryLookup
 import models.domain.scala.FactoryLookupImpl
-import decision._
 import utils.PozInt
 
 final class DevModule extends AbstractModule {

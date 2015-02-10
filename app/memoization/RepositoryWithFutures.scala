@@ -12,8 +12,8 @@ import utils.Timeout.finiteTimeout
 
 import scala.async.Async.async
 import scala.async.Async.await
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Await
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.language.implicitConversions
 

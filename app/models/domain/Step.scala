@@ -1,6 +1,5 @@
 package models.domain
 
-import com.google.inject.Injector
 import models.common.IScope
 import models.domain.scala.FactoryLookup
 
