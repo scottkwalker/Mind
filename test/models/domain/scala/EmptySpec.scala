@@ -23,11 +23,11 @@ final class EmptySpec extends TestComposition {
   "fillEmptySteps" must {
     "throws" in {
       val scope = mock[IScope]
-      implicit val injector = mock[Injector]
+      val factoryLookup = mock[FactoryLookup]
 
       val instance = Empty()
 
-      a[RuntimeException] must be thrownBy instance.fillEmptySteps(scope)
+      a[RuntimeException] must be thrownBy instance.fillEmptySteps(scope)(factoryLookup)
     }
   }
 

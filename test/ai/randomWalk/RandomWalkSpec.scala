@@ -50,7 +50,7 @@ final class RandomWalkSpec extends TestComposition {
 
       try {
         for (i <- 1 to 10) {
-          val result = premade.fillEmptySteps(scope)(injector)
+          val result = premade.fillEmptySteps(scope)(factoryLookup)
           whenReady(result) {
             case typeTree: TypeTree =>
               val f = new AddTwoInts(typeTree)
@@ -89,6 +89,8 @@ final class RandomWalkSpec extends TestComposition {
   }
 
   private def injector = testInjector(new RandomWalkBinding)
+
+  private def factoryLookup = injector.getInstance(classOf[FactoryLookup])
 
   private def selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
 }

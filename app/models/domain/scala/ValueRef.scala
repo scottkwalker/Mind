@@ -13,7 +13,7 @@ final case class ValueRef(name: String) extends Step with UpdateScopeNoChange {
 
   override def hasNoEmptySteps(scope: IScope): Boolean = !name.isEmpty
 
-  override def fillEmptySteps(scope: IScope)(implicit injector: Injector): Future[Step] = Future.successful(this)
+  override def fillEmptySteps(scope: IScope)(implicit factoryLookup: FactoryLookup): Future[Step] = Future.successful(this)
 
   override def height: Int = 1
 }

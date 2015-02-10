@@ -58,20 +58,20 @@ final class TypeTreeSpec extends TestComposition {
   "fillEmptySteps" must {
     "calls fillEmptySteps on non-empty child nodes" in {
       val scope = mock[IScope]
-      val injector = mock[Injector]
+      val injector = mock[FactoryLookup]
       val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
+      when(instruction.fillEmptySteps(any[Scope])(any[FactoryLookup])) thenReturn Future.successful(instruction)
       val instance = TypeTree(Seq(instruction))
 
       val result = instance.fillEmptySteps(scope)(injector)
-      whenReady(result) { _ => verify(instruction, times(1)).fillEmptySteps(any[Scope])(any[Injector])}(config = patienceConfig)
+      whenReady(result) { _ => verify(instruction, times(1)).fillEmptySteps(any[Scope])(any[FactoryLookup])}(config = patienceConfig)
     }
 
     "return same when no empty nodes" in {
       val scope = mock[IScope]
-      val injector = mock[Injector]
+      val injector = mock[FactoryLookup]
       val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
+      when(instruction.fillEmptySteps(any[Scope])(any[FactoryLookup])) thenReturn Future.successful(instruction)
       val instance = new TypeTree(Seq(instruction))
 
       val result = instance.fillEmptySteps(scope)(injector)
@@ -89,7 +89,7 @@ final class TypeTreeSpec extends TestComposition {
         maxObjectsInTree = 1,
         maxHeight = 10)
       val empty = Empty()
-      val injector = testInjector()
+      val injector = testInjector().getInstance(classOf[FactoryLookup])
       val instance = TypeTree(nodes = Seq(empty))
 
       val result = instance.fillEmptySteps(scope)(injector)
@@ -106,7 +106,7 @@ final class TypeTreeSpec extends TestComposition {
 
     "throw when passed empty seq (no empty or non-empty)" in {
       val scope = mock[IScope]
-      val injector = mock[Injector]
+      val injector = mock[FactoryLookup]
       val instance = new TypeTree(nodes = Seq.empty)
 
       a[RuntimeException] must be thrownBy Await.result(instance.fillEmptySteps(scope)(injector), finiteTimeout)

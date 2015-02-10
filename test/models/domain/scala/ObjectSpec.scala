@@ -83,24 +83,24 @@ final class ObjectSpec extends TestComposition {
   "fillEmptySteps" must {
     "calls fillEmptySteps on non-empty child nodes" in {
       val scope = mock[IScope]
-      val injector = mock[Injector]
+      val factoryLookup = mock[FactoryLookup]
       val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
+      when(instruction.fillEmptySteps(any[Scope])(any[FactoryLookup])) thenReturn Future.successful(instruction)
       val objectDef = Object(Seq(instruction), name = name)
 
-      val result = objectDef.fillEmptySteps(scope)(injector)
+      val result = objectDef.fillEmptySteps(scope)(factoryLookup)
 
-      whenReady(result) { r => verify(instruction, times(1)).fillEmptySteps(any[Scope])(any[Injector])}(config = patienceConfig)
+      whenReady(result) { r => verify(instruction, times(1)).fillEmptySteps(any[Scope])(any[FactoryLookup])}(config = patienceConfig)
     }
 
     "returns same when no empty nodes" in {
       val scope = mock[IScope]
-      val injector = mock[Injector]
+      val factoryLookup = mock[FactoryLookup]
       val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
+      when(instruction.fillEmptySteps(any[Scope])(any[FactoryLookup])) thenReturn Future.successful(instruction)
       val objectDef = Object(Seq(instruction), name)
 
-      val result = objectDef.fillEmptySteps(scope)(injector)
+      val result = objectDef.fillEmptySteps(scope)(factoryLookup)
 
       whenReady(result) {
         _ must equal(objectDef)
@@ -115,11 +115,11 @@ final class ObjectSpec extends TestComposition {
         maxObjectsInTree = 1,
         maxHeight = 10)
       val empty = Empty()
-      val injector = testInjector()
+      val factoryLookup = testInjector().getInstance(classOf[FactoryLookup])
       val objectDef = Object(nodes = Seq(empty),
         name = name)
 
-      val result = objectDef.fillEmptySteps(scope)(injector)
+      val result = objectDef.fillEmptySteps(scope)(factoryLookup)
 
       whenReady(result) {
         case Object(n2, name2) =>
@@ -134,10 +134,10 @@ final class ObjectSpec extends TestComposition {
 
     "throw when passed empty seq (no empty or non-empty)" in {
       val scope = mock[IScope]
-      val injector = mock[Injector]
+      val factoryLookup = mock[FactoryLookup]
       val instance = new Object(nodes = Seq.empty, name = name)
 
-      a[RuntimeException] must be thrownBy Await.result(instance.fillEmptySteps(scope)(injector), finiteTimeout)
+      a[RuntimeException] must be thrownBy Await.result(instance.fillEmptySteps(scope)(factoryLookup), finiteTimeout)
     }
   }
 

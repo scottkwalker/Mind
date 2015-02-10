@@ -2,6 +2,7 @@ package models.domain
 
 import com.google.inject.Injector
 import models.common.IScope
+import models.domain.scala.FactoryLookup
 
 import _root_.scala.concurrent.Future
 
@@ -18,7 +19,7 @@ trait Step {
   def hasNoEmptySteps(scope: IScope): Boolean
 
   // Recursively replace any child Instruction of type Empty with new values chosen by the AI.
-  def fillEmptySteps(scope: IScope)(implicit injector: Injector): Future[Step]
+  def fillEmptySteps(scope: IScope)(implicit factoryLookup: FactoryLookup): Future[Step]
 
   // The height of the tree. Minimum of 1 (the current node).
   def height: Int

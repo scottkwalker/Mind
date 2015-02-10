@@ -68,14 +68,14 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       when(scope.incrementVals).thenReturn(scope)
       when(scope.decrementHeight).thenReturn(scope)
       val name = "a"
-      val injector = mock[Injector]
+      val factoryLookup = mock[FactoryLookup]
       val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
+      when(instruction.fillEmptySteps(any[Scope])(any[FactoryLookup])) thenReturn Future.successful(instruction)
       val valDclInFunctionParam = ValDclInFunctionParam(name, instruction)
 
-      val result = valDclInFunctionParam.fillEmptySteps(scope)(injector)
+      val result = valDclInFunctionParam.fillEmptySteps(scope)(factoryLookup)
 
-      whenReady(result) { _ => verify(instruction, times(1)).fillEmptySteps(any[Scope])(any[Injector])}(config = patienceConfig)
+      whenReady(result) { _ => verify(instruction, times(1)).fillEmptySteps(any[Scope])(any[FactoryLookup])}(config = patienceConfig)
     }
 
     "returns same when no empty nodes" in {
@@ -83,12 +83,12 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       when(scope.incrementVals).thenReturn(scope)
       when(scope.decrementHeight).thenReturn(scope)
       val name = "a"
-      val injector = mock[Injector]
+      val factoryLookup = mock[FactoryLookup]
       val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(instruction)
+      when(instruction.fillEmptySteps(any[Scope])(any[FactoryLookup])) thenReturn Future.successful(instruction)
       val valDclInFunctionParam = ValDclInFunctionParam(name, instruction)
 
-      val result = valDclInFunctionParam.fillEmptySteps(scope)(injector)
+      val result = valDclInFunctionParam.fillEmptySteps(scope)(factoryLookup)
 
       whenReady(result) {
         _ must equal(valDclInFunctionParam)
@@ -99,7 +99,7 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val scope = mock[IScope]
       val name = "a"
       val primitiveTypeEmpty = Empty()
-      val injector = testInjector()
+      val injector = testInjector().getInstance(classOf[FactoryLookup])
       val valDclInFunctionParam = ValDclInFunctionParam(name, primitiveTypeEmpty)
 
       val result = valDclInFunctionParam.fillEmptySteps(scope)(injector)

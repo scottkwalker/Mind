@@ -42,10 +42,10 @@ final class ValueRefSpec extends TestComposition {
     "returns same when no empty nodes" in {
       val scope = mock[IScope]
       val name = "a"
-      val injector = mock[Injector]
+      val factoryLookup = mock[FactoryLookup]
       val valueRef = ValueRef(name)
 
-      val result = valueRef.fillEmptySteps(scope)(injector)
+      val result = valueRef.fillEmptySteps(scope)(factoryLookup)
 
       whenReady(result) {
         _ must equal(valueRef)

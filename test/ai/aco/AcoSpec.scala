@@ -7,6 +7,7 @@ import composition.TestComposition
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.Empty
+import models.domain.scala.FactoryLookup
 import models.domain.scala.FunctionM
 import models.domain.scala.IntegerM
 import models.domain.scala.Object
@@ -51,7 +52,7 @@ final class AcoSpec extends TestComposition {
 
       try {
         for (i <- 1 to 10) {
-          val result = premade.fillEmptySteps(scope)(injector)
+          val result = premade.fillEmptySteps(scope)(factoryLookup)
           whenReady(result) {
             case typeTree: TypeTree =>
               val f = new AddTwoInts(typeTree)
@@ -90,6 +91,8 @@ final class AcoSpec extends TestComposition {
   }
 
   private def injector = testInjector(new AcoBinding)
+
+  private def factoryLookup = injector.getInstance(classOf[FactoryLookup])
 
   private def selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
 }

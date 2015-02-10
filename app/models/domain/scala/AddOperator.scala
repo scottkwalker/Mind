@@ -27,15 +27,15 @@ final case class AddOperator(left: Step, right: Step) extends Step with UpdateSc
     scope.hasHeightRemaining && validate(left, scope) && validate(right, scope)
   }
 
-  private def fillEmptySteps(scope: IScope, instruction: Step)(implicit injector: Injector): Future[Step] = {
-    def decision = injector.getInstance(classOf[FactoryLookup]).convert(ValueRefFactory.id)
+  private def fillEmptySteps(scope: IScope, instruction: Step)(implicit factoryLookup: FactoryLookup): Future[Step] = {
+    def decision = factoryLookup.convert(ValueRefFactory.id)
     instruction match {
       case _: Empty => decision.createStep(scope)
       case nonEmpty: Step => nonEmpty.fillEmptySteps(scope.decrementHeight) // This node is non-empty but its children may not be, so do the same check on this node's children.
     }
   }
 
-  override def fillEmptySteps(scope: IScope)(implicit injector: Injector): Future[Step] = async {
+  override def fillEmptySteps(scope: IScope)(implicit factoryLookup: FactoryLookup): Future[Step] = async {
     val l = await(fillEmptySteps(scope, left))
     val r = await(fillEmptySteps(scope, right))
 

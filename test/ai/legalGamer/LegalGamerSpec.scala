@@ -7,6 +7,7 @@ import composition.TestComposition
 import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.Empty
+import models.domain.scala.FactoryLookup
 import models.domain.scala.FunctionM
 import models.domain.scala.IntegerM
 import models.domain.scala.Object
@@ -47,7 +48,7 @@ final class LegalGamerSpec extends TestComposition {
         maxHeight = 10)
 
       try {
-        val result = premade.fillEmptySteps(scope)(injector)
+        val result = premade.fillEmptySteps(scope)(factoryLookup)
         whenReady(result) {
           case typeTree: TypeTree =>
             val f = new AddTwoInts(typeTree)
@@ -89,6 +90,8 @@ final class LegalGamerSpec extends TestComposition {
   }
 
   private def injector = testInjector(new LegalGamerBinding)
+
+  private def factoryLookup = injector.getInstance(classOf[FactoryLookup])
 
   private def selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
 }

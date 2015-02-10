@@ -24,10 +24,10 @@ final case class TypeTree(nodes: Seq[Step]) extends Step with UpdateScopeThrows 
     }
   }
 
-  private def fillEmptySteps(scope: IScope, currentInstruction: Step, acc: Seq[Step])(implicit injector: Injector) = {
-    lazy val factory = injector.getInstance(classOf[TypeTreeFactory])
+  private def fillEmptySteps(scope: IScope, currentInstruction: Step, acc: Seq[Step])(implicit factoryLookup: FactoryLookup) = {
+    def decision = factoryLookup.convert(TypeTreeFactory.id)
     currentInstruction match {
-      case _: Empty => factory.createNodes(scope = scope) // Head node (and any nodes after it) is of type empty, so replace it with a non-empty
+      case _: Empty => decision.createNodes(scope = scope) // Head node (and any nodes after it) is of type empty, so replace it with a non-empty
       case instruction: Step =>
         instruction.fillEmptySteps(scope).map { r => // Head node is not empty, but one of the child nodes may be so check it's children.
           val updatedScope = r.updateScope(scope) // Update scope to include this node.
@@ -36,11 +36,11 @@ final case class TypeTree(nodes: Seq[Step]) extends Step with UpdateScopeThrows 
     }
   }
 
-  override def fillEmptySteps(scope: IScope)(implicit injector: Injector): Future[Step] = async {
+  override def fillEmptySteps(scope: IScope)(implicit factoryLookup: FactoryLookup): Future[Step] = async {
     require(nodes.length > 0, "must not be empty as then we have nothing to replace")
     val fNodesWithoutEmpties = nodes.foldLeft(Future.successful(AccumulateInstructions(instructions = Seq.empty[Step], scope = scope))) {
       (previousResult, currentInstruction) => previousResult.flatMap { previous =>
-        fillEmptySteps(scope = previous.scope, currentInstruction = currentInstruction, acc = previous.instructions)
+        fillEmptySteps(scope = previous.scope, currentInstruction = currentInstruction, acc = previous.instructions)(factoryLookup)
       }
     }
     val nodesWithoutEmpties = await(fNodesWithoutEmpties)

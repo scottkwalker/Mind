@@ -25,7 +25,7 @@ final case class FunctionM(params: Seq[Step],
     !name.isEmpty &&
     nodes.forall(n => n.hasNoEmptySteps(scope.decrementHeight))
 
-  private def fillEmptySteps(scope: IScope, currentInstruction: Step, acc: Seq[Step], funcReplaceEmpty: (IScope) => Future[AccumulateInstructions])(implicit injector: Injector): Future[AccumulateInstructions] = {
+  private def fillEmptySteps(scope: IScope, currentInstruction: Step, acc: Seq[Step], funcReplaceEmpty: (IScope) => Future[AccumulateInstructions])(implicit factoryLookup: FactoryLookup): Future[AccumulateInstructions] = {
     currentInstruction match {
       case _: Empty => funcReplaceEmpty(scope) // Head node (and any nodes after it) is of type empty, so replace it with a non-empty
       case instruction: Step =>
@@ -36,7 +36,7 @@ final case class FunctionM(params: Seq[Step],
     }
   }
 
-  private def fillEmptySteps(initScope: IScope, initInstructions: Seq[Step], funcReplaceEmpty: (IScope) => Future[AccumulateInstructions])(implicit injector: Injector): Future[AccumulateInstructions] = {
+  private def fillEmptySteps(initScope: IScope, initInstructions: Seq[Step], funcReplaceEmpty: (IScope) => Future[AccumulateInstructions])(implicit factoryLookup: FactoryLookup): Future[AccumulateInstructions] = {
     initInstructions.foldLeft(Future.successful(AccumulateInstructions(instructions = Seq.empty[Step], scope = initScope))) {
       (previousResult, currentInstruction) => previousResult.flatMap { previous =>
         fillEmptySteps(scope = previous.scope, currentInstruction = currentInstruction, acc = previous.instructions, funcReplaceEmpty = funcReplaceEmpty)
@@ -44,10 +44,10 @@ final case class FunctionM(params: Seq[Step],
     }
   }
 
-  override def fillEmptySteps(scope: IScope)(implicit injector: Injector): Future[Step] = async {
+  override def fillEmptySteps(scope: IScope)(implicit factoryLookup: FactoryLookup): Future[Step] = async {
     require(params.length > 0, "must not be empty as then we have nothing to replace")
     require(nodes.length > 0, "must not be empty as then we have nothing to replace")
-    def decision = injector.getInstance(classOf[FactoryLookup]).convert(FunctionMFactory.id)
+    def decision = factoryLookup.convert(FunctionMFactory.id)
     val paramSeqWithoutEmpties = await(fillEmptySteps(initScope = scope, initInstructions = params, funcReplaceEmpty = decision.createParams))
     val nodeSeqWithoutEmpties = await(fillEmptySteps(initScope = paramSeqWithoutEmpties.scope, initInstructions = nodes, funcReplaceEmpty = decision.createNodes))
     FunctionM(paramSeqWithoutEmpties.instructions, nodeSeqWithoutEmpties.instructions, name)

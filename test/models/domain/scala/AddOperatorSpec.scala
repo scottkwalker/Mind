@@ -81,24 +81,24 @@ final class AddOperatorSpec extends TestComposition {
   "fillEmptySteps" must {
     "calls fillEmptySteps on non-empty child nodes" in {
       val scope = mock[IScope]
-      implicit val i = mock[Injector]
+      val factoryLookup = mock[FactoryLookup]
       val nonEmpty = mock[Step]
-      when(nonEmpty.fillEmptySteps(any[Scope])(any[Injector])).thenReturn(Future.successful(nonEmpty))
+      when(nonEmpty.fillEmptySteps(any[Scope])(any[FactoryLookup])).thenReturn(Future.successful(nonEmpty))
       val instance = AddOperator(nonEmpty, nonEmpty)
 
-      val result = instance.fillEmptySteps(scope)(i)
+      val result = instance.fillEmptySteps(scope)(factoryLookup)
 
-      whenReady(result) { _ => verify(nonEmpty, times(2)).fillEmptySteps(any[Scope])(any[Injector])}(config = patienceConfig)
+      whenReady(result) { _ => verify(nonEmpty, times(2)).fillEmptySteps(any[Scope])(any[FactoryLookup])}(config = patienceConfig)
     }
 
     "returns same when no empty nodes" in {
       val scope = mock[IScope]
-      val injector = mock[Injector]
+      val factoryLookup = mock[FactoryLookup]
       val nonEmpty = mock[Step]
-      when(nonEmpty.fillEmptySteps(any[Scope])(any[Injector])).thenReturn(Future.successful(nonEmpty))
+      when(nonEmpty.fillEmptySteps(any[Scope])(any[FactoryLookup])).thenReturn(Future.successful(nonEmpty))
       val instance = AddOperator(nonEmpty, nonEmpty)
 
-      val result = instance.fillEmptySteps(scope)(injector)
+      val result = instance.fillEmptySteps(scope)(factoryLookup)
 
       whenReady(result) {
         _ must equal(instance)
@@ -109,10 +109,10 @@ final class AddOperatorSpec extends TestComposition {
       val scope = mock[IScope]
       when(scope.numVals).thenReturn(1)
       val empty: Step = Empty()
-      val injector = testInjector()
+      val factoryLookup = testInjector().getInstance(classOf[FactoryLookup])
       val instance = AddOperator(empty, empty)
 
-      val result = instance.fillEmptySteps(scope)(injector)
+      val result = instance.fillEmptySteps(scope)(factoryLookup)
 
       whenReady(result) {
         case AddOperator(left, right) =>
