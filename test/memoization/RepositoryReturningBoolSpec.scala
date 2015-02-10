@@ -203,14 +203,13 @@ final class RepositoryReturningBoolSpec extends TestComposition {
   }
 
   private val scope = Scope(height = 1, maxHeight = 1)
+  private val version = s"${AddOperatorFactory.id}|${ValueRefFactory.id}"
 
   private def createSut() = {
     val factoryLookup = factoryLookupStub
     val sut = new RepositoryReturningBool(factoryLookup = factoryLookup)
     (sut, factoryLookup)
   }
-
-  private val version = s"${AddOperatorFactory.id}|${ValueRefFactory.id}"
 
   private def factoryLookupStub = {
     val addOperatorFactory = {

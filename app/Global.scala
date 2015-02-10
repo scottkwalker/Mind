@@ -8,8 +8,6 @@ import play.api.Configuration
 import play.api.GlobalSettings
 import play.api.Mode
 
-object Global extends GlobalLike
-
 trait GlobalLike extends WithFilters with GlobalSettings with Composition {
 
   /**
@@ -50,3 +48,5 @@ trait GlobalLike extends WithFilters with GlobalSettings with Composition {
     super.onStop(app)
   }
 }
+
+object Global extends GlobalLike

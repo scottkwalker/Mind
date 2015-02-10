@@ -88,9 +88,9 @@ final class RandomWalkSpec extends TestComposition {
     }
   }
 
-  private def injector = testInjector(new RandomWalkBinding)
-
   private def factoryLookup = injector.getInstance(classOf[FactoryLookup])
 
   private def selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
+
+  private def injector = testInjector(new RandomWalkBinding)
 }

@@ -9,11 +9,10 @@ import org.scalatest.selenium.WebBrowser
 
 class LegalChildrenPage(port: Int)(implicit driver: WebDriver) extends Page with WebBrowser {
 
+  override val url = s"http://localhost:$port/mind/legal-children"
   val title = "Mind - Legal children calculator"
   val titleCy = "Mind - Cyfrifiannell cymdogion Cyfreithiol"
   val validationSummary = """<div id="validation-summary">"""
-
-  override val url = s"http://localhost:$port/mind/legal-children"
 
   def currentNode = textField(CurrentNodeId)
 

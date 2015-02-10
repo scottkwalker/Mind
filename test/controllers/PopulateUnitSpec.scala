@@ -61,12 +61,12 @@ final class PopulateUnitSpec extends TestComposition {
     }
   }
 
-  private def populate = testInjector().getInstance(classOf[Populate])
-
   private def present = {
     val emptyRequest = FakeRequest()
     populate.present(emptyRequest)
   }
+
+  private def populate = testInjector().getInstance(classOf[Populate])
 
   private def scopeDefault = Scope(
     numVals = 1,

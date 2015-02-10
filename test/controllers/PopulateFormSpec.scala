@@ -146,8 +146,6 @@ final class PopulateFormSpec extends TestComposition {
     }
   }
 
-  private def populate = testInjector().getInstance(classOf[Populate])
-
   private def formBuilder(
                            height: String,
                            maxFuncsInObject: String,
@@ -190,4 +188,6 @@ final class PopulateFormSpec extends TestComposition {
       )
     )
   }
+
+  private def populate = testInjector().getInstance(classOf[Populate])
 }

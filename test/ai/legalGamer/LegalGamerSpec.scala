@@ -89,9 +89,9 @@ final class LegalGamerSpec extends TestComposition {
     }
   }
 
-  private def injector = testInjector(new LegalGamerBinding)
-
   private def factoryLookup = injector.getInstance(classOf[FactoryLookup])
 
   private def selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
+
+  private def injector = testInjector(new LegalGamerBinding)
 }

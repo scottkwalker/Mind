@@ -13,11 +13,11 @@ final case class LegalGamer @Inject()(rng: RandomNumberGenerator) extends Select
     possibleChildren.toSeq(index)
   }
 
-  override def canAddAnother(accLength: Int,
-                             factoryLimit: Int): Boolean = accLength < factoryLimit
-
   override def chooseIndex(seqLength: Int): Int = {
     require(seqLength > 0, "Sequence must not be empty otherwise we cannot pick an index from it")
     0
   }
+
+  override def canAddAnother(accLength: Int,
+                             factoryLimit: Int): Boolean = accLength < factoryLimit
 }

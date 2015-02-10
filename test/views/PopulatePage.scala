@@ -8,11 +8,10 @@ import org.scalatest.selenium.WebBrowser
 
 class PopulatePage(port: Int)(implicit driver: WebDriver) extends Page with WebBrowser {
 
+  override val url = s"http://localhost:$port/mind/populate"
   val title = "Mind - Populate"
   val titleCy = "Mind - Boblogi"
   val validationSummary = """<div id="validation-summary">"""
-
-  override val url = s"http://localhost:$port/mind/populate"
 
   def height = textField(id(s"${MaxScopeId}_$HeightId"))
 

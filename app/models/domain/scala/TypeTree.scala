@@ -23,6 +23,17 @@ final case class TypeTree(nodes: Seq[Step]) extends Step with UpdateScopeThrows 
     }
   }
 
+  override def fillEmptySteps(scope: IScope, factoryLookup: FactoryLookup): Future[Step] = async {
+    require(nodes.length > 0, "must not be empty as then we have nothing to replace")
+    val fNodesWithoutEmpties = nodes.foldLeft(Future.successful(AccumulateInstructions(instructions = Seq.empty[Step], scope = scope))) {
+      (previousResult, currentInstruction) => previousResult.flatMap { previous =>
+        fillEmptySteps(scope = previous.scope, currentInstruction = currentInstruction, acc = previous.instructions, factoryLookup = factoryLookup)
+      }
+    }
+    val nodesWithoutEmpties = await(fNodesWithoutEmpties)
+    TypeTree(nodesWithoutEmpties.instructions)
+  }
+
   private def fillEmptySteps(scope: IScope, currentInstruction: Step, acc: Seq[Step], factoryLookup: FactoryLookup) = {
     def decision = factoryLookup.convert(TypeTreeFactory.id)
     currentInstruction match {
@@ -33,17 +44,6 @@ final case class TypeTree(nodes: Seq[Step]) extends Step with UpdateScopeThrows 
           AccumulateInstructions(instructions = acc :+ r, scope = updatedScope)
         }
     }
-  }
-
-  override def fillEmptySteps(scope: IScope, factoryLookup: FactoryLookup): Future[Step] = async {
-    require(nodes.length > 0, "must not be empty as then we have nothing to replace")
-    val fNodesWithoutEmpties = nodes.foldLeft(Future.successful(AccumulateInstructions(instructions = Seq.empty[Step], scope = scope))) {
-      (previousResult, currentInstruction) => previousResult.flatMap { previous =>
-        fillEmptySteps(scope = previous.scope, currentInstruction = currentInstruction, acc = previous.instructions, factoryLookup = factoryLookup)
-      }
-    }
-    val nodesWithoutEmpties = await(fNodesWithoutEmpties)
-    TypeTree(nodesWithoutEmpties.instructions)
   }
 
   override def height: Int = 1 + nodes.map(_.height).max

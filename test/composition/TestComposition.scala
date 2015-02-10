@@ -32,6 +32,12 @@ trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with 
   // property should be overridden in the SBT command line argument in a build server's build script e.g. .travis.yml
   override def spanScaleFactor: Double = sys.props.getOrElse("spanScaleFactor", "1.0").toDouble
 
+  def testInjector(modules: Module*) = {
+    // The modules override in such a way that if you declare the same binding twice, the last write wins.
+    val overridenModules = `override`(defaultModules: _*).`with`(modules: _*)
+    Guice.createInjector(overridenModules)
+  }
+
   private def defaultModules = Seq(
     new TestModule,
     new StubCreateNodeBinding,
@@ -46,12 +52,6 @@ trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with 
     new StubRngBinding,
     new StubSelectionStrategyBinding
   )
-
-  def testInjector(modules: Module*) = {
-    // The modules override in such a way that if you declare the same binding twice, the last write wins.
-    val overridenModules = `override`(defaultModules: _*).`with`(modules: _*)
-    Guice.createInjector(overridenModules)
-  }
 
   class TestModule extends AbstractModule {
 

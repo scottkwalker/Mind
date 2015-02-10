@@ -18,15 +18,6 @@ abstract class Memoize2WithSetImpl[TKey1, TKey2](
     cache += combineKeys
   }
 
-  override def add(setOfKeys: Set[String]): Unit = {
-    cache = setOfKeys
-  }
-
-  override def write: JsValue = Json.obj(
-    "versioning" -> Json.toJson(versioning),
-    "cache" -> Json.toJson(cache)
-  )
-
   /**
    * Thread-safe memoization for a function.
    *
@@ -55,6 +46,15 @@ abstract class Memoize2WithSetImpl[TKey1, TKey2](
    */
   // Combine keys into a delimited string as strings are lowest common denominator.
   private[this] def combineKeys(implicit key1: TKey1, key2: TKey2) = s"$key1|$key2"
+
+  override def add(setOfKeys: Set[String]): Unit = {
+    cache = setOfKeys
+  }
+
+  override def write: JsValue = Json.obj(
+    "versioning" -> Json.toJson(versioning),
+    "cache" -> Json.toJson(cache)
+  )
 
   override def size: Int = cache.size
 }

@@ -113,18 +113,18 @@ final class LegalChildrenUnitSpec extends TestComposition {
     }
   }
 
+  private def present = {
+    val emptyRequest = FakeRequest()
+    val (legalChildren, _) = build(size = 0)
+    legalChildren.present(emptyRequest)
+  }
+
   private def build(size: Int = 0) = {
     val lookupChildren = new StubLookupChildrenBinding(size = size)
     val injector = testInjector(
       lookupChildren
     )
     (injector.getInstance(classOf[LegalChildren]), lookupChildren.stub)
-  }
-
-  private def present = {
-    val emptyRequest = FakeRequest()
-    val (legalChildren, _) = build(size = 0)
-    legalChildren.present(emptyRequest)
   }
 
   private def scopeDefault = Scope(

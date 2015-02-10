@@ -146,8 +146,6 @@ final class LegalChildrenFormSpec extends TestComposition {
     }
   }
 
-  private def legalChildren = testInjector().getInstance(classOf[LegalChildren])
-
   private def formBuilder(numVals: String,
                           numFuncs: String,
                           numObjects: String,
@@ -173,4 +171,6 @@ final class LegalChildrenFormSpec extends TestComposition {
       )
     )
   }
+
+  private def legalChildren = testInjector().getInstance(classOf[LegalChildren])
 }

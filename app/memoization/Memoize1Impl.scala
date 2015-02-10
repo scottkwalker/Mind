@@ -51,6 +51,8 @@ abstract class Memoize1Impl[-TKey, +TOutput]()
 
   override def write: JsValue = Json.toJson(cache)
 
+  override def size: Int = cache.size
+
   /**
    * What to do if we do not find the value already in the memo
    * table.
@@ -105,6 +107,4 @@ abstract class Memoize1Impl[-TKey, +TOutput]()
         latch.countDown()
         calculated
     }
-
-  override def size: Int = cache.size
 }

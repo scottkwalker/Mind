@@ -90,9 +90,9 @@ final class AcoSpec extends TestComposition {
     }
   }
 
-  private def injector = testInjector(new AcoBinding)
-
   private def factoryLookup = injector.getInstance(classOf[FactoryLookup])
+
+  private def injector = testInjector(new AcoBinding)
 
   private def selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
 }
