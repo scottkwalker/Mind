@@ -25,9 +25,9 @@ final case class Object(nodes: Seq[Step], name: String) extends Step with Update
   }
 
   private def fillEmptySteps(scope: IScope, currentInstruction: Step, acc: Seq[Step])(implicit injector: Injector) = {
-    lazy val factory = injector.getInstance(classOf[ObjectFactory])
+    def decision = injector.getInstance(classOf[FactoryLookup]).convert(ObjectFactory.id)
     currentInstruction match {
-      case _: Empty => factory.createNodes(scope = scope) // Head node (and any nodes after it) is of type empty, so replace it with a non-empty
+      case _: Empty => decision.createNodes(scope = scope) // Head node (and any nodes after it) is of type empty, so replace it with a non-empty
       case instruction: Step =>
         instruction.fillEmptySteps(scope).map { r => // Head node is not empty, but one of the child nodes may be so check it's children.
           val updatedScope = r.updateScope(scope) // Update scope to include this node.
