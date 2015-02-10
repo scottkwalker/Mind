@@ -2,6 +2,7 @@ package composition
 
 import com.google.inject.AbstractModule
 import composition.StubFactoryLookupBinding._
+import decision.AccumulateInstructions
 import decision.IntegerMFactory
 import models.common.IScope
 import models.domain.Step
@@ -68,6 +69,10 @@ object StubFactoryLookupBinding {
     when(decision.nodesToChooseFrom).thenReturn(Set.empty[PozInt])
     val step = mock(classOf[Step])
     when(decision.createStep(any[IScope])).thenReturn(Future.successful(step))
+    val accumulateInstructions = mock(classOf[AccumulateInstructions])
+    when(accumulateInstructions.instructions).thenReturn(Seq(step))
+    when(decision.createParams(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
+    when(decision.createNodes(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
     decision
   }
 }

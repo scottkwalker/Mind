@@ -93,7 +93,7 @@ final class FunctionMSpec extends TestComposition {
 
     "calls fillEmptySteps on non-empty child nodes" in {
       val scope = mock[IScope]
-      val injector = mock[Injector]
+      val injector = testInjector()
       val param = mock[Step]
       when(param.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(param)
       val node = mock[Step]
@@ -112,7 +112,7 @@ final class FunctionMSpec extends TestComposition {
 
     "returns same when no empty nodes" in {
       val scope = mock[IScope]
-      val injector = mock[Injector]
+      val injector = testInjector()
       val param = mock[Step]
       when(param.fillEmptySteps(any[Scope])(any[Injector])) thenReturn Future.successful(param)
       val node = mock[Step]
@@ -152,6 +152,7 @@ final class FunctionMSpec extends TestComposition {
             case Seq(nSeq) => nSeq mustBe a[Step]
           }
           n must equal(name)
+        case unknown => fail(s"unknown type: $unknown")
       }(config = patienceConfig)
     }
 

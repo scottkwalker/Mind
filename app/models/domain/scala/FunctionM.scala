@@ -47,9 +47,9 @@ final case class FunctionM(params: Seq[Step],
   override def fillEmptySteps(scope: IScope)(implicit injector: Injector): Future[Step] = async {
     require(params.length > 0, "must not be empty as then we have nothing to replace")
     require(nodes.length > 0, "must not be empty as then we have nothing to replace")
-    lazy val factory = injector.getInstance(classOf[FunctionMFactory])
-    val paramSeqWithoutEmpties = await(fillEmptySteps(initScope = scope, initInstructions = params, funcReplaceEmpty = factory.createParams))
-    val nodeSeqWithoutEmpties = await(fillEmptySteps(initScope = paramSeqWithoutEmpties.scope, initInstructions = nodes, funcReplaceEmpty = factory.createNodes))
+    def decision = injector.getInstance(classOf[FactoryLookup]).convert(FunctionMFactory.id)
+    val paramSeqWithoutEmpties = await(fillEmptySteps(initScope = scope, initInstructions = params, funcReplaceEmpty = decision.createParams))
+    val nodeSeqWithoutEmpties = await(fillEmptySteps(initScope = paramSeqWithoutEmpties.scope, initInstructions = nodes, funcReplaceEmpty = decision.createNodes))
     FunctionM(paramSeqWithoutEmpties.instructions, nodeSeqWithoutEmpties.instructions, name)
   }
 
