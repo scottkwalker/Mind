@@ -6,7 +6,14 @@ Code coverage for master branch [![Coverage Status](https://coveralls.io/repos/s
 
 Latest version [![GitHub version](https://badge.fury.io/gh/scottkwalker%2FMind.svg)](http://badge.fury.io/gh/scottkwalker%2FMind)
 
-This is a Scala hobby project. It will consist of:
+This is a Scala hobby project. It is an experiment in meta-programming - the programme will:
+
+* create a piece of code out of building blocks
+* compile this code
+* evaluate the fitness of the code
+* learn from the fitness when creating the more pieces of code
+
+It will consist of:
 
 * one RESTful micro-service that will generate a table of legal moves in a programming language according to whatever rules you give it
 * one micro-service that will call the first micro-service to get a list of legal moves and then use AI to pick the next move. I want to experiment with algorithms such as Ant Colony Optimisation (ACO).
