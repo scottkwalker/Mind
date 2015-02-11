@@ -10,7 +10,9 @@ final class ValueRefSpec extends TestComposition {
     "return name" in {
       val name = "a"
 
-      ValueRef(name).toCompilable must equal(name)
+      val compilable = ValueRef(name).toCompilable
+
+      compilable must equal(name)
     }
   }
 
@@ -19,21 +21,27 @@ final class ValueRefSpec extends TestComposition {
       val scope = Scope(height = 0)
       val name = "a"
 
-      ValueRef(name).hasNoEmptySteps(scope) must equal(true)
+      val hasNoEmptySteps = ValueRef(name).hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(true)
     }
 
     "true given a non-empty name" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val name = "a"
 
-      ValueRef(name).hasNoEmptySteps(scope) must equal(true)
+      val hasNoEmptySteps = ValueRef(name).hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(true)
     }
 
     "false given an empty name" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val name = ""
 
-      ValueRef(name).hasNoEmptySteps(scope) must equal(false)
+      val hasNoEmptySteps = ValueRef(name).hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(false)
     }
   }
 
@@ -44,9 +52,9 @@ final class ValueRefSpec extends TestComposition {
       val factoryLookup = mock[FactoryLookup]
       val valueRef = ValueRef(name)
 
-      val result = valueRef.fillEmptySteps(scope, factoryLookup)
+      val step = valueRef.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(result) {
+      whenReady(step) {
         _ must equal(valueRef)
       }(config = patienceConfig)
     }
@@ -56,7 +64,9 @@ final class ValueRefSpec extends TestComposition {
     "returns 1" in {
       val name = "a"
 
-      ValueRef(name).height must equal(1)
+      val height = ValueRef(name).height
+
+      height must equal(1)
     }
   }
 }

@@ -56,7 +56,7 @@ final class ObjectSpec extends TestComposition {
         name = "f0")
       val objectDef = Object(Seq(instruction), name)
 
-      val hasNoEmptySteps  = objectDef.hasNoEmptySteps(scope)
+      val hasNoEmptySteps = objectDef.hasNoEmptySteps(scope)
 
       hasNoEmptySteps must equal(true)
     }
@@ -73,7 +73,7 @@ final class ObjectSpec extends TestComposition {
       when(instruction.hasNoEmptySteps(any[Scope])).thenReturn(true)
       val objectDef = Object(Seq(instruction, Empty()), name)
 
-      val hasNoEmptySteps  = objectDef.hasNoEmptySteps(scope)
+      val hasNoEmptySteps = objectDef.hasNoEmptySteps(scope)
 
       hasNoEmptySteps must equal(false)
     }
@@ -160,7 +160,9 @@ final class ObjectSpec extends TestComposition {
       when(instruction.height).thenReturn(2)
       val objectDef = Object(Seq(instruction), name)
 
-      objectDef.height must equal(3)
+      val height = objectDef.height
+
+      height must equal(3)
     }
 
     "height returns 1 + child height when has 2 children" in {
@@ -170,7 +172,9 @@ final class ObjectSpec extends TestComposition {
       when(instruction2.height).thenReturn(2)
       val objectDef = Object(Seq(instruction1, instruction2), name)
 
-      objectDef.height must equal(3)
+      val height = objectDef.height
+
+      height must equal(3)
     }
   }
 

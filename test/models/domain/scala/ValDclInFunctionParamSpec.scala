@@ -17,7 +17,9 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       when(instruction.toCompilable).thenReturn("Int")
       val name = "a"
 
-      ValDclInFunctionParam(name, instruction).toCompilable must equal("a: Int")
+      val compilable = ValDclInFunctionParam(name, instruction).toCompilable
+
+      compilable must equal("a: Int")
     }
   }
 
@@ -28,7 +30,9 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val name = "a"
       val instruction = mock[Step]
 
-      ValDclInFunctionParam(name, instruction).hasNoEmptySteps(scope) must equal(false)
+      val hasNoEmptySteps = ValDclInFunctionParam(name, instruction).hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(false)
     }
 
     "false given an empty name" in {
@@ -37,7 +41,9 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val name = ""
       val instruction = mock[Step]
 
-      ValDclInFunctionParam(name, instruction).hasNoEmptySteps(scope) must equal(false)
+      val hasNoEmptySteps = ValDclInFunctionParam(name, instruction).hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(false)
     }
 
     "false given an invalid child" in {
@@ -47,7 +53,9 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val instruction = mock[Step]
       when(instruction.hasNoEmptySteps(any[Scope])).thenReturn(false)
 
-      ValDclInFunctionParam(name, instruction).hasNoEmptySteps(scope) must equal(false)
+      val hasNoEmptySteps = ValDclInFunctionParam(name, instruction).hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(false)
     }
 
     "true given it can terminate, has a non-empty name and valid child" in {
@@ -56,7 +64,9 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val name = "a"
       val instruction = IntegerM()
 
-      ValDclInFunctionParam(name, instruction).hasNoEmptySteps(scope) must equal(true)
+      val hasNoEmptySteps = ValDclInFunctionParam(name, instruction).hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(true)
     }
   }
 
@@ -71,9 +81,9 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
       val valDclInFunctionParam = ValDclInFunctionParam(name, instruction)
 
-      val result = valDclInFunctionParam.fillEmptySteps(scope, factoryLookup)
+      val step = valDclInFunctionParam.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(result) { _ => verify(instruction, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])}(config = patienceConfig)
+      whenReady(step) { _ => verify(instruction, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])}(config = patienceConfig)
     }
 
     "returns same when no empty nodes" in {
@@ -86,9 +96,9 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
       val valDclInFunctionParam = ValDclInFunctionParam(name, instruction)
 
-      val result = valDclInFunctionParam.fillEmptySteps(scope, factoryLookup)
+      val step = valDclInFunctionParam.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(result) {
+      whenReady(step) {
         _ must equal(valDclInFunctionParam)
       }(config = patienceConfig)
     }
@@ -100,9 +110,9 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val injector = testInjector().getInstance(classOf[FactoryLookup])
       val valDclInFunctionParam = ValDclInFunctionParam(name, primitiveTypeEmpty)
 
-      val result = valDclInFunctionParam.fillEmptySteps(scope, injector)
+      val step = valDclInFunctionParam.fillEmptySteps(scope, injector)
 
-      whenReady(result) {
+      whenReady(step) {
         case ValDclInFunctionParam(name2, primitiveType) =>
           name2 must equal("a")
           primitiveType mustBe a[Step]
@@ -117,7 +127,9 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val instruction = mock[Step]
       when(instruction.height).thenReturn(1)
 
-      ValDclInFunctionParam(name, instruction).height must equal(2)
+      val height = ValDclInFunctionParam(name, instruction).height
+
+      height must equal(2)
     }
   }
 }

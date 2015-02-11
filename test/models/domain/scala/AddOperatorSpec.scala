@@ -58,7 +58,7 @@ final class AddOperatorSpec extends TestComposition {
       val scope = Scope(height = 10, maxHeight = 10)
       val nonEmpty = ValueRef("v")
 
-      val hasNoEmptySteps  = AddOperator(nonEmpty, nonEmpty).hasNoEmptySteps(scope)
+      val hasNoEmptySteps = AddOperator(nonEmpty, nonEmpty).hasNoEmptySteps(scope)
 
       hasNoEmptySteps must equal(true)
     }
