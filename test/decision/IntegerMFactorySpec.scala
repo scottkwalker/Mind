@@ -21,8 +21,8 @@ final class IntegerMFactorySpec extends TestComposition {
       val step = integerMFactory.createStep(scope)
 
       // Assert
-      whenReady(step) { result =>
-        result mustBe a[IntegerM]
+      whenReady(step) {
+        _ mustBe a[IntegerM]
       }(config = patienceConfig)
     }
   }

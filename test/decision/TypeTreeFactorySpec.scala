@@ -20,8 +20,8 @@ final class TypeTreeFactorySpec extends TestComposition {
 
       val step = typeTreeFactory.createStep(Scope())
 
-      whenReady(step) { result =>
-        result mustBe a[TypeTree]
+      whenReady(step) {
+        _ mustBe a[TypeTree]
       }(config = patienceConfig)
     }
 
@@ -30,7 +30,7 @@ final class TypeTreeFactorySpec extends TestComposition {
 
       val step = typeTreeFactory.create(Scope(), Seq.empty)
 
-      whenReady(step) { result =>
+      whenReady(step) { _ =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
       }(config = patienceConfig)
     }

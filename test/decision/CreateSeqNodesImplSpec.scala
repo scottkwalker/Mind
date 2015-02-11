@@ -23,9 +23,11 @@ final class CreateSeqNodesImplSpec extends TestComposition {
         factoryLimit = scope.maxFuncsInObject
       )
 
-      whenReady(result) { instructions =>
-        verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
-        instructions.instructions.length must equal(1)
+      whenReady(result) {
+        case AccumulateInstructions(instructions, _) =>
+          verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
+          instructions.length must equal(1)
+        case _ => fail("wrong type")
       }(config = patienceConfig)
     }
 

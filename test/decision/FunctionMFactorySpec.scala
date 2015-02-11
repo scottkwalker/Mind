@@ -20,8 +20,8 @@ final class FunctionMFactorySpec extends TestComposition {
 
       val step = factory.createStep(scope = Scope())
 
-      whenReady(step) { result =>
-        result mustBe a[FunctionM]
+      whenReady(step) {
+        _ mustBe a[FunctionM]
       }(config = patienceConfig)
     }
 

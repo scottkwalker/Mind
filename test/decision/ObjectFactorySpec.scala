@@ -20,8 +20,8 @@ final class ObjectFactorySpec extends TestComposition {
 
       val step = objectFactory.createStep(scope = Scope())
 
-      whenReady(step) { result =>
-        result mustBe an[Object]
+      whenReady(step) {
+        _ mustBe an[Object]
       }(config = patienceConfig)
     }
 
@@ -52,7 +52,7 @@ final class ObjectFactorySpec extends TestComposition {
 
       val step = objectFactory.createStep(scope = Scope())
 
-      whenReady(step) { r =>
+      whenReady(step) { _ =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
       }(config = patienceConfig)
     }

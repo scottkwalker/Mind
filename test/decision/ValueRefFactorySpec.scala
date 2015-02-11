@@ -11,8 +11,8 @@ final class ValueRefFactorySpec extends TestComposition {
     "return instance of this type" in {
       val step = valueRefFactory.createStep(scope = scope)
 
-      whenReady(step) { result =>
-        result mustBe a[ValueRef]
+      whenReady(step) {
+        _ mustBe a[ValueRef]
       }(config = patienceConfig)
     }
 

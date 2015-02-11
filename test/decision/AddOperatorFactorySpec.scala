@@ -13,8 +13,8 @@ final class AddOperatorFactorySpec extends TestComposition {
 
       val step = addOperatorFactory.createStep(scope = scope)
 
-      whenReady(step) { result =>
-        result mustBe a[AddOperator]
+      whenReady(step) {
+        _ mustBe a[AddOperator]
       }(config = patienceConfig)
     }
   }
