@@ -16,30 +16,36 @@ final class ObjectSpec extends TestComposition {
     "true given it can terminates in under N steps" in {
       val scope = Scope(height = 4, maxHeight = 10)
       // This has to be a real instead of a mock as we will be exact-matching on the type.
-      val instruction = FunctionM(params = Seq.empty,
+      val functionM = FunctionM(params = Seq.empty,
         nodes = Seq.empty,
         name = "f0")
-      val objectDef = Object(Seq(instruction), name)
+      val objectDef = Object(Seq(functionM), name)
 
-      objectDef.hasNoEmptySteps(scope) must equal(true)
+      val hasNoEmptySteps = objectDef.hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
       val scope = Scope(height = 0)
-      val instruction = mock[Step]
-      when(instruction.hasNoEmptySteps(any[Scope])).thenThrow(new RuntimeException)
-      val objectDef = Object(Seq(instruction), name)
+      val step = mock[Step]
+      when(step.hasNoEmptySteps(any[Scope])).thenThrow(new RuntimeException)
+      val objectDef = Object(Seq(step), name)
 
-      objectDef.hasNoEmptySteps(scope) must equal(false)
+      val hasNoEmptySteps = objectDef.hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(false)
     }
 
     "false given it cannot terminate in under N steps" in {
       val scope = Scope(height = 3, maxHeight = 10)
-      val instruction = mock[Step]
-      when(instruction.hasNoEmptySteps(any[Scope])).thenReturn(false)
-      val objectDef = Object(Seq(instruction), name)
+      val step = mock[Step]
+      when(step.hasNoEmptySteps(any[Scope])).thenReturn(false)
+      val objectDef = Object(Seq(step), name)
 
-      objectDef.hasNoEmptySteps(scope) must equal(false)
+      val hasNoEmptySteps = objectDef.hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(false)
     }
 
     "true given no empty nodes" in {
@@ -50,7 +56,9 @@ final class ObjectSpec extends TestComposition {
         name = "f0")
       val objectDef = Object(Seq(instruction), name)
 
-      objectDef.hasNoEmptySteps(scope) must equal(true)
+      val hasNoEmptySteps  = objectDef.hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(true)
     }
 
     "false given single empty method node" in {
@@ -65,7 +73,9 @@ final class ObjectSpec extends TestComposition {
       when(instruction.hasNoEmptySteps(any[Scope])).thenReturn(true)
       val objectDef = Object(Seq(instruction, Empty()), name)
 
-      objectDef.hasNoEmptySteps(scope) must equal(false)
+      val hasNoEmptySteps  = objectDef.hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(false)
     }
   }
 
@@ -75,7 +85,9 @@ final class ObjectSpec extends TestComposition {
       when(instruction.toCompilable).thenReturn("STUB")
       val objectDef = Object(Seq(instruction), name)
 
-      objectDef.toCompilable must equal("object o0 { STUB }")
+      val compilable = objectDef.toCompilable
+
+      compilable must equal("object o0 { STUB }")
     }
   }
 
@@ -89,7 +101,9 @@ final class ObjectSpec extends TestComposition {
 
       val result = objectDef.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(result) { r => verify(instruction, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])}(config = patienceConfig)
+      whenReady(result) { _ =>
+        verify(instruction, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])
+      }(config = patienceConfig)
     }
 
     "returns same when no empty nodes" in {
@@ -99,9 +113,9 @@ final class ObjectSpec extends TestComposition {
       when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
       val objectDef = Object(Seq(instruction), name)
 
-      val result = objectDef.fillEmptySteps(scope, factoryLookup)
+      val step = objectDef.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(result) {
+      whenReady(step) {
         _ must equal(objectDef)
       }(config = patienceConfig)
     }
@@ -118,9 +132,9 @@ final class ObjectSpec extends TestComposition {
       val objectDef = Object(nodes = Seq(empty),
         name = name)
 
-      val result = objectDef.fillEmptySteps(scope, factoryLookup)
+      val step = objectDef.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(result) {
+      whenReady(step) {
         case Object(n2, name2) =>
           n2 match {
             case Seq(nSeq) => nSeq mustBe a[Step]

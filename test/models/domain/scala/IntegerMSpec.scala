@@ -7,14 +7,16 @@ final class IntegerMSpec extends TestComposition {
 
   "toCompilable" must {
     "return expected" in {
-      integerM.toCompilable must equal("Int")
+      val compilable = integerM.toCompilable
+      compilable must equal("Int")
     }
   }
 
   "hasNoEmptySteps" must {
     "returns true" in {
       val s = mock[IScope]
-      integerM.hasNoEmptySteps(s) must equal(true)
+      val hasNoEmptySteps = integerM.hasNoEmptySteps(s)
+      hasNoEmptySteps must equal(true)
     }
   }
 
