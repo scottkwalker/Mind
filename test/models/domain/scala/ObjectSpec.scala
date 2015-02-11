@@ -99,9 +99,9 @@ final class ObjectSpec extends TestComposition {
       when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
       val objectDef = Object(Seq(instruction), name = name)
 
-      val result = objectDef.fillEmptySteps(scope, factoryLookup)
+      val fillEmptySteps = objectDef.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(result) { _ =>
+      whenReady(fillEmptySteps) { _ =>
         verify(instruction, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])
       }(config = patienceConfig)
     }
@@ -113,9 +113,9 @@ final class ObjectSpec extends TestComposition {
       when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
       val objectDef = Object(Seq(instruction), name)
 
-      val step = objectDef.fillEmptySteps(scope, factoryLookup)
+      val fillEmptySteps = objectDef.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(step) {
+      whenReady(fillEmptySteps) {
         _ must equal(objectDef)
       }(config = patienceConfig)
     }
@@ -132,9 +132,9 @@ final class ObjectSpec extends TestComposition {
       val objectDef = Object(nodes = Seq(empty),
         name = name)
 
-      val step = objectDef.fillEmptySteps(scope, factoryLookup)
+      val fillEmptySteps = objectDef.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(step) {
+      whenReady(fillEmptySteps) {
         case Object(n2, name2) =>
           n2 match {
             case Seq(nSeq) => nSeq mustBe a[Step]

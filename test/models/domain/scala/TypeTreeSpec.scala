@@ -15,8 +15,8 @@ final class TypeTreeSpec extends TestComposition {
   "hasNoEmptySteps" must {
     "return true given it can terminates in under N steps" in {
       val scope = Scope(height = 10, maxHeight = 10)
-      val instruction = Object(nodes = Seq.empty, name = "o0")
-      val typeTree = new TypeTree(Seq(instruction))
+      val step = Object(nodes = Seq.empty, name = "o0")
+      val typeTree = new TypeTree(Seq(step))
 
       val hasNoEmptySteps = typeTree.hasNoEmptySteps(scope)
 
@@ -25,9 +25,9 @@ final class TypeTreeSpec extends TestComposition {
 
     "return false given it cannot terminate in under N steps" in {
       val scope = Scope(height = 10, maxHeight = 10)
-      val instruction = mock[Step]
-      when(instruction.hasNoEmptySteps(any[Scope])).thenReturn(false)
-      val typeTree = new TypeTree(Seq(instruction))
+      val step = mock[Step]
+      when(step.hasNoEmptySteps(any[Scope])).thenReturn(false)
+      val typeTree = new TypeTree(Seq(step))
 
       val hasNoEmptySteps = typeTree.hasNoEmptySteps(scope)
 
@@ -36,8 +36,8 @@ final class TypeTreeSpec extends TestComposition {
 
     "return true given none empty" in {
       val scope = Scope(height = 10, maxHeight = 10)
-      val instruction = Object(nodes = Seq.empty, name = "o0")
-      val typeTree = new TypeTree(Seq(instruction))
+      val step = Object(nodes = Seq.empty, name = "o0")
+      val typeTree = new TypeTree(Seq(step))
 
       val hasNoEmptySteps = typeTree.hasNoEmptySteps(scope)
 
@@ -56,8 +56,8 @@ final class TypeTreeSpec extends TestComposition {
     "return false when hasHeightRemaining returns false" in {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(false)
-      val instruction = mock[Step]
-      val typeTree = new TypeTree(Seq(instruction))
+      val step = mock[Step]
+      val typeTree = new TypeTree(Seq(step))
 
       val hasNoEmptySteps = typeTree.hasNoEmptySteps(scope)
 
@@ -68,27 +68,27 @@ final class TypeTreeSpec extends TestComposition {
   "fillEmptySteps" must {
     "calls fillEmptySteps on non-empty child nodes" in {
       val scope = mock[IScope]
-      val injector = mock[FactoryLookup]
-      val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
-      val instance = TypeTree(Seq(instruction))
+      val factoryLookup = mock[FactoryLookup]
+      val step = mock[Step]
+      when(step.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(step)
+      val typeTree = TypeTree(Seq(step))
 
-      val step = instance.fillEmptySteps(scope, injector)
+      val fillEmptySteps = typeTree.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(step) { _ => verify(instruction, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])}(config = patienceConfig)
+      whenReady(fillEmptySteps) { _ => verify(step, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])}(config = patienceConfig)
     }
 
     "return same when no empty nodes" in {
       val scope = mock[IScope]
-      val injector = mock[FactoryLookup]
-      val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
-      val instance = new TypeTree(Seq(instruction))
+      val factoryLookup = mock[FactoryLookup]
+      val step = mock[Step]
+      when(step.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(step)
+      val typeTree = new TypeTree(Seq(step))
 
-      val step = instance.fillEmptySteps(scope, injector)
+      val fillEmptySteps = typeTree.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(step) {
-        _ must equal(instance)
+      whenReady(fillEmptySteps) {
+        _ must equal(typeTree)
       }(config = patienceConfig)
     }
 
@@ -100,12 +100,12 @@ final class TypeTreeSpec extends TestComposition {
         maxObjectsInTree = 1,
         maxHeight = 10)
       val empty = Empty()
-      val injector = testInjector().getInstance(classOf[FactoryLookup])
-      val instance = TypeTree(nodes = Seq(empty))
+      val factoryLookup = testInjector().getInstance(classOf[FactoryLookup])
+      val typeTree = TypeTree(nodes = Seq(empty))
 
-      val step = instance.fillEmptySteps(scope, injector)
+      val fillEmptySteps = typeTree.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(step) {
+      whenReady(fillEmptySteps) {
         case TypeTree(nodes) =>
           nodes match {
             case Seq(nonEmpty) => nonEmpty mustBe an[Step]
@@ -117,18 +117,18 @@ final class TypeTreeSpec extends TestComposition {
 
     "throw when passed empty seq (no empty or non-empty)" in {
       val scope = mock[IScope]
-      val injector = mock[FactoryLookup]
-      val instance = new TypeTree(nodes = Seq.empty)
+      val factoryLookup = mock[FactoryLookup]
+      val typeTree = new TypeTree(nodes = Seq.empty)
 
-      a[RuntimeException] must be thrownBy Await.result(instance.fillEmptySteps(scope, injector), finiteTimeout)
+      a[RuntimeException] must be thrownBy Await.result(typeTree.fillEmptySteps(scope, factoryLookup), finiteTimeout)
     }
   }
 
   "height" must {
     "return 1 + child height when has one child" in {
-      val instruction = mock[Step]
-      when(instruction.height).thenReturn(2)
-      val typeTree = new TypeTree(Seq(instruction))
+      val step = mock[Step]
+      when(step.height).thenReturn(2)
+      val typeTree = new TypeTree(Seq(step))
 
       val height = typeTree.height
 
@@ -136,11 +136,11 @@ final class TypeTreeSpec extends TestComposition {
     }
 
     "return 1 + child height when has two children" in {
-      val instruction1 = mock[Step]
-      when(instruction1.height).thenReturn(1)
-      val instruction2 = mock[Step]
-      when(instruction2.height).thenReturn(2)
-      val typeTree = new TypeTree(Seq(instruction1, instruction2))
+      val step1 = mock[Step]
+      when(step1.height).thenReturn(1)
+      val step2 = mock[Step]
+      when(step2.height).thenReturn(2)
+      val typeTree = new TypeTree(Seq(step1, step2))
 
       val height = typeTree.height
 

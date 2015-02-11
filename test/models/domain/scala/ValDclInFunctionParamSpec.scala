@@ -13,11 +13,12 @@ final class ValDclInFunctionParamSpec extends TestComposition {
 
   "toCompilable" must {
     "return expected" in {
-      val instruction = mock[Step]
-      when(instruction.toCompilable).thenReturn("Int")
+      val step = mock[Step]
+      when(step.toCompilable).thenReturn("Int")
       val name = "a"
+      val valDclInFunctionParam = ValDclInFunctionParam(name, step)
 
-      val compilable = ValDclInFunctionParam(name, instruction).toCompilable
+      val compilable = valDclInFunctionParam.toCompilable
 
       compilable must equal("a: Int")
     }
@@ -28,9 +29,10 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(false)
       val name = "a"
-      val instruction = mock[Step]
+      val step = mock[Step]
+      val valDclInFunctionParam = ValDclInFunctionParam(name, step)
 
-      val hasNoEmptySteps = ValDclInFunctionParam(name, instruction).hasNoEmptySteps(scope)
+      val hasNoEmptySteps = valDclInFunctionParam.hasNoEmptySteps(scope)
 
       hasNoEmptySteps must equal(false)
     }
@@ -39,9 +41,10 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(true)
       val name = ""
-      val instruction = mock[Step]
+      val step = mock[Step]
+      val valDclInFunctionParam = ValDclInFunctionParam(name, step)
 
-      val hasNoEmptySteps = ValDclInFunctionParam(name, instruction).hasNoEmptySteps(scope)
+      val hasNoEmptySteps = valDclInFunctionParam.hasNoEmptySteps(scope)
 
       hasNoEmptySteps must equal(false)
     }
@@ -50,10 +53,11 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(true)
       val name = "a"
-      val instruction = mock[Step]
-      when(instruction.hasNoEmptySteps(any[Scope])).thenReturn(false)
+      val step = mock[Step]
+      when(step.hasNoEmptySteps(any[Scope])).thenReturn(false)
+      val valDclInFunctionParam = ValDclInFunctionParam(name, step)
 
-      val hasNoEmptySteps = ValDclInFunctionParam(name, instruction).hasNoEmptySteps(scope)
+      val hasNoEmptySteps = valDclInFunctionParam.hasNoEmptySteps(scope)
 
       hasNoEmptySteps must equal(false)
     }
@@ -62,9 +66,10 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(true)
       val name = "a"
-      val instruction = IntegerM()
+      val integerM = IntegerM()
+      val valDclInFunctionParam = ValDclInFunctionParam(name, integerM)
 
-      val hasNoEmptySteps = ValDclInFunctionParam(name, instruction).hasNoEmptySteps(scope)
+      val hasNoEmptySteps = valDclInFunctionParam.hasNoEmptySteps(scope)
 
       hasNoEmptySteps must equal(true)
     }
@@ -77,13 +82,15 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       when(scope.decrementHeight).thenReturn(scope)
       val name = "a"
       val factoryLookup = mock[FactoryLookup]
-      val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
-      val valDclInFunctionParam = ValDclInFunctionParam(name, instruction)
+      val step = mock[Step]
+      when(step.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(step)
+      val valDclInFunctionParam = ValDclInFunctionParam(name, step)
 
-      val step = valDclInFunctionParam.fillEmptySteps(scope, factoryLookup)
+      val fillEmptySteps = valDclInFunctionParam.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(step) { _ => verify(instruction, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])}(config = patienceConfig)
+      whenReady(fillEmptySteps) { _ =>
+        verify(step, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])
+      }(config = patienceConfig)
     }
 
     "returns same when no empty nodes" in {
@@ -92,13 +99,13 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       when(scope.decrementHeight).thenReturn(scope)
       val name = "a"
       val factoryLookup = mock[FactoryLookup]
-      val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
-      val valDclInFunctionParam = ValDclInFunctionParam(name, instruction)
+      val step = mock[Step]
+      when(step.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(step)
+      val valDclInFunctionParam = ValDclInFunctionParam(name, step)
 
-      val step = valDclInFunctionParam.fillEmptySteps(scope, factoryLookup)
+      val fillEmptySteps = valDclInFunctionParam.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(step) {
+      whenReady(fillEmptySteps) {
         _ must equal(valDclInFunctionParam)
       }(config = patienceConfig)
     }
@@ -107,12 +114,12 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val scope = mock[IScope]
       val name = "a"
       val primitiveTypeEmpty = Empty()
-      val injector = testInjector().getInstance(classOf[FactoryLookup])
+      val factoryLookup = testInjector().getInstance(classOf[FactoryLookup])
       val valDclInFunctionParam = ValDclInFunctionParam(name, primitiveTypeEmpty)
 
-      val step = valDclInFunctionParam.fillEmptySteps(scope, injector)
+      val fillEmptySteps = valDclInFunctionParam.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(step) {
+      whenReady(fillEmptySteps) {
         case ValDclInFunctionParam(name2, primitiveType) =>
           name2 must equal("a")
           primitiveType mustBe a[Step]
@@ -126,8 +133,9 @@ final class ValDclInFunctionParamSpec extends TestComposition {
       val name = "a"
       val instruction = mock[Step]
       when(instruction.height).thenReturn(1)
+      val valDclInFunctionParam = ValDclInFunctionParam(name, instruction)
 
-      val height = ValDclInFunctionParam(name, instruction).height
+      val height = valDclInFunctionParam.height
 
       height must equal(2)
     }

@@ -101,9 +101,9 @@ final class AddOperatorSpec extends TestComposition {
       when(nonEmpty.fillEmptySteps(any[Scope], any[FactoryLookup])).thenReturn(Future.successful(nonEmpty))
       val instance = AddOperator(nonEmpty, nonEmpty)
 
-      val result = instance.fillEmptySteps(scope, factoryLookup)
+      val fillEmptySteps = instance.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(result) { _ =>
+      whenReady(fillEmptySteps) { _ =>
         verify(nonEmpty, times(2)).fillEmptySteps(any[Scope], any[FactoryLookup])
       }(config = patienceConfig)
     }
@@ -115,9 +115,9 @@ final class AddOperatorSpec extends TestComposition {
       when(nonEmpty.fillEmptySteps(any[Scope], any[FactoryLookup])).thenReturn(Future.successful(nonEmpty))
       val instance = AddOperator(nonEmpty, nonEmpty)
 
-      val result = instance.fillEmptySteps(scope, factoryLookup)
+      val fillEmptySteps = instance.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(result) {
+      whenReady(fillEmptySteps) {
         _ must equal(instance)
       }(config = patienceConfig)
     }
@@ -129,9 +129,9 @@ final class AddOperatorSpec extends TestComposition {
       val factoryLookup = testInjector().getInstance(classOf[FactoryLookup])
       val instance = AddOperator(empty, empty)
 
-      val result = instance.fillEmptySteps(scope, factoryLookup)
+      val fillEmptySteps = instance.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(result) {
+      whenReady(fillEmptySteps) {
         case AddOperator(left, right) =>
           left mustBe a[Step]
           right mustBe a[Step]
