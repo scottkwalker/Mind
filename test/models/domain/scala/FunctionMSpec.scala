@@ -17,17 +17,22 @@ final class FunctionMSpec extends TestComposition {
       val scope = Scope(height = 10, maxHeight = 10)
       val node = mock[Step]
       when(node.hasNoEmptySteps(any[Scope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
-      FunctionM(params = params,
+
+      val hasNoEmptySteps = FunctionM(params = params,
         nodes = Seq(node, node),
-        name = "").hasNoEmptySteps(scope) must equal(false)
+        name = "").hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(false)
     }
 
     "true given it can terminate in under N steps" in {
       val scope = Scope(height = 3, maxHeight = 10)
 
-      FunctionM(params = params,
+      val hasNoEmptySteps = FunctionM(params = params,
         nodes = Seq(nonEmpty, nonEmpty),
-        name = name).hasNoEmptySteps(scope) must equal(true)
+        name = name).hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
@@ -35,9 +40,11 @@ final class FunctionMSpec extends TestComposition {
       val node = mock[Step]
       when(node.hasNoEmptySteps(any[Scope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
 
-      FunctionM(params = params,
+      val hasNoEmptySteps = FunctionM(params = params,
         nodes = Seq(node, node),
-        name = name).hasNoEmptySteps(scope) must equal(false)
+        name = name).hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(false)
     }
 
     "false given it cannot terminate in under N steps" in {
@@ -45,25 +52,31 @@ final class FunctionMSpec extends TestComposition {
       val nonTerminal = mock[Step]
       when(nonTerminal.hasNoEmptySteps(any[Scope])).thenReturn(false)
 
-      FunctionM(params = params,
+      val hasNoEmptySteps = FunctionM(params = params,
         nodes = Seq(nonTerminal, nonTerminal),
-        name = name).hasNoEmptySteps(scope) must equal(false)
+        name = name).hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(false)
     }
 
     "true given no empty nodes" in {
       val scope = Scope(height = 10, maxHeight = 10)
 
-      FunctionM(params = params,
+      val hasNoEmptySteps = FunctionM(params = params,
         nodes = Seq(nonEmpty, nonEmpty),
-        name = name).hasNoEmptySteps(scope) must equal(true)
+        name = name).hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(true)
     }
 
     "false given an empty node" in {
       val scope = Scope(height = 10, maxHeight = 10)
 
-      FunctionM(params = params,
+      val hasNoEmptySteps = FunctionM(params = params,
         nodes = Seq(nonEmpty, Empty()),
-        name = name).hasNoEmptySteps(scope) must equal(false)
+        name = name).hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(false)
     }
   }
 
@@ -71,10 +84,13 @@ final class FunctionMSpec extends TestComposition {
     "returns expected" in {
       val node = mock[Step]
       when(node.toCompilable).thenReturn("STUB")
-
-      FunctionM(params = params,
+      val functionM = FunctionM(params = params,
         nodes = Seq(node),
-        name = name).toCompilable must equal("def f0(a: Int, b: Int) = { STUB }")
+        name = name)
+
+      val toCompilable = functionM.toCompilable
+
+      toCompilable must equal("def f0(a: Int, b: Int) = { STUB }")
     }
 
     "throws if has no name" in {
@@ -101,9 +117,9 @@ final class FunctionMSpec extends TestComposition {
         nodes = Seq(node),
         name = name)
 
-      val result = functionM.fillEmptySteps(scope, factoryLookup)
+      val step = functionM.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(result) { _ =>
+      whenReady(step) { _ =>
         verify(param, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])
         verify(node, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])
       }(config = patienceConfig)
@@ -180,10 +196,13 @@ final class FunctionMSpec extends TestComposition {
     "returns 1 + child height" in {
       val node = mock[Step]
       when(node.height) thenReturn 2
-
-      FunctionM(params = params,
+      val functionM = FunctionM(params = params,
         nodes = Seq(node, node),
-        name = name).height must equal(3)
+        name = name)
+
+      val height = functionM.height
+
+      height must equal(3)
     }
 
     "returns 1 + child height when children have different depths" in {
@@ -191,10 +210,13 @@ final class FunctionMSpec extends TestComposition {
       when(node1.height) thenReturn 1
       val node2 = mock[Step]
       when(node2.height) thenReturn 2
-
-      FunctionM(params = params,
+      val functionM = FunctionM(params = params,
         nodes = Seq(node1, node2),
-        name = name).height must equal(3)
+        name = name)
+
+      val height = functionM.height
+
+      height must equal(3)
     }
   }
 

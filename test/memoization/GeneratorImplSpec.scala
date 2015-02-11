@@ -17,6 +17,7 @@ class GeneratorImplSpec extends TestComposition {
     "return expected message" in {
       val (_, generator, _) = buildWithoutFutures
       val scope = mock[IScope]
+
       whenReady(generator.calculateAndUpdate(scope)) {
         _ must equal(numberOfFactories)
       }(config = patienceConfig)
@@ -24,7 +25,7 @@ class GeneratorImplSpec extends TestComposition {
 
     "call repository.add once for each factory (when scope has no values)" in {
       val scope = mock[IScope]
-      verfifyRepositoryAddCalled(scope = scope, expected = 1, builder = buildWithoutFutures)
+      verifyRepositoryAddCalled(scope = scope, expected = 1, builder = buildWithoutFutures)
     }
 
     "call repository.add once for each scope maxFuncsInObject" in {
@@ -32,7 +33,8 @@ class GeneratorImplSpec extends TestComposition {
       when(scope.maxFuncsInObject).thenReturn(1)
       when(scope.maxHeight).thenReturn(1)
       val (_, generator, repository) = buildWithoutFutures
-      whenReady(generator.calculateAndUpdate(scope)) { r =>
+
+      whenReady(generator.calculateAndUpdate(scope)) { _ =>
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(numFuncs = 0, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(numFuncs = 1, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
       }(config = patienceConfig)
@@ -43,7 +45,8 @@ class GeneratorImplSpec extends TestComposition {
       when(scope.maxParamsInFunc).thenReturn(1)
       when(scope.maxHeight).thenReturn(1)
       val (_, generator, repository) = buildWithoutFutures
-      whenReady(generator.calculateAndUpdate(scope)) { r =>
+
+      whenReady(generator.calculateAndUpdate(scope)) { _ =>
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(numVals = 0, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(numVals = 1, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
       }(config = patienceConfig)
@@ -54,7 +57,8 @@ class GeneratorImplSpec extends TestComposition {
       when(scope.maxObjectsInTree).thenReturn(1)
       when(scope.maxHeight).thenReturn(1)
       val (_, generator, repository) = buildWithoutFutures
-      whenReady(generator.calculateAndUpdate(scope)) { r =>
+
+      whenReady(generator.calculateAndUpdate(scope)) { _ =>
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(numObjects = 0, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(numObjects = 1, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
       }(config = patienceConfig)
@@ -64,7 +68,8 @@ class GeneratorImplSpec extends TestComposition {
       val scope = mock[IScope]
       when(scope.maxHeight).thenReturn(1)
       val (_, generator, repository) = buildWithoutFutures
-      whenReady(generator.calculateAndUpdate(scope)) { r =>
+
+      whenReady(generator.calculateAndUpdate(scope)) { _ =>
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(height = 1, maxHeight = 1): IScope), any[PozInt])
       }(config = patienceConfig)
     }
@@ -83,7 +88,7 @@ class GeneratorImplSpec extends TestComposition {
     (lookupChildren.stub, generator, repository.stub)
   }
 
-  private def verfifyRepositoryAddCalled(scope: IScope, expected: Int = 2, builder: => (LookupChildren, Generator, Memoize2WithSet[IScope, PozInt])) = {
+  private def verifyRepositoryAddCalled(scope: IScope, expected: Int = 2, builder: => (LookupChildren, Generator, Memoize2WithSet[IScope, PozInt])) = {
     val (_, generator: Generator, repository: Memoize2WithSet[IScope, PozInt]) = builder
     generator.calculateAndUpdate(scope).map { _ =>
       verify(repository, times(expected)).add(any[IScope], any[PozInt])

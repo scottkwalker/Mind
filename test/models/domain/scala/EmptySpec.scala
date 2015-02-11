@@ -15,7 +15,10 @@ final class EmptySpec extends TestComposition {
   "hasNoEmptySteps" must {
     "return false" in {
       val scope = Scope(height = 10, maxHeight = 10)
-      Empty().hasNoEmptySteps(scope) must equal(false)
+
+      val hasNoEmptySteps = Empty().hasNoEmptySteps(scope)
+
+      hasNoEmptySteps must equal(false)
     }
   }
 
@@ -24,9 +27,9 @@ final class EmptySpec extends TestComposition {
       val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
 
-      val instance = Empty()
+      val step = Empty()
 
-      a[RuntimeException] must be thrownBy instance.fillEmptySteps(scope, factoryLookup)
+      a[RuntimeException] must be thrownBy step.fillEmptySteps(scope, factoryLookup)
     }
   }
 
