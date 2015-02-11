@@ -9,25 +9,25 @@ final class ValueRefFactorySpec extends TestComposition {
 
   "create step" must {
     "return instance of this type" in {
-      val instruction = valueRefFactory.createStep(scope = scope)
+      val step = valueRefFactory.createStep(scope = scope)
 
-      whenReady(instruction) { result =>
+      whenReady(step) { result =>
         result mustBe a[ValueRef]
       }(config = patienceConfig)
     }
 
     "return expected given scope with 0 vals" in {
-      val instruction = valueRefFactory.createStep(scope = scope)
+      val step = valueRefFactory.createStep(scope = scope)
 
-      whenReady(instruction) {
+      whenReady(step) {
         case ValueRef(name) => name must equal("v0")
       }(config = patienceConfig)
     }
 
     "return expected given scope with 1 val" in {
-      val instruction = valueRefFactory.createStep(scope = scope)
+      val step = valueRefFactory.createStep(scope = scope)
 
-      whenReady(instruction) {
+      whenReady(step) {
         case ValueRef(name) => name must equal("v0")
         case _ => fail("wrong type")
       }(config = patienceConfig)
@@ -42,9 +42,9 @@ final class ValueRefFactorySpec extends TestComposition {
 
   "updateScope" must {
     "return unchanged" in {
-      val result = valueRefFactory.updateScope(scope)
+      val updateScope = valueRefFactory.updateScope(scope)
 
-      result must equal(scope)
+      updateScope must equal(scope)
     }
   }
 
@@ -54,5 +54,5 @@ final class ValueRefFactorySpec extends TestComposition {
     stub
   }
 
-  private def valueRefFactory = testInjector().getInstance(classOf[ValueRefFactoryImpl])
+  private def valueRefFactory = testInjector().getInstance(classOf[ValueRefFactory])
 }

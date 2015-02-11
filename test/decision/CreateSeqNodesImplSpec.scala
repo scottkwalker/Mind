@@ -23,9 +23,9 @@ final class CreateSeqNodesImplSpec extends TestComposition {
         factoryLimit = scope.maxFuncsInObject
       )
 
-      whenReady(result) { r =>
+      whenReady(result) { instructions =>
         verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
-        r.instructions.length must equal(1)
+        instructions.instructions.length must equal(1)
       }(config = patienceConfig)
     }
 
@@ -37,9 +37,9 @@ final class CreateSeqNodesImplSpec extends TestComposition {
         factoryLimit = scope.maxFuncsInObject
       )
 
-      whenReady(result) { r =>
+      whenReady(result) { instructions =>
         verify(createNode, times(2)).create(possibleChildren = possibleChildren, scope = scope)
-        r.instructions.length must equal(2)
+        instructions.instructions.length must equal(2)
       }(config = patienceConfig)
     }
 
@@ -51,9 +51,9 @@ final class CreateSeqNodesImplSpec extends TestComposition {
         factoryLimit = scope.maxFuncsInObject
       )
 
-      whenReady(result) { r =>
+      whenReady(result) { instructions =>
         verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
-        r.instructions.length must equal(1)
+        instructions.instructions.length must equal(1)
       }(config = patienceConfig)
     }
 
@@ -66,9 +66,9 @@ final class CreateSeqNodesImplSpec extends TestComposition {
         factoryLimit = scope.maxFuncsInObject
       )
 
-      whenReady(result) { r =>
+      whenReady(result) { instructions =>
         verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
-        r.instructions.length must equal(2)
+        instructions.instructions.length must equal(2)
       }(config = patienceConfig)
     }
   }

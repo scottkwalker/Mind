@@ -18,9 +18,9 @@ final class TypeTreeFactorySpec extends TestComposition {
     "returns instance of this type" in {
       val (typeTreeFactory, _) = build()
 
-      val result = typeTreeFactory.createStep(Scope())
+      val step = typeTreeFactory.createStep(Scope())
 
-      whenReady(result) { result =>
+      whenReady(step) { result =>
         result mustBe a[TypeTree]
       }(config = patienceConfig)
     }
@@ -28,9 +28,9 @@ final class TypeTreeFactorySpec extends TestComposition {
     "calls CreateSeqNodes.create" in {
       val (typeTreeFactory, createSeqNodes) = build()
 
-      val result = typeTreeFactory.create(Scope(), Seq.empty)
+      val step = typeTreeFactory.create(Scope(), Seq.empty)
 
-      whenReady(result) { r =>
+      whenReady(step) { result =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
       }(config = patienceConfig)
     }
@@ -44,9 +44,9 @@ final class TypeTreeFactorySpec extends TestComposition {
       }
       val (typeTreeFactory, _) = build(nextInt = 3)
 
-      val result = typeTreeFactory.create(scope = Scope(), premadeChildren = premadeChildren)
+      val step = typeTreeFactory.create(scope = Scope(), premadeChildren = premadeChildren)
 
-      whenReady(result) {
+      whenReady(step) {
         case TypeTree(child) =>
           child.length must equal(2) // 1 generated and 1 premade
           child.last must equal(premadeNode) // The premade are concatenated to the end of the seq

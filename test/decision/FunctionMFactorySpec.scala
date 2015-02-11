@@ -18,9 +18,9 @@ final class FunctionMFactorySpec extends TestComposition {
     "return instance of this type" in {
       val (factory, _) = functionMFactory()
 
-      val result = factory.createStep(scope = Scope())
+      val step = factory.createStep(scope = Scope())
 
-      whenReady(result) { result =>
+      whenReady(step) { result =>
         result mustBe a[FunctionM]
       }(config = patienceConfig)
     }
@@ -28,9 +28,9 @@ final class FunctionMFactorySpec extends TestComposition {
     "return expected given scope with 0 functions" in {
       val (factory, _) = functionMFactory()
 
-      val result = factory.createStep(scope = Scope())
+      val step = factory.createStep(scope = Scope())
 
-      whenReady(result) {
+      whenReady(step) {
         case FunctionM(_, _, name) => name must equal("f0")
         case _ => fail("wrong type")
       }(config = patienceConfig)
@@ -39,9 +39,9 @@ final class FunctionMFactorySpec extends TestComposition {
     "return expected given scope with 1 functions" in {
       val (factory, _) = functionMFactory()
 
-      val result = factory.createStep(scope = Scope(numFuncs = 1))
+      val step = factory.createStep(scope = Scope(numFuncs = 1))
 
-      whenReady(result) {
+      whenReady(step) {
         case FunctionM(_, _, name) => name must equal("f1")
         case _ => fail("wrong type")
       }(config = patienceConfig)
@@ -50,9 +50,9 @@ final class FunctionMFactorySpec extends TestComposition {
     "calls CreateSeqNodes.create twice (once for params and once for nodes)" in {
       val (factory, createSeqNodes) = functionMFactory()
 
-      val result = factory.createStep(scope = Scope())
+      val step = factory.createStep(scope = Scope())
 
-      whenReady(result) { r =>
+      whenReady(step) { _ =>
         verify(createSeqNodes, times(2)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
       }(config = patienceConfig)
     }
@@ -76,6 +76,6 @@ final class FunctionMFactorySpec extends TestComposition {
       randomNumberGenerator,
       createSeqNodes
     )
-    (injector.getInstance(classOf[FunctionMFactoryImpl]), createSeqNodes.stub)
+    (injector.getInstance(classOf[FunctionMFactory]), createSeqNodes.stub)
   }
 }

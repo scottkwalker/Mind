@@ -54,5 +54,5 @@ final class ValDclInFunctionParamFactorySpec extends TestComposition {
   //    }
   //  }
 
-  private def valDclInFunctionParamFactory = testInjector().getInstance(classOf[ValDclInFunctionParamFactoryImpl])
+  private def valDclInFunctionParamFactory = testInjector().getInstance(classOf[ValDclInFunctionParamFactory])
 }

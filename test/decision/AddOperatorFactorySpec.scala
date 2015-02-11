@@ -9,11 +9,11 @@ final class AddOperatorFactorySpec extends TestComposition {
   "create step" must {
     "return instance of this type" in {
       val scope = Scope(height = 10, numVals = 1, maxHeight = 10)
-      val addOperatorFactory = testInjector().getInstance(classOf[AddOperatorFactoryImpl])
+      val addOperatorFactory = testInjector().getInstance(classOf[AddOperatorFactory])
 
-      val instruction = addOperatorFactory.createStep(scope = scope)
+      val step = addOperatorFactory.createStep(scope = scope)
 
-      whenReady(instruction) { result =>
+      whenReady(step) { result =>
         result mustBe a[AddOperator]
       }(config = patienceConfig)
     }

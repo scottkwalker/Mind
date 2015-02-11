@@ -18,14 +18,14 @@ final class IntegerMFactorySpec extends TestComposition {
       val scope = mock[IScope]
 
       // Act
-      val instruction = integerMFactory.createStep(scope)
+      val step = integerMFactory.createStep(scope)
 
       // Assert
-      whenReady(instruction) { result =>
+      whenReady(step) { result =>
         result mustBe a[IntegerM]
       }(config = patienceConfig)
     }
   }
 
-  private def integerMFactory = testInjector().getInstance(classOf[IntegerMFactoryImpl])
+  private def integerMFactory = testInjector().getInstance(classOf[IntegerMFactory])
 }

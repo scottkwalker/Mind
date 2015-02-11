@@ -18,9 +18,9 @@ final class ObjectFactorySpec extends TestComposition {
     "returns instance of this type" in {
       val (objectFactory, _) = build()
 
-      val result = objectFactory.createStep(scope = Scope())
+      val step = objectFactory.createStep(scope = Scope())
 
-      whenReady(result) { result =>
+      whenReady(step) { result =>
         result mustBe an[Object]
       }(config = patienceConfig)
     }
@@ -28,9 +28,9 @@ final class ObjectFactorySpec extends TestComposition {
     "returns expected given scope with 0 existing objects" in {
       val (objectFactory, _) = build()
 
-      val result = objectFactory.createStep(scope = Scope())
+      val step = objectFactory.createStep(scope = Scope())
 
-      whenReady(result) {
+      whenReady(step) {
         case Object(_, name) => name must equal("o0")
         case _ => fail("wrong type")
       }(config = patienceConfig)
@@ -39,9 +39,9 @@ final class ObjectFactorySpec extends TestComposition {
     "returns expected given scope with 1 existing objects" in {
       val (objectFactory, _) = build()
 
-      val result = objectFactory.createStep(scope = Scope(numObjects = 1))
+      val step = objectFactory.createStep(scope = Scope(numObjects = 1))
 
-      whenReady(result) {
+      whenReady(step) {
         case Object(_, name) => name must equal("o1")
         case _ => fail("wrong type")
       }(config = patienceConfig)
@@ -50,9 +50,9 @@ final class ObjectFactorySpec extends TestComposition {
     "calls CreateSeqNodes.create once" in {
       val (objectFactory, createSeqNodes) = build()
 
-      val result = objectFactory.createStep(scope = Scope())
+      val step = objectFactory.createStep(scope = Scope())
 
-      whenReady(result) { r =>
+      whenReady(step) { r =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
       }(config = patienceConfig)
     }
@@ -76,6 +76,6 @@ final class ObjectFactorySpec extends TestComposition {
       randomNumberGenerator,
       createSeqNodes
     )
-    (injector.getInstance(classOf[ObjectFactoryImpl]), createSeqNodes.stub)
+    (injector.getInstance(classOf[ObjectFactory]), createSeqNodes.stub)
   }
 }
