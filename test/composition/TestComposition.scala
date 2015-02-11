@@ -53,7 +53,7 @@ trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with 
     new StubSelectionStrategyBinding
   )
 
-  class TestModule extends AbstractModule {
+  final class TestModule extends AbstractModule {
 
     override def configure(): Unit = {
       bind(classOf[Empty]).asEagerSingleton()
