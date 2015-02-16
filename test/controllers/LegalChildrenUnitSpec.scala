@@ -20,19 +20,19 @@ import scala.concurrent.ExecutionContext.Implicits.global
 final class LegalChildrenUnitSpec extends TestComposition {
 
   "present" must {
-    "return 200" in new WithApplication {
+    "return 200" in  {
       whenReady(present) { r =>
         r.header.status must equal(OK)
       }(config = patienceConfig)
     }
 
-    "contain a form that POSTs to the expected action" in new WithApplication {
+    "contain a form that POSTs to the expected action" in {
       contentAsString(present)(timeout) must include( """form action="/mind/legal-children" method="POST"""")
     }
   }
 
   "calculate" must {
-    "return bad request when submission is empty" in new WithApplication {
+    "return bad request when submission is empty" in  {
       val emptyRequest = FakeRequest().withFormUrlEncodedBody()
       val (legalChildren, _) = build(size = 0)
       val result = legalChildren.calculate(emptyRequest)
@@ -41,7 +41,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
       }(config = patienceConfig)
     }
 
-    "return ok when submission is valid" in new WithApplication {
+    "return ok when submission is valid" in  {
       val validRequest = requestWithDefaults()
       val (legalChildren, _) = build(size = 0)
       val result = legalChildren.calculate(validRequest)
@@ -50,7 +50,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
       }(config = patienceConfig)
     }
 
-    "return seq of ids when submission is valid and legal moves are found" in new WithApplication {
+    "return seq of ids when submission is valid and legal moves are found" in  {
       val validRequest = requestWithDefaults()
       val (legalChildren, _) = build(size = 0)
       val result = legalChildren.calculate(validRequest)
@@ -61,7 +61,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
       }(config = patienceConfig)
     }
 
-    "return empty seq when submission is valid but no matches are in scope" in new WithApplication {
+    "return empty seq when submission is valid but no matches are in scope" in  {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
       val (legalChildren, _) = build(size = 0)
       val result = legalChildren.calculate(validRequest)
@@ -72,7 +72,7 @@ final class LegalChildrenUnitSpec extends TestComposition {
       }(config = patienceConfig)
     }
 
-    "call lookupChildren.calculate when submission is valid" in new WithApplication {
+    "call lookupChildren.calculate when submission is valid" in  {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
       val lookupChildren = new StubLookupChildrenBinding
       val injector = testInjector(
