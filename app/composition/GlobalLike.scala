@@ -2,6 +2,7 @@ package composition
 
 import java.io.File
 
+import com.google.inject.Injector
 import com.typesafe.config.ConfigFactory
 import filters.WithFilters
 import play.api.Application
@@ -9,7 +10,11 @@ import play.api.Configuration
 import play.api.GlobalSettings
 import play.api.Mode
 
-trait GlobalLike extends WithFilters with GlobalSettings with Composition {
+trait GlobalLike extends WithFilters with GlobalSettings {
+
+  // Use mixin to define the values in the injector that will be used for IoC. These can be either test or production
+  // modules.
+  val injector: Injector
 
   /**
    * Application configuration is in a hierarchy of files:
