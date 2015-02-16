@@ -19,10 +19,8 @@ final class RandomWalkSpec extends TestComposition {
 
   "chooseChild" must {
     "return expected type given only one valid choice" in {
-      val randomNumberGenerator = new StubRngBinding
       val sut = testInjector(
-        new RandomWalkBinding,
-        randomNumberGenerator
+        new RandomWalkBinding
       ).getInstance(classOf[SelectionStrategy])
       val node = mock[Decision]
       val possibleChildren = Set(node)
@@ -88,9 +86,9 @@ final class RandomWalkSpec extends TestComposition {
     }
   }
 
-  private def factoryLookup = injector.getInstance(classOf[FactoryLookup])
+  private def factoryLookup = randomWalkInjector.getInstance(classOf[FactoryLookup])
 
-  private def selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
+  private def randomWalkInjector = testInjector(new RandomWalkBinding)
 
-  private def injector = testInjector(new RandomWalkBinding)
+  private def selectionStrategy = randomWalkInjector.getInstance(classOf[SelectionStrategy])
 }

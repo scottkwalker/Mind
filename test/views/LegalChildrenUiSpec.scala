@@ -1,7 +1,7 @@
 package views
 
+import composition.IoCImpl
 import composition.TestComposition
-import composition.UiSpecIoC
 import composition.WithApplication
 import decision.AddOperatorFactory
 import org.scalatest.concurrent.IntegrationPatience
@@ -27,7 +27,7 @@ final class LegalChildrenUiSpec extends TestComposition with IntegrationPatience
 
 
   "go to page" must {
-    "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication with UiSpecIoC {
+    "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication with IoCImpl {
       val page = new LegalChildrenPage(port)
 
       go to page
@@ -37,7 +37,7 @@ final class LegalChildrenUiSpec extends TestComposition with IntegrationPatience
       }(config = patienceConfig)
     }
 
-    "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication with UiSpecIoC {
+    "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication with IoCImpl {
       val page = new LegalChildrenPage(port)
       go to page
       // Must be on a page before you can set a cookie.
@@ -54,7 +54,7 @@ final class LegalChildrenUiSpec extends TestComposition with IntegrationPatience
   }
 
   "submit button" must {
-    "return empty json when valid data is submitted but nothing is in the cache" taggedAs UiTag in new WithApplication with UiSpecIoC {
+    "return empty json when valid data is submitted but nothing is in the cache" taggedAs UiTag in new WithApplication with IoCImpl {
       val page = new LegalChildrenPage(port)
       val expected = JsArray(Seq.empty).toString()
       val valid = "1"
@@ -102,7 +102,7 @@ final class LegalChildrenUiSpec extends TestComposition with IntegrationPatience
     //      }(config = whenReadyPatienceConfig)
     //    }
 
-    "display validation error messages when invalid data is submitted " taggedAs UiTag in new WithApplication with UiSpecIoC {
+    "display validation error messages when invalid data is submitted " taggedAs UiTag in new WithApplication with IoCImpl {
       val page = new LegalChildrenPage(port)
       val invalid = "-1"
       go to page

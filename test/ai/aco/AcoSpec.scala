@@ -21,10 +21,8 @@ final class AcoSpec extends TestComposition {
 
   "chooseChild" must {
     "returns expected instance given only one valid choice" in {
-      val randomNumberGenerator = new StubRngBinding
       val selectionStrategy = testInjector(
-        new AcoBinding,
-        randomNumberGenerator
+        new AcoBinding
       ).getInstance(classOf[SelectionStrategy])
       val node = mock[Decision]
       val possibleChildren = Set(node)
@@ -90,9 +88,9 @@ final class AcoSpec extends TestComposition {
     }
   }
 
-  private def factoryLookup = injector.getInstance(classOf[FactoryLookup])
+  private def factoryLookup = acoInjector.getInstance(classOf[FactoryLookup])
 
-  private def injector = testInjector(new AcoBinding)
+  private def selectionStrategy = acoInjector.getInstance(classOf[SelectionStrategy])
 
-  private def selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
+  private def acoInjector = testInjector(new AcoBinding)
 }

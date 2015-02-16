@@ -23,41 +23,41 @@ final class FactoryLookupImplSpec extends TestComposition {
     }
 
     "return expected id for AddOperatorFactory" in {
-      val factory = injector.getInstance(classOf[AddOperatorFactory])
+      val factory = factoryLookupInjector.getInstance(classOf[AddOperatorFactory])
       factoryLookup.convert(factory) must equal(AddOperatorFactory.id)
     }
 
     "return expected id for FunctionMFactory" in {
-      val factory = injector.getInstance(classOf[FunctionMFactory])
+      val factory = factoryLookupInjector.getInstance(classOf[FunctionMFactory])
       factoryLookup.convert(factory) must equal(FunctionMFactory.id)
     }
 
     "return expected id for IntegerMFactory" in {
-      val factory = injector.getInstance(classOf[IntegerMFactory])
+      val factory = factoryLookupInjector.getInstance(classOf[IntegerMFactory])
       factoryLookup.convert(factory) must equal(IntegerMFactory.id)
     }
 
     "return expected id for TypeTreeFactory" in {
-      val factory = injector.getInstance(classOf[TypeTreeFactory])
+      val factory = factoryLookupInjector.getInstance(classOf[TypeTreeFactory])
       factoryLookup.convert(factory) must equal(TypeTreeFactory.id)
     }
 
     "return expected id for objectFactory" in {
-      val factory = injector.getInstance(classOf[ObjectFactory])
+      val factory = factoryLookupInjector.getInstance(classOf[ObjectFactory])
       factoryLookup.convert(factory) must equal(ObjectFactory.id)
     }
 
     "return expected id for ValDclInFunctionParamFactory" in {
-      val factory = injector.getInstance(classOf[ValDclInFunctionParamFactory])
+      val factory = factoryLookupInjector.getInstance(classOf[ValDclInFunctionParamFactory])
       factoryLookup.convert(factory) must equal(ValDclInFunctionParamFactory.id)
     }
 
     "return expected id for ValueRefFactory" in {
-      val factory = injector.getInstance(classOf[ValueRefFactory])
+      val factory = factoryLookupInjector.getInstance(classOf[ValueRefFactory])
       factoryLookup.convert(factory) must equal(ValueRefFactory.id)
     }
   }
 
-  private val injector = testInjector(new FactoryLookupBinding)
-  private val factoryLookup = injector.getInstance(classOf[FactoryLookup])
+  private val factoryLookupInjector = testInjector(new FactoryLookupBinding)
+  private val factoryLookup = factoryLookupInjector.getInstance(classOf[FactoryLookup])
 }

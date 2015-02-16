@@ -1,7 +1,6 @@
 package ai.legalGamer
 
 import ai.SelectionStrategy
-import composition.StubRngBinding
 import composition.TestComposition
 import composition.ai.legalGamer.LegalGamerBinding
 import decision.Decision
@@ -19,10 +18,7 @@ final class LegalGamerSpec extends TestComposition {
 
   "chooseChild" must {
     "return expected type given only one valid choice" in {
-      val randomNumberGenerator = new StubRngBinding
-      val selectionStrategy = testInjector(
-        randomNumberGenerator
-      ).getInstance(classOf[SelectionStrategy])
+      val selectionStrategy = testInjector().getInstance(classOf[SelectionStrategy])
       val node = mock[Decision]
       val possibleChildren = Set(node)
 
@@ -89,9 +85,9 @@ final class LegalGamerSpec extends TestComposition {
     }
   }
 
-  private def factoryLookup = injector.getInstance(classOf[FactoryLookup])
+  private def factoryLookup = legalGamerInjector.getInstance(classOf[FactoryLookup])
 
-  private def selectionStrategy = injector.getInstance(classOf[SelectionStrategy])
+  private def selectionStrategy = legalGamerInjector.getInstance(classOf[SelectionStrategy])
 
-  private def injector = testInjector(new LegalGamerBinding)
+  private def legalGamerInjector = testInjector(new LegalGamerBinding)
 }
