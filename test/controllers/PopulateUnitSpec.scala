@@ -13,24 +13,23 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.BAD_REQUEST
 import play.api.test.Helpers.OK
 import play.api.test.Helpers.contentAsString
-import play.api.test.WithApplication
 
 final class PopulateUnitSpec extends TestComposition {
 
   "present" must {
-    "return 200" in new WithApplication {
+    "return 200" in {
       whenReady(present) { r =>
         r.header.status must equal(OK)
       }(config = patienceConfig)
     }
 
-    "contain a form that POSTs to the expected action" in new WithApplication {
+    "contain a form that POSTs to the expected action" in {
       contentAsString(present)(timeout) must include( """form action="/mind/populate" method="POST"""")
     }
   }
 
   "calculate" must {
-    "return bad request when submission is empty" in new WithApplication {
+    "return bad request when submission is empty" in {
       val emptyRequest = FakeRequest().withFormUrlEncodedBody()
       val result = populate.calculate(emptyRequest)
       whenReady(result) { r =>
@@ -38,7 +37,7 @@ final class PopulateUnitSpec extends TestComposition {
       }(config = patienceConfig)
     }
 
-    "return ok when submission is valid" in new WithApplication {
+    "return ok when submission is valid" in {
       val validRequest = requestWithDefaults()
       val result = populate.calculate(validRequest)
       whenReady(result) { r =>
@@ -46,7 +45,7 @@ final class PopulateUnitSpec extends TestComposition {
       }(config = patienceConfig)
     }
 
-    "call lookupChildren.fetch when submission is valid" in new WithApplication {
+    "call lookupChildren.fetch when submission is valid" in {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
       val generator = new StubGeneratorBinding
       val injector = testInjector(
