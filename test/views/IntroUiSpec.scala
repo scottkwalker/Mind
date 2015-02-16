@@ -1,6 +1,7 @@
 package views
 
 import composition.TestComposition
+import composition.UiSpecIoC
 import composition.WithApplication
 import org.scalatest.concurrent.IntegrationPatience
 import org.scalatestplus.play.HtmlUnitFactory
@@ -11,7 +12,7 @@ import play.api.Play
 final class IntroUiSpec extends TestComposition with IntegrationPatience with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
 
   "go to page" must {
-    "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication(testInjector = testInjector()) {
+    "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication with UiSpecIoC {
       val page = new IntroPage(port)
 
       go to page
@@ -22,7 +23,7 @@ final class IntroUiSpec extends TestComposition with IntegrationPatience with On
     }
   }
 
-  "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication(testInjector = testInjector()) {
+  "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication with UiSpecIoC {
     val page = new IntroPage(port)
     go to page
     // Must be on a page before you can set a cookie.

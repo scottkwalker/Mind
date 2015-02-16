@@ -2,6 +2,7 @@ package composition
 
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
+import com.google.inject.Injector
 import com.google.inject.Module
 import com.google.inject.TypeLiteral
 import com.google.inject.util.Modules.`override`
@@ -18,6 +19,38 @@ import utils.PozInt
 
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.duration.SECONDS
+
+trait UiSpecIoC extends IoC  {
+  override lazy val injector: Injector = Guice.createInjector(
+    new TestModule,
+    new StubCreateNodeBinding,
+    new StubCreateSeqNodesBinding,
+    new StubFactoryLookupBinding,
+    new StubGeneratorBinding,
+    new StubLookupChildrenBinding,
+    new StubLookupChildrenWithFutures,
+    new StubReplaceEmptyBinding,
+    new StubRepositoryBinding,
+    new StubRepositoryReturningBoolBinding,
+    new StubRepositoryWithFuture,
+    new StubRngBinding,
+    new StubSelectionStrategyBinding
+  )
+
+  final class TestModule extends AbstractModule {
+
+    override def configure(): Unit = {
+      bind(classOf[Empty]).asEagerSingleton()
+      bind(classOf[TypeTreeFactory]).to(classOf[TypeTreeFactoryImpl]).asEagerSingleton()
+      bind(classOf[ObjectFactory]).to(classOf[ObjectFactoryImpl]).asEagerSingleton()
+      bind(classOf[ValueRefFactory]).to(classOf[ValueRefFactoryImpl]).asEagerSingleton()
+      bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl]).asEagerSingleton()
+      bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl]).asEagerSingleton()
+      bind(classOf[IntegerMFactory]).to(classOf[IntegerMFactoryImpl]).asEagerSingleton()
+      bind(classOf[ValDclInFunctionParamFactory]).to(classOf[ValDclInFunctionParamFactoryImpl]).asEagerSingleton()
+    }
+  }
+}
 
 trait TestComposition extends PlaySpec with MockitoSugar with ScalaFutures with Eventually {
 

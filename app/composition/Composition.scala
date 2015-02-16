@@ -18,7 +18,7 @@ import models.domain.scala.FactoryLookupImpl
 import play.filters.gzip.GzipFilter
 import utils.PozInt
 
-trait Composition {
+trait Composition extends IoC {
 
   lazy val injector = Guice.createInjector(
     new DevModule,
