@@ -39,13 +39,13 @@ trait TestComposition extends Composition {
 
     override def configure(): Unit = {
       bind(classOf[Empty])
-      bind(classOf[TypeTreeFactory]).to(classOf[TypeTreeFactoryImpl]).asEagerSingleton()
-      bind(classOf[ObjectFactory]).to(classOf[ObjectFactoryImpl]).asEagerSingleton()
-      bind(classOf[ValueRefFactory]).to(classOf[ValueRefFactoryImpl]).asEagerSingleton()
-      bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl]).asEagerSingleton()
-      bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl]).asEagerSingleton()
+      bind(classOf[TypeTreeFactory]).to(classOf[TypeTreeFactoryImpl])
+      bind(classOf[ObjectFactory]).to(classOf[ObjectFactoryImpl])
+      bind(classOf[ValueRefFactory]).to(classOf[ValueRefFactoryImpl])
+      bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl])
+      bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl])
       bind(classOf[IntegerMFactory]).to(classOf[IntegerMFactoryImpl])
-      bind(classOf[ValDclInFunctionParamFactory]).to(classOf[ValDclInFunctionParamFactoryImpl]).asEagerSingleton()
+      bind(classOf[ValDclInFunctionParamFactory]).to(classOf[ValDclInFunctionParamFactoryImpl])
     }
   }
 
