@@ -6,5 +6,5 @@ import decision.CreateNodeImpl
 
 final class CreateNodeBinding extends AbstractModule {
 
-  override def configure(): Unit = bind(classOf[CreateNode]).to(classOf[CreateNodeImpl]).asEagerSingleton()
+  override def configure(): Unit = bind(classOf[CreateNode]).to(classOf[CreateNodeImpl])
 }
