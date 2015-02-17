@@ -3,7 +3,7 @@ package views
 import composition.TestComposition
 import composition.UiTestHelper
 import composition.UnitTestHelpers
-import composition.WithApplication
+import composition.ApplicationWithTestGlobal
 import org.scalatest.concurrent.IntegrationPatience
 import org.scalatestplus.play.HtmlUnitFactory
 import org.scalatestplus.play.OneBrowserPerTest
@@ -25,7 +25,7 @@ final class PopulateUiSpec extends UiTestHelper {
   //  }
 
   "go to page" must {
-    "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication with TestComposition {
+    "display the page in English when no language cookie exists" taggedAs UiTag in new ApplicationWithTestGlobal with TestComposition {
       val page = new PopulatePage(port)
 
       go to page
@@ -35,7 +35,7 @@ final class PopulateUiSpec extends UiTestHelper {
       }
     }
 
-    "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication with TestComposition {
+    "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new ApplicationWithTestGlobal with TestComposition {
       val page = new PopulatePage(port)
       go to page
       // Must be on a page before you can set a cookie.
@@ -52,7 +52,7 @@ final class PopulateUiSpec extends UiTestHelper {
   }
 
   "submit button" must {
-    "return expected json when valid data is submitted" taggedAs UiTag in new WithApplication with TestComposition {
+    "return expected json when valid data is submitted" taggedAs UiTag in new ApplicationWithTestGlobal with TestComposition {
       val page = new PopulatePage(port)
       val expected = "repository now contains 2"
       val valid = "1"
@@ -71,7 +71,7 @@ final class PopulateUiSpec extends UiTestHelper {
       }(config = patienceConfig)
     }
 
-    "display validation error messages when invalid data is submitted " taggedAs UiTag in new WithApplication with TestComposition {
+    "display validation error messages when invalid data is submitted " taggedAs UiTag in new ApplicationWithTestGlobal with TestComposition {
       val page = new PopulatePage(port)
       val invalid = "-1"
       go to page
