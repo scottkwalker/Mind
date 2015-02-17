@@ -1,6 +1,7 @@
 package controllers
 
 import composition.StubLookupChildrenBinding
+import composition.TestHelpers
 import composition.TestComposition
 import decision.TypeTreeFactory
 import models.common.IScope
@@ -16,7 +17,7 @@ import utils.PozInt
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-final class LegalChildrenUnitSpec extends TestComposition {
+final class LegalChildrenUnitSpec extends TestHelpers with TestComposition {
 
   "present" must {
     "return 200" in {

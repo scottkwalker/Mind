@@ -1,7 +1,7 @@
 package views
 
-import composition.IoCImpl
 import composition.TestComposition
+import composition.TestHelpers
 import composition.WithApplication
 import org.scalatest.concurrent.IntegrationPatience
 import org.scalatestplus.play.HtmlUnitFactory
@@ -9,10 +9,10 @@ import org.scalatestplus.play.OneBrowserPerTest
 import org.scalatestplus.play.OneServerPerSuite
 import play.api.Play
 
-final class HealthCheckUiSpec extends TestComposition with IntegrationPatience with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
+final class HealthCheckUiSpec extends TestHelpers with IntegrationPatience with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
 
   "go to page" must {
-    "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication with IoCImpl {
+    "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication with TestComposition {
       val page = new HealthCheckPage(port)
 
       go to page
@@ -22,7 +22,7 @@ final class HealthCheckUiSpec extends TestComposition with IntegrationPatience w
       }(config = patienceConfig)
     }
 
-    "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication with IoCImpl {
+    "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication with TestComposition {
       val page = new HealthCheckPage(port)
       go to page
       // Must be on a page before you can set a cookie.

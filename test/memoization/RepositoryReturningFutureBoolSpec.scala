@@ -2,7 +2,7 @@ package memoization
 
 import java.util.concurrent.CountDownLatch
 
-import composition.TestComposition
+import composition.TestHelpers
 import decision.AddOperatorFactory
 import decision.ValueRefFactory
 import memoization.RepositoryWithFutures.reads
@@ -15,7 +15,7 @@ import utils.PozInt
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final class RepositoryReturningFutureBoolSpec extends TestComposition {
+final class RepositoryReturningFutureBoolSpec extends TestHelpers {
 
   "apply" must {
     "return true for ids that are valid for this scope" in {

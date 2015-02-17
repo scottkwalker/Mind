@@ -1,10 +1,10 @@
 package controllers
 
-import composition.TestComposition
+import composition.TestHelpers
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
-final class RoutesSpec extends TestComposition {
+final class RoutesSpec extends TestHelpers {
 
   "Routes" must {
 

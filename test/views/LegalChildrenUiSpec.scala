@@ -1,7 +1,7 @@
 package views
 
-import composition.IoCImpl
 import composition.TestComposition
+import composition.TestHelpers
 import composition.WithApplication
 import decision.AddOperatorFactory
 import org.scalatest.concurrent.IntegrationPatience
@@ -11,7 +11,7 @@ import org.scalatestplus.play.OneServerPerSuite
 import play.api.Play
 import play.api.libs.json.JsArray
 
-final class LegalChildrenUiSpec extends TestComposition with IntegrationPatience with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
+final class LegalChildrenUiSpec extends TestHelpers with IntegrationPatience with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
 
   // To enable testing on all browsers https://www.playframework.com/documentation/2.2.x/ScalaFunctionalTestingWithScalaTest
   //with OneServerPerSuite with AllBrowsersPerSuite {
@@ -27,7 +27,7 @@ final class LegalChildrenUiSpec extends TestComposition with IntegrationPatience
 
 
   "go to page" must {
-    "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication with IoCImpl {
+    "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication with TestComposition {
       val page = new LegalChildrenPage(port)
 
       go to page
@@ -37,7 +37,7 @@ final class LegalChildrenUiSpec extends TestComposition with IntegrationPatience
       }(config = patienceConfig)
     }
 
-    "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication with IoCImpl {
+    "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication with TestComposition {
       val page = new LegalChildrenPage(port)
       go to page
       // Must be on a page before you can set a cookie.
@@ -54,7 +54,7 @@ final class LegalChildrenUiSpec extends TestComposition with IntegrationPatience
   }
 
   "submit button" must {
-    "return empty json when valid data is submitted but nothing is in the cache" taggedAs UiTag in new WithApplication with IoCImpl {
+    "return empty json when valid data is submitted but nothing is in the cache" taggedAs UiTag in new WithApplication with TestComposition {
       val page = new LegalChildrenPage(port)
       val expected = JsArray(Seq.empty).toString()
       val valid = "1"
@@ -102,7 +102,7 @@ final class LegalChildrenUiSpec extends TestComposition with IntegrationPatience
     //      }(config = whenReadyPatienceConfig)
     //    }
 
-    "display validation error messages when invalid data is submitted " taggedAs UiTag in new WithApplication with IoCImpl {
+    "display validation error messages when invalid data is submitted " taggedAs UiTag in new WithApplication with TestComposition {
       val page = new LegalChildrenPage(port)
       val invalid = "-1"
       go to page

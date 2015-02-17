@@ -1,10 +1,11 @@
 package memoization
 
+import composition.TestHelpers
 import composition.TestComposition
 import play.api.libs.json._
 import serialization.JsonValidationException
 
-final class Memoize2WithSetImplSpec extends TestComposition {
+final class Memoize2WithSetImplSpec extends TestHelpers {
 
   "apply" must {
 

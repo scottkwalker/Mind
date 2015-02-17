@@ -1,10 +1,10 @@
 package models.domain.scala
 
-import composition.TestComposition
+import composition.TestHelpers
 import models.common.IScope
 import models.common.Scope
 
-final class ValueRefSpec extends TestComposition {
+final class ValueRefSpec extends TestHelpers {
 
   "toCompilable" must {
     "return name" in {

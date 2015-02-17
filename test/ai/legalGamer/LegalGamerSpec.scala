@@ -1,6 +1,7 @@
 package ai.legalGamer
 
 import ai.SelectionStrategy
+import composition.TestHelpers
 import composition.TestComposition
 import composition.ai.legalGamer.LegalGamerBinding
 import decision.Decision
@@ -14,7 +15,7 @@ import models.domain.scala.Object
 import models.domain.scala.TypeTree
 import models.domain.scala.ValDclInFunctionParam
 
-final class LegalGamerSpec extends TestComposition {
+final class LegalGamerSpec extends TestHelpers with TestComposition {
 
   "chooseChild" must {
     "return expected type given only one valid choice" in {

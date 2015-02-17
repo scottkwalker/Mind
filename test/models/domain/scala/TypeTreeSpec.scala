@@ -1,5 +1,6 @@
 package models.domain.scala
 
+import composition.TestHelpers
 import composition.TestComposition
 import models.common.IScope
 import models.common.Scope
@@ -10,7 +11,7 @@ import org.mockito.Mockito._
 import scala.concurrent.Await
 import scala.concurrent.Future
 
-final class TypeTreeSpec extends TestComposition {
+final class TypeTreeSpec extends TestHelpers with TestComposition {
 
   "hasNoEmptySteps" must {
     "return true given it can terminates in under N steps" in {

@@ -1,7 +1,7 @@
 package views
 
-import composition.IoCImpl
 import composition.TestComposition
+import composition.TestHelpers
 import composition.WithApplication
 import org.scalatest.concurrent.IntegrationPatience
 import org.scalatestplus.play.HtmlUnitFactory
@@ -9,7 +9,7 @@ import org.scalatestplus.play.OneBrowserPerTest
 import org.scalatestplus.play.OneServerPerSuite
 import play.api.Play
 
-final class PopulateUiSpec extends TestComposition with IntegrationPatience with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
+final class PopulateUiSpec extends TestHelpers with IntegrationPatience with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
 
   // To enable testing on all browsers https://www.playframework.com/documentation/2.2.x/ScalaFunctionalTestingWithScalaTest
   //with OneServerPerSuite with AllBrowsersPerSuite {
@@ -24,7 +24,7 @@ final class PopulateUiSpec extends TestComposition with IntegrationPatience with
   //  }
 
   "go to page" must {
-    "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication with IoCImpl {
+    "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication with TestComposition {
       val page = new PopulatePage(port)
 
       go to page
@@ -34,7 +34,7 @@ final class PopulateUiSpec extends TestComposition with IntegrationPatience with
       }
     }
 
-    "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication with IoCImpl {
+    "display the page in Welsh when language cookie contains 'cy'" taggedAs UiTag in new WithApplication with TestComposition {
       val page = new PopulatePage(port)
       go to page
       // Must be on a page before you can set a cookie.
@@ -51,7 +51,7 @@ final class PopulateUiSpec extends TestComposition with IntegrationPatience with
   }
 
   "submit button" must {
-    "return expected json when valid data is submitted" taggedAs UiTag in new WithApplication with IoCImpl {
+    "return expected json when valid data is submitted" taggedAs UiTag in new WithApplication with TestComposition {
       val page = new PopulatePage(port)
       val expected = "repository now contains 2"
       val valid = "1"
@@ -70,7 +70,7 @@ final class PopulateUiSpec extends TestComposition with IntegrationPatience with
       }(config = patienceConfig)
     }
 
-    "display validation error messages when invalid data is submitted " taggedAs UiTag in new WithApplication with IoCImpl {
+    "display validation error messages when invalid data is submitted " taggedAs UiTag in new WithApplication with TestComposition {
       val page = new PopulatePage(port)
       val invalid = "-1"
       go to page

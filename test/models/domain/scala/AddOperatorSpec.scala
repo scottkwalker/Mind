@@ -1,5 +1,6 @@
 package models.domain.scala
 
+import composition.TestHelpers
 import composition.TestComposition
 import models.common.IScope
 import models.common.Scope
@@ -9,7 +10,7 @@ import org.mockito.Mockito._
 
 import scala.concurrent.Future
 
-final class AddOperatorSpec extends TestComposition {
+final class AddOperatorSpec extends TestHelpers with TestComposition {
 
   "toCompilable" must {
     "return expected" in {

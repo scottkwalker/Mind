@@ -1,6 +1,6 @@
 package serialization
 
-import composition.TestComposition
+import composition.TestHelpers
 import play.api.libs.json.JsArray
 import play.api.libs.json.JsNumber
 import play.api.libs.json.JsObject
@@ -8,7 +8,7 @@ import serialization.BitSetAdapter.readJsonBitMaskToBitset
 
 import scala.collection.immutable.BitSet
 
-final class JsonDeserialiserSpec extends TestComposition {
+final class JsonDeserialiserSpec extends TestHelpers {
 
   "deserialize" must {
     "throws JsonValidationException when json is invalid" in {

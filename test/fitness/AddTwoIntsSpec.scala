@@ -1,6 +1,6 @@
 package fitness
 
-import composition.TestComposition
+import composition.TestHelpers
 import models.domain.Step
 import models.domain.scala.AddOperator
 import models.domain.scala.FunctionM
@@ -9,7 +9,7 @@ import models.domain.scala.Object
 import models.domain.scala._
 import org.mockito.Mockito._
 
-final class AddTwoIntsSpec extends TestComposition {
+final class AddTwoIntsSpec extends TestHelpers {
 
   "Addition" must {
     "1 add 1 equals 2 with TypeTree that returns hard coded raw Scala" in {

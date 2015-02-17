@@ -2,13 +2,14 @@ package decision
 
 import composition.CreateNodeBinding
 import composition.StubSelectionStrategyBinding
+import composition.TestHelpers
 import composition.TestComposition
 import models.common.Scope
 import org.mockito.Mockito._
 
 import scala.concurrent.Future
 
-final class CreateNodeImplSpec extends TestComposition {
+final class CreateNodeImplSpec extends TestHelpers with TestComposition {
 
   "create step" must {
     "calls chooseChild on ai" in {

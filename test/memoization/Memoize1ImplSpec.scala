@@ -6,14 +6,14 @@ import java.util.concurrent.atomic.AtomicInteger
 
 import com.twitter.conversions.time._
 import com.twitter.util._
-import composition.TestComposition
+import composition.TestHelpers
 import org.mockito.Mockito._
 import play.api.libs.json.Json._
 import play.api.libs.json._
 
 import scala.annotation.tailrec
 
-final class Memoize1ImplSpec extends TestComposition {
+final class Memoize1ImplSpec extends TestHelpers {
 
   // TODO remove twitter Futures, use to scala futures
   "apply" must {

@@ -11,7 +11,7 @@ import utils.PozInt
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class GeneratorImplSpec extends TestComposition {
+class GeneratorImplSpec extends TestHelpers with TestComposition {
 
   "generate (without futures)" must {
     "return expected message" in {

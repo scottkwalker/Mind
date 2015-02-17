@@ -3,6 +3,7 @@ package decision
 import ai.RandomNumberGenerator
 import ai.SelectionStrategy
 import ai.aco.Aco
+import composition.TestHelpers
 import composition.TestComposition
 import models.common.IScope
 import models.common.Scope
@@ -12,7 +13,7 @@ import org.mockito.Mockito._
 
 import scala.concurrent.Future
 
-final class CreateSeqNodesImplSpec extends TestComposition {
+final class CreateSeqNodesImplSpec extends TestHelpers with TestComposition {
 
   "create step" must {
     "calls create on factory once given only space for 1 func in obj and mocked rng the same" in {

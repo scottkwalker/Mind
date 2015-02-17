@@ -1,10 +1,11 @@
 package controllers
 
+import composition.TestHelpers
 import composition.TestComposition
 import play.api.test.FakeRequest
 import play.api.test.Helpers.LOCATION
 
-final class ApplicationUnitSpec extends TestComposition {
+final class ApplicationUnitSpec extends TestHelpers with TestComposition {
 
   "present" must {
     "redirect to Intro page" in {

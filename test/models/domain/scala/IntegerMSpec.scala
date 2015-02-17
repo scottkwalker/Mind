@@ -1,9 +1,9 @@
 package models.domain.scala
 
-import composition.TestComposition
+import composition.TestHelpers
 import models.common.IScope
 
-final class IntegerMSpec extends TestComposition {
+final class IntegerMSpec extends TestHelpers {
 
   "toCompilable" must {
     "return expected" in {

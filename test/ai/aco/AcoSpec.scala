@@ -2,6 +2,7 @@ package ai.aco
 
 import ai.SelectionStrategy
 import composition.StubRngBinding
+import composition.TestHelpers
 import composition.TestComposition
 import composition.ai.aco.AcoBinding
 import decision.Decision
@@ -17,7 +18,7 @@ import models.domain.scala.ValDclInFunctionParam
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 
-final class AcoSpec extends TestComposition {
+final class AcoSpec extends TestHelpers with TestComposition {
 
   "chooseChild" must {
     "returns expected instance given only one valid choice" in {

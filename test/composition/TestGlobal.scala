@@ -1,3 +1,3 @@
 package composition
 
-object TestGlobal extends TestGlobalLike with IoCImpl
+object TestGlobal extends TestGlobalLike with TestComposition

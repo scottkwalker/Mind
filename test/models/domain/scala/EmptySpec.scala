@@ -1,10 +1,10 @@
 package models.domain.scala
 
-import composition.TestComposition
+import composition.TestHelpers
 import models.common.IScope
 import models.common.Scope
 
-final class EmptySpec extends TestComposition {
+final class EmptySpec extends TestHelpers {
 
   "toCompilable" must {
     "throw if you ask toRawScala" in {

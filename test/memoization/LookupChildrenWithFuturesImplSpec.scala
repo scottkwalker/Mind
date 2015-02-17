@@ -8,7 +8,7 @@ import utils.PozInt
 
 import scala.concurrent.Future
 
-final class LookupChildrenWithFuturesImplSpec extends TestComposition {
+final class LookupChildrenWithFuturesImplSpec extends TestHelpers with TestComposition {
 
   //  "fetch with neighbours" must {
   //    "does not call factoryLookup.convert with ReplaceEmpty as the repository already contains the ids" in {
