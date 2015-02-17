@@ -1,6 +1,6 @@
 package controllers
 
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import composition.TestComposition
 import play.api.test.FakeRequest
 import play.api.test.Helpers.OK
@@ -8,7 +8,7 @@ import play.api.test.Helpers.charset
 import play.api.test.Helpers.contentType
 import play.api.test.Helpers.status
 
-final class HealthCheckUnitSpec extends TestHelpers with TestComposition {
+final class HealthCheckUnitSpec extends UnitTestHelpers with TestComposition {
 
   "respond" must {
     "return http status OK" in {

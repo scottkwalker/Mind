@@ -1,11 +1,11 @@
 package controllers
 
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import composition.TestComposition
 import models.common.PopulateRequest.Form.MaxScopeId
 import models.common.Scope.Form._
 
-final class PopulateFormSpec extends TestHelpers with TestComposition {
+final class PopulateFormSpec extends UnitTestHelpers with TestComposition {
 
   "form" must {
     "reject when submission is empty" in {

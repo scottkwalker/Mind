@@ -1,11 +1,11 @@
 package decision
 
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import composition.TestComposition
 import models.common.Scope
 import models.domain.scala.AddOperator
 
-final class AddOperatorFactorySpec extends TestHelpers with TestComposition {
+final class AddOperatorFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
     "return instance of this type" in {

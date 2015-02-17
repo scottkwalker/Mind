@@ -2,7 +2,7 @@ package decision
 
 import composition.StubCreateSeqNodesBinding
 import composition.StubRngBinding
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import composition.TestComposition
 import models.common.IScope
 import models.common.Scope
@@ -13,7 +13,7 @@ import org.mockito.Mockito._
 
 import scala.concurrent.Future
 
-final class TypeTreeFactorySpec extends TestHelpers with TestComposition {
+final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
     "returns instance of this type" in {

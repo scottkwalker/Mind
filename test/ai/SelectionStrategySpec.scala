@@ -2,14 +2,14 @@ package ai
 
 import ai.aco.Aco
 import composition.StubRngBinding
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import composition.TestComposition
 import decision.Decision
 import org.mockito.Mockito._
 
 import scala.concurrent.Future
 
-final class SelectionStrategySpec extends TestHelpers with TestComposition {
+final class SelectionStrategySpec extends UnitTestHelpers with TestComposition {
 
   "chooseChild" must {
     "throw when seq is empty" in {

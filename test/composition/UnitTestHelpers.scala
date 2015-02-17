@@ -8,7 +8,7 @@ import org.scalatestplus.play.PlaySpec
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.duration.SECONDS
 
-trait TestHelpers extends PlaySpec with MockitoSugar with ScalaFutures with Eventually {
+trait UnitTestHelpers extends PlaySpec with MockitoSugar with ScalaFutures with Eventually {
 
   protected val finiteTimeout = FiniteDuration(2, SECONDS)
   protected implicit val timeout = akka.util.Timeout(duration = finiteTimeout)

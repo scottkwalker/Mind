@@ -4,7 +4,7 @@ import java.util.concurrent.CountDownLatch
 
 //import com.fasterxml.jackson.annotation.JsonFormat
 
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import play.api.libs.json.Json.JsValueWrapper
 import play.api.libs.json.Json.obj
 import play.api.libs.json._
@@ -16,7 +16,7 @@ import models.common.Scope.Form._
 
 import scala.collection.immutable.BitSet
 
-final class ScopeSpec extends TestHelpers {
+final class ScopeSpec extends UnitTestHelpers {
 
   "constructor" must {
     "set default values to zero" in {

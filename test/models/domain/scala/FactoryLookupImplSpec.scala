@@ -1,12 +1,12 @@
 package models.domain.scala
 
 import composition.FactoryLookupBinding
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import composition.TestComposition
 import decision._
 import utils.PozInt
 
-final class FactoryLookupImplSpec extends TestHelpers with TestComposition {
+final class FactoryLookupImplSpec extends UnitTestHelpers with TestComposition {
 
   "convert id to factory" must {
     "throw when id is not in the list" in {

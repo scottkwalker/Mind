@@ -2,7 +2,7 @@ package memoization
 
 import java.util.concurrent.CountDownLatch
 
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import org.mockito.Mockito._
 import play.api.libs.json._
 import serialization.JsonValidationException
@@ -11,7 +11,7 @@ import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final class Memoize2ImplSpec extends TestHelpers {
+final class Memoize2ImplSpec extends UnitTestHelpers {
 
   "apply" must {
     "return the same result when called twice" in {

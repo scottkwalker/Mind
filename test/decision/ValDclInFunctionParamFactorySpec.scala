@@ -1,6 +1,6 @@
 package decision
 
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import composition.TestComposition
 import models.common.IScope
 import models.common.Scope
@@ -9,7 +9,7 @@ import models.domain.scala.ValDclInFunctionParam
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 
-final class ValDclInFunctionParamFactorySpec extends TestHelpers with TestComposition {
+final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
     "returns instance of this type" in {

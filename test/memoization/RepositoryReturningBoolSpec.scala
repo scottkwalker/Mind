@@ -2,7 +2,7 @@ package memoization
 
 import java.util.concurrent.CountDownLatch
 
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import decision.AddOperatorFactory
 import decision.ValueRefFactory
 import memoization.RepositoryReturningBool.reads
@@ -12,7 +12,7 @@ import org.mockito.Mockito._
 import play.api.libs.json._
 import utils.PozInt
 
-final class RepositoryReturningBoolSpec extends TestHelpers {
+final class RepositoryReturningBoolSpec extends UnitTestHelpers {
 
   "apply" must {
     "return true for ids that are valid for this scope" in {

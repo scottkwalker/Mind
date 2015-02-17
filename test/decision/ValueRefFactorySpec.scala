@@ -1,12 +1,12 @@
 package decision
 
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import composition.TestComposition
 import models.common.IScope
 import models.domain.scala.ValueRef
 import org.mockito.Mockito._
 
-final class ValueRefFactorySpec extends TestHelpers with TestComposition {
+final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
     "return instance of this type" in {

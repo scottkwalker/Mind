@@ -1,9 +1,9 @@
 package ai
 
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import composition.TestComposition
 
-final class RandomNumberGeneratorImplSpec extends TestHelpers with TestComposition {
+final class RandomNumberGeneratorImplSpec extends UnitTestHelpers with TestComposition {
 
   "nextBoolean" must {
     "return a boolean when called" in {

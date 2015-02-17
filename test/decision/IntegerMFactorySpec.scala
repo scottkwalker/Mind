@@ -1,11 +1,11 @@
 package decision
 
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import composition.TestComposition
 import models.common.IScope
 import models.domain.scala.IntegerM
 
-final class IntegerMFactorySpec extends TestHelpers with TestComposition {
+final class IntegerMFactorySpec extends UnitTestHelpers with TestComposition {
 
   "neighbours" must {
     "have no possible children" in {

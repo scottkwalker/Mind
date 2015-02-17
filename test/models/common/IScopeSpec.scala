@@ -1,13 +1,13 @@
 package models.common
 
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import models.common.Scope.Form._
 import play.api.libs.json.JsNumber
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import serialization.JsonDeserialiser
 
-final class IScopeSpec extends TestHelpers {
+final class IScopeSpec extends UnitTestHelpers {
 
   "serialize" must {
     "return expected json" in {

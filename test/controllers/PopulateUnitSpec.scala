@@ -1,7 +1,7 @@
 package controllers
 
 import composition.StubGeneratorBinding
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import composition.TestComposition
 import models.common.IScope
 import models.common.PopulateRequest
@@ -15,7 +15,7 @@ import play.api.test.Helpers.BAD_REQUEST
 import play.api.test.Helpers.OK
 import play.api.test.Helpers.contentAsString
 
-final class PopulateUnitSpec extends TestHelpers with TestComposition {
+final class PopulateUnitSpec extends UnitTestHelpers with TestComposition {
 
   "present" must {
     "return 200" in {

@@ -1,6 +1,6 @@
 package serialization
 
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import play.api.libs.json.JsArray
 import play.api.libs.json.JsNumber
 import play.api.libs.json.JsObject
@@ -8,7 +8,7 @@ import play.api.libs.json.Json
 
 import scala.collection.immutable.BitSet
 
-final class BitsetSpec extends TestHelpers {
+final class BitsetSpec extends UnitTestHelpers {
 
   "serialize" must {
     "to json" in {

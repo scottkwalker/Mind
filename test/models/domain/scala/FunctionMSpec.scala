@@ -1,6 +1,6 @@
 package models.domain.scala
 
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import composition.TestComposition
 import models.common.IScope
 import models.common.Scope
@@ -11,7 +11,7 @@ import org.mockito.Mockito._
 import scala.concurrent.Await
 import scala.concurrent.Future
 
-final class FunctionMSpec extends TestHelpers with TestComposition {
+final class FunctionMSpec extends UnitTestHelpers with TestComposition {
 
   "hasNoEmptySteps" must {
     "false given an empty name" in {

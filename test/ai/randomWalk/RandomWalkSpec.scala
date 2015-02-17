@@ -2,7 +2,7 @@ package ai.randomWalk
 
 import ai.SelectionStrategy
 import composition.StubRngBinding
-import composition.TestHelpers
+import composition.UnitTestHelpers
 import composition.TestComposition
 import composition.ai.randomWalk.RandomWalkBinding
 import decision.Decision
@@ -16,7 +16,7 @@ import models.domain.scala._
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 
-final class RandomWalkSpec extends TestHelpers with TestComposition {
+final class RandomWalkSpec extends UnitTestHelpers with TestComposition {
 
   "chooseChild" must {
     "return expected type given only one valid choice" in {
