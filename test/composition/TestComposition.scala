@@ -8,12 +8,12 @@ import com.google.inject.util.Modules.`override`
 import decision._
 import models.domain.scala.Empty
 
-trait TestComposition extends IoC {
+trait TestComposition extends Composition {
 
-  override lazy val injector: Injector = Guice.createInjector(defaultModules: _*)
+  override lazy val injector: Injector = testInjector()
 
   // Modules that stub most of the application's dependencies. This should be enough for most UI tests.
-  def defaultModules = Seq(
+  private def defaultModules = Seq(
     new TestModule,
     new StubCreateNodeBinding,
     new StubCreateSeqNodesBinding,
