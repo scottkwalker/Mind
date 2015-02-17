@@ -38,13 +38,13 @@ trait TestComposition extends Composition {
   private final class TestModule extends AbstractModule {
 
     override def configure(): Unit = {
-      bind(classOf[Empty]).asEagerSingleton()
+      bind(classOf[Empty])
       bind(classOf[TypeTreeFactory]).to(classOf[TypeTreeFactoryImpl]).asEagerSingleton()
       bind(classOf[ObjectFactory]).to(classOf[ObjectFactoryImpl]).asEagerSingleton()
       bind(classOf[ValueRefFactory]).to(classOf[ValueRefFactoryImpl]).asEagerSingleton()
       bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl]).asEagerSingleton()
       bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl]).asEagerSingleton()
-      bind(classOf[IntegerMFactory]).to(classOf[IntegerMFactoryImpl]).asEagerSingleton()
+      bind(classOf[IntegerMFactory]).to(classOf[IntegerMFactoryImpl])
       bind(classOf[ValDclInFunctionParamFactory]).to(classOf[ValDclInFunctionParamFactoryImpl]).asEagerSingleton()
     }
   }

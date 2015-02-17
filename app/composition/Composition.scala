@@ -41,16 +41,16 @@ trait Composition extends IoC {
   final class DevModule extends AbstractModule {
 
     override def configure(): Unit = {
-      bind(classOf[Empty]).asEagerSingleton()
+      bind(classOf[Empty])
       bind(classOf[TypeTreeFactory]).to(classOf[TypeTreeFactoryImpl]).asEagerSingleton()
       bind(classOf[ObjectFactory]).to(classOf[ObjectFactoryImpl]).asEagerSingleton()
       bind(classOf[ValueRefFactory]).to(classOf[ValueRefFactoryImpl]).asEagerSingleton()
-      bind(classOf[FactoryLookup]).to(classOf[FactoryLookupImpl]).asEagerSingleton()
-      bind(new TypeLiteral[Memoize2[IScope, PozInt, Boolean]]() {}).to(classOf[RepositoryReturningBool]).asEagerSingleton()
       bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl]).asEagerSingleton()
       bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl]).asEagerSingleton()
       bind(classOf[IntegerMFactory]).to(classOf[IntegerMFactoryImpl]).asEagerSingleton()
       bind(classOf[ValDclInFunctionParamFactory]).to(classOf[ValDclInFunctionParamFactoryImpl]).asEagerSingleton()
+      bind(classOf[FactoryLookup]).to(classOf[FactoryLookupImpl]).asEagerSingleton()
+      bind(new TypeLiteral[Memoize2[IScope, PozInt, Boolean]]() {}).to(classOf[RepositoryReturningBool]).asEagerSingleton()
     }
   }
 
