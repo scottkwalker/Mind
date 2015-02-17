@@ -1,6 +1,7 @@
 package views
 
 import composition.TestComposition
+import composition.UiTestHelper
 import composition.UnitTestHelpers
 import composition.WithApplication
 import decision.AddOperatorFactory
@@ -11,7 +12,7 @@ import org.scalatestplus.play.OneServerPerSuite
 import play.api.Play
 import play.api.libs.json.JsArray
 
-final class LegalChildrenUiSpec extends UnitTestHelpers with IntegrationPatience with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
+final class LegalChildrenUiSpec extends UiTestHelper {
 
   // To enable testing on all browsers https://www.playframework.com/documentation/2.2.x/ScalaFunctionalTestingWithScalaTest
   //with OneServerPerSuite with AllBrowsersPerSuite {

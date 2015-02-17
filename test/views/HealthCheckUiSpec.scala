@@ -1,6 +1,7 @@
 package views
 
 import composition.TestComposition
+import composition.UiTestHelper
 import composition.UnitTestHelpers
 import composition.WithApplication
 import org.scalatest.concurrent.IntegrationPatience
@@ -9,7 +10,7 @@ import org.scalatestplus.play.OneBrowserPerTest
 import org.scalatestplus.play.OneServerPerSuite
 import play.api.Play
 
-final class HealthCheckUiSpec extends UnitTestHelpers with IntegrationPatience with OneServerPerSuite with OneBrowserPerTest with HtmlUnitFactory {
+final class HealthCheckUiSpec extends UiTestHelper {
 
   "go to page" must {
     "display the page in English when no language cookie exists" taggedAs UiTag in new WithApplication with TestComposition {
