@@ -2,8 +2,8 @@ package ai
 
 import ai.aco.Aco
 import composition.StubRngBinding
-import composition.UnitTestHelpers
 import composition.TestComposition
+import composition.UnitTestHelpers
 import decision.Decision
 import org.mockito.Mockito._
 

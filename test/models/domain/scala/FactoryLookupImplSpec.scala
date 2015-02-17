@@ -1,8 +1,8 @@
 package models.domain.scala
 
 import composition.FactoryLookupBinding
-import composition.UnitTestHelpers
 import composition.TestComposition
+import composition.UnitTestHelpers
 import decision._
 import utils.PozInt
 

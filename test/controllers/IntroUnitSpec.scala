@@ -1,7 +1,7 @@
 package controllers
 
-import composition.UnitTestHelpers
 import composition.TestComposition
+import composition.UnitTestHelpers
 import play.api.test.FakeRequest
 import play.api.test.Helpers.OK
 import play.api.test.Helpers.contentAsString

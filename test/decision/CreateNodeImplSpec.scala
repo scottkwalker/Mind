@@ -2,8 +2,8 @@ package decision
 
 import composition.CreateNodeBinding
 import composition.StubSelectionStrategyBinding
-import composition.UnitTestHelpers
 import composition.TestComposition
+import composition.UnitTestHelpers
 import models.common.Scope
 import org.mockito.Mockito._
 

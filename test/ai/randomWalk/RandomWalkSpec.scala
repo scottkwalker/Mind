@@ -2,8 +2,8 @@ package ai.randomWalk
 
 import ai.SelectionStrategy
 import composition.StubRngBinding
-import composition.UnitTestHelpers
 import composition.TestComposition
+import composition.UnitTestHelpers
 import composition.ai.randomWalk.RandomWalkBinding
 import decision.Decision
 import fitness.AddTwoInts
@@ -89,7 +89,7 @@ final class RandomWalkSpec extends UnitTestHelpers with TestComposition {
 
   private def factoryLookup = randomWalkInjector.getInstance(classOf[FactoryLookup])
 
-  private def randomWalkInjector = testInjector(new RandomWalkBinding)
-
   private def selectionStrategy = randomWalkInjector.getInstance(classOf[SelectionStrategy])
+
+  private def randomWalkInjector = testInjector(new RandomWalkBinding)
 }

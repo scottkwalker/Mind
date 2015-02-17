@@ -1,8 +1,8 @@
 package ai.legalGamer
 
 import ai.SelectionStrategy
-import composition.UnitTestHelpers
 import composition.TestComposition
+import composition.UnitTestHelpers
 import composition.ai.legalGamer.LegalGamerBinding
 import decision.Decision
 import fitness.AddTwoInts
@@ -88,7 +88,7 @@ final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
 
   private def factoryLookup = legalGamerInjector.getInstance(classOf[FactoryLookup])
 
-  private def selectionStrategy = legalGamerInjector.getInstance(classOf[SelectionStrategy])
-
   private def legalGamerInjector = testInjector(new LegalGamerBinding)
+
+  private def selectionStrategy = legalGamerInjector.getInstance(classOf[SelectionStrategy])
 }

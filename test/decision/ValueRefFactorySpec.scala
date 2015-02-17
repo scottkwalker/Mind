@@ -1,7 +1,7 @@
 package decision
 
-import composition.UnitTestHelpers
 import composition.TestComposition
+import composition.UnitTestHelpers
 import models.common.IScope
 import models.domain.scala.ValueRef
 import org.mockito.Mockito._

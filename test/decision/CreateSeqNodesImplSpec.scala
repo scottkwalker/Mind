@@ -3,8 +3,8 @@ package decision
 import ai.RandomNumberGenerator
 import ai.SelectionStrategy
 import ai.aco.Aco
-import composition.UnitTestHelpers
 import composition.TestComposition
+import composition.UnitTestHelpers
 import models.common.IScope
 import models.common.Scope
 import models.domain.Step

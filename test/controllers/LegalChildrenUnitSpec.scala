@@ -1,8 +1,8 @@
 package controllers
 
 import composition.StubLookupChildrenBinding
-import composition.UnitTestHelpers
 import composition.TestComposition
+import composition.UnitTestHelpers
 import decision.TypeTreeFactory
 import models.common.IScope
 import models.common.LookupChildrenRequest

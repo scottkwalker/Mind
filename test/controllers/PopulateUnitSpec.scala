@@ -1,8 +1,8 @@
 package controllers
 
 import composition.StubGeneratorBinding
-import composition.UnitTestHelpers
 import composition.TestComposition
+import composition.UnitTestHelpers
 import models.common.IScope
 import models.common.PopulateRequest
 import models.common.Scope

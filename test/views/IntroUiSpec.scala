@@ -1,13 +1,8 @@
 package views
 
+import composition.ApplicationWithTestGlobal
 import composition.TestComposition
 import composition.UiTestHelper
-import composition.UnitTestHelpers
-import composition.ApplicationWithTestGlobal
-import org.scalatest.concurrent.IntegrationPatience
-import org.scalatestplus.play.HtmlUnitFactory
-import org.scalatestplus.play.OneBrowserPerTest
-import org.scalatestplus.play.OneServerPerSuite
 import play.api.Play
 
 final class IntroUiSpec extends UiTestHelper {

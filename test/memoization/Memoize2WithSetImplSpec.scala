@@ -1,7 +1,6 @@
 package memoization
 
 import composition.UnitTestHelpers
-import composition.TestComposition
 import play.api.libs.json._
 import serialization.JsonValidationException
 

@@ -2,8 +2,8 @@ package ai.aco
 
 import ai.SelectionStrategy
 import composition.StubRngBinding
-import composition.UnitTestHelpers
 import composition.TestComposition
+import composition.UnitTestHelpers
 import composition.ai.aco.AcoBinding
 import decision.Decision
 import fitness.AddTwoInts

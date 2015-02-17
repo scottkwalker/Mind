@@ -1,7 +1,7 @@
 package ai
 
-import composition.UnitTestHelpers
 import composition.TestComposition
+import composition.UnitTestHelpers
 
 final class RandomNumberGeneratorImplSpec extends UnitTestHelpers with TestComposition {
 

@@ -1,14 +1,9 @@
 package views
 
+import composition.ApplicationWithTestGlobal
 import composition.TestComposition
 import composition.UiTestHelper
-import composition.UnitTestHelpers
-import composition.ApplicationWithTestGlobal
 import decision.AddOperatorFactory
-import org.scalatest.concurrent.IntegrationPatience
-import org.scalatestplus.play.HtmlUnitFactory
-import org.scalatestplus.play.OneBrowserPerTest
-import org.scalatestplus.play.OneServerPerSuite
 import play.api.Play
 import play.api.libs.json.JsArray
 

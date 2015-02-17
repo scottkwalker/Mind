@@ -1,7 +1,7 @@
 package controllers
 
-import composition.UnitTestHelpers
 import composition.TestComposition
+import composition.UnitTestHelpers
 import models.common.PopulateRequest.Form.MaxScopeId
 import models.common.Scope.Form._
 

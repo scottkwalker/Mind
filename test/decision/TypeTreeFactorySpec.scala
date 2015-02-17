@@ -2,8 +2,8 @@ package decision
 
 import composition.StubCreateSeqNodesBinding
 import composition.StubRngBinding
-import composition.UnitTestHelpers
 import composition.TestComposition
+import composition.UnitTestHelpers
 import models.common.IScope
 import models.common.Scope
 import models.domain.Step
