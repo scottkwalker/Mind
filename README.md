@@ -72,7 +72,7 @@ Previously I was using Jacoco offline, but the problems are:
 * It only records line-coverage. For example, when operating on lists we may chain several operations together on a single line. If our tests all exit in the first few operations and never reach the final operation then this will be recorded as a false positive.
 * It gave many false-negatives when running on parts of the Play framework such as the reverse routing. This may be because it runs against the Java compiled code and is unaware of how to track the Scala.
 
-You can run the code coverage plugin from a terminal using `sbt clean test scoverage:test`. Note I add the `clean` to wipe the target directory where old reports are stored and add `test` because on another project I see problems with .scss stylesheets not being compiled by scoverage.
+You can run the code coverage plugin from a terminal using `sbt clean coverage test`. Note I add the `clean` to wipe the target directory where old reports are stored and add `test` because on another project I see problems with .scss stylesheets not being compiled by scoverage.
 
 Abide
 -----
