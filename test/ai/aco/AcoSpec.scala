@@ -1,6 +1,7 @@
 package ai.aco
 
 import ai.SelectionStrategy
+import composition.StubFactoryLookupBinding
 import composition.StubRngBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
@@ -92,6 +93,7 @@ final class AcoSpec extends UnitTestHelpers with TestComposition {
 
   private def acoInjector = testInjector(
     new AcoBinding,
+    new StubFactoryLookupBinding,
     new StubRngBinding
   )
 }

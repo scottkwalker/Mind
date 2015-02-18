@@ -1,5 +1,6 @@
 package models.domain.scala
 
+import composition.StubFactoryLookupBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope
@@ -115,7 +116,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
       val scope = mock[IScope]
       val name = "a"
       val primitiveTypeEmpty = Empty()
-      val factoryLookup = testInjector().getInstance(classOf[FactoryLookup])
+      val factoryLookup = testInjector(new StubFactoryLookupBinding).getInstance(classOf[FactoryLookup])
       val valDclInFunctionParam = ValDclInFunctionParam(name, primitiveTypeEmpty)
 
       val fillEmptySteps = valDclInFunctionParam.fillEmptySteps(scope, factoryLookup)

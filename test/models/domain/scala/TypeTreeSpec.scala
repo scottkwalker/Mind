@@ -1,5 +1,6 @@
 package models.domain.scala
 
+import composition.StubFactoryLookupBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope
@@ -101,7 +102,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
         maxObjectsInTree = 1,
         maxHeight = 10)
       val empty = Empty()
-      val factoryLookup = testInjector().getInstance(classOf[FactoryLookup])
+      val factoryLookup = testInjector(new StubFactoryLookupBinding).getInstance(classOf[FactoryLookup])
       val typeTree = TypeTree(nodes = Seq(empty))
 
       val fillEmptySteps = typeTree.fillEmptySteps(scope, factoryLookup)

@@ -1,5 +1,6 @@
 package models.domain.scala
 
+import composition.StubFactoryLookupBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope
@@ -127,7 +128,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       when(scope.numVals).thenReturn(1)
       val empty: Step = Empty()
-      val factoryLookup = testInjector().getInstance(classOf[FactoryLookup])
+      val factoryLookup = testInjector(new StubFactoryLookupBinding).getInstance(classOf[FactoryLookup])
       val instance = AddOperator(empty, empty)
 
       val fillEmptySteps = instance.fillEmptySteps(scope, factoryLookup)

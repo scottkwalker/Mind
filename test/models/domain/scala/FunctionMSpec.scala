@@ -1,5 +1,6 @@
 package models.domain.scala
 
+import composition.StubFactoryLookupBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope
@@ -109,7 +110,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
 
     "calls fillEmptySteps on non-empty child nodes" in {
       val scope = mock[IScope]
-      val factoryLookup = testInjector().getInstance(classOf[FactoryLookup])
+      val factoryLookup = testInjector(new StubFactoryLookupBinding).getInstance(classOf[FactoryLookup])
       val param = mock[Step]
       when(param.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(param)
       val node = mock[Step]
@@ -128,7 +129,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
 
     "returns same when no empty nodes" in {
       val scope = mock[IScope]
-      val factoryLookup = testInjector().getInstance(classOf[FactoryLookup])
+      val factoryLookup = testInjector(new StubFactoryLookupBinding).getInstance(classOf[FactoryLookup])
       val param = mock[Step]
       when(param.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(param)
       val node = mock[Step]
@@ -152,7 +153,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
         maxObjectsInTree = 1,
         maxHeight = 10)
       val empty = Empty()
-      val factoryLookup = testInjector().getInstance(classOf[FactoryLookup])
+      val factoryLookup = testInjector(new StubFactoryLookupBinding).getInstance(classOf[FactoryLookup])
       val functionM = FunctionM(params = Seq(empty),
         nodes = Seq(Empty()),
         name = name)

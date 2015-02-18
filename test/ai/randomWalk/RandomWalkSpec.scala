@@ -1,6 +1,7 @@
 package ai.randomWalk
 
 import ai.SelectionStrategy
+import composition.StubFactoryLookupBinding
 import composition.StubRngBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
@@ -90,6 +91,7 @@ final class RandomWalkSpec extends UnitTestHelpers with TestComposition {
 
   private def randomWalkInjector = testInjector(
     new RandomWalkBinding,
+    new StubFactoryLookupBinding,
     new StubRngBinding
   )
 }
