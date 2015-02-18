@@ -3,7 +3,7 @@ package decision
 import composition.StubCreateSeqNodesBinding
 import composition.StubRngBinding
 import composition.TestComposition
-import composition.TestModule
+import composition.DecisionBindings
 import composition.UnitTestHelpers
 import models.common.IScope
 import models.common.Scope
@@ -77,7 +77,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
     val injector = testInjector(
       randomNumberGenerator,
       createSeqNodes,
-      new TestModule
+      new DecisionBindings
     )
     (injector.getInstance(classOf[FunctionMFactory]), createSeqNodes.stub)
   }

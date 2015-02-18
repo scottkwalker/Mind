@@ -1,8 +1,9 @@
 package models.domain.scala
 
 import composition.FactoryLookupBinding
+import composition.IntegerMBinding
 import composition.TestComposition
-import composition.TestModule
+import composition.DecisionBindings
 import composition.UnitTestHelpers
 import decision._
 import utils.PozInt
@@ -62,7 +63,8 @@ final class FactoryLookupImplSpec extends UnitTestHelpers with TestComposition {
 
   private val factoryLookupInjector = testInjector(
     new FactoryLookupBinding,
-    new TestModule
+    new DecisionBindings,
+    new IntegerMBinding
   )
   private val factoryLookup = factoryLookupInjector.getInstance(classOf[FactoryLookup])
 }
