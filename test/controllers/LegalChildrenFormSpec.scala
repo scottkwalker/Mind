@@ -1,5 +1,6 @@
 package controllers
 
+import composition.StubLookupChildrenBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.LookupChildrenRequest.Form.CurrentNodeId
@@ -173,5 +174,5 @@ final class LegalChildrenFormSpec extends UnitTestHelpers with TestComposition {
     )
   }
 
-  private def legalChildren = testInjector().getInstance(classOf[LegalChildren])
+  private def legalChildren = testInjector(new StubLookupChildrenBinding).getInstance(classOf[LegalChildren])
 }
