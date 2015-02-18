@@ -17,8 +17,7 @@ trait TestComposition extends Composition {
 
   // Modules that stub most of the application's dependencies. This should be enough for most UI tests.
   private def defaultModules = Seq(
-//    new StubCreateNodeBinding,
-    new StubCreateSeqNodesBinding,
+//    new StubCreateSeqNodesBinding,
     new StubSelectionStrategyBinding
   )
 }

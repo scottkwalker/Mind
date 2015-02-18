@@ -2,6 +2,7 @@ package decision
 
 import composition.DecisionBindings
 import composition.StubCreateNodeBinding
+import composition.StubCreateSeqNodesBinding
 import composition.StubLookupChildrenWithFutures
 import composition.TestComposition
 import composition.UnitTestHelpers
@@ -65,6 +66,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
   private def valDclInFunctionParamFactory = testInjector(
     new DecisionBindings,
     new StubLookupChildrenWithFutures,
-    new StubCreateNodeBinding
+    new StubCreateNodeBinding,
+    new StubCreateSeqNodesBinding
   ).getInstance(classOf[ValDclInFunctionParamFactory])
 }

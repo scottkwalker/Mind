@@ -2,6 +2,7 @@ package decision
 
 import composition.DecisionBindings
 import composition.StubCreateNodeBinding
+import composition.StubCreateSeqNodesBinding
 import composition.StubLookupChildrenWithFutures
 import composition.TestComposition
 import composition.UnitTestHelpers
@@ -61,6 +62,7 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
   private def valueRefFactory = testInjector(
     new DecisionBindings,
     new StubLookupChildrenWithFutures,
-    new StubCreateNodeBinding
+    new StubCreateNodeBinding,
+    new StubCreateSeqNodesBinding
   ).getInstance(classOf[ValueRefFactory])
 }

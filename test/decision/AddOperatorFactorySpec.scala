@@ -2,6 +2,7 @@ package decision
 
 import composition.DecisionBindings
 import composition.StubCreateNodeBinding
+import composition.StubCreateSeqNodesBinding
 import composition.StubLookupChildrenWithFutures
 import composition.TestComposition
 import composition.UnitTestHelpers
@@ -16,7 +17,8 @@ final class AddOperatorFactorySpec extends UnitTestHelpers with TestComposition 
       val addOperatorFactory = testInjector(
         new DecisionBindings,
         new StubLookupChildrenWithFutures,
-        new StubCreateNodeBinding
+        new StubCreateNodeBinding,
+        new StubCreateSeqNodesBinding
       ).getInstance(classOf[AddOperatorFactory])
 
       val step = addOperatorFactory.createStep(scope = scope)
