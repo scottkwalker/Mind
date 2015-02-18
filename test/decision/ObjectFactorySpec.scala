@@ -1,6 +1,7 @@
 package decision
 
 import composition.StubCreateSeqNodesBinding
+import composition.StubLookupChildrenWithFutures
 import composition.StubRngBinding
 import composition.TestComposition
 import composition.DecisionBindings
@@ -77,7 +78,8 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
     val injector = testInjector(
       randomNumberGenerator,
       createSeqNodes,
-      new DecisionBindings
+      new DecisionBindings,
+      new StubLookupChildrenWithFutures
     )
     (injector.getInstance(classOf[ObjectFactory]), createSeqNodes.stub)
   }

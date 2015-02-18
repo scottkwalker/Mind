@@ -2,6 +2,7 @@ package models.domain.scala
 
 import composition.FactoryLookupBinding
 import composition.IntegerMBinding
+import composition.StubLookupChildrenWithFutures
 import composition.TestComposition
 import composition.DecisionBindings
 import composition.UnitTestHelpers
@@ -64,7 +65,8 @@ final class FactoryLookupImplSpec extends UnitTestHelpers with TestComposition {
   private val factoryLookupInjector = testInjector(
     new FactoryLookupBinding,
     new DecisionBindings,
-    new IntegerMBinding
+    new IntegerMBinding,
+    new StubLookupChildrenWithFutures
   )
   private val factoryLookup = factoryLookupInjector.getInstance(classOf[FactoryLookup])
 }

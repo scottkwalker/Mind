@@ -1,5 +1,6 @@
 package decision
 
+import composition.StubLookupChildrenWithFutures
 import composition.TestComposition
 import composition.DecisionBindings
 import composition.UnitTestHelpers
@@ -11,7 +12,10 @@ final class AddOperatorFactorySpec extends UnitTestHelpers with TestComposition 
   "create step" must {
     "return instance of this type" in {
       val scope = Scope(height = 10, numVals = 1, maxHeight = 10)
-      val addOperatorFactory = testInjector(new DecisionBindings).getInstance(classOf[AddOperatorFactory])
+      val addOperatorFactory = testInjector(
+        new DecisionBindings,
+        new StubLookupChildrenWithFutures
+      ).getInstance(classOf[AddOperatorFactory])
 
       val step = addOperatorFactory.createStep(scope = scope)
 

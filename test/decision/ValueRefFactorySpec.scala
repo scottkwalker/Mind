@@ -1,5 +1,6 @@
 package decision
 
+import composition.StubLookupChildrenWithFutures
 import composition.TestComposition
 import composition.DecisionBindings
 import composition.UnitTestHelpers
@@ -56,5 +57,8 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
     stub
   }
 
-  private def valueRefFactory = testInjector(new DecisionBindings).getInstance(classOf[ValueRefFactory])
+  private def valueRefFactory = testInjector(
+    new DecisionBindings,
+    new StubLookupChildrenWithFutures
+  ).getInstance(classOf[ValueRefFactory])
 }
