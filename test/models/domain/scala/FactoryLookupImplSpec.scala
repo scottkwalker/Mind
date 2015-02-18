@@ -1,10 +1,10 @@
 package models.domain.scala
 
+import composition.DecisionBindings
 import composition.FactoryLookupBinding
 import composition.IntegerMBinding
 import composition.StubLookupChildrenWithFutures
 import composition.TestComposition
-import composition.DecisionBindings
 import composition.UnitTestHelpers
 import decision._
 import utils.PozInt

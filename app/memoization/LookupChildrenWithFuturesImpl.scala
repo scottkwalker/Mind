@@ -33,8 +33,10 @@ final class LookupChildrenWithFuturesImpl @Inject()(
   }
 
   override def get(scope: IScope, parent: PozInt): Future[Set[PozInt]] = {
-    val factory = factoryLookup.convert(parent)
-    val nodesToChooseFrom = factory.nodesToChooseFrom
+    val nodesToChooseFrom = {
+      val factory = factoryLookup.convert(parent)
+      factory.nodesToChooseFrom
+    }
     fetchFromRepository(scope, nodesToChooseFrom)
   }
 

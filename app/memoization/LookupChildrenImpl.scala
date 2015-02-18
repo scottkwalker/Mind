@@ -20,8 +20,10 @@ final class LookupChildrenImpl @Inject()(
       filter(neighbourId => repository.apply(key1 = scope, key2 = neighbourId)) // Get value from repository
 
   override def get(scope: IScope, parent: PozInt): Set[PozInt] = {
-    val factory = factoryLookup.convert(parent)
-    val nodesToChooseFrom = factory.nodesToChooseFrom
+    val nodesToChooseFrom = {
+      val factory = factoryLookup.convert(parent)
+      factory.nodesToChooseFrom
+    }
     fetchFromRepository(scope, nodesToChooseFrom)
   }
 

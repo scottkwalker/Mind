@@ -1,8 +1,8 @@
 package decision
 
+import composition.DecisionBindings
 import composition.StubLookupChildrenWithFutures
 import composition.TestComposition
-import composition.DecisionBindings
 import composition.UnitTestHelpers
 import models.common.Scope
 import models.domain.scala.AddOperator

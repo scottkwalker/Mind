@@ -19,7 +19,7 @@ trait TestComposition extends Composition {
   private def defaultModules = Seq(
     new StubCreateNodeBinding,
     new StubCreateSeqNodesBinding,
-//    new StubLookupChildrenWithFutures,
+    //    new StubLookupChildrenWithFutures,
     new StubSelectionStrategyBinding
   )
 }

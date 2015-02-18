@@ -1,10 +1,10 @@
 package decision
 
+import composition.DecisionBindings
 import composition.StubCreateSeqNodesBinding
 import composition.StubLookupChildrenWithFutures
 import composition.StubRngBinding
 import composition.TestComposition
-import composition.DecisionBindings
 import composition.UnitTestHelpers
 import models.common.IScope
 import models.common.Scope
