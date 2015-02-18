@@ -1,6 +1,7 @@
 package decision
 
 import composition.DecisionBindings
+import composition.StubCreateNodeBinding
 import composition.StubCreateSeqNodesBinding
 import composition.StubLookupChildrenWithFutures
 import composition.StubRngBinding
@@ -71,7 +72,8 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
       randomNumberGenerator,
       createSeqNodes,
       new DecisionBindings,
-      new StubLookupChildrenWithFutures
+      new StubLookupChildrenWithFutures,
+      new StubCreateNodeBinding
     )
     (injector.getInstance(classOf[TypeTreeFactory]), createSeqNodes.stub)
   }
