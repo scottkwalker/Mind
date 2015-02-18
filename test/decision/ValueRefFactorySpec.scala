@@ -1,6 +1,7 @@
 package decision
 
 import composition.TestComposition
+import composition.TestModule
 import composition.UnitTestHelpers
 import models.common.IScope
 import models.domain.scala.ValueRef
@@ -55,5 +56,5 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
     stub
   }
 
-  private def valueRefFactory = testInjector().getInstance(classOf[ValueRefFactory])
+  private def valueRefFactory = testInjector(new TestModule).getInstance(classOf[ValueRefFactory])
 }

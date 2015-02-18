@@ -1,6 +1,7 @@
 package decision
 
 import composition.TestComposition
+import composition.TestModule
 import composition.UnitTestHelpers
 import models.common.IScope
 import models.common.Scope
@@ -59,5 +60,5 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
     }
   }
 
-  private def valDclInFunctionParamFactory = testInjector().getInstance(classOf[ValDclInFunctionParamFactory])
+  private def valDclInFunctionParamFactory = testInjector(new TestModule).getInstance(classOf[ValDclInFunctionParamFactory])
 }

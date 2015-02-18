@@ -1,6 +1,7 @@
 package decision
 
 import composition.TestComposition
+import composition.TestModule
 import composition.UnitTestHelpers
 import models.common.IScope
 import models.domain.scala.IntegerM
@@ -28,5 +29,5 @@ final class IntegerMFactorySpec extends UnitTestHelpers with TestComposition {
     }
   }
 
-  private def integerMFactory = testInjector().getInstance(classOf[IntegerMFactory])
+  private def integerMFactory = testInjector(new TestModule).getInstance(classOf[IntegerMFactory])
 }

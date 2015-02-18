@@ -4,6 +4,7 @@ import composition.StubCreateSeqNodesBinding
 import composition.StubRngBinding
 import composition.StubSelectionStrategyBinding
 import composition.TestComposition
+import composition.TestModule
 import composition.UnitTestHelpers
 import models.common.IScope
 import models.common.Scope
@@ -68,7 +69,8 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
     val createSeqNodes = new StubCreateSeqNodesBinding
     val injector = testInjector(
       randomNumberGenerator,
-      createSeqNodes
+      createSeqNodes,
+      new TestModule
     )
     (injector.getInstance(classOf[TypeTreeFactory]), createSeqNodes.stub)
   }

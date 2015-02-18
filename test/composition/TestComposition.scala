@@ -20,25 +20,23 @@ trait TestComposition extends Composition {
 
   // Modules that stub most of the application's dependencies. This should be enough for most UI tests.
   private def defaultModules = Seq(
-    new TestModule,
     new StubCreateNodeBinding,
     new StubCreateSeqNodesBinding,
     new StubLookupChildrenWithFutures,
     new StubSelectionStrategyBinding
   )
+}
 
-  private final class TestModule extends AbstractModule {
+final class TestModule extends AbstractModule {
 
-    override def configure(): Unit = {
-      bind(classOf[Empty])
-      bind(classOf[TypeTreeFactory]).to(classOf[TypeTreeFactoryImpl])
-      bind(classOf[ObjectFactory]).to(classOf[ObjectFactoryImpl])
-      bind(classOf[ValueRefFactory]).to(classOf[ValueRefFactoryImpl])
-      bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl])
-      bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl])
-      bind(classOf[IntegerMFactory]).to(classOf[IntegerMFactoryImpl])
-      bind(classOf[ValDclInFunctionParamFactory]).to(classOf[ValDclInFunctionParamFactoryImpl])
-    }
+  override def configure(): Unit = {
+    bind(classOf[Empty])
+    bind(classOf[TypeTreeFactory]).to(classOf[TypeTreeFactoryImpl])
+    bind(classOf[ObjectFactory]).to(classOf[ObjectFactoryImpl])
+    bind(classOf[ValueRefFactory]).to(classOf[ValueRefFactoryImpl])
+    bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl])
+    bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl])
+    bind(classOf[IntegerMFactory]).to(classOf[IntegerMFactoryImpl])
+    bind(classOf[ValDclInFunctionParamFactory]).to(classOf[ValDclInFunctionParamFactoryImpl])
   }
-
 }
