@@ -29,8 +29,6 @@ trait TestComposition extends Composition {
     new StubLookupChildrenWithFutures,
     new StubReplaceEmptyBinding,
     new StubRepositoryBinding,
-    new StubRepositoryReturningBoolBinding,
-//    new StubRepositoryWithFuture,
     new StubSelectionStrategyBinding
   )
 
