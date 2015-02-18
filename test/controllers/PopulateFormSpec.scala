@@ -1,5 +1,6 @@
 package controllers
 
+import composition.StubGeneratorBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.PopulateRequest.Form.MaxScopeId
@@ -190,5 +191,5 @@ final class PopulateFormSpec extends UnitTestHelpers with TestComposition {
     )
   }
 
-  private def populate = testInjector().getInstance(classOf[Populate])
+  private def populate = testInjector(new StubGeneratorBinding).getInstance(classOf[Populate])
 }

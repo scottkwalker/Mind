@@ -66,7 +66,7 @@ final class PopulateUnitSpec extends UnitTestHelpers with TestComposition {
     populate.present(emptyRequest)
   }
 
-  private def populate = testInjector().getInstance(classOf[Populate])
+  private def populate = testInjector(new StubGeneratorBinding).getInstance(classOf[Populate])
 
   private def scopeDefault = Scope(
     numVals = 1,

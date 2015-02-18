@@ -24,7 +24,6 @@ trait TestComposition extends Composition {
     new StubCreateNodeBinding,
     new StubCreateSeqNodesBinding,
     new StubFactoryLookupBinding,
-    new StubGeneratorBinding,
     new StubLookupChildrenWithFutures,
     new StubSelectionStrategyBinding
   )
