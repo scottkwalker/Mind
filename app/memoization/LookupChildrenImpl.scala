@@ -16,8 +16,9 @@ final class LookupChildrenImpl @Inject()(
       map(factoryLookup.convert)
 
   private def fetchFromRepository(scope: IScope, neighbours: Set[PozInt]): Set[PozInt] =
-    neighbours.
-      filter(neighbourId => repository.apply(key1 = scope, key2 = neighbourId)) // Get value from repository
+    neighbours.filter { neighbourId => // For each neighbour, only keep the ones that are in the repository.
+      repository.apply(key1 = scope, key2 = neighbourId) // Boolean value from repository.
+    }
 
   override def get(scope: IScope, parent: PozInt): Set[PozInt] = {
     val nodesToChooseFrom = {

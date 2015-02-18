@@ -19,15 +19,13 @@ final class LookupChildrenWithFuturesImpl @Inject()(
 
   private def fetchFromRepository(scope: IScope, neighbours: Set[PozInt]): Future[Set[PozInt]] = {
     val neighbourValues = neighbours.map { neighbourId =>
-      repository.apply(key1 = scope, key2 = neighbourId). // Get value from repository
-        map(value => neighbourId -> value) // Convert to ReplaceEmpty
+      repository.apply(key1 = scope, key2 = neighbourId). // Boolean value from repository.
+        map(value => neighbourId -> value) // Convert to key-value pairs
     }
 
     Future.sequence(neighbourValues).map {
-      _.filter {
-        case (_: PozInt, value: Boolean) => value
-      }.map {
-        case (key: PozInt, _: Boolean) => key
+      _.collect {
+        case (key: PozInt, value: Boolean) if value => key
       }
     }
   }
