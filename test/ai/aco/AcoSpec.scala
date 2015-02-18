@@ -22,9 +22,6 @@ final class AcoSpec extends UnitTestHelpers with TestComposition {
 
   "chooseChild" must {
     "returns expected instance given only one valid choice" in {
-      val selectionStrategy = testInjector(
-        new AcoBinding
-      ).getInstance(classOf[SelectionStrategy])
       val node = mock[Decision]
       val possibleChildren = Set(node)
 
@@ -93,5 +90,8 @@ final class AcoSpec extends UnitTestHelpers with TestComposition {
 
   private def selectionStrategy = acoInjector.getInstance(classOf[SelectionStrategy])
 
-  private def acoInjector = testInjector(new AcoBinding)
+  private def acoInjector = testInjector(
+    new AcoBinding,
+    new StubRngBinding
+  )
 }

@@ -2,6 +2,7 @@ package decision
 
 import composition.StubCreateSeqNodesBinding
 import composition.StubRngBinding
+import composition.StubSelectionStrategyBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope

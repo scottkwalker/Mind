@@ -31,7 +31,6 @@ trait TestComposition extends Composition {
     new StubRepositoryBinding,
     new StubRepositoryReturningBoolBinding,
     new StubRepositoryWithFuture,
-    new StubRngBinding,
     new StubSelectionStrategyBinding
   )
 

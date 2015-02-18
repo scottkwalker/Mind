@@ -1,5 +1,6 @@
 package ai
 
+import composition.RandomNumberGeneratorBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 
@@ -17,5 +18,5 @@ final class RandomNumberGeneratorImplSpec extends UnitTestHelpers with TestCompo
     }
   }
 
-  private def randomNumberGenerator = testInjector().getInstance(classOf[RandomNumberGenerator])
+  private def randomNumberGenerator = testInjector(new RandomNumberGeneratorBinding).getInstance(classOf[RandomNumberGenerator])
 }

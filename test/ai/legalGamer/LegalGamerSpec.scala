@@ -1,6 +1,7 @@
 package ai.legalGamer
 
 import ai.SelectionStrategy
+import composition.StubRngBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import composition.ai.legalGamer.LegalGamerBinding
@@ -88,7 +89,10 @@ final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
 
   private def factoryLookup = legalGamerInjector.getInstance(classOf[FactoryLookup])
 
-  private def legalGamerInjector = testInjector(new LegalGamerBinding)
+  private def legalGamerInjector = testInjector(
+    new LegalGamerBinding,
+    new StubRngBinding
+  )
 
   private def selectionStrategy = legalGamerInjector.getInstance(classOf[SelectionStrategy])
 }

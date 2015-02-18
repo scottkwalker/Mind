@@ -20,13 +20,10 @@ final class RandomWalkSpec extends UnitTestHelpers with TestComposition {
 
   "chooseChild" must {
     "return expected type given only one valid choice" in {
-      val sut = testInjector(
-        new RandomWalkBinding
-      ).getInstance(classOf[SelectionStrategy])
       val node = mock[Decision]
       val possibleChildren = Set(node)
 
-      sut.chooseChild(possibleChildren) mustBe a[Decision]
+      selectionStrategy.chooseChild(possibleChildren) mustBe a[Decision]
     }
 
     "return code that can be compiled and evaluated" in {
@@ -91,5 +88,8 @@ final class RandomWalkSpec extends UnitTestHelpers with TestComposition {
 
   private def selectionStrategy = randomWalkInjector.getInstance(classOf[SelectionStrategy])
 
-  private def randomWalkInjector = testInjector(new RandomWalkBinding)
+  private def randomWalkInjector = testInjector(
+    new RandomWalkBinding,
+    new StubRngBinding
+  )
 }
