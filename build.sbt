@@ -57,10 +57,9 @@ fork in Test := false 	// Fixes Exception in thread "Thread-4" java.io.EOFExcept
 			//	at java.io.ObjectInputStream$BlockDataInputStream.peekByte(ObjectInputStream.java:2601)
 
 
-//////////
+/////////////////////////////////////
 // Scalaxy
-//////////
-
+//
 // Scalaxy/Streams compiler plugin
 // https://github.com/ochafik/Scalaxy
 
@@ -73,3 +72,6 @@ addCompilerPlugin("com.nativelibs4java" %% "scalaxy-streams" % "0.3.4")
 scalacOptions += "-Xplugin-require:scalaxy-streams"
 
 scalacOptions ++= Seq("-optimise", "-Yinline-warnings", "-Yclosure-elim", "-Yinline")
+
+// End Scalaxy
+/////////////////////////////////////
