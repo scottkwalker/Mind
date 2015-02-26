@@ -1,6 +1,5 @@
 package ai
 
-import ai.aco.Aco
 import composition.StubRngBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
@@ -15,6 +14,14 @@ final class SelectionStrategySpec extends UnitTestHelpers with TestComposition {
     "throw when seq is empty" in {
       val (sut, _) = selectionStrategy(nextInt = 42)
       a[RuntimeException] must be thrownBy sut.chooseChild(Future.successful(Set.empty[Decision])).futureValue
+    }
+
+    "return expected type given only one valid choice" in {
+      val (sut, _) = selectionStrategy(nextInt = 0)
+      val possibleChildren = Future.successful(Set(mock[Decision]))
+      whenReady(sut.chooseChild(possibleChildren)) { result =>
+        result mustBe a[Decision]
+      }
     }
   }
 
@@ -76,9 +83,16 @@ final class SelectionStrategySpec extends UnitTestHelpers with TestComposition {
 
   private def selectionStrategy(nextBoolean: Boolean = true, nextInt: Int) = {
     val randomNumberGenerator = new StubRngBinding(nextBoolean = nextBoolean, nextInt = nextInt)
-    val ioc = testInjector(
-      randomNumberGenerator
-    )
-    (ioc.getInstance(classOf[Aco]), randomNumberGenerator.stub)
+
+    val fakeSelectionStrategy = new SelectionStrategy {
+
+      override def chooseIndex(seqLength: Int): Int = ???
+
+      override def chooseChild(possibleChildren: Set[Decision]): Decision = possibleChildren.head
+
+      override protected val rng: RandomNumberGenerator = randomNumberGenerator.stub
+    }
+
+    (fakeSelectionStrategy, randomNumberGenerator.stub)
   }
 }

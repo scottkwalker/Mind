@@ -9,6 +9,7 @@ import decision.Decision
 final case class RandomGamer @Inject()(rng: RandomNumberGenerator) extends SelectionStrategy {
 
   override def chooseChild(possibleChildren: Set[Decision]): Decision = {
+    require(possibleChildren.size > 0, "Sequence must not be empty otherwise we cannot pick an index from it")
     val index = chooseIndex(possibleChildren.size)
     possibleChildren.toSeq(index)
   }
