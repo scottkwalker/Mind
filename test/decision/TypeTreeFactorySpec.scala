@@ -5,6 +5,7 @@ import composition.StubCreateNodeBinding
 import composition.StubCreateSeqNodesBinding
 import composition.StubLookupChildrenWithFutures
 import composition.StubRngBinding
+import composition.StubSelectionStrategyBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope
@@ -73,7 +74,8 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
       createSeqNodes,
       new DecisionBindings,
       new StubLookupChildrenWithFutures,
-      new StubCreateNodeBinding
+      new StubCreateNodeBinding,
+      new StubSelectionStrategyBinding
     )
     (injector.getInstance(classOf[TypeTreeFactory]), createSeqNodes.stub)
   }

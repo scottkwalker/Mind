@@ -4,6 +4,7 @@ import composition.DecisionBindings
 import composition.StubCreateNodeBinding
 import composition.StubCreateSeqNodesBinding
 import composition.StubLookupChildrenWithFutures
+import composition.StubSelectionStrategyBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope
@@ -63,6 +64,7 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
     new DecisionBindings,
     new StubLookupChildrenWithFutures,
     new StubCreateNodeBinding,
-    new StubCreateSeqNodesBinding
+    new StubCreateSeqNodesBinding,
+    new StubSelectionStrategyBinding
   ).getInstance(classOf[ValueRefFactory])
 }

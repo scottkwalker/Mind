@@ -1,6 +1,7 @@
 package controllers
 
 import composition.StubLookupChildrenBinding
+import composition.StubSelectionStrategyBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import decision.TypeTreeFactory
@@ -122,7 +123,8 @@ final class LegalChildrenUnitSpec extends UnitTestHelpers with TestComposition {
   private def build(size: Int = 0) = {
     val lookupChildren = new StubLookupChildrenBinding(size = size)
     val injector = testInjector(
-      lookupChildren
+      lookupChildren,
+      new StubSelectionStrategyBinding
     )
     (injector.getInstance(classOf[LegalChildren]), lookupChildren.stub)
   }

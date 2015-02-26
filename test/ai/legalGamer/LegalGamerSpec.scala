@@ -21,7 +21,6 @@ final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
 
   "chooseChild" must {
     "return expected type given only one valid choice" in {
-      val selectionStrategy = testInjector().getInstance(classOf[SelectionStrategy])
       val node = mock[Decision]
       val possibleChildren = Set(node)
 
