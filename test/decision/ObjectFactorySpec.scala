@@ -15,6 +15,7 @@ import models.domain.scala.Object
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
+import scala.concurrent.Await
 import scala.concurrent.Future
 
 final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
@@ -52,7 +53,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "calls CreateSeqNodes.create once" in {
+    "call CreateSeqNodes.create once" in {
       val (objectFactory, createSeqNodes) = build()
 
       val step = objectFactory.createStep(scope = Scope())
@@ -71,6 +72,27 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
       objectFactory.updateScope(scope)
 
       verify(scope, times(1)).incrementObjects
+    }
+  }
+
+  "createNodes" must {
+    "call CreateSeqNodes.create once" in {
+      val (objectFactory, createSeqNodes) = build()
+
+      val step = objectFactory.createNodes(scope = Scope())
+
+      whenReady(step) { _ =>
+        verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
+      }(config = patienceConfig)
+    }
+  }
+
+  "createParams" must {
+    "throw exception" in {
+      val scope = mock[IScope]
+      val (objectFactory, _) = build()
+
+      a[RuntimeException] must be thrownBy Await.result(objectFactory.createParams(scope), finiteTimeout)
     }
   }
 

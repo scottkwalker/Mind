@@ -19,8 +19,8 @@ final class SelectionStrategySpec extends UnitTestHelpers with TestComposition {
     "return expected type given only one valid choice" in {
       val (sut, _) = selectionStrategy(nextInt = 0)
       val possibleChildren = Future.successful(Set(mock[Decision]))
-      whenReady(sut.chooseChild(possibleChildren)) { result =>
-        result mustBe a[Decision]
+      whenReady(sut.chooseChild(possibleChildren)) {
+        _ mustBe a[Decision]
       }
     }
   }
