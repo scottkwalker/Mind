@@ -15,6 +15,7 @@ import models.domain.scala.TypeTree
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
+import scala.concurrent.Await
 import scala.concurrent.Future
 
 final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
@@ -30,7 +31,7 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "calls CreateSeqNodes.create" in {
+    "call CreateSeqNodes.create once" in {
       val (typeTreeFactory, createSeqNodes) = build()
 
       val step = typeTreeFactory.create(Scope(), Seq.empty)
@@ -63,6 +64,27 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       val (typeTreeFactory, _) = build()
       a[RuntimeException] must be thrownBy typeTreeFactory.updateScope(scope)
+    }
+  }
+
+  "createParams" must {
+    "throw exception" in {
+      val scope = mock[IScope]
+      val (typeTreeFactory, _) = build()
+
+      a[RuntimeException] must be thrownBy Await.result(typeTreeFactory.createParams(scope), finiteTimeout)
+    }
+  }
+
+  "createNodes" must {
+    "call CreateSeqNodes.create once" in {
+      val (objectFactory, createSeqNodes) = build()
+
+      val step = objectFactory.createNodes(scope = Scope())
+
+      whenReady(step) { _ =>
+        verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
+      }(config = patienceConfig)
     }
   }
 
