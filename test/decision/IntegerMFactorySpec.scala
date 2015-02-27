@@ -6,6 +6,8 @@ import composition.UnitTestHelpers
 import models.common.IScope
 import models.domain.scala.IntegerM
 
+import scala.concurrent.Await
+
 final class IntegerMFactorySpec extends UnitTestHelpers with TestComposition {
 
   "neighbours" must {
@@ -26,6 +28,20 @@ final class IntegerMFactorySpec extends UnitTestHelpers with TestComposition {
       whenReady(step) {
         _ mustBe a[IntegerM]
       }(config = patienceConfig)
+    }
+  }
+
+  "createParams" must {
+    "throw exception" in {
+      val scope = mock[IScope]
+      a[RuntimeException] must be thrownBy Await.result(integerMFactory.createParams(scope), finiteTimeout)
+    }
+  }
+
+  "createNodes" must {
+    "throw exception" in {
+      val scope = mock[IScope]
+      a[RuntimeException] must be thrownBy Await.result(integerMFactory.createNodes(scope), finiteTimeout)
     }
   }
 
