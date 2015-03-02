@@ -26,7 +26,7 @@ final class AddTwoIntsSpec extends UnitTestHelpers {
             FunctionM(
               params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM())),
               nodes = Seq(
-                AddOperator(ValueRef("a"), ValueRef("b"))
+                AddOperator(ValueRefImpl("a"), ValueRefImpl("b"))
               ), name = "f0")),
             name = "o0")))
       val f = new AddTwoInts(steps)
@@ -35,7 +35,7 @@ final class AddTwoIntsSpec extends UnitTestHelpers {
 
     "return score less than max fitness for a non-optimal solution" in {
       // Arrange
-      val steps = new TypeTree(List(Object(List(FunctionM(List(ValDclInFunctionParam("v0", IntegerM()), ValDclInFunctionParam("v1", IntegerM())), List(ValueRef("v0")), "f0")), "o0")))
+      val steps = new TypeTree(List(Object(List(FunctionM(List(ValDclInFunctionParam("v0", IntegerM()), ValDclInFunctionParam("v1", IntegerM())), List(ValueRefImpl("v0")), "f0")), "o0")))
 
       // Act
       val addTwoInts = new AddTwoInts(steps)

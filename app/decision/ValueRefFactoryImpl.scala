@@ -4,7 +4,8 @@ import ai.SelectionStrategy
 import com.google.inject.Inject
 import models.common.IScope
 import models.domain.Step
-import models.domain.scala.ValueRef
+import models.domain.scala.ValueRefImpl
+import models.domain.scala.ValueRefImpl$
 import utils.PozInt
 
 import scala.async.Async.async
@@ -16,7 +17,7 @@ final case class ValueRefFactoryImpl @Inject()(ai: SelectionStrategy) extends Va
   override val nodesToChooseFrom = Set.empty[PozInt]
 
   override def createStep(scope: IScope): Future[Step] = async {
-    ValueRef(index = ai.chooseIndex(scope.numVals))
+    ValueRefImpl(index = ai.chooseIndex(scope.numVals))
   }
 
   override def createParams(scope: IScope): Future[AccumulateInstructions] = throw new RuntimeException("calling this method is not possible as there will be no params")

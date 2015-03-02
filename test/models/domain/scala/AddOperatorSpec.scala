@@ -35,7 +35,9 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
       when(scope.hasHeightRemaining).thenReturn(true)
       when(scope.height).thenReturn(2)
       when(scope.decrementHeight).thenReturn(scopeDecremented)
-      val terminal = ValueRef("v")
+//      val terminal = ValueRef("v")
+      val terminal = mock[ValueRef]
+      when(terminal.hasNoEmptySteps(any[IScope])).thenReturn(true)
 
       val hasNoEmptySteps = AddOperator(terminal, terminal).hasNoEmptySteps(scope)
 
@@ -64,7 +66,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
 
     "true when no nodes are empty" in {
       val scope = Scope(height = 10, maxHeight = 10)
-      val nonEmpty = ValueRef("v")
+      val nonEmpty = ValueRefImpl("v")
 
       val hasNoEmptySteps = AddOperator(nonEmpty, nonEmpty).hasNoEmptySteps(scope)
 
@@ -73,7 +75,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
 
     "false when left node is empty" in {
       val scope = Scope(height = 10, maxHeight = 10)
-      val nonEmpty = ValueRef("stub")
+      val nonEmpty = ValueRefImpl("stub")
 
       val hasNoEmptySteps = AddOperator(Empty(), nonEmpty).hasNoEmptySteps(scope)
 
@@ -82,7 +84,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
 
     "false when right node is empty" in {
       val scope = Scope(height = 10, maxHeight = 10)
-      val nonEmpty = ValueRef("stub")
+      val nonEmpty = ValueRefImpl("stub")
 
       val hasNoEmptySteps = AddOperator(nonEmpty, Empty()).hasNoEmptySteps(scope)
 

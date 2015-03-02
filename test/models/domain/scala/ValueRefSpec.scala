@@ -9,7 +9,7 @@ final class ValueRefSpec extends UnitTestHelpers {
   "toCompilable" must {
     "return name" in {
       val name = "a"
-      val valueRef = ValueRef(name)
+      val valueRef = ValueRefImpl(name)
 
       val compilable = valueRef.toCompilable
 
@@ -21,7 +21,7 @@ final class ValueRefSpec extends UnitTestHelpers {
     "true when it has a non-empty name and height is 0" in {
       val scope = mock[IScope]
       val name = "a"
-      val valueRef = ValueRef(name)
+      val valueRef = ValueRefImpl(name)
 
       val hasNoEmptySteps = valueRef.hasNoEmptySteps(scope)
 
@@ -31,7 +31,7 @@ final class ValueRefSpec extends UnitTestHelpers {
     "true given a non-empty name" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val name = "a"
-      val valueRef = ValueRef(name)
+      val valueRef = ValueRefImpl(name)
 
       val hasNoEmptySteps = valueRef.hasNoEmptySteps(scope)
 
@@ -41,7 +41,7 @@ final class ValueRefSpec extends UnitTestHelpers {
     "false given an empty name" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val name = ""
-      val valueRef = ValueRef(name)
+      val valueRef = ValueRefImpl(name)
 
       val hasNoEmptySteps = valueRef.hasNoEmptySteps(scope)
 
@@ -54,7 +54,7 @@ final class ValueRefSpec extends UnitTestHelpers {
       val scope = mock[IScope]
       val name = "a"
       val factoryLookup = mock[FactoryLookup]
-      val valueRef = ValueRef(name)
+      val valueRef = ValueRefImpl(name)
 
       val step = valueRef.fillEmptySteps(scope, factoryLookup)
 
@@ -68,7 +68,7 @@ final class ValueRefSpec extends UnitTestHelpers {
     "returns 1" in {
       val name = "a"
 
-      val height = ValueRef(name).height
+      val height = ValueRefImpl(name).height
 
       height must equal(1)
     }

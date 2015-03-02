@@ -8,7 +8,8 @@ import composition.StubSelectionStrategyBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope
-import models.domain.scala.ValueRef
+import models.domain.scala.ValueRefImpl
+import models.domain.scala.ValueRefImpl$
 import org.mockito.Mockito._
 
 import scala.concurrent.Await
@@ -22,7 +23,7 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
       val step = valueRefFactory.createStep(scope = scope)
 
       whenReady(step) {
-        _ mustBe a[ValueRef]
+        _ mustBe a[ValueRefImpl]
       }(config = patienceConfig)
     }
 
@@ -32,7 +33,7 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
       val step = valueRefFactory.createStep(scope = scope)
 
       whenReady(step) {
-        case ValueRef(name) => name must equal("v0")
+        case ValueRefImpl(name) => name must equal("v0")
       }(config = patienceConfig)
     }
 
@@ -42,7 +43,7 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
       val step = valueRefFactory.createStep(scope = scope)
 
       whenReady(step) {
-        case ValueRef(name) => name must equal("v1")
+        case ValueRefImpl(name) => name must equal("v1")
         case _ => fail("wrong type")
       }(config = patienceConfig)
     }

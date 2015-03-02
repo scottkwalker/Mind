@@ -160,7 +160,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
             FunctionM(params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM())),
               nodes = Seq(
                 AddOperator(
-                  ValueRef("a"), ValueRef("b"))
+                  ValueRefImpl("a"), ValueRefImpl("b"))
               ), name = "f0")),
             name = "o0")))
 
