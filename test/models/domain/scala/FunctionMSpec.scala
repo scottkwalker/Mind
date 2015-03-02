@@ -38,7 +38,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
     }
 
     "false given it cannot terminate in 0 steps" in {
-      val scope = Scope(height = 0)
+      val scope = mock[IScope]
       val node = mock[Step]
       when(node.hasNoEmptySteps(any[Scope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
 
