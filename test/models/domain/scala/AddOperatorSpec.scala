@@ -53,7 +53,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
     }
 
     "false given child nodes cannot terminate in under N steps" in {
-      val scope = Scope(height = 10, maxHeight = 10)
+      val scope = mock[IScope]
       val nonTerminal = mock[Step]
       when(nonTerminal.hasNoEmptySteps(any[Scope])).thenReturn(false)
 
