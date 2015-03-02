@@ -23,8 +23,9 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
   "create step" must {
     "returns instance of this type" in {
       val (typeTreeFactory, _) = build()
+      val scope = mock[IScope]
 
-      val step = typeTreeFactory.createStep(Scope())
+      val step = typeTreeFactory.createStep(scope)
 
       whenReady(step) {
         _ mustBe a[TypeTree]
@@ -33,8 +34,9 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
 
     "call CreateSeqNodes.create once" in {
       val (typeTreeFactory, createSeqNodes) = build()
+      val scope = mock[IScope]
 
-      val step = typeTreeFactory.create(Scope(), Seq.empty)
+      val step = typeTreeFactory.create(scope, Seq.empty)
 
       whenReady(step) { _ =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
@@ -49,8 +51,9 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
         Seq(decision)
       }
       val (typeTreeFactory, _) = build(nextInt = 3)
+      val scope = mock[IScope]
 
-      val step = typeTreeFactory.create(scope = Scope(), premadeChildren = premadeChildren)
+      val step = typeTreeFactory.create(scope = scope, premadeChildren = premadeChildren)
 
       whenReady(step) {
         case TypeTree(child) =>
@@ -79,8 +82,9 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
   "createNodes" must {
     "call CreateSeqNodes.create once" in {
       val (objectFactory, createSeqNodes) = build()
+      val scope = mock[IScope]
 
-      val step = objectFactory.createNodes(scope = Scope())
+      val step = objectFactory.createNodes(scope = scope)
 
       whenReady(step) { _ =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
