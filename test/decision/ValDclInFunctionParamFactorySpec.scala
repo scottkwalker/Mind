@@ -15,12 +15,14 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 
 import scala.concurrent.Await
+import org.mockito.Mockito._
 
 final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
     "returns instance of this type" in {
-      val scope = Scope(height = 10, maxParamsInFunc = 1, maxHeight = 10)
+      val scope = mock[IScope]
+      when(scope.maxParamsInFunc).thenReturn(1)
 
       val instruction = valDclInFunctionParamFactory.createStep(scope = scope)
 
@@ -30,7 +32,8 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
     }
 
     "returns expected given scope with 0 vals" in {
-      val scope = Scope(numVals = 0, maxParamsInFunc = 1, height = 10, maxHeight = 10)
+      val scope = mock[IScope]
+      when(scope.maxParamsInFunc).thenReturn(1)
 
       val instruction = valDclInFunctionParamFactory.createStep(scope = scope)
 
@@ -43,7 +46,9 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
     }
 
     "returns expected given scope with 1 val" in {
-      val scope = Scope(numVals = 1, maxParamsInFunc = 2, height = 10, maxHeight = 10)
+      val scope = mock[IScope]
+      when(scope.numVals).thenReturn(1)
+      when(scope.maxParamsInFunc).thenReturn(2)
 
       val instruction = valDclInFunctionParamFactory.createStep(scope = scope)
 
