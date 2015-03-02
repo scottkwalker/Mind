@@ -14,7 +14,8 @@ import models.domain.scala.FactoryLookup
 import models.domain.scala.FunctionMImpl
 import models.domain.scala.FunctionMImpl$
 import models.domain.scala.IntegerM
-import models.domain.scala.Object
+import models.domain.scala.ObjectImpl
+import models.domain.scala.ObjectImpl$
 import models.domain.scala.TypeTree
 import models.domain.scala.ValDclInFunctionParam
 
@@ -31,7 +32,7 @@ final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
     "return code that can be compiled and evaluated" in {
       val premade = new TypeTree(
         Seq(
-          Object(Seq(
+          ObjectImpl(Seq(
             FunctionMImpl(
               params = Seq(ValDclInFunctionParam("v0", IntegerM()), ValDclInFunctionParam("v1", IntegerM())),
               nodes = Seq(

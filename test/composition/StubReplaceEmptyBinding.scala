@@ -2,7 +2,7 @@ package composition
 
 import com.google.inject.AbstractModule
 import decision.Decision
-import models.common.Scope
+import models.common.IScope
 import models.domain.Step
 import org.mockito.Matchers.any
 import org.mockito.Mockito.mock
@@ -15,7 +15,7 @@ final class StubReplaceEmptyBinding extends AbstractModule {
   val stub = {
     val instruction: Step = mock(classOf[Step])
     val node = mock(classOf[Decision])
-    when(node.createStep(any[Scope])).thenReturn(Future.successful(instruction))
+    when(node.createStep(any[IScope])).thenReturn(Future.successful(instruction))
     node
   }
 

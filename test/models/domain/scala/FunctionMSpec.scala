@@ -17,11 +17,11 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
   "hasNoEmptySteps" must {
     "false given an empty name" in {
       val scope = mock[IScope]
-      val node = mock[Step]
-      when(node.hasNoEmptySteps(any[Scope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
+      val step = mock[Step]
+      when(step.hasNoEmptySteps(any[IScope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
 
       val hasNoEmptySteps = FunctionMImpl(params = params,
-        nodes = Seq(node, node),
+        nodes = Seq(step, step),
         name = "").hasNoEmptySteps(scope)
 
       hasNoEmptySteps must equal(false)

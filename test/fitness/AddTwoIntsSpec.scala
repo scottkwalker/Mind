@@ -5,7 +5,7 @@ import models.domain.Step
 import models.domain.scala.AddOperator
 import models.domain.scala.FunctionMImpl$
 import models.domain.scala.IntegerM
-import models.domain.scala.Object
+import models.domain.scala.ObjectImpl$
 import models.domain.scala._
 import org.mockito.Mockito._
 
@@ -22,7 +22,7 @@ final class AddTwoIntsSpec extends UnitTestHelpers {
     "1 add 1 equals 2 with TypeTree that converts nodes to raw Scala" in {
       val steps = new TypeTree(
         Seq(
-          Object(Seq(
+          ObjectImpl(Seq(
             FunctionMImpl(
               params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM())),
               nodes = Seq(
@@ -35,7 +35,7 @@ final class AddTwoIntsSpec extends UnitTestHelpers {
 
     "return score less than max fitness for a non-optimal solution" in {
       // Arrange
-      val steps = new TypeTree(List(Object(List(FunctionMImpl(List(ValDclInFunctionParam("v0", IntegerM()), ValDclInFunctionParam("v1", IntegerM())), List(ValueRefImpl("v0")), "f0")), "o0")))
+      val steps = new TypeTree(List(ObjectImpl(List(FunctionMImpl(List(ValDclInFunctionParam("v0", IntegerM()), ValDclInFunctionParam("v1", IntegerM())), List(ValueRefImpl("v0")), "f0")), "o0")))
 
       // Act
       val addTwoInts = new AddTwoInts(steps)

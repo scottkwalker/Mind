@@ -3,6 +3,7 @@ package models.domain.scala
 import composition.UnitTestHelpers
 import models.common.IScope
 import models.common.Scope
+import org.mockito.Mockito.when
 
 final class ValueRefSpec extends UnitTestHelpers {
 
@@ -29,7 +30,7 @@ final class ValueRefSpec extends UnitTestHelpers {
     }
 
     "true given a non-empty name" in {
-      val scope = Scope(height = 10, maxHeight = 10)
+      val scope = mock[IScope]
       val name = "a"
       val valueRef = ValueRefImpl(name)
 
@@ -39,7 +40,7 @@ final class ValueRefSpec extends UnitTestHelpers {
     }
 
     "false given an empty name" in {
-      val scope = Scope(height = 10, maxHeight = 10)
+      val scope = mock[IScope]
       val name = ""
       val valueRef = ValueRefImpl(name)
 

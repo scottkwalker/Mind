@@ -41,7 +41,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
     "false given it cannot terminate in 0 steps" in {
       val scope = mock[IScope]
       val nonTerminal = mock[Step]
-      when(nonTerminal.hasNoEmptySteps(any[Scope])).thenThrow(new RuntimeException)
+      when(nonTerminal.hasNoEmptySteps(any[IScope])).thenThrow(new RuntimeException)
 
       val hasNoEmptySteps = AddOperator(nonTerminal, nonTerminal).hasNoEmptySteps(scope)
 
@@ -51,21 +51,11 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
     "false given child nodes cannot terminate in under N steps" in {
       val scope = mock[IScope]
       val nonTerminal = mock[Step]
-      when(nonTerminal.hasNoEmptySteps(any[Scope])).thenReturn(false)
+      when(nonTerminal.hasNoEmptySteps(any[IScope])).thenReturn(false)
 
       val hasNoEmptySteps = AddOperator(nonTerminal, nonTerminal).hasNoEmptySteps(scope)
 
       hasNoEmptySteps must equal(false)
-    }
-
-    "true when no nodes are empty" in {
-      val scope = mock[IScope]
-      when(scope.hasHeightRemaining).thenReturn(true)
-      val nonEmpty = ValueRefImpl("v")
-
-      val hasNoEmptySteps = AddOperator(nonEmpty, nonEmpty).hasNoEmptySteps(scope)
-
-      hasNoEmptySteps must equal(true)
     }
 
     "false when left node is empty" in {
@@ -92,8 +82,8 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(true)
       val valid = mock[Step]
-      when(valid.hasNoEmptySteps(any[Scope])).thenReturn(true)
-      val invalid = Object(Seq.empty, "ObjectM0")
+      when(valid.hasNoEmptySteps(any[IScope])).thenReturn(true)
+      val invalid = ObjectImpl(Seq.empty, "ObjectM0")
 
       val hasNoEmptySteps = AddOperator(valid, invalid).hasNoEmptySteps(scope)
 
@@ -106,13 +96,13 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
       val nonEmpty = mock[Step]
-      when(nonEmpty.fillEmptySteps(any[Scope], any[FactoryLookup])).thenReturn(Future.successful(nonEmpty))
+      when(nonEmpty.fillEmptySteps(any[IScope], any[FactoryLookup])).thenReturn(Future.successful(nonEmpty))
       val instance = AddOperator(nonEmpty, nonEmpty)
 
       val fillEmptySteps = instance.fillEmptySteps(scope, factoryLookup)
 
       whenReady(fillEmptySteps) { _ =>
-        verify(nonEmpty, times(2)).fillEmptySteps(any[Scope], any[FactoryLookup])
+        verify(nonEmpty, times(2)).fillEmptySteps(any[IScope], any[FactoryLookup])
       }(config = patienceConfig)
     }
 
@@ -120,7 +110,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
       val nonEmpty = mock[Step]
-      when(nonEmpty.fillEmptySteps(any[Scope], any[FactoryLookup])).thenReturn(Future.successful(nonEmpty))
+      when(nonEmpty.fillEmptySteps(any[IScope], any[FactoryLookup])).thenReturn(Future.successful(nonEmpty))
       val instance = AddOperator(nonEmpty, nonEmpty)
 
       val fillEmptySteps = instance.fillEmptySteps(scope, factoryLookup)

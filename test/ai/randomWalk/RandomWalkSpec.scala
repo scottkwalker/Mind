@@ -9,9 +9,7 @@ import composition.ai.randomWalk.RandomWalkBinding
 import decision.Decision
 import fitness.AddTwoInts
 import models.common.Scope
-import models.domain.scala.FunctionMImpl$
 import models.domain.scala.IntegerM
-import models.domain.scala.Object
 import models.domain.scala.TypeTree
 import models.domain.scala._
 import org.mockito.Mockito.times
@@ -30,7 +28,7 @@ final class RandomWalkSpec extends UnitTestHelpers with TestComposition {
     "return code that can be compiled and evaluated" in {
       val premade = new TypeTree(
         Seq(
-          Object(Seq(
+          ObjectImpl(Seq(
             FunctionMImpl(
               params = Seq(ValDclInFunctionParam("v0", IntegerM()), ValDclInFunctionParam("v1", IntegerM())),
               nodes = Seq(

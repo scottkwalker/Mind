@@ -9,13 +9,11 @@ import composition.StubSelectionStrategyBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope
-import models.common.Scope
 import models.domain.Step
-import models.domain.scala.Object
+import models.domain.scala.ObjectImpl
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
-import scala.concurrent.Await
 import scala.concurrent.Future
 
 final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
@@ -27,7 +25,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
       val step = objectFactory.createStep(scope = scope)
 
       whenReady(step) {
-        _ mustBe an[Object]
+        _ mustBe an[ObjectImpl]
       }(config = patienceConfig)
     }
 
@@ -37,7 +35,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
       val step = objectFactory.createStep(scope = scope)
 
       whenReady(step) {
-        case Object(_, name) => name must equal("o0")
+        case ObjectImpl(_, name) => name must equal("o0")
         case _ => fail("wrong type")
       }(config = patienceConfig)
     }
@@ -49,7 +47,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
       val step = objectFactory.createStep(scope = scope)
 
       whenReady(step) {
-        case Object(_, name) => name must equal("o1")
+        case ObjectImpl(_, name) => name must equal("o1")
         case _ => fail("wrong type")
       }(config = patienceConfig)
     }

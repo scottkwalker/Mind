@@ -4,7 +4,8 @@ import com.google.inject.Inject
 import memoization.LookupChildrenWithFutures
 import models.common.IScope
 import models.domain.Step
-import models.domain.scala.Object
+import models.domain.scala.ObjectImpl
+import models.domain.scala.ObjectImpl$
 
 import scala.async.Async.async
 import scala.async.Async.await
@@ -21,7 +22,7 @@ case class ObjectFactoryImpl @Inject()(
   override def createStep(scope: IScope): Future[Step] = async {
     val nodesWithoutEmpties = await(createNodes(scope))
 
-    Object(nodes = nodesWithoutEmpties.instructions,
+    ObjectImpl(nodes = nodesWithoutEmpties.instructions,
       index = scope.numObjects)
   }
 

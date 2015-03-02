@@ -17,8 +17,10 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
 
   "hasNoEmptySteps" must {
     "return true given it can terminates in under N steps" in {
-      val scope = Scope(height = 10, maxHeight = 10)
-      val step = Object(nodes = Seq.empty, name = "o0")
+      val scope = mock[IScope]
+      when(scope.hasHeightRemaining).thenReturn(true)
+      val step = mock[Object]
+      when(step.hasNoEmptySteps(any[IScope])).thenReturn(true)
       val typeTree = new TypeTree(Seq(step))
 
       val hasNoEmptySteps = typeTree.hasNoEmptySteps(scope)
@@ -27,7 +29,8 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
     }
 
     "return false given it cannot terminate in under N steps" in {
-      val scope = Scope(height = 10, maxHeight = 10)
+      val scope = mock[IScope]
+      when(scope.hasHeightRemaining).thenReturn(false)
       val step = mock[Step]
       when(step.hasNoEmptySteps(any[Scope])).thenReturn(false)
       val typeTree = new TypeTree(Seq(step))
@@ -37,18 +40,9 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(false)
     }
 
-    "return true given none empty" in {
-      val scope = Scope(height = 10, maxHeight = 10)
-      val step = Object(nodes = Seq.empty, name = "o0")
-      val typeTree = new TypeTree(Seq(step))
-
-      val hasNoEmptySteps = typeTree.hasNoEmptySteps(scope)
-
-      hasNoEmptySteps must equal(true)
-    }
-
     "return false given empty root node" in {
-      val scope = Scope(height = 10, maxHeight = 10)
+      val scope = mock[IScope]
+      when(scope.hasHeightRemaining).thenReturn(true)
       val typeTree = new TypeTree(Seq(Empty()))
 
       val hasNoEmptySteps = typeTree.hasNoEmptySteps(scope)
@@ -156,7 +150,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
     "return expected value for realistic tree" in {
       val typeTree = new TypeTree(
         Seq(
-          Object(Seq(
+          ObjectImpl(Seq(
             FunctionMImpl(params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM())),
               nodes = Seq(
                 AddOperator(

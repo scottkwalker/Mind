@@ -88,7 +88,7 @@ final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition 
     val instruction = mock[Step]
     val decision = mock[Decision]
     when(decision.updateScope(scope)).thenReturn(scope)
-    when(decision.createStep(any[Scope])).thenReturn(Future.successful(instruction))
+    when(decision.createStep(any[IScope])).thenReturn(Future.successful(instruction))
     val rng = mock[RandomNumberGenerator]
     when(rng.nextBoolean).thenReturn(true)
     when(rng.nextInt(any[Int])).thenReturn(nextInt)

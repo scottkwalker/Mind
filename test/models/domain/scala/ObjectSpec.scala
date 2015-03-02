@@ -18,9 +18,9 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
     "true given it can terminates in under N steps" in {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(true)
-      val functionM = mock[FunctionM]
-      when(functionM.hasNoEmptySteps(any[IScope])).thenReturn(true)
-      val objectDef = Object(Seq(functionM), name)
+      val step = mock[FunctionM]
+      when(step.hasNoEmptySteps(any[IScope])).thenReturn(true)
+      val objectDef = ObjectImpl(Seq(step), name)
 
       val hasNoEmptySteps = objectDef.hasNoEmptySteps(scope)
 
@@ -31,7 +31,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       val step = mock[Step]
       when(step.hasNoEmptySteps(any[Scope])).thenThrow(new RuntimeException)
-      val objectDef = Object(Seq(step), name)
+      val objectDef = ObjectImpl(Seq(step), name)
 
       val hasNoEmptySteps = objectDef.hasNoEmptySteps(scope)
 
@@ -42,29 +42,16 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
       val scope = Scope(height = 3, maxHeight = 10)
       val step = mock[Step]
       when(step.hasNoEmptySteps(any[Scope])).thenReturn(false)
-      val objectDef = Object(Seq(step), name)
+      val objectDef = ObjectImpl(Seq(step), name)
 
       val hasNoEmptySteps = objectDef.hasNoEmptySteps(scope)
 
       hasNoEmptySteps must equal(false)
     }
 
-    "true given no empty nodes" in {
-      val scope = Scope(height = 10, maxHeight = 10)
-      // This has to be a real instead of a mock as we will be exact-matching on the type.
-      val instruction = FunctionMImpl(params = Seq.empty,
-        nodes = Seq.empty,
-        name = "f0")
-      val objectDef = Object(Seq(instruction), name)
-
-      val hasNoEmptySteps = objectDef.hasNoEmptySteps(scope)
-
-      hasNoEmptySteps must equal(true)
-    }
-
     "false given single empty method node" in {
       val scope = Scope(height = 10, maxHeight = 10)
-      val objectDef = Object(Seq(Empty()), name)
+      val objectDef = ObjectImpl(Seq(Empty()), name)
       objectDef.hasNoEmptySteps(scope) must equal(false)
     }
 
@@ -72,7 +59,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
       val scope = Scope(height = 10, maxHeight = 10)
       val instruction = mock[Step]
       when(instruction.hasNoEmptySteps(any[Scope])).thenReturn(true)
-      val objectDef = Object(Seq(instruction, Empty()), name)
+      val objectDef = ObjectImpl(Seq(instruction, Empty()), name)
 
       val hasNoEmptySteps = objectDef.hasNoEmptySteps(scope)
 
@@ -84,7 +71,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
     "return expected" in {
       val instruction = mock[Step]
       when(instruction.toCompilable).thenReturn("STUB")
-      val objectDef = Object(Seq(instruction), name)
+      val objectDef = ObjectImpl(Seq(instruction), name)
 
       val compilable = objectDef.toCompilable
 
@@ -98,7 +85,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
       val factoryLookup = mock[FactoryLookup]
       val instruction = mock[Step]
       when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
-      val objectDef = Object(Seq(instruction), name = name)
+      val objectDef = ObjectImpl(Seq(instruction), name = name)
 
       val fillEmptySteps = objectDef.fillEmptySteps(scope, factoryLookup)
 
@@ -112,7 +99,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
       val factoryLookup = mock[FactoryLookup]
       val instruction = mock[Step]
       when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
-      val objectDef = Object(Seq(instruction), name)
+      val objectDef = ObjectImpl(Seq(instruction), name)
 
       val fillEmptySteps = objectDef.fillEmptySteps(scope, factoryLookup)
 
@@ -130,13 +117,13 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
         maxHeight = 10)
       val empty = Empty()
       val factoryLookup = testInjector(new StubFactoryLookupBinding).getInstance(classOf[FactoryLookup])
-      val objectDef = Object(nodes = Seq(empty),
+      val objectDef = ObjectImpl(nodes = Seq(empty),
         name = name)
 
       val fillEmptySteps = objectDef.fillEmptySteps(scope, factoryLookup)
 
       whenReady(fillEmptySteps) {
-        case Object(n2, name2) =>
+        case ObjectImpl(n2, name2) =>
           n2 match {
             case Seq(nSeq) => nSeq mustBe a[Step]
             case _ => fail("not a Seq")
@@ -149,7 +136,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
     "throw when passed empty seq (no empty or non-empty)" in {
       val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
-      val instance = new Object(nodes = Seq.empty, name = name)
+      val instance = new ObjectImpl(nodes = Seq.empty, name = name)
 
       a[RuntimeException] must be thrownBy Await.result(instance.fillEmptySteps(scope, factoryLookup), finiteTimeout)
     }
@@ -159,7 +146,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
     "height returns 1 + child height when has 1 child" in {
       val instruction = mock[Step]
       when(instruction.height).thenReturn(2)
-      val objectDef = Object(Seq(instruction), name)
+      val objectDef = ObjectImpl(Seq(instruction), name)
 
       val height = objectDef.height
 
@@ -171,7 +158,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
       when(instruction1.height).thenReturn(1)
       val instruction2 = mock[Step]
       when(instruction2.height).thenReturn(2)
-      val objectDef = Object(Seq(instruction1, instruction2), name)
+      val objectDef = ObjectImpl(Seq(instruction1, instruction2), name)
 
       val height = objectDef.height
 
