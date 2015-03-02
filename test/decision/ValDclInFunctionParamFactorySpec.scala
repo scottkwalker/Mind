@@ -21,7 +21,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
 
   "create step" must {
     "returns instance of this type" in {
-      val scope = mock[IScope]
+      val (valDclInFunctionParamFactory, scope) = build
       when(scope.maxParamsInFunc).thenReturn(1)
 
       val instruction = valDclInFunctionParamFactory.createStep(scope = scope)
@@ -32,7 +32,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
     }
 
     "returns expected given scope with 0 vals" in {
-      val scope = mock[IScope]
+      val (valDclInFunctionParamFactory, scope) = build
       when(scope.maxParamsInFunc).thenReturn(1)
 
       val instruction = valDclInFunctionParamFactory.createStep(scope = scope)
@@ -46,7 +46,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
     }
 
     "returns expected given scope with 1 val" in {
-      val scope = mock[IScope]
+      val (valDclInFunctionParamFactory, scope) = build
       when(scope.numVals).thenReturn(1)
       when(scope.maxParamsInFunc).thenReturn(2)
 
@@ -63,7 +63,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
 
   "createParams" must {
     "throw exception" in {
-      val scope = mock[IScope]
+      val (valDclInFunctionParamFactory, scope) = build
 
       a[RuntimeException] must be thrownBy valDclInFunctionParamFactory.createParams(scope).futureValue
     }
@@ -71,7 +71,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
 
   "createNodes" must {
     "throw exception" in {
-      val scope = mock[IScope]
+      val (valDclInFunctionParamFactory, scope) = build
 
       a[RuntimeException] must be thrownBy valDclInFunctionParamFactory.createNodes(scope).futureValue
     }
@@ -79,7 +79,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
 
   "updateScope" must {
     "calls increments vals once" in {
-      val scope = mock[IScope]
+      val (valDclInFunctionParamFactory, scope) = build
 
       valDclInFunctionParamFactory.updateScope(scope)
 
@@ -87,11 +87,15 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
     }
   }
 
-  private def valDclInFunctionParamFactory = testInjector(
-    new DecisionBindings,
-    new StubLookupChildrenWithFutures,
-    new StubCreateNodeBinding,
-    new StubCreateSeqNodesBinding,
-    new StubSelectionStrategyBinding
-  ).getInstance(classOf[ValDclInFunctionParamFactory])
+  private def build = {
+    val scope = mock[IScope]
+    val valDclInFunctionParamFactory = testInjector(
+      new DecisionBindings,
+      new StubLookupChildrenWithFutures,
+      new StubCreateNodeBinding,
+      new StubCreateSeqNodesBinding,
+      new StubSelectionStrategyBinding
+    ).getInstance(classOf[ValDclInFunctionParamFactory])
+    (valDclInFunctionParamFactory, scope)
+  }
 }
