@@ -14,6 +14,8 @@ import models.domain.scala.ValDclInFunctionParam
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 
+import scala.concurrent.Await
+
 final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
@@ -51,6 +53,22 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
           primitiveType mustBe a[Step]
         case _ => fail("wrong type")
       }(config = patienceConfig)
+    }
+  }
+
+  "createParams" must {
+    "throw exception" in {
+      val scope = mock[IScope]
+
+      a[RuntimeException] must be thrownBy Await.result(valDclInFunctionParamFactory.createParams(scope), finiteTimeout)
+    }
+  }
+
+  "createNodes" must {
+    "throw exception" in {
+      val scope = mock[IScope]
+
+      a[RuntimeException] must be thrownBy Await.result(valDclInFunctionParamFactory.createNodes(scope), finiteTimeout)
     }
   }
 

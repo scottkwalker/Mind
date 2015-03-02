@@ -11,6 +11,8 @@ import models.common.IScope
 import models.domain.scala.ValueRef
 import org.mockito.Mockito._
 
+import scala.concurrent.Await
+
 final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
@@ -51,6 +53,22 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
       val updateScope = valueRefFactory.updateScope(scope)
 
       updateScope must equal(scope)
+    }
+  }
+
+  "createParams" must {
+    "throw exception" in {
+      val scope = mock[IScope]
+
+      a[RuntimeException] must be thrownBy Await.result(valueRefFactory.createParams(scope), finiteTimeout)
+    }
+  }
+
+  "createNodes" must {
+    "throw exception" in {
+      val scope = mock[IScope]
+
+      a[RuntimeException] must be thrownBy Await.result(valueRefFactory.createNodes(scope), finiteTimeout)
     }
   }
 
