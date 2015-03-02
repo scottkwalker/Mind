@@ -15,7 +15,6 @@ import scala.concurrent.Future
 final class StubSelectionStrategyBinding(chooseIndex: Int = 0) extends AbstractModule with MockitoSugar {
 
   val stubDecision = {
-//    val scope = Scope(height = 10, maxHeight = 10)
     val scope = mock[IScope]
     val instruction = mock[Step]
     val decision = mock[Decision]
