@@ -4,6 +4,7 @@ import composition.CreateNodeBinding
 import composition.StubSelectionStrategyBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
+import models.common.IScope
 import models.common.Scope
 import org.mockito.Mockito._
 
@@ -40,11 +41,12 @@ final class CreateNodeImplSpec extends UnitTestHelpers with TestComposition {
   private def build = {
     val selectionStrategyBinding = new StubSelectionStrategyBinding
     val possibleChildren = Future.successful(Set(selectionStrategyBinding.stubDecision))
+    val scope = mock[IScope]
     val createNode = testInjector(
       selectionStrategyBinding,
       new CreateNodeBinding // The system under test
     ).getInstance(classOf[CreateNode])
 
-    (selectionStrategyBinding.stubDecision, Scope(), selectionStrategyBinding.stub, possibleChildren, createNode)
+    (selectionStrategyBinding.stubDecision, scope, selectionStrategyBinding.stub, possibleChildren, createNode)
   }
 }

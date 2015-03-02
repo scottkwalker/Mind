@@ -23,8 +23,9 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
   "create step" must {
     "returns instance of this type" in {
       val (objectFactory, _) = build()
+      val scope = mock[IScope]
 
-      val step = objectFactory.createStep(scope = Scope())
+      val step = objectFactory.createStep(scope = scope)
 
       whenReady(step) {
         _ mustBe an[Object]
@@ -33,8 +34,9 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
 
     "returns expected given scope with 0 existing objects" in {
       val (objectFactory, _) = build()
+      val scope = mock[IScope]
 
-      val step = objectFactory.createStep(scope = Scope())
+      val step = objectFactory.createStep(scope = scope)
 
       whenReady(step) {
         case Object(_, name) => name must equal("o0")
@@ -44,8 +46,10 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
 
     "returns expected given scope with 1 existing objects" in {
       val (objectFactory, _) = build()
+      val scope = mock[IScope]
+      when(scope.numObjects).thenReturn(1)
 
-      val step = objectFactory.createStep(scope = Scope(numObjects = 1))
+      val step = objectFactory.createStep(scope = scope)
 
       whenReady(step) {
         case Object(_, name) => name must equal("o1")
@@ -55,8 +59,9 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
 
     "call CreateSeqNodes.create once" in {
       val (objectFactory, createSeqNodes) = build()
+      val scope = mock[IScope]
 
-      val step = objectFactory.createStep(scope = Scope())
+      val step = objectFactory.createStep(scope = scope)
 
       whenReady(step) { _ =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
@@ -78,8 +83,9 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
   "createNodes" must {
     "call CreateSeqNodes.create once" in {
       val (objectFactory, createSeqNodes) = build()
+      val scope = mock[IScope]
 
-      val step = objectFactory.createNodes(scope = Scope())
+      val step = objectFactory.createNodes(scope = scope)
 
       whenReady(step) { _ =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])

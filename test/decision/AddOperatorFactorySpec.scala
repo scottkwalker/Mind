@@ -17,7 +17,7 @@ final class AddOperatorFactorySpec extends UnitTestHelpers with TestComposition 
 
   "create step" must {
     "return instance of this type" in {
-      val scope = Scope(height = 10, numVals = 1, maxHeight = 10)
+      val scope = mock[IScope]
 
       val step = addOperatorFactory.createStep(scope = scope)
 
