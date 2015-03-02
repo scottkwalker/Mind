@@ -29,7 +29,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
     }
 
     "false given it cannot terminate in 0 steps" in {
-      val scope = Scope(height = 0)
+      val scope = mock[IScope]
       val step = mock[Step]
       when(step.hasNoEmptySteps(any[Scope])).thenThrow(new RuntimeException)
       val objectDef = Object(Seq(step), name)

@@ -19,7 +19,7 @@ final class ValueRefSpec extends UnitTestHelpers {
 
   "hasNoEmptySteps" must {
     "true when it has a non-empty name and height is 0" in {
-      val scope = Scope(height = 0)
+      val scope = mock[IScope]
       val name = "a"
       val valueRef = ValueRef(name)
 
