@@ -12,7 +12,7 @@ import org.scalatest.mock.MockitoSugar
 
 import scala.concurrent.Future
 
-final class StubSelectionStrategyBinding extends AbstractModule with MockitoSugar {
+final class StubSelectionStrategyBinding(chooseIndex: Int = 0) extends AbstractModule with MockitoSugar {
 
   val stubDecision = {
     val scope = Scope(height = 10, maxHeight = 10)
@@ -26,7 +26,7 @@ final class StubSelectionStrategyBinding extends AbstractModule with MockitoSuga
   val stub = {
     val selectionStrategy = mock[SelectionStrategy]
     when(selectionStrategy.chooseChild(any[Set[Decision]])).thenReturn(stubDecision)
-    when(selectionStrategy.chooseIndex(any[Int])).thenReturn(0)
+    when(selectionStrategy.chooseIndex(any[Int])).thenReturn(chooseIndex)
     when(selectionStrategy.chooseChild(any[Future[Set[Decision]]])).thenReturn(Future.successful(stubDecision))
     when(selectionStrategy.canAddAnother(any[Int], any[Int])).thenReturn(false)
     when(selectionStrategy.generateLengthOfSeq(any[Int])).thenReturn(1)
