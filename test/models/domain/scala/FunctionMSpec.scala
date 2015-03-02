@@ -42,7 +42,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(false)
       val node = mock[Step]
-      when(node.hasNoEmptySteps(any[Scope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
+      when(node.hasNoEmptySteps(any[IScope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
 
       val hasNoEmptySteps = FunctionMImpl(params = params,
         nodes = Seq(node, node),
@@ -55,7 +55,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(true)
       val nonTerminal = mock[Step]
-      when(nonTerminal.hasNoEmptySteps(any[Scope])).thenReturn(false)
+      when(nonTerminal.hasNoEmptySteps(any[IScope])).thenReturn(false)
 
       val hasNoEmptySteps = FunctionMImpl(params = params,
         nodes = Seq(nonTerminal, nonTerminal),
@@ -117,9 +117,9 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       val factoryLookup = testInjector(new StubFactoryLookupBinding).getInstance(classOf[FactoryLookup])
       val param = mock[Step]
-      when(param.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(param)
+      when(param.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(param)
       val node = mock[Step]
-      when(node.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(node)
+      when(node.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(node)
       val functionM = FunctionMImpl(params = Seq(param),
         nodes = Seq(node),
         name = name)
@@ -127,8 +127,8 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
       val step = functionM.fillEmptySteps(scope, factoryLookup)
 
       whenReady(step) { _ =>
-        verify(param, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])
-        verify(node, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])
+        verify(param, times(1)).fillEmptySteps(any[IScope], any[FactoryLookup])
+        verify(node, times(1)).fillEmptySteps(any[IScope], any[FactoryLookup])
       }(config = patienceConfig)
     }
 
@@ -136,9 +136,9 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       val factoryLookup = testInjector(new StubFactoryLookupBinding).getInstance(classOf[FactoryLookup])
       val param = mock[Step]
-      when(param.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(param)
+      when(param.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(param)
       val node = mock[Step]
-      when(node.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(node)
+      when(node.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(node)
       val instance = FunctionMImpl(params = Seq(param),
         nodes = Seq(node),
         name = name)
@@ -230,7 +230,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
 
   private def nonEmpty = {
     val node = mock[Step]
-    when(node.hasNoEmptySteps(any[Scope])).thenReturn(true)
+    when(node.hasNoEmptySteps(any[IScope])).thenReturn(true)
     node
   }
 }

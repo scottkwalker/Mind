@@ -30,7 +30,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
     "false given it cannot terminate in 0 steps" in {
       val scope = mock[IScope]
       val step = mock[Step]
-      when(step.hasNoEmptySteps(any[Scope])).thenThrow(new RuntimeException)
+      when(step.hasNoEmptySteps(any[IScope])).thenThrow(new RuntimeException)
       val objectDef = ObjectImpl(Seq(step), name)
 
       val hasNoEmptySteps = objectDef.hasNoEmptySteps(scope)
@@ -41,7 +41,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
     "false given it cannot terminate in under N steps" in {
       val scope = Scope(height = 3, maxHeight = 10)
       val step = mock[Step]
-      when(step.hasNoEmptySteps(any[Scope])).thenReturn(false)
+      when(step.hasNoEmptySteps(any[IScope])).thenReturn(false)
       val objectDef = ObjectImpl(Seq(step), name)
 
       val hasNoEmptySteps = objectDef.hasNoEmptySteps(scope)
@@ -58,7 +58,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
     "false given empty method node in a sequence" in {
       val scope = Scope(height = 10, maxHeight = 10)
       val instruction = mock[Step]
-      when(instruction.hasNoEmptySteps(any[Scope])).thenReturn(true)
+      when(instruction.hasNoEmptySteps(any[IScope])).thenReturn(true)
       val objectDef = ObjectImpl(Seq(instruction, Empty()), name)
 
       val hasNoEmptySteps = objectDef.hasNoEmptySteps(scope)
@@ -84,13 +84,13 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
       val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
+      when(instruction.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(instruction)
       val objectDef = ObjectImpl(Seq(instruction), name = name)
 
       val fillEmptySteps = objectDef.fillEmptySteps(scope, factoryLookup)
 
       whenReady(fillEmptySteps) { _ =>
-        verify(instruction, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])
+        verify(instruction, times(1)).fillEmptySteps(any[IScope], any[FactoryLookup])
       }(config = patienceConfig)
     }
 
@@ -98,7 +98,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
       val instruction = mock[Step]
-      when(instruction.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(instruction)
+      when(instruction.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(instruction)
       val objectDef = ObjectImpl(Seq(instruction), name)
 
       val fillEmptySteps = objectDef.fillEmptySteps(scope, factoryLookup)

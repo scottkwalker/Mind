@@ -57,7 +57,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
       when(scope.hasHeightRemaining).thenReturn(true)
       val name = "a"
       val step = mock[Step]
-      when(step.hasNoEmptySteps(any[Scope])).thenReturn(false)
+      when(step.hasNoEmptySteps(any[IScope])).thenReturn(false)
       val valDclInFunctionParam = ValDclInFunctionParam(name, step)
 
       val hasNoEmptySteps = valDclInFunctionParam.hasNoEmptySteps(scope)
@@ -86,13 +86,13 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
       val name = "a"
       val factoryLookup = mock[FactoryLookup]
       val step = mock[Step]
-      when(step.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(step)
+      when(step.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(step)
       val valDclInFunctionParam = ValDclInFunctionParam(name, step)
 
       val fillEmptySteps = valDclInFunctionParam.fillEmptySteps(scope, factoryLookup)
 
       whenReady(fillEmptySteps) { _ =>
-        verify(step, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])
+        verify(step, times(1)).fillEmptySteps(any[IScope], any[FactoryLookup])
       }(config = patienceConfig)
     }
 
@@ -103,7 +103,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
       val name = "a"
       val factoryLookup = mock[FactoryLookup]
       val step = mock[Step]
-      when(step.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(step)
+      when(step.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(step)
       val valDclInFunctionParam = ValDclInFunctionParam(name, step)
 
       val fillEmptySteps = valDclInFunctionParam.fillEmptySteps(scope, factoryLookup)

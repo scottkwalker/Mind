@@ -6,7 +6,6 @@ import ai.aco.Aco
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope
-import models.common.Scope
 import models.domain.Step
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
@@ -94,7 +93,7 @@ final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition 
     when(rng.nextInt(any[Int])).thenReturn(nextInt)
     val ai: SelectionStrategy = Aco(rng)
     val createNode = mock[CreateNode]
-    when(createNode.create(any[Future[Set[Decision]]], any[Scope])).thenReturn(Future.successful(scope, instruction))
+    when(createNode.create(any[Future[Set[Decision]]], any[IScope])).thenReturn(Future.successful(scope, instruction))
     val possibleChildren = Future.successful(Set(decision))
     val createSeqNodes = CreateSeqNodesImpl(createNode, ai)
 

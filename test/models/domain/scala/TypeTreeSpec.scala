@@ -32,7 +32,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(false)
       val step = mock[Step]
-      when(step.hasNoEmptySteps(any[Scope])).thenReturn(false)
+      when(step.hasNoEmptySteps(any[IScope])).thenReturn(false)
       val typeTree = new TypeTree(Seq(step))
 
       val hasNoEmptySteps = typeTree.hasNoEmptySteps(scope)
@@ -67,19 +67,19 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
       val step = mock[Step]
-      when(step.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(step)
+      when(step.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(step)
       val typeTree = TypeTree(Seq(step))
 
       val fillEmptySteps = typeTree.fillEmptySteps(scope, factoryLookup)
 
-      whenReady(fillEmptySteps) { _ => verify(step, times(1)).fillEmptySteps(any[Scope], any[FactoryLookup])}(config = patienceConfig)
+      whenReady(fillEmptySteps) { _ => verify(step, times(1)).fillEmptySteps(any[IScope], any[FactoryLookup])}(config = patienceConfig)
     }
 
     "return same when no empty nodes" in {
       val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
       val step = mock[Step]
-      when(step.fillEmptySteps(any[Scope], any[FactoryLookup])) thenReturn Future.successful(step)
+      when(step.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(step)
       val typeTree = new TypeTree(Seq(step))
 
       val fillEmptySteps = typeTree.fillEmptySteps(scope, factoryLookup)
