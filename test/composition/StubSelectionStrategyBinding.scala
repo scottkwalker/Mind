@@ -4,7 +4,6 @@ import _root_.ai.SelectionStrategy
 import com.google.inject.AbstractModule
 import decision.Decision
 import models.common.IScope
-import models.common.Scope
 import models.domain.Step
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when

@@ -5,7 +5,6 @@ import composition.StubSelectionStrategyBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope
-import models.common.Scope
 import models.domain.Step
 import org.mockito.Matchers._
 import org.mockito.Mockito._

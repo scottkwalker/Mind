@@ -85,11 +85,11 @@ final class RandomWalkSpec extends UnitTestHelpers with TestComposition {
 
   private def factoryLookup = randomWalkInjector.getInstance(classOf[FactoryLookup])
 
-  private def selectionStrategy = randomWalkInjector.getInstance(classOf[SelectionStrategy])
-
   private def randomWalkInjector = testInjector(
     new RandomWalkBinding,
     new StubFactoryLookupBinding,
     new StubRngBinding
   )
+
+  private def selectionStrategy = randomWalkInjector.getInstance(classOf[SelectionStrategy])
 }

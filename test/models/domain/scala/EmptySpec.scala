@@ -2,7 +2,6 @@ package models.domain.scala
 
 import composition.UnitTestHelpers
 import models.common.IScope
-import models.common.Scope
 
 final class EmptySpec extends UnitTestHelpers {
 

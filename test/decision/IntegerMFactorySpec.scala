@@ -6,8 +6,6 @@ import composition.UnitTestHelpers
 import models.common.IScope
 import models.domain.scala.IntegerM
 
-import scala.concurrent.Await
-
 final class IntegerMFactorySpec extends UnitTestHelpers with TestComposition {
 
   "neighbours" must {

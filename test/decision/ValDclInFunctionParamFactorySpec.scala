@@ -8,14 +8,11 @@ import composition.StubSelectionStrategyBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope
-import models.common.Scope
 import models.domain.Step
 import models.domain.scala.ValDclInFunctionParam
+import org.mockito.Mockito._
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
-
-import scala.concurrent.Await
-import org.mockito.Mockito._
 
 final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestComposition {
 

@@ -12,10 +12,8 @@ import models.common.Scope
 import models.domain.scala.Empty
 import models.domain.scala.FactoryLookup
 import models.domain.scala.FunctionMImpl
-import models.domain.scala.FunctionMImpl$
 import models.domain.scala.IntegerM
 import models.domain.scala.ObjectImpl
-import models.domain.scala.ObjectImpl$
 import models.domain.scala.TypeTree
 import models.domain.scala.ValDclInFunctionParam
 import org.mockito.Mockito.times
@@ -91,11 +89,11 @@ final class AcoSpec extends UnitTestHelpers with TestComposition {
 
   private def factoryLookup = acoInjector.getInstance(classOf[FactoryLookup])
 
-  private def selectionStrategy = acoInjector.getInstance(classOf[SelectionStrategy])
-
   private def acoInjector = testInjector(
     new AcoBinding,
     new StubFactoryLookupBinding,
     new StubRngBinding
   )
+
+  private def selectionStrategy = acoInjector.getInstance(classOf[SelectionStrategy])
 }

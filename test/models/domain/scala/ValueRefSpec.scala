@@ -2,8 +2,6 @@ package models.domain.scala
 
 import composition.UnitTestHelpers
 import models.common.IScope
-import models.common.Scope
-import org.mockito.Mockito.when
 
 final class ValueRefSpec extends UnitTestHelpers {
 

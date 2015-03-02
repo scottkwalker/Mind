@@ -3,9 +3,7 @@ package fitness
 import composition.UnitTestHelpers
 import models.domain.Step
 import models.domain.scala.AddOperator
-import models.domain.scala.FunctionMImpl$
 import models.domain.scala.IntegerM
-import models.domain.scala.ObjectImpl$
 import models.domain.scala._
 import org.mockito.Mockito._
 

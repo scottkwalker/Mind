@@ -9,10 +9,6 @@ import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope
 import models.domain.scala.ValueRefImpl
-import models.domain.scala.ValueRefImpl$
-import org.mockito.Mockito._
-
-import scala.concurrent.Await
 
 final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
 
