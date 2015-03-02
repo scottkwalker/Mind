@@ -26,7 +26,7 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "return expected when ai stubbed to choose index zero" in {
+    "return expected type and name when ai stubbed to choose index zero" in {
       val (valueRefFactory, scope) = build()
 
       val step = valueRefFactory.createStep(scope = scope)
@@ -36,13 +36,13 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "return expected when ai stubbed to choose index two" in {
-      val (valueRefFactory, scope) = build(chooseIndex = 2)
+    "return expected type and name when ai stubbed to choose index 1" in {
+      val (valueRefFactory, scope) = build(chooseIndex = 1)
 
       val step = valueRefFactory.createStep(scope = scope)
 
       whenReady(step) {
-        case ValueRef(name) => name must equal("v2")
+        case ValueRef(name) => name must equal("v1")
         case _ => fail("wrong type")
       }(config = patienceConfig)
     }
