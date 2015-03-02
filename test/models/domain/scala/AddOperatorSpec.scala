@@ -28,7 +28,13 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
 
   "hasNoEmptySteps" must {
     "true given child nodes can terminate in under N steps" in {
-      val scope = Scope(height = 2, maxHeight = 10)
+      val scopeDecremented = mock[IScope]
+      when(scopeDecremented.height).thenReturn(1)
+      when(scopeDecremented.maxHeight).thenReturn(10)
+      val scope = mock[IScope]
+      when(scope.hasHeightRemaining).thenReturn(true)
+      when(scope.height).thenReturn(2)
+      when(scope.decrementHeight).thenReturn(scopeDecremented)
       val terminal = ValueRef("v")
 
       val hasNoEmptySteps = AddOperator(terminal, terminal).hasNoEmptySteps(scope)
@@ -37,7 +43,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
     }
 
     "false given it cannot terminate in 0 steps" in {
-      val scope = Scope(height = 0)
+      val scope = mock[IScope]
       val nonTerminal = mock[Step]
       when(nonTerminal.hasNoEmptySteps(any[Scope])).thenThrow(new RuntimeException)
 
