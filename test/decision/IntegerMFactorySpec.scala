@@ -12,19 +12,17 @@ final class IntegerMFactorySpec extends UnitTestHelpers with TestComposition {
 
   "neighbours" must {
     "have no possible children" in {
+      val (integerMFactory, _) = build
       integerMFactory.nodesToChooseFrom.size must equal(0)
     }
   }
 
   "create step" must {
     "return instance of this type" in {
-      // Arrange
-      val scope = mock[IScope]
+      val (integerMFactory, scope) = build
 
-      // Act
       val step = integerMFactory.createStep(scope)
 
-      // Assert
       whenReady(step) {
         _ mustBe a[IntegerM]
       }(config = patienceConfig)
@@ -33,17 +31,21 @@ final class IntegerMFactorySpec extends UnitTestHelpers with TestComposition {
 
   "createParams" must {
     "throw exception" in {
-      val scope = mock[IScope]
+      val (integerMFactory, scope) = build
       a[RuntimeException] must be thrownBy integerMFactory.createParams(scope).futureValue
     }
   }
 
   "createNodes" must {
     "throw exception" in {
-      val scope = mock[IScope]
+      val (integerMFactory, scope) = build
       a[RuntimeException] must be thrownBy integerMFactory.createNodes(scope).futureValue
     }
   }
 
-  private def integerMFactory = testInjector(new IntegerMBinding).getInstance(classOf[IntegerMFactory])
+  private def build = {
+    val scope = mock[IScope]
+    val integerMFactory = testInjector(new IntegerMBinding).getInstance(classOf[IntegerMFactory])
+    (integerMFactory, scope)
+  }
 }
