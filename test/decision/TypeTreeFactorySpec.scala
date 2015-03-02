@@ -9,21 +9,18 @@ import composition.StubSelectionStrategyBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope
-import models.common.Scope
 import models.domain.Step
 import models.domain.scala.TypeTree
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
-import scala.concurrent.Await
 import scala.concurrent.Future
 
 final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
     "returns instance of this type" in {
-      val (typeTreeFactory, _) = build()
-      val scope = mock[IScope]
+      val (typeTreeFactory, _, scope) = build()
 
       val step = typeTreeFactory.createStep(scope)
 
@@ -33,8 +30,7 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
     }
 
     "call CreateSeqNodes.create once" in {
-      val (typeTreeFactory, createSeqNodes) = build()
-      val scope = mock[IScope]
+      val (typeTreeFactory, createSeqNodes, scope) = build()
 
       val step = typeTreeFactory.create(scope, Seq.empty)
 
@@ -50,8 +46,7 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
         when(decision.createStep(any[IScope])).thenReturn(Future.successful(premadeNode))
         Seq(decision)
       }
-      val (typeTreeFactory, _) = build(nextInt = 3)
-      val scope = mock[IScope]
+      val (typeTreeFactory, _, scope) = build(nextInt = 3)
 
       val step = typeTreeFactory.create(scope = scope, premadeChildren = premadeChildren)
 
@@ -64,16 +59,14 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
     }
 
     "throw if you ask updateScope" in {
-      val scope = mock[IScope]
-      val (typeTreeFactory, _) = build()
+      val (typeTreeFactory, _, scope) = build()
       a[RuntimeException] must be thrownBy typeTreeFactory.updateScope(scope)
     }
   }
 
   "createParams" must {
     "throw exception" in {
-      val scope = mock[IScope]
-      val (typeTreeFactory, _) = build()
+      val (typeTreeFactory, _, scope) = build()
 
       a[RuntimeException] must be thrownBy typeTreeFactory.createParams(scope).futureValue
     }
@@ -81,8 +74,7 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
 
   "createNodes" must {
     "call CreateSeqNodes.create once" in {
-      val (objectFactory, createSeqNodes) = build()
-      val scope = mock[IScope]
+      val (objectFactory, createSeqNodes, scope) = build()
 
       val step = objectFactory.createNodes(scope = scope)
 
@@ -95,6 +87,7 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
   private def build(nextInt: Int = 0) = {
     val randomNumberGenerator = new StubRngBinding(nextInt = nextInt)
     val createSeqNodes = new StubCreateSeqNodesBinding
+    val scope = mock[IScope]
     val injector = testInjector(
       randomNumberGenerator,
       createSeqNodes,
@@ -103,6 +96,6 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
       new StubCreateNodeBinding,
       new StubSelectionStrategyBinding
     )
-    (injector.getInstance(classOf[TypeTreeFactory]), createSeqNodes.stub)
+    (injector.getInstance(classOf[TypeTreeFactory]), createSeqNodes.stub, scope)
   }
 }

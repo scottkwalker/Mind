@@ -22,8 +22,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
     "returns instance of this type" in {
-      val (objectFactory, _) = build()
-      val scope = mock[IScope]
+      val (objectFactory, _, scope) = build()
 
       val step = objectFactory.createStep(scope = scope)
 
@@ -33,8 +32,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
     }
 
     "returns expected given scope with 0 existing objects" in {
-      val (objectFactory, _) = build()
-      val scope = mock[IScope]
+      val (objectFactory, _, scope) = build()
 
       val step = objectFactory.createStep(scope = scope)
 
@@ -45,8 +43,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
     }
 
     "returns expected given scope with 1 existing objects" in {
-      val (objectFactory, _) = build()
-      val scope = mock[IScope]
+      val (objectFactory, _, scope) = build()
       when(scope.numObjects).thenReturn(1)
 
       val step = objectFactory.createStep(scope = scope)
@@ -58,8 +55,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
     }
 
     "call CreateSeqNodes.create once" in {
-      val (objectFactory, createSeqNodes) = build()
-      val scope = mock[IScope]
+      val (objectFactory, createSeqNodes, scope) = build()
 
       val step = objectFactory.createStep(scope = scope)
 
@@ -71,8 +67,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
 
   "updateScope" must {
     "call increment objects" in {
-      val scope = mock[IScope]
-      val (objectFactory, _) = build()
+      val (objectFactory, _, scope) = build()
 
       objectFactory.updateScope(scope)
 
@@ -82,8 +77,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
 
   "createNodes" must {
     "call CreateSeqNodes.create once" in {
-      val (objectFactory, createSeqNodes) = build()
-      val scope = mock[IScope]
+      val (objectFactory, createSeqNodes, scope) = build()
 
       val step = objectFactory.createNodes(scope = scope)
 
@@ -95,8 +89,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
 
   "createParams" must {
     "throw exception" in {
-      val scope = mock[IScope]
-      val (objectFactory, _) = build()
+      val (objectFactory, _, scope) = build()
 
       a[RuntimeException] must be thrownBy objectFactory.createParams(scope).futureValue
     }
@@ -105,6 +98,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
   private def build(nextInt: Int = 0) = {
     val randomNumberGenerator = new StubRngBinding(nextInt = nextInt)
     val createSeqNodes = new StubCreateSeqNodesBinding
+    val scope = mock[IScope]
     val injector = testInjector(
       randomNumberGenerator,
       createSeqNodes,
@@ -113,6 +107,6 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
       new StubCreateNodeBinding,
       new StubSelectionStrategyBinding
     )
-    (injector.getInstance(classOf[ObjectFactory]), createSeqNodes.stub)
+    (injector.getInstance(classOf[ObjectFactory]), createSeqNodes.stub, scope)
   }
 }
