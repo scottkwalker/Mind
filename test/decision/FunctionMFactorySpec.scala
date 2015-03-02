@@ -22,8 +22,9 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
   "create step" must {
     "return instance of this type" in {
       val (factory, _) = functionMFactory()
+      val scope = mock[IScope]
 
-      val step = factory.createStep(scope = Scope())
+      val step = factory.createStep(scope = scope)
 
       whenReady(step) {
         _ mustBe a[FunctionM]
@@ -32,8 +33,9 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
 
     "return expected given scope with 0 functions" in {
       val (factory, _) = functionMFactory()
+      val scope = mock[IScope]
 
-      val step = factory.createStep(scope = Scope())
+      val step = factory.createStep(scope = scope)
 
       whenReady(step) {
         case FunctionM(_, _, name) => name must equal("f0")
@@ -43,8 +45,10 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
 
     "return expected given scope with 1 functions" in {
       val (factory, _) = functionMFactory()
+      val scope = mock[IScope]
+      when(scope.numFuncs).thenReturn(1)
 
-      val step = factory.createStep(scope = Scope(numFuncs = 1))
+      val step = factory.createStep(scope = scope)
 
       whenReady(step) {
         case FunctionM(_, _, name) => name must equal("f1")
@@ -54,11 +58,38 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
 
     "calls CreateSeqNodes.create twice (once for params and once for nodes)" in {
       val (factory, createSeqNodes) = functionMFactory()
+      val scope = mock[IScope]
 
-      val step = factory.createStep(scope = Scope())
+      val step = factory.createStep(scope = scope)
 
       whenReady(step) { _ =>
         verify(createSeqNodes, times(2)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
+      }(config = patienceConfig)
+    }
+  }
+
+  "createNodes" must {
+    "call CreateSeqNodes.create once" in {
+      val (factory, createSeqNodes) = functionMFactory()
+      val scope = mock[IScope]
+
+      val step = factory.createNodes(scope = scope)
+
+      whenReady(step) { _ =>
+        verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
+      }(config = patienceConfig)
+    }
+  }
+
+  "createParams" must {
+    "call CreateSeqNodes.create once" in {
+      val (factory, createSeqNodes) = functionMFactory()
+      val scope = mock[IScope]
+
+      val step = factory.createParams(scope = scope)
+
+      whenReady(step) { _ =>
+        verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
       }(config = patienceConfig)
     }
   }
