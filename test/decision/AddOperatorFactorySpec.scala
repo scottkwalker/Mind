@@ -8,16 +8,13 @@ import composition.StubSelectionStrategyBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope
-import models.common.Scope
 import models.domain.scala.AddOperator
-
-import scala.concurrent.Await
 
 final class AddOperatorFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
     "return instance of this type" in {
-      val scope = mock[IScope]
+      val (addOperatorFactory, scope) = build
 
       val step = addOperatorFactory.createStep(scope = scope)
 
@@ -29,23 +26,27 @@ final class AddOperatorFactorySpec extends UnitTestHelpers with TestComposition 
 
   "createParams" must {
     "throw exception" in {
-      val scope = mock[IScope]
+      val (addOperatorFactory, scope) = build
       a[RuntimeException] must be thrownBy addOperatorFactory.createParams(scope).futureValue
     }
   }
 
   "createNodes" must {
     "throw exception" in {
-      val scope = mock[IScope]
+      val (addOperatorFactory, scope) = build
       a[RuntimeException] must be thrownBy addOperatorFactory.createNodes(scope).futureValue
     }
   }
 
-  private def addOperatorFactory = testInjector(
-    new DecisionBindings,
-    new StubLookupChildrenWithFutures,
-    new StubCreateNodeBinding,
-    new StubCreateSeqNodesBinding,
-    new StubSelectionStrategyBinding
-  ).getInstance(classOf[AddOperatorFactory])
+  private def build = {
+    val scope = mock[IScope]
+    val addOperatorFactory = testInjector(
+      new DecisionBindings,
+      new StubLookupChildrenWithFutures,
+      new StubCreateNodeBinding,
+      new StubCreateSeqNodesBinding,
+      new StubSelectionStrategyBinding
+    ).getInstance(classOf[AddOperatorFactory])
+    (addOperatorFactory, scope)
+  }
 }

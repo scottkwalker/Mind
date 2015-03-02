@@ -21,8 +21,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
     "return instance of this type" in {
-      val (factory, _) = functionMFactory()
-      val scope = mock[IScope]
+      val (factory, _, scope) = functionMFactory()
 
       val step = factory.createStep(scope = scope)
 
@@ -32,8 +31,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
     }
 
     "return expected given scope with 0 functions" in {
-      val (factory, _) = functionMFactory()
-      val scope = mock[IScope]
+      val (factory, _, scope) = functionMFactory()
 
       val step = factory.createStep(scope = scope)
 
@@ -44,8 +42,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
     }
 
     "return expected given scope with 1 functions" in {
-      val (factory, _) = functionMFactory()
-      val scope = mock[IScope]
+      val (factory, _, scope) = functionMFactory()
       when(scope.numFuncs).thenReturn(1)
 
       val step = factory.createStep(scope = scope)
@@ -57,8 +54,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
     }
 
     "calls CreateSeqNodes.create twice (once for params and once for nodes)" in {
-      val (factory, createSeqNodes) = functionMFactory()
-      val scope = mock[IScope]
+      val (factory, createSeqNodes, scope) = functionMFactory()
 
       val step = factory.createStep(scope = scope)
 
@@ -70,8 +66,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
 
   "createNodes" must {
     "call CreateSeqNodes.create once" in {
-      val (factory, createSeqNodes) = functionMFactory()
-      val scope = mock[IScope]
+      val (factory, createSeqNodes, scope) = functionMFactory()
 
       val step = factory.createNodes(scope = scope)
 
@@ -83,8 +78,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
 
   "createParams" must {
     "call CreateSeqNodes.create once" in {
-      val (factory, createSeqNodes) = functionMFactory()
-      val scope = mock[IScope]
+      val (factory, createSeqNodes, scope) = functionMFactory()
 
       val step = factory.createParams(scope = scope)
 
@@ -96,8 +90,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
 
   "updateScope" must {
     "call increment functions" in {
-      val scope = mock[IScope]
-      val (factory, _) = functionMFactory()
+      val (factory, _, scope) = functionMFactory()
 
       factory.updateScope(scope = scope)
 
@@ -108,6 +101,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
   private def functionMFactory(nextInt: Int = 0) = {
     val randomNumberGenerator = new StubRngBinding(nextInt = nextInt)
     val createSeqNodes = new StubCreateSeqNodesBinding
+    val scope = mock[IScope]
     val injector = testInjector(
       randomNumberGenerator,
       createSeqNodes,
@@ -116,6 +110,6 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
       new StubCreateNodeBinding,
       new StubSelectionStrategyBinding
     )
-    (injector.getInstance(classOf[FunctionMFactory]), createSeqNodes.stub)
+    (injector.getInstance(classOf[FunctionMFactory]), createSeqNodes.stub, scope)
   }
 }
