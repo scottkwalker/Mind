@@ -116,7 +116,7 @@ final class Memoize2ImplSpec extends UnitTestHelpers {
         override def size = ???
       }
 
-      a[RuntimeException] must be thrownBy Await.result(memoizeThrowWhenCalled(5, 0), finiteTimeout)
+      a[RuntimeException] must be thrownBy memoizeThrowWhenCalled(5, 0).futureValue
     }
   }
 

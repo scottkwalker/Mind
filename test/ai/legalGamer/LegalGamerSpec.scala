@@ -89,11 +89,11 @@ final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
 
   private def factoryLookup = legalGamerInjector.getInstance(classOf[FactoryLookup])
 
-  private def selectionStrategy = legalGamerInjector.getInstance(classOf[SelectionStrategy])
-
   private def legalGamerInjector = testInjector(
     new LegalGamerBinding,
     new StubFactoryLookupBinding,
     new StubRngBinding
   )
+
+  private def selectionStrategy = legalGamerInjector.getInstance(classOf[SelectionStrategy])
 }

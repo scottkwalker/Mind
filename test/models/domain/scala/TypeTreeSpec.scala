@@ -10,7 +10,6 @@ import models.domain.Step
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
-import scala.concurrent.Await
 import scala.concurrent.Future
 
 final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
@@ -120,7 +119,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       val factoryLookup = mock[FactoryLookup]
       val typeTree = new TypeTree(nodes = Seq.empty)
 
-      a[RuntimeException] must be thrownBy Await.result(typeTree.fillEmptySteps(scope, factoryLookup), finiteTimeout)
+      a[RuntimeException] must be thrownBy typeTree.fillEmptySteps(scope, factoryLookup).futureValue
     }
   }
 

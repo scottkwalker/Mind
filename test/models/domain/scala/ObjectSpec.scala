@@ -9,7 +9,6 @@ import models.domain.Step
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
-import scala.concurrent.Await
 import scala.concurrent.Future
 
 final class ObjectSpec extends UnitTestHelpers with TestComposition {
@@ -138,7 +137,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
       val factoryLookup = mock[FactoryLookup]
       val instance = new ObjectImpl(nodes = Seq.empty, name = name)
 
-      a[RuntimeException] must be thrownBy Await.result(instance.fillEmptySteps(scope, factoryLookup), finiteTimeout)
+      a[RuntimeException] must be thrownBy instance.fillEmptySteps(scope, factoryLookup).futureValue
     }
   }
 

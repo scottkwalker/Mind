@@ -89,11 +89,11 @@ final class AcoSpec extends UnitTestHelpers with TestComposition {
 
   private def factoryLookup = acoInjector.getInstance(classOf[FactoryLookup])
 
+  private def selectionStrategy = acoInjector.getInstance(classOf[SelectionStrategy])
+
   private def acoInjector = testInjector(
     new AcoBinding,
     new StubFactoryLookupBinding,
     new StubRngBinding
   )
-
-  private def selectionStrategy = acoInjector.getInstance(classOf[SelectionStrategy])
 }
