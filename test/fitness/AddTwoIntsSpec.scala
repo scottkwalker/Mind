@@ -3,7 +3,7 @@ package fitness
 import composition.UnitTestHelpers
 import models.domain.Step
 import models.domain.scala.AddOperator
-import models.domain.scala.FunctionM
+import models.domain.scala.FunctionMImpl$
 import models.domain.scala.IntegerM
 import models.domain.scala.Object
 import models.domain.scala._
@@ -23,7 +23,7 @@ final class AddTwoIntsSpec extends UnitTestHelpers {
       val steps = new TypeTree(
         Seq(
           Object(Seq(
-            FunctionM(
+            FunctionMImpl(
               params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM())),
               nodes = Seq(
                 AddOperator(ValueRefImpl("a"), ValueRefImpl("b"))
@@ -35,7 +35,7 @@ final class AddTwoIntsSpec extends UnitTestHelpers {
 
     "return score less than max fitness for a non-optimal solution" in {
       // Arrange
-      val steps = new TypeTree(List(Object(List(FunctionM(List(ValDclInFunctionParam("v0", IntegerM()), ValDclInFunctionParam("v1", IntegerM())), List(ValueRefImpl("v0")), "f0")), "o0")))
+      val steps = new TypeTree(List(Object(List(FunctionMImpl(List(ValDclInFunctionParam("v0", IntegerM()), ValDclInFunctionParam("v1", IntegerM())), List(ValueRefImpl("v0")), "f0")), "o0")))
 
       // Act
       val addTwoInts = new AddTwoInts(steps)

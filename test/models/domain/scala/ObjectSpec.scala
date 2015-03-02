@@ -16,11 +16,10 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
 
   "hasNoEmptySteps" must {
     "true given it can terminates in under N steps" in {
-      val scope = Scope(height = 4, maxHeight = 10)
-      // This has to be a real instead of a mock as we will be exact-matching on the type.
-      val functionM = FunctionM(params = Seq.empty,
-        nodes = Seq.empty,
-        name = "f0")
+      val scope = mock[IScope]
+      when(scope.hasHeightRemaining).thenReturn(true)
+      val functionM = mock[FunctionM]
+      when(functionM.hasNoEmptySteps(any[IScope])).thenReturn(true)
       val objectDef = Object(Seq(functionM), name)
 
       val hasNoEmptySteps = objectDef.hasNoEmptySteps(scope)
@@ -53,7 +52,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
     "true given no empty nodes" in {
       val scope = Scope(height = 10, maxHeight = 10)
       // This has to be a real instead of a mock as we will be exact-matching on the type.
-      val instruction = FunctionM(params = Seq.empty,
+      val instruction = FunctionMImpl(params = Seq.empty,
         nodes = Seq.empty,
         name = "f0")
       val objectDef = Object(Seq(instruction), name)

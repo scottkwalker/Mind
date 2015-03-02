@@ -28,14 +28,8 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
 
   "hasNoEmptySteps" must {
     "true given child nodes can terminate in under N steps" in {
-      val scopeDecremented = mock[IScope]
-      when(scopeDecremented.height).thenReturn(1)
-      when(scopeDecremented.maxHeight).thenReturn(10)
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(true)
-      when(scope.height).thenReturn(2)
-      when(scope.decrementHeight).thenReturn(scopeDecremented)
-//      val terminal = ValueRef("v")
       val terminal = mock[ValueRef]
       when(terminal.hasNoEmptySteps(any[IScope])).thenReturn(true)
 
@@ -65,7 +59,8 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
     }
 
     "true when no nodes are empty" in {
-      val scope = Scope(height = 10, maxHeight = 10)
+      val scope = mock[IScope]
+      when(scope.hasHeightRemaining).thenReturn(true)
       val nonEmpty = ValueRefImpl("v")
 
       val hasNoEmptySteps = AddOperator(nonEmpty, nonEmpty).hasNoEmptySteps(scope)
@@ -74,7 +69,8 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
     }
 
     "false when left node is empty" in {
-      val scope = Scope(height = 10, maxHeight = 10)
+      val scope = mock[IScope]
+      when(scope.hasHeightRemaining).thenReturn(true)
       val nonEmpty = ValueRefImpl("stub")
 
       val hasNoEmptySteps = AddOperator(Empty(), nonEmpty).hasNoEmptySteps(scope)
@@ -83,7 +79,8 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
     }
 
     "false when right node is empty" in {
-      val scope = Scope(height = 10, maxHeight = 10)
+      val scope = mock[IScope]
+      when(scope.hasHeightRemaining).thenReturn(true)
       val nonEmpty = ValueRefImpl("stub")
 
       val hasNoEmptySteps = AddOperator(nonEmpty, Empty()).hasNoEmptySteps(scope)
@@ -92,7 +89,8 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
     }
 
     "false given contains a node that is not valid for this level" in {
-      val scope = Scope(height = 10, maxHeight = 10)
+      val scope = mock[IScope]
+      when(scope.hasHeightRemaining).thenReturn(true)
       val valid = mock[Step]
       when(valid.hasNoEmptySteps(any[Scope])).thenReturn(true)
       val invalid = Object(Seq.empty, "ObjectM0")

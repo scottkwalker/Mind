@@ -4,7 +4,8 @@ import com.google.inject.Inject
 import memoization.LookupChildrenWithFutures
 import models.common.IScope
 import models.domain.Step
-import models.domain.scala.FunctionM
+import models.domain.scala.FunctionMImpl
+import models.domain.scala.FunctionMImpl$
 
 import scala.async.Async.async
 import scala.async.Async.await
@@ -24,7 +25,7 @@ case class FunctionMFactoryImpl @Inject()(
 
     val nodesWithoutEmpties = await(createNodes(paramsWithoutEmpties.scope))
 
-    FunctionM(params = paramsWithoutEmpties.instructions,
+    FunctionMImpl(params = paramsWithoutEmpties.instructions,
       nodes = nodesWithoutEmpties.instructions,
       index = scope.numFuncs)
   }

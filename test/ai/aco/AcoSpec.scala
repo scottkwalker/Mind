@@ -11,7 +11,8 @@ import fitness.AddTwoInts
 import models.common.Scope
 import models.domain.scala.Empty
 import models.domain.scala.FactoryLookup
-import models.domain.scala.FunctionM
+import models.domain.scala.FunctionMImpl
+import models.domain.scala.FunctionMImpl$
 import models.domain.scala.IntegerM
 import models.domain.scala.Object
 import models.domain.scala.TypeTree
@@ -33,7 +34,7 @@ final class AcoSpec extends UnitTestHelpers with TestComposition {
       val premade = new TypeTree(
         Seq(
           Object(Seq(
-            FunctionM(
+            FunctionMImpl(
               params = Seq(ValDclInFunctionParam("v0", IntegerM()), ValDclInFunctionParam("v1", IntegerM())),
               nodes = Seq(
                 Empty()

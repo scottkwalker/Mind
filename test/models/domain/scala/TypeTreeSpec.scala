@@ -157,7 +157,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       val typeTree = new TypeTree(
         Seq(
           Object(Seq(
-            FunctionM(params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM())),
+            FunctionMImpl(params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM())),
               nodes = Seq(
                 AddOperator(
                   ValueRefImpl("a"), ValueRefImpl("b"))

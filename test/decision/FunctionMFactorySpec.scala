@@ -11,7 +11,8 @@ import composition.UnitTestHelpers
 import models.common.IScope
 import models.common.Scope
 import models.domain.Step
-import models.domain.scala.FunctionM
+import models.domain.scala.FunctionMImpl
+import models.domain.scala.FunctionMImpl$
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
@@ -26,7 +27,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
       val step = factory.createStep(scope = scope)
 
       whenReady(step) {
-        _ mustBe a[FunctionM]
+        _ mustBe a[FunctionMImpl]
       }(config = patienceConfig)
     }
 
@@ -36,7 +37,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
       val step = factory.createStep(scope = scope)
 
       whenReady(step) {
-        case FunctionM(_, _, name) => name must equal("f0")
+        case FunctionMImpl(_, _, name) => name must equal("f0")
         case _ => fail("wrong type")
       }(config = patienceConfig)
     }
@@ -48,7 +49,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
       val step = factory.createStep(scope = scope)
 
       whenReady(step) {
-        case FunctionM(_, _, name) => name must equal("f1")
+        case FunctionMImpl(_, _, name) => name must equal("f1")
         case _ => fail("wrong type")
       }(config = patienceConfig)
     }
