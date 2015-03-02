@@ -72,7 +72,7 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       val (typeTreeFactory, _) = build()
 
-      a[RuntimeException] must be thrownBy Await.result(typeTreeFactory.createParams(scope), finiteTimeout)
+      a[RuntimeException] must be thrownBy typeTreeFactory.createParams(scope).futureValue
     }
   }
 

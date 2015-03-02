@@ -60,7 +60,7 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
     "throw exception" in {
       val scope = mock[IScope]
 
-      a[RuntimeException] must be thrownBy Await.result(valueRefFactory.createParams(scope), finiteTimeout)
+      a[RuntimeException] must be thrownBy valueRefFactory.createParams(scope).futureValue
     }
   }
 
@@ -68,7 +68,7 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
     "throw exception" in {
       val scope = mock[IScope]
 
-      a[RuntimeException] must be thrownBy Await.result(valueRefFactory.createNodes(scope), finiteTimeout)
+      a[RuntimeException] must be thrownBy valueRefFactory.createNodes(scope).futureValue
     }
   }
 

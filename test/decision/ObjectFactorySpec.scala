@@ -92,7 +92,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       val (objectFactory, _) = build()
 
-      a[RuntimeException] must be thrownBy Await.result(objectFactory.createParams(scope), finiteTimeout)
+      a[RuntimeException] must be thrownBy objectFactory.createParams(scope).futureValue
     }
   }
 

@@ -60,7 +60,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
     "throw exception" in {
       val scope = mock[IScope]
 
-      a[RuntimeException] must be thrownBy Await.result(valDclInFunctionParamFactory.createParams(scope), finiteTimeout)
+      a[RuntimeException] must be thrownBy valDclInFunctionParamFactory.createParams(scope).futureValue
     }
   }
 
@@ -68,7 +68,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
     "throw exception" in {
       val scope = mock[IScope]
 
-      a[RuntimeException] must be thrownBy Await.result(valDclInFunctionParamFactory.createNodes(scope), finiteTimeout)
+      a[RuntimeException] must be thrownBy valDclInFunctionParamFactory.createNodes(scope).futureValue
     }
   }
 

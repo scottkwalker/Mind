@@ -34,14 +34,14 @@ final class IntegerMFactorySpec extends UnitTestHelpers with TestComposition {
   "createParams" must {
     "throw exception" in {
       val scope = mock[IScope]
-      a[RuntimeException] must be thrownBy Await.result(integerMFactory.createParams(scope), finiteTimeout)
+      a[RuntimeException] must be thrownBy integerMFactory.createParams(scope).futureValue
     }
   }
 
   "createNodes" must {
     "throw exception" in {
       val scope = mock[IScope]
-      a[RuntimeException] must be thrownBy Await.result(integerMFactory.createNodes(scope), finiteTimeout)
+      a[RuntimeException] must be thrownBy integerMFactory.createNodes(scope).futureValue
     }
   }
 

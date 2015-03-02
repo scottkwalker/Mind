@@ -30,14 +30,14 @@ final class AddOperatorFactorySpec extends UnitTestHelpers with TestComposition 
   "createParams" must {
     "throw exception" in {
       val scope = mock[IScope]
-      a[RuntimeException] must be thrownBy Await.result(addOperatorFactory.createParams(scope), finiteTimeout)
+      a[RuntimeException] must be thrownBy addOperatorFactory.createParams(scope).futureValue
     }
   }
 
   "createNodes" must {
     "throw exception" in {
       val scope = mock[IScope]
-      a[RuntimeException] must be thrownBy Await.result(addOperatorFactory.createNodes(scope), finiteTimeout)
+      a[RuntimeException] must be thrownBy addOperatorFactory.createNodes(scope).futureValue
     }
   }
 
