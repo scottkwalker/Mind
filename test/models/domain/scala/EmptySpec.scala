@@ -1,7 +1,7 @@
 package models.domain.scala
 
 import composition.UnitTestHelpers
-import models.common.IScope
+import utils.ScopeHelper._
 
 final class EmptySpec extends UnitTestHelpers {
 
@@ -13,21 +13,17 @@ final class EmptySpec extends UnitTestHelpers {
 
   "hasNoEmptySteps" must {
     "return false" in {
-      val scope = mock[IScope]
-
-      val hasNoEmptySteps = Empty().hasNoEmptySteps(scope)
-
+      val hasNoEmptySteps = Empty().hasNoEmptySteps(scope())
       hasNoEmptySteps must equal(false)
     }
   }
 
   "fillEmptySteps" must {
     "throws" in {
-      val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
       val step = Empty()
 
-      a[RuntimeException] must be thrownBy step.fillEmptySteps(scope, factoryLookup)
+      a[RuntimeException] must be thrownBy step.fillEmptySteps(scope(), factoryLookup)
     }
   }
 

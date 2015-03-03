@@ -24,12 +24,11 @@ final class StubFactoryLookupBinding extends AbstractModule with MockitoSugar {
     when(factoryLookup.convert(fakeFactoryTerminates1Id)).thenReturn(fakeFactoryTerminates1)
     when(factoryLookup.convert(fakeFactoryTerminates2Id)).thenReturn(fakeFactoryTerminates2)
     when(factoryLookup.convert(fakeFactoryHasChildrenId)).thenReturn(fakeFactoryHasChildren)
-    //    when(factoryLookup.convert(IntegerMFactory.id)).thenReturn(stubDecision)
-    when(factoryLookup.convert(any[PozInt])).thenReturn(stubDecision)
     // Factory -> Id
     when(factoryLookup.convert(fakeFactoryTerminates1)).thenReturn(fakeFactoryTerminates1Id)
     when(factoryLookup.convert(fakeFactoryTerminates2)).thenReturn(fakeFactoryTerminates2Id)
     when(factoryLookup.factories).thenReturn(Set(fakeFactoryDoesNotTerminateId, fakeFactoryTerminates1Id, fakeFactoryTerminates2Id, fakeFactoryHasChildrenId))
+    when(factoryLookup.convert(any[PozInt])).thenReturn(stubDecision)
     factoryLookup
   }
 

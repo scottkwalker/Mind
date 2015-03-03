@@ -21,10 +21,8 @@ final class LookupChildrenImpl @Inject()(
     }
 
   override def get(scope: IScope, parent: PozInt): Set[PozInt] = {
-    val nodesToChooseFrom = {
-      val factory = factoryLookup.convert(parent)
-      factory.nodesToChooseFrom
-    }
+    val factory = factoryLookup.convert(parent)
+    val nodesToChooseFrom = factory.nodesToChooseFrom
     fetchFromRepository(scope, nodesToChooseFrom)
   }
 

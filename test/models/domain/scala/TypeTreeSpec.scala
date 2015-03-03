@@ -9,6 +9,7 @@ import models.common.Scope
 import models.domain.Step
 import org.mockito.Matchers._
 import org.mockito.Mockito._
+import utils.ScopeHelper._
 
 import scala.concurrent.Future
 
@@ -16,81 +17,69 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
 
   "hasNoEmptySteps" must {
     "return true given it can terminates in under N steps" in {
-      val scope = mock[IScope]
-      when(scope.hasHeightRemaining).thenReturn(true)
       val step = mock[Object]
       when(step.hasNoEmptySteps(any[IScope])).thenReturn(true)
       val typeTree = new TypeTree(Seq(step))
 
-      val hasNoEmptySteps = typeTree.hasNoEmptySteps(scope)
+      val hasNoEmptySteps = typeTree.hasNoEmptySteps(scopeWithHeightRemaining)
 
       hasNoEmptySteps must equal(true)
     }
 
     "return false given it cannot terminate in under N steps" in {
-      val scope = mock[IScope]
-      when(scope.hasHeightRemaining).thenReturn(false)
       val step = mock[Step]
       when(step.hasNoEmptySteps(any[IScope])).thenReturn(false)
       val typeTree = new TypeTree(Seq(step))
 
-      val hasNoEmptySteps = typeTree.hasNoEmptySteps(scope)
+      val hasNoEmptySteps = typeTree.hasNoEmptySteps(scopeWithoutHeightRemaining)
 
       hasNoEmptySteps must equal(false)
     }
 
     "return false given empty root node" in {
-      val scope = mock[IScope]
-      when(scope.hasHeightRemaining).thenReturn(true)
       val typeTree = new TypeTree(Seq(Empty()))
 
-      val hasNoEmptySteps = typeTree.hasNoEmptySteps(scope)
+      val hasNoEmptySteps = typeTree.hasNoEmptySteps(scopeWithHeightRemaining)
 
       hasNoEmptySteps must equal(false)
     }
 
     "return false when scope hasNoEmptySteps returns false" in {
-      val scope = mock[IScope]
-      when(scope.hasHeightRemaining).thenReturn(false)
       val step = mock[Step]
       val typeTree = new TypeTree(Seq(step))
 
-      val hasNoEmptySteps = typeTree.hasNoEmptySteps(scope)
+      val hasNoEmptySteps = typeTree.hasNoEmptySteps(scopeWithoutHeightRemaining)
 
       hasNoEmptySteps must equal(false)
     }
 
     "throw when there is a node of an unhandled node type" in {
-      val scope = mock[IScope]
-      when(scope.hasHeightRemaining).thenReturn(true)
       val unhandledNode = mock[Step]
       val typeTree = new TypeTree(Seq(unhandledNode))
 
-      a[RuntimeException] must be thrownBy typeTree.hasNoEmptySteps(scope)
+      a[RuntimeException] must be thrownBy typeTree.hasNoEmptySteps(scopeWithHeightRemaining)
     }
   }
 
   "fillEmptySteps" must {
     "calls fillEmptySteps on non-empty child nodes" in {
-      val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
       val step = mock[Step]
       when(step.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(step)
       val typeTree = TypeTree(Seq(step))
 
-      val fillEmptySteps = typeTree.fillEmptySteps(scope, factoryLookup)
+      val fillEmptySteps = typeTree.fillEmptySteps(scope(), factoryLookup)
 
       whenReady(fillEmptySteps) { _ => verify(step, times(1)).fillEmptySteps(any[IScope], any[FactoryLookup])}(config = patienceConfig)
     }
 
     "return same when no empty nodes" in {
-      val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
       val step = mock[Step]
       when(step.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(step)
       val typeTree = new TypeTree(Seq(step))
 
-      val fillEmptySteps = typeTree.fillEmptySteps(scope, factoryLookup)
+      val fillEmptySteps = typeTree.fillEmptySteps(scope(), factoryLookup)
 
       whenReady(fillEmptySteps) {
         _ must equal(typeTree)
@@ -124,11 +113,10 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
     }
 
     "throw when passed empty seq (no empty or non-empty)" in {
-      val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
       val typeTree = new TypeTree(nodes = Seq.empty)
 
-      a[RuntimeException] must be thrownBy typeTree.fillEmptySteps(scope, factoryLookup).futureValue
+      a[RuntimeException] must be thrownBy typeTree.fillEmptySteps(scope(), factoryLookup).futureValue
     }
   }
 

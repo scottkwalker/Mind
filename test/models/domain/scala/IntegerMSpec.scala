@@ -2,6 +2,7 @@ package models.domain.scala
 
 import composition.UnitTestHelpers
 import models.common.IScope
+import utils.ScopeHelper._
 
 final class IntegerMSpec extends UnitTestHelpers {
 
@@ -14,18 +15,16 @@ final class IntegerMSpec extends UnitTestHelpers {
 
   "hasNoEmptySteps" must {
     "returns true" in {
-      val s = mock[IScope]
-      val hasNoEmptySteps = integerM.hasNoEmptySteps(s)
+      val hasNoEmptySteps = integerM.hasNoEmptySteps(scope())
       hasNoEmptySteps must equal(true)
     }
   }
 
   "fillEmptySteps" must {
     "return same when no empty nodes" in {
-      val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
 
-      val result = integerM.fillEmptySteps(scope, factoryLookup)
+      val result = integerM.fillEmptySteps(scope(), factoryLookup)
 
       whenReady(result) {
         _ must equal(integerM)

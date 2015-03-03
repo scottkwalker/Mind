@@ -7,6 +7,7 @@ import models.common.IScope
 import models.domain.Step
 import org.mockito.Matchers._
 import org.mockito.Mockito._
+import utils.ScopeHelper._
 
 import scala.concurrent.Future
 
@@ -127,20 +128,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
     }
   }
 
-  private def scopeWithHeightRemaining = scope(hasHeightRemaining = true)
-
-  private def scope(hasHeightRemaining: Boolean = true, numVals: Int = 0) = {
-    val scope = mock[IScope]
-    when(scope.hasHeightRemaining).thenReturn(hasHeightRemaining)
-    when(scope.numVals).thenReturn(numVals)
-    scope
-  }
-
-  private def scopeWithoutHeightRemaining = scope(hasHeightRemaining = false)
-
-  private def scopeWithNumVals(numVals: Int) = scope(numVals = numVals)
-
-  private def stepWithHeight(height: Int) = {
+  def stepWithHeight(height: Int) = {
     val step = mock[Step]
     when(step.height).thenReturn(height)
     step
