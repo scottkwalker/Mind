@@ -1,6 +1,6 @@
 package memoization
 
-import composition.StubFactoryLookupBinding.fakeFactoryHasChildrenId
+import composition.StubFactoryLookupAnyBinding.{fakeFactoryHasChildrenId,fakeFactoryTerminates1Id,fakeFactoryTerminates2Id}
 import composition._
 import models.common.IScope
 import org.mockito.Mockito._
@@ -56,15 +56,15 @@ final class LookupChildrenSpec extends UnitTestHelpers with TestComposition {
       verify(factoryLookup, times(1)).convert(id = parent)
     }
 
-    //    "call repository.apply once for each neighbour" in {
-    //      val (lookupChildren, scope, _, repository) = build
-    //      val parent = fakeFactoryHasChildrenId
-    //
-    //      lookupChildren.get(scope, parent)
-    //
-    //      verify(repository, times(1)).apply(key1 = scope, key2 = fakeFactoryTerminates1Id)
-    //      verify(repository, times(1)).apply(key1 = scope, key2 = fakeFactoryTerminates2Id)
-    //    }
+    "call repository.apply once for each neighbour" in {
+      val (lookupChildren, scope, _, repository) = build
+      val parent = fakeFactoryHasChildrenId
+
+      lookupChildren.get(scope, parent)
+
+      verify(repository, times(1)).apply(key1 = scope, key2 = fakeFactoryTerminates1Id)
+      verify(repository, times(1)).apply(key1 = scope, key2 = fakeFactoryTerminates2Id)
+    }
   }
 
   private def build = {

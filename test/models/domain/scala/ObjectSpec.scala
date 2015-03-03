@@ -1,6 +1,6 @@
 package models.domain.scala
 
-import composition.StubFactoryLookupBinding
+import composition.StubFactoryLookupAnyBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope
@@ -115,7 +115,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
         maxObjectsInTree = 1,
         maxHeight = 10)
       val empty = Empty()
-      val factoryLookup = testInjector(new StubFactoryLookupBinding).getInstance(classOf[FactoryLookup])
+      val factoryLookup = testInjector(new StubFactoryLookupAnyBinding).getInstance(classOf[FactoryLookup])
       val objectDef = ObjectImpl(nodes = Seq(empty),
         name = name)
 

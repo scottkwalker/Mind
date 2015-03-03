@@ -2,7 +2,7 @@ package composition
 
 import com.google.inject.AbstractModule
 import com.google.inject.TypeLiteral
-import composition.StubFactoryLookupBinding._
+import composition.StubFactoryLookupAnyBinding._
 import memoization.Memoize2
 import models.common.IScope
 import org.mockito.Matchers

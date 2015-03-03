@@ -1,7 +1,7 @@
 package composition
 
 import com.google.inject.AbstractModule
-import composition.StubFactoryLookupBinding._
+import composition.StubFactoryLookupAnyBinding._
 import decision.AccumulateInstructions
 import decision.Decision
 import models.common.IScope
@@ -15,7 +15,7 @@ import utils.PozInt
 
 import scala.concurrent.Future
 
-final class StubFactoryLookupBinding extends AbstractModule with MockitoSugar {
+final class StubFactoryLookupAnyBinding extends AbstractModule with MockitoSugar {
 
   val stubDecision = {
     val decision = mock[Decision]
@@ -36,6 +36,7 @@ final class StubFactoryLookupBinding extends AbstractModule with MockitoSugar {
     when(factoryLookup.convert(fakeFactoryTerminates1Id)).thenReturn(fakeFactoryTerminates1)
     when(factoryLookup.convert(fakeFactoryTerminates2Id)).thenReturn(fakeFactoryTerminates2)
     when(factoryLookup.convert(fakeFactoryHasChildrenId)).thenReturn(fakeFactoryHasChildren)
+    when(factoryLookup.convert(any[PozInt])).thenReturn(stubDecision)
     // Factory -> Id
     when(factoryLookup.convert(fakeFactoryTerminates1)).thenReturn(fakeFactoryTerminates1Id)
     when(factoryLookup.convert(fakeFactoryTerminates2)).thenReturn(fakeFactoryTerminates2Id)
@@ -46,7 +47,7 @@ final class StubFactoryLookupBinding extends AbstractModule with MockitoSugar {
   override def configure(): Unit = bind(classOf[FactoryLookup]).toInstance(stub)
 }
 
-object StubFactoryLookupBinding {
+object StubFactoryLookupAnyBinding {
 
   val numberOfFactories = 4
   val fakeFactoryDoesNotTerminateId = PozInt(100)
