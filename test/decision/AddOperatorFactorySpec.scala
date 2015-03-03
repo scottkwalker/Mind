@@ -8,7 +8,7 @@ import composition.StubSelectionStrategyBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
 import models.common.IScope
-import models.domain.scala.AddOperator
+import models.domain.scala.AddOperatorImpl
 
 final class AddOperatorFactorySpec extends UnitTestHelpers with TestComposition {
 
@@ -19,7 +19,7 @@ final class AddOperatorFactorySpec extends UnitTestHelpers with TestComposition 
       val step = addOperatorFactory.createStep(scope = scope)
 
       whenReady(step) {
-        _ mustBe a[AddOperator]
+        _ mustBe a[AddOperatorImpl]
       }(config = patienceConfig)
     }
   }

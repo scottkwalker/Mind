@@ -19,7 +19,7 @@ final case class TypeTree(nodes: Seq[Step]) extends Step with UpdateScopeThrows 
     nodes.forall {
       case n: Object => n.hasNoEmptySteps(scope.decrementHeight)
       case _: Empty => false
-      case _ => false
+      case _ => throw new RuntimeException("unhandled node type")
     }
   }
 

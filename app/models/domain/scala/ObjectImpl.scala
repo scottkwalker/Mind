@@ -18,7 +18,7 @@ final case class ObjectImpl(nodes: Seq[Step], name: String) extends Object {
     nodes.forall {
       case n: FunctionM => n.hasNoEmptySteps(scope.decrementHeight)
       case _: Empty => false
-      case _ => false
+      case _ => throw new RuntimeException("unhandled node type")
     }
   }
 

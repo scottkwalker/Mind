@@ -2,7 +2,7 @@ package fitness
 
 import composition.UnitTestHelpers
 import models.domain.Step
-import models.domain.scala.AddOperator
+import models.domain.scala.AddOperatorImpl
 import models.domain.scala.IntegerM
 import models.domain.scala._
 import org.mockito.Mockito._
@@ -24,7 +24,7 @@ final class AddTwoIntsSpec extends UnitTestHelpers {
             FunctionMImpl(
               params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM())),
               nodes = Seq(
-                AddOperator(ValueRefImpl("a"), ValueRefImpl("b"))
+                AddOperatorImpl(ValueRefImpl("a"), ValueRefImpl("b"))
               ), name = "f0")),
             name = "o0")))
       val f = new AddTwoInts(steps)

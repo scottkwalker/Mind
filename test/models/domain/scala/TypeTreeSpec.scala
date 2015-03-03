@@ -49,7 +49,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(false)
     }
 
-    "return false when hasHeightRemaining returns false" in {
+    "return false when scope hasNoEmptySteps returns false" in {
       val scope = mock[IScope]
       when(scope.hasHeightRemaining).thenReturn(false)
       val step = mock[Step]
@@ -58,6 +58,15 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       val hasNoEmptySteps = typeTree.hasNoEmptySteps(scope)
 
       hasNoEmptySteps must equal(false)
+    }
+
+    "throw when there is a node of an unhandled node type" in {
+      val scope = mock[IScope]
+      when(scope.hasHeightRemaining).thenReturn(true)
+      val unhandledNode = mock[Step]
+      val typeTree = new TypeTree(Seq(unhandledNode))
+
+      a[RuntimeException] must be thrownBy typeTree.hasNoEmptySteps(scope)
     }
   }
 
@@ -152,7 +161,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
           ObjectImpl(Seq(
             FunctionMImpl(params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM())),
               nodes = Seq(
-                AddOperator(
+                AddOperatorImpl(
                   ValueRefImpl("a"), ValueRefImpl("b"))
               ), name = "f0")),
             name = "o0")))

@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import memoization.LookupChildrenWithFutures
 import models.common.IScope
 import models.domain.Step
-import models.domain.scala.AddOperator
+import models.domain.scala.AddOperatorImpl
 
 import scala.async.Async.async
 import scala.async.Async.await
@@ -22,7 +22,7 @@ case class AddOperatorFactoryImpl @Inject()(
     val possibleNodes = lookupChildren.get(scope, nodesToChooseFrom)
     val (updatedScope, left) = await(creator.create(possibleNodes, scope))
     val (_, right) = await(creator.create(possibleNodes, updatedScope))
-    AddOperator(left = left,
+    AddOperatorImpl(left = left,
       right = right)
   }
 

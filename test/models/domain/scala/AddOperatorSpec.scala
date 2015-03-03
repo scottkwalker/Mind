@@ -19,7 +19,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
       val right = mock[Step]
       when(right.toCompilable).thenReturn("STUB_B")
 
-      val compilable = AddOperator(left = left, right = right).toCompilable
+      val compilable = AddOperatorImpl(left = left, right = right).toCompilable
 
       compilable must equal("STUB_A + STUB_B")
     }
@@ -27,78 +27,64 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
 
   "hasNoEmptySteps" must {
     "true given child nodes can terminate in under N steps" in {
-      val scope = mock[IScope]
-      when(scope.hasHeightRemaining).thenReturn(true)
       val terminal = mock[ValueRef]
       when(terminal.hasNoEmptySteps(any[IScope])).thenReturn(true)
 
-      val hasNoEmptySteps = AddOperator(terminal, terminal).hasNoEmptySteps(scope)
+      val hasNoEmptySteps = AddOperatorImpl(terminal, terminal).hasNoEmptySteps(scopeWithHeightRemaining)
 
       hasNoEmptySteps must equal(true)
     }
 
     "false given it cannot terminate in 0 steps" in {
-      val scope = mock[IScope]
       val nonTerminal = mock[Step]
       when(nonTerminal.hasNoEmptySteps(any[IScope])).thenThrow(new RuntimeException)
 
-      val hasNoEmptySteps = AddOperator(nonTerminal, nonTerminal).hasNoEmptySteps(scope)
+      val hasNoEmptySteps = AddOperatorImpl(nonTerminal, nonTerminal).hasNoEmptySteps(scopeWithoutHeightRemaining)
 
       hasNoEmptySteps must equal(false)
     }
 
     "false given child nodes cannot terminate in under N steps" in {
-      val scope = mock[IScope]
       val nonTerminal = mock[Step]
       when(nonTerminal.hasNoEmptySteps(any[IScope])).thenReturn(false)
 
-      val hasNoEmptySteps = AddOperator(nonTerminal, nonTerminal).hasNoEmptySteps(scope)
+      val hasNoEmptySteps = AddOperatorImpl(nonTerminal, nonTerminal).hasNoEmptySteps(scopeWithoutHeightRemaining)
 
       hasNoEmptySteps must equal(false)
     }
 
     "false when left node is empty" in {
-      val scope = mock[IScope]
-      when(scope.hasHeightRemaining).thenReturn(true)
       val nonEmpty = ValueRefImpl("stub")
 
-      val hasNoEmptySteps = AddOperator(Empty(), nonEmpty).hasNoEmptySteps(scope)
+      val hasNoEmptySteps = AddOperatorImpl(Empty(), nonEmpty).hasNoEmptySteps(scopeWithHeightRemaining)
 
       hasNoEmptySteps must equal(false)
     }
 
     "false when right node is empty" in {
-      val scope = mock[IScope]
-      when(scope.hasHeightRemaining).thenReturn(true)
       val nonEmpty = ValueRefImpl("stub")
 
-      val hasNoEmptySteps = AddOperator(nonEmpty, Empty()).hasNoEmptySteps(scope)
+      val hasNoEmptySteps = AddOperatorImpl(nonEmpty, Empty()).hasNoEmptySteps(scopeWithHeightRemaining)
 
       hasNoEmptySteps must equal(false)
     }
 
-    "false given contains a node that is not valid for this level" in {
-      val scope = mock[IScope]
-      when(scope.hasHeightRemaining).thenReturn(true)
-      val valid = mock[Step]
-      when(valid.hasNoEmptySteps(any[IScope])).thenReturn(true)
-      val invalid = ObjectImpl(Seq.empty, "ObjectM0")
+    "throw when there is a node of an unhandled node type" in {
+      val unhandledNode = mock[Step]
+      val objectImpl = new AddOperatorImpl(left = unhandledNode, right = unhandledNode)
 
-      val hasNoEmptySteps = AddOperator(valid, invalid).hasNoEmptySteps(scope)
-
-      hasNoEmptySteps must equal(false)
+      a[RuntimeException] must be thrownBy objectImpl.hasNoEmptySteps(scopeWithHeightRemaining)
     }
   }
 
   "fillEmptySteps" must {
     "calls fillEmptySteps on non-empty child nodes" in {
-      val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
       val nonEmpty = mock[Step]
       when(nonEmpty.fillEmptySteps(any[IScope], any[FactoryLookup])).thenReturn(Future.successful(nonEmpty))
-      val instance = AddOperator(nonEmpty, nonEmpty)
+      val instance = AddOperatorImpl(nonEmpty, nonEmpty)
 
-      val fillEmptySteps = instance.fillEmptySteps(scope, factoryLookup)
+      val fillEmptySteps = instance.fillEmptySteps(scopeWithHeightRemaining, factoryLookup)
 
       whenReady(fillEmptySteps) { _ =>
         verify(nonEmpty, times(2)).fillEmptySteps(any[IScope], any[FactoryLookup])
@@ -106,13 +92,12 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
     }
 
     "returns same when no empty nodes" in {
-      val scope = mock[IScope]
       val factoryLookup = mock[FactoryLookup]
       val nonEmpty = mock[Step]
       when(nonEmpty.fillEmptySteps(any[IScope], any[FactoryLookup])).thenReturn(Future.successful(nonEmpty))
-      val instance = AddOperator(nonEmpty, nonEmpty)
+      val instance = AddOperatorImpl(nonEmpty, nonEmpty)
 
-      val fillEmptySteps = instance.fillEmptySteps(scope, factoryLookup)
+      val fillEmptySteps = instance.fillEmptySteps(scopeWithHeightRemaining, factoryLookup)
 
       whenReady(fillEmptySteps) {
         _ must equal(instance)
@@ -120,16 +105,14 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
     }
 
     "returns without empty nodes given there were empty nodes" in {
-      val scope = mock[IScope]
-      when(scope.numVals).thenReturn(1)
       val empty: Step = Empty()
       val factoryLookup = testInjector(new StubFactoryLookupBinding).getInstance(classOf[FactoryLookup])
-      val instance = AddOperator(empty, empty)
+      val instance = AddOperatorImpl(empty, empty)
 
-      val fillEmptySteps = instance.fillEmptySteps(scope, factoryLookup)
+      val fillEmptySteps = instance.fillEmptySteps(scopeWithNumVals(1), factoryLookup)
 
       whenReady(fillEmptySteps) {
-        case AddOperator(left, right) =>
+        case AddOperatorImpl(left, right) =>
           left mustBe a[Step]
           right mustBe a[Step]
         case _ => fail("wrong type")
@@ -139,12 +122,27 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
 
   "height" must {
     "return 1 + child height" in {
-      val node = mock[Step]
-      when(node.height).thenReturn(1)
-
-      val height = AddOperator(node, node).height
-
+      val height = AddOperatorImpl(stepWithHeight(1), stepWithHeight(1)).height
       height must equal(2)
     }
+  }
+
+  private def scopeWithHeightRemaining = scope(hasHeightRemaining = true)
+
+  private def scope(hasHeightRemaining: Boolean = true, numVals: Int = 0) = {
+    val scope = mock[IScope]
+    when(scope.hasHeightRemaining).thenReturn(hasHeightRemaining)
+    when(scope.numVals).thenReturn(numVals)
+    scope
+  }
+
+  private def scopeWithoutHeightRemaining = scope(hasHeightRemaining = false)
+
+  private def scopeWithNumVals(numVals: Int) = scope(numVals = numVals)
+
+  private def stepWithHeight(height: Int) = {
+    val step = mock[Step]
+    when(step.height).thenReturn(height)
+    step
   }
 }
