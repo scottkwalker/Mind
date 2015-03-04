@@ -23,6 +23,7 @@ final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
     "return expected type given only one valid choice" in {
       val node = mock[Decision]
       val possibleChildren = Set(node)
+      val (selectionStrategy, _) = build
 
       selectionStrategy.chooseChild(possibleChildren) mustBe a[Decision]
     }
@@ -44,6 +45,7 @@ final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
         height = 5,
         maxObjectsInTree = 1,
         maxHeight = 10)
+      val (_, factoryLookup) = build
 
       try {
         val result = premade.fillEmptySteps(scope, factoryLookup)
@@ -59,41 +61,46 @@ final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
     }
 
     "throw when sequence is empty" in {
+      val (selectionStrategy, _) = build
       a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Set.empty[Decision])
     }
   }
 
   "chooseIndex" must {
     "throw when length is zero" in {
+      val (selectionStrategy, _) = build
       a[RuntimeException] must be thrownBy selectionStrategy.chooseIndex(seqLength = 0)
     }
 
     "always returns zero" in {
-      selectionStrategy.chooseIndex(2) must equal(0)
+      val (selectionStrategy, _) = build
+      selectionStrategy.chooseIndex(seqLength = 2) must equal(0)
     }
   }
 
   "canAddAnother" must {
     "return false when accumulator length equals factoryLimit" in {
+      val (selectionStrategy, _) = build
       selectionStrategy.canAddAnother(accLength = 1, factoryLimit = 1) must equal(false)
     }
 
     "return false when accumulator length is greater than factoryLimit" in {
+      val (selectionStrategy, _) = build
       selectionStrategy.canAddAnother(accLength = 2, factoryLimit = 1) must equal(false)
     }
 
     "return true when accumulator length is less than factoryLimit" in {
+      val (selectionStrategy, _) = build
       selectionStrategy.canAddAnother(accLength = 1, factoryLimit = 2) must equal(true)
     }
   }
 
-  private def factoryLookup = legalGamerInjector.getInstance(classOf[FactoryLookup])
-
-  private def legalGamerInjector = testInjector(
-    new LegalGamerBinding,
-    new StubFactoryLookupAnyBinding,
-    new StubRngBinding
-  )
-
-  private def selectionStrategy = legalGamerInjector.getInstance(classOf[SelectionStrategy])
+  private def build = {
+    val injector = testInjector(
+      new LegalGamerBinding,
+      new StubFactoryLookupAnyBinding,
+      new StubRngBinding
+    )
+    (injector.getInstance(classOf[SelectionStrategy]), injector.getInstance(classOf[FactoryLookup]))
+  }
 }

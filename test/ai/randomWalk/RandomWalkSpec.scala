@@ -14,6 +14,7 @@ import models.domain.scala.TypeTree
 import models.domain.scala._
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.verifyNoMoreInteractions
 
 final class RandomWalkSpec extends UnitTestHelpers with TestComposition {
 
@@ -21,6 +22,7 @@ final class RandomWalkSpec extends UnitTestHelpers with TestComposition {
     "return expected type given only one valid choice" in {
       val node = mock[Decision]
       val possibleChildren = Set(node)
+      val (selectionStrategy, _) = build
 
       selectionStrategy.chooseChild(possibleChildren) mustBe a[Decision]
     }
@@ -42,6 +44,7 @@ final class RandomWalkSpec extends UnitTestHelpers with TestComposition {
         height = 5,
         maxObjectsInTree = 1,
         maxHeight = 10)
+      val (_, factoryLookup) = build
 
       try {
         for (i <- 1 to 10) {
@@ -59,12 +62,14 @@ final class RandomWalkSpec extends UnitTestHelpers with TestComposition {
     }
 
     "throw when sequence is empty" in {
+      val (selectionStrategy, _) = build
       a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Set.empty[Decision])
     }
   }
 
   "chooseIndex" must {
     "throw when length is zero" in {
+      val (selectionStrategy, _) = build
       a[RuntimeException] must be thrownBy selectionStrategy.chooseIndex(seqLength = 0)
     }
 
@@ -80,16 +85,16 @@ final class RandomWalkSpec extends UnitTestHelpers with TestComposition {
       selectionStrategy.chooseIndex(expected)
 
       verify(randomNumberGenerator.stub, times(1)).nextInt(expected)
+      verifyNoMoreInteractions(randomNumberGenerator.stub)
     }
   }
 
-  private def factoryLookup = randomWalkInjector.getInstance(classOf[FactoryLookup])
-
-  private def randomWalkInjector = testInjector(
-    new RandomWalkBinding,
-    new StubFactoryLookupAnyBinding,
-    new StubRngBinding
-  )
-
-  private def selectionStrategy = randomWalkInjector.getInstance(classOf[SelectionStrategy])
+  private def build = {
+    val injector = testInjector(
+      new RandomWalkBinding,
+      new StubFactoryLookupAnyBinding,
+      new StubRngBinding
+    )
+    (injector.getInstance(classOf[SelectionStrategy]), injector.getInstance(classOf[FactoryLookup]))
+  }
 }

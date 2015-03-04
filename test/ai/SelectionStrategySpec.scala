@@ -59,12 +59,13 @@ final class SelectionStrategySpec extends UnitTestHelpers with TestComposition {
     }
 
     "calls random number generator with the limit passed in" in {
-      val (sut, rng) = selectionStrategy(nextInt = 5)
+      val (sut, randomNumberGenerator) = selectionStrategy(nextInt = 5)
       val factoryLimit = 42
 
       sut.generateLengthOfSeq(factoryLimit = factoryLimit)
 
-      verify(rng, times(1)).nextInt(factoryLimit)
+      verify(randomNumberGenerator, times(1)).nextInt(factoryLimit)
+      verifyNoMoreInteractions(randomNumberGenerator)
     }
 
     "returns random number generator stubbed value when greater than zero" in {
