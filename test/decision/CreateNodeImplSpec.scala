@@ -17,22 +17,17 @@ final class CreateNodeImplSpec extends UnitTestHelpers with TestComposition {
 
       whenReady(createNode.create(possibleChildren, scope)) { _ =>
         verify(ai, times(1)).chooseChild(possibleChildren)
+        verifyNoMoreInteractions(ai)
       }(config = patienceConfig)
     }
 
-    "calls updateScope" in {
-      val (decision, scope, _, possibleChildren, createNode) = build
-
-      whenReady(createNode.create(possibleChildren, scope)) { _ =>
-        verify(decision, times(1)).updateScope(scope)
-      }(config = patienceConfig)
-    }
-
-    "calls create on factory" in {
+    "calls createStep and updateScope once" in {
       val (decision, scope, _, possibleChildren, createNode) = build
 
       whenReady(createNode.create(possibleChildren, scope)) { _ =>
         verify(decision, times(1)).createStep(scope)
+        verify(decision, times(1)).updateScope(scope)
+        verifyNoMoreInteractions(decision)
       }(config = patienceConfig)
     }
   }

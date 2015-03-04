@@ -26,6 +26,7 @@ final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition 
       whenReady(result) {
         case AccumulateInstructions(instructions, _) =>
           verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
+          verifyNoMoreInteractions(createNode)
           instructions.length must equal(1)
         case _ => fail("wrong type")
       }(config = patienceConfig)
@@ -42,6 +43,7 @@ final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition 
       whenReady(result) {
         case AccumulateInstructions(instructions, _) =>
           verify(createNode, times(2)).create(possibleChildren = possibleChildren, scope = scope)
+          verifyNoMoreInteractions(createNode)
           instructions.length must equal(2)
         case _ => fail("wrong type")
       }(config = patienceConfig)
@@ -58,6 +60,7 @@ final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition 
       whenReady(result) {
         case AccumulateInstructions(instructions, _) =>
           verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
+          verifyNoMoreInteractions(createNode)
           instructions.length must equal(1)
         case _ => fail("wrong type")
       }(config = patienceConfig)
@@ -75,6 +78,7 @@ final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition 
       whenReady(result) {
         case AccumulateInstructions(instructions, _) =>
           verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
+          verifyNoMoreInteractions(createNode)
           instructions.length must equal(2)
         case _ => fail("wrong type")
       }(config = patienceConfig)

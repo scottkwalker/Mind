@@ -11,6 +11,7 @@ import models.common.Scope
 import org.mockito.Matchers.any
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.verifyNoMoreInteractions
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -75,15 +76,12 @@ final class LegalChildrenUnitSpec extends UnitTestHelpers with TestComposition {
 
     "call lookupChildren.calculate when submission is valid" in {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
-      val lookupChildren = new StubLookupChildrenBinding
-      val injector = testInjector(
-        lookupChildren
-      )
-      val sut = injector.getInstance(classOf[LegalChildren])
+      val (legalChildren, lookupChildren) = build()
 
-      val result = sut.calculate(validRequest)
+      val result = legalChildren.calculate(validRequest)
       whenReady(result) { r =>
-        verify(lookupChildren.stub, times(1)).get(any[IScope], any[PozInt])
+        verify(lookupChildren, times(1)).get(any[IScope], any[PozInt])
+        verifyNoMoreInteractions(lookupChildren)
       }(config = patienceConfig)
     }
   }
@@ -93,6 +91,7 @@ final class LegalChildrenUnitSpec extends UnitTestHelpers with TestComposition {
       val (legalChildren, lookupChildren) = build(size = 0)
       legalChildren.size(FakeRequest())
       verify(lookupChildren, times(1)).size
+      verifyNoMoreInteractions(lookupChildren)
     }
 
     "return 0 when repository is empty" in {

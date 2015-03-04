@@ -59,6 +59,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
 
       whenReady(step) { _ =>
         verify(createSeqNodes, times(2)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
+        verifyNoMoreInteractions(createSeqNodes)
       }(config = patienceConfig)
     }
   }
@@ -71,6 +72,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
 
       whenReady(step) { _ =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
+        verifyNoMoreInteractions(createSeqNodes)
       }(config = patienceConfig)
     }
   }
@@ -83,6 +85,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
 
       whenReady(step) { _ =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
+        verifyNoMoreInteractions(createSeqNodes)
       }(config = patienceConfig)
     }
   }
@@ -94,6 +97,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
       factory.updateScope(scope = scope)
 
       verify(scope, times(1)).incrementFuncs
+      verifyNoMoreInteractions(scope)
     }
   }
 

@@ -9,6 +9,7 @@ import models.common.Scope
 import org.mockito.Matchers.any
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.verifyNoMoreInteractions
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.BAD_REQUEST
@@ -32,6 +33,7 @@ final class PopulateUnitSpec extends UnitTestHelpers with TestComposition {
   "calculate" must {
     "return bad request when submission is empty" in {
       val emptyRequest = FakeRequest().withFormUrlEncodedBody()
+      val (populate, _) = build
       val result = populate.calculate(emptyRequest)
       whenReady(result) { r =>
         r.header.status must equal(BAD_REQUEST)
@@ -40,6 +42,7 @@ final class PopulateUnitSpec extends UnitTestHelpers with TestComposition {
 
     "return ok when submission is valid" in {
       val validRequest = requestWithDefaults()
+      val (populate, _) = build
       val result = populate.calculate(validRequest)
       whenReady(result) { r =>
         r.header.status must equal(OK)
@@ -48,25 +51,27 @@ final class PopulateUnitSpec extends UnitTestHelpers with TestComposition {
 
     "call lookupChildren.fetch when submission is valid" in {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
-      val generator = new StubGeneratorBinding
-      val injector = testInjector(
-        generator
-      )
-      val sut = injector.getInstance(classOf[Populate])
+      val (populate, generator) = build
 
-      val result = sut.calculate(validRequest)
+      val result = populate.calculate(validRequest)
       whenReady(result) { r =>
-        verify(generator.stub, times(1)).calculateAndUpdate(any[IScope])
+        verify(generator, times(1)).calculateAndUpdate(any[IScope])
+        verifyNoMoreInteractions(generator)
       }(config = patienceConfig)
     }
   }
 
   private def present = {
     val emptyRequest = FakeRequest()
+    val (populate, _) = build
     populate.present(emptyRequest)
   }
 
-  private def populate = testInjector(new StubGeneratorBinding).getInstance(classOf[Populate])
+  private def build = {
+    val generator = new StubGeneratorBinding
+    val injector = testInjector(generator)
+    (injector.getInstance(classOf[Populate]), generator.stub)
+  }
 
   private def scopeDefault = Scope(
     numVals = 1,
