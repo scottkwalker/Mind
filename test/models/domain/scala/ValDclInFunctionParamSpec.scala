@@ -82,6 +82,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
 
       whenReady(fillEmptySteps) { _ =>
         verify(step, times(1)).fillEmptySteps(any[IScope], any[FactoryLookup])
+        verifyNoMoreInteractions(step)
       }(config = patienceConfig)
     }
 

@@ -35,8 +35,10 @@ final class RepositoryReturningBoolSpec extends UnitTestHelpers {
       b must equal(true)
       c must equal(false)
       d must equal(false)
+      verify(factoryIdToFactory, times(1)).version // Called by the constructor
       verify(factoryIdToFactory, times(1)).convert(AddOperatorFactory.id)
       verify(factoryIdToFactory, times(1)).convert(ValueRefFactory.id)
+      verifyNoMoreInteractions(factoryIdToFactory)
     }
   }
 

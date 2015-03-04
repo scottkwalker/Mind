@@ -99,7 +99,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
 
   "fillEmptySteps" must {
 
-    "calls fillEmptySteps on non-empty child nodes" in {
+    "calls fillEmptySteps and updateScope once on non-empty child nodes" in {
       val factoryLookup = testInjector(new StubFactoryLookupAnyBinding).getInstance(classOf[FactoryLookup])
       val param = mock[Step]
       when(param.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(param)
@@ -113,7 +113,11 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
 
       whenReady(step) { _ =>
         verify(param, times(1)).fillEmptySteps(any[IScope], any[FactoryLookup])
+        verify(param, times(1)).updateScope(any[IScope])
         verify(node, times(1)).fillEmptySteps(any[IScope], any[FactoryLookup])
+        verify(node, times(1)).updateScope(any[IScope])
+        verifyNoMoreInteractions(param)
+        verifyNoMoreInteractions(node)
       }(config = patienceConfig)
     }
 

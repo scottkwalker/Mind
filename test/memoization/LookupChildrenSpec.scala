@@ -29,6 +29,7 @@ final class LookupChildrenSpec extends UnitTestHelpers with TestComposition {
       verify(repository, times(1)).apply(key1 = scope, key2 = neighbour0)
       verify(repository, times(1)).apply(key1 = scope, key2 = neighbour1)
       verify(repository, times(1)).apply(key1 = scope, key2 = neighbour2)
+      verifyNoMoreInteractions(repository)
     }
 
     "call factoryLookup.convert(id) once for each neighbour" in {
@@ -43,6 +44,7 @@ final class LookupChildrenSpec extends UnitTestHelpers with TestComposition {
       verify(factoryLookup, times(1)).convert(id = neighbour0)
       verify(factoryLookup, times(1)).convert(id = neighbour1)
       verify(factoryLookup, times(1)).convert(id = neighbour2)
+      verifyNoMoreInteractions(factoryLookup)
     }
   }
 
@@ -64,6 +66,7 @@ final class LookupChildrenSpec extends UnitTestHelpers with TestComposition {
 
       verify(repository, times(1)).apply(key1 = scope, key2 = fakeFactoryTerminates1Id)
       verify(repository, times(1)).apply(key1 = scope, key2 = fakeFactoryTerminates2Id)
+      verifyNoMoreInteractions(repository)
     }
   }
 

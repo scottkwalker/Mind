@@ -53,6 +53,7 @@ final class Memoize1ImplSpec extends UnitTestHelpers {
       verify(fib, times(1))(1)
       verify(fib, times(1))(2)
       verify(fib, times(1))(3)
+      verifyNoMoreInteractions(fib)
     }
 
     "only runs the function once for the same input (fibonacci tail recursive)" in {
@@ -81,6 +82,7 @@ final class Memoize1ImplSpec extends UnitTestHelpers {
       verify(fib, times(1))(1)
       verify(fib, times(1))(2)
       verify(fib, times(1))(3)
+      verifyNoMoreInteractions(fib)
     }
 
     "only runs the function once for the same input (adder)" in {
@@ -103,6 +105,7 @@ final class Memoize1ImplSpec extends UnitTestHelpers {
 
       verify(adder, times(1))(1)
       verify(adder, times(1))(2)
+      verifyNoMoreInteractions(adder)
     }
 
     "only executes the memoized computation once per input" in {

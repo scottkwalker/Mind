@@ -41,8 +41,10 @@ final class RepositoryReturningFutureBoolSpec extends UnitTestHelpers {
         r(1) must equal(true)
         r(2) must equal(false)
         r(3) must equal(false)
+        verify(factoryIdToFactory, times(1)).version // Called by the constructor
         verify(factoryIdToFactory, times(1)).convert(AddOperatorFactory.id)
         verify(factoryIdToFactory, times(1)).convert(ValueRefFactory.id)
+        verifyNoMoreInteractions(factoryIdToFactory)
       }(config = patienceConfig)
     }
   }

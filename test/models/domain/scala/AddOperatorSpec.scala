@@ -89,6 +89,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
 
       whenReady(fillEmptySteps) { _ =>
         verify(nonEmpty, times(2)).fillEmptySteps(any[IScope], any[FactoryLookup])
+        verifyNoMoreInteractions(nonEmpty)
       }(config = patienceConfig)
     }
 

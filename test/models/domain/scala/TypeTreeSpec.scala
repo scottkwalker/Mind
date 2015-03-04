@@ -62,7 +62,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
   }
 
   "fillEmptySteps" must {
-    "calls fillEmptySteps on non-empty child nodes" in {
+    "calls fillEmptySteps and updateScope once on non-empty child nodes" in {
       val factoryLookup = mock[FactoryLookup]
       val step = mock[Step]
       when(step.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(step)
@@ -70,7 +70,11 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
 
       val fillEmptySteps = typeTree.fillEmptySteps(scope(), factoryLookup)
 
-      whenReady(fillEmptySteps) { _ => verify(step, times(1)).fillEmptySteps(any[IScope], any[FactoryLookup])}(config = patienceConfig)
+      whenReady(fillEmptySteps) { _ =>
+        verify(step, times(1)).fillEmptySteps(any[IScope], any[FactoryLookup])
+        verify(step, times(1)).updateScope(any[IScope])
+        verifyNoMoreInteractions(step)
+      }(config = patienceConfig)
     }
 
     "return same when no empty nodes" in {

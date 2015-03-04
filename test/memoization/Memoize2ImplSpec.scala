@@ -74,6 +74,7 @@ final class Memoize2ImplSpec extends UnitTestHelpers {
         verify(adder, times(1))(1, 2)
         verify(adder, times(1))(1, 3)
         verify(adder, times(1))(2, 2)
+        verifyNoMoreInteractions(adder)
       }(config = patienceConfig)
     }
 
@@ -96,6 +97,7 @@ final class Memoize2ImplSpec extends UnitTestHelpers {
 
       whenReady(memoizer(5, 1)) { r =>
         verify(adder, times(1))(5, 1)
+        verifyNoMoreInteractions(adder)
       }(config = patienceConfig)
     }
 

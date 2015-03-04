@@ -81,7 +81,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
   }
 
   "fillEmptySteps" must {
-    "calls fillEmptySteps on non-empty child nodes" in {
+    "calls fillEmptySteps and updateScope once on non-empty child nodes" in {
       val factoryLookup = mock[FactoryLookup]
       val instruction = mock[Step]
       when(instruction.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(instruction)
@@ -91,6 +91,8 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
 
       whenReady(fillEmptySteps) { _ =>
         verify(instruction, times(1)).fillEmptySteps(any[IScope], any[FactoryLookup])
+        verify(instruction, times(1)).updateScope(any[IScope])
+        verifyNoMoreInteractions(instruction)
       }(config = patienceConfig)
     }
 
