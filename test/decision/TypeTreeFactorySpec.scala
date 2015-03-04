@@ -36,6 +36,7 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
 
       whenReady(step) { _ =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
+        verifyNoMoreInteractions(createSeqNodes)
       }(config = patienceConfig)
     }
 
@@ -80,6 +81,7 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
 
       whenReady(step) { _ =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
+        verifyNoMoreInteractions(createSeqNodes)
       }(config = patienceConfig)
     }
   }

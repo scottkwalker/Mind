@@ -92,6 +92,7 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
     val (_, generator: Generator, repository: Memoize2WithSet[IScope, PozInt]) = builder
     generator.calculateAndUpdate(scope).map { _ =>
       verify(repository, times(expected)).add(any[IScope], any[PozInt])
+      verifyNoMoreInteractions(repository)
     }
   }
 }

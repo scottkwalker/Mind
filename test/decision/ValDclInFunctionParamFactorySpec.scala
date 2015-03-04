@@ -81,6 +81,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
       valDclInFunctionParamFactory.updateScope(scope)
 
       verify(scope, times(1)).incrementVals
+      verifyNoMoreInteractions(scope)
     }
   }
 

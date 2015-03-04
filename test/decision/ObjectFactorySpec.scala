@@ -59,6 +59,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
 
       whenReady(step) { _ =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
+        verifyNoMoreInteractions(createSeqNodes)
       }(config = patienceConfig)
     }
   }
@@ -70,6 +71,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
       objectFactory.updateScope(scope)
 
       verify(scope, times(1)).incrementObjects
+      verifyNoMoreInteractions(scope)
     }
   }
 
@@ -81,6 +83,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
 
       whenReady(step) { _ =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
+        verifyNoMoreInteractions(createSeqNodes)
       }(config = patienceConfig)
     }
   }
