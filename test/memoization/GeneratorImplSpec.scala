@@ -29,7 +29,7 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
       verifyRepositoryAddCalled(scope = scope, expected = 1, builder = buildWithoutFutures)
     }
 
-    "call repository.add once for each scope maxFuncsInObject" in {
+    "call repository.add once for each scope maxFuncsInObject on each registered factory" in {
       val scope = mock[IScope]
       when(scope.maxFuncsInObject).thenReturn(1)
       when(scope.maxHeight).thenReturn(1)
@@ -45,37 +45,49 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "call repository.add once for each scope maxParamsInFunc" in {
+    "call repository.add once for each scope maxParamsInFunc on each registered factory" in {
       val scope = mock[IScope]
       when(scope.maxParamsInFunc).thenReturn(1)
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, _) = buildWithoutFutures
+      val (_, generator, repository, factoryLookup) = buildWithoutFutures
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
-        verify(repository, atLeastOnce).add(Matchers.eq(Scope(numVals = 0, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
-        verify(repository, atLeastOnce).add(Matchers.eq(Scope(numVals = 1, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
+        factoryLookup.factories.foreach { id =>
+          verify(repository, atLeastOnce).add(Matchers.eq(Scope(numVals = 0, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(id))
+          verify(repository, atLeastOnce).add(Matchers.eq(Scope(numVals = 1, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(id))
+        }
+        verify(repository, times(1)).size
+        verifyNoMoreInteractions(repository)
       }(config = patienceConfig)
     }
 
-    "call repository.add once for each scope maxObjectsInTree" in {
+    "call repository.add once for each scope maxObjectsInTree on each registered factory" in {
       val scope = mock[IScope]
       when(scope.maxObjectsInTree).thenReturn(1)
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, _) = buildWithoutFutures
+      val (_, generator, repository, factoryLookup) = buildWithoutFutures
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
-        verify(repository, atLeastOnce).add(Matchers.eq(Scope(numObjects = 0, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
-        verify(repository, atLeastOnce).add(Matchers.eq(Scope(numObjects = 1, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
+        factoryLookup.factories.foreach { id =>
+          verify(repository, atLeastOnce).add(Matchers.eq(Scope(numObjects = 0, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
+          verify(repository, atLeastOnce).add(Matchers.eq(Scope(numObjects = 1, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
+        }
+        verify(repository, times(1)).size
+        verifyNoMoreInteractions(repository)
       }(config = patienceConfig)
     }
 
-    "call repository.add once for each scope height" in {
+    "call repository.add once for each scope height on each registered factory" in {
       val scope = mock[IScope]
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, _) = buildWithoutFutures
+      val (_, generator, repository, factoryLookup) = buildWithoutFutures
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
-        verify(repository, atLeastOnce).add(Matchers.eq(Scope(height = 1, maxHeight = 1): IScope), any[PozInt])
+        factoryLookup.factories.foreach { id =>
+          verify(repository, atLeastOnce).add(Matchers.eq(Scope(height = 1, maxHeight = 1): IScope), any[PozInt])
+        }
+        verify(repository, times(1)).size
+        verifyNoMoreInteractions(repository)
       }(config = patienceConfig)
     }
   }
