@@ -9,6 +9,4 @@ trait Generator {
 
   // Calculate all values from the minimum Scope up to the maxScope. Add those that can terminate to the repository.
   def calculateAndUpdate(maxScope: IScope): Future[Int]
-
-  def calculateAndUpdate(scope: IScope, parent: PozInt): Boolean
 }

@@ -39,7 +39,7 @@ class GeneratorImpl @Inject()(
     Future.successful(repository.size)
   }
 
-  override def calculateAndUpdate(scope: IScope, parent: PozInt): Boolean = {
+  private def calculateAndUpdate(scope: IScope, parent: PozInt): Boolean = {
     if (scope.hasHeightRemaining) {
       val decision = factoryLookup.convert(parent)
       val nodesToChooseFrom = decision.nodesToChooseFrom

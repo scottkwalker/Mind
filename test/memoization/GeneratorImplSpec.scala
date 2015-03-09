@@ -4,6 +4,7 @@ import composition.StubFactoryLookupAnyBinding.numberOfFactories
 import composition._
 import models.common.IScope
 import models.common.Scope
+import models.domain.scala.FactoryLookup
 import org.mockito.Matchers
 import org.mockito.Matchers._
 import org.mockito.Mockito._
@@ -15,7 +16,7 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
 
   "generate (without futures)" must {
     "return expected message" in {
-      val (_, generator, _) = buildWithoutFutures
+      val (_, generator, _, _) = buildWithoutFutures
       val scope = mock[IScope]
 
       whenReady(generator.calculateAndUpdate(scope)) {
@@ -32,11 +33,15 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       when(scope.maxFuncsInObject).thenReturn(1)
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository) = buildWithoutFutures
+      val (_, generator, repository, factoryLookup) = buildWithoutFutures
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
-        verify(repository, atLeastOnce).add(Matchers.eq(Scope(numFuncs = 0, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
-        verify(repository, atLeastOnce).add(Matchers.eq(Scope(numFuncs = 1, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
+        factoryLookup.factories.foreach { id =>
+          verify(repository, times(1)).add(Matchers.eq(Scope(numFuncs = 0, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(id))
+          verify(repository, times(1)).add(Matchers.eq(Scope(numFuncs = 1, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(id))
+        }
+        verify(repository, times(1)).size
+        verifyNoMoreInteractions(repository)
       }(config = patienceConfig)
     }
 
@@ -44,7 +49,7 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       when(scope.maxParamsInFunc).thenReturn(1)
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository) = buildWithoutFutures
+      val (_, generator, repository, _) = buildWithoutFutures
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(numVals = 0, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
@@ -56,7 +61,7 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       when(scope.maxObjectsInTree).thenReturn(1)
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository) = buildWithoutFutures
+      val (_, generator, repository, _) = buildWithoutFutures
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(numObjects = 0, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
@@ -67,7 +72,7 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
     "call repository.add once for each scope height" in {
       val scope = mock[IScope]
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository) = buildWithoutFutures
+      val (_, generator, repository, _) = buildWithoutFutures
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
         verify(repository, atLeastOnce).add(Matchers.eq(Scope(height = 1, maxHeight = 1): IScope), any[PozInt])
@@ -75,7 +80,7 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
     }
   }
 
-  private def buildWithoutFutures: (LookupChildren, Generator, Memoize2WithSet[IScope, PozInt]) = {
+  private def buildWithoutFutures = {
     val lookupChildren = new StubLookupChildrenBinding(size = numberOfFactories)
     val repository = new StubRepositoryBinding
     val factoryLookup = new StubFactoryLookupAnyBinding
@@ -85,11 +90,11 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
       repository,
       new GeneratorBinding
     ).getInstance(classOf[Generator])
-    (lookupChildren.stub, generator, repository.stub)
+    (lookupChildren.stub, generator, repository.stub, factoryLookup.stub)
   }
 
-  private def verifyRepositoryAddCalled(scope: IScope, expected: Int = 2, builder: => (LookupChildren, Generator, Memoize2WithSet[IScope, PozInt])) = {
-    val (_, generator: Generator, repository: Memoize2WithSet[IScope, PozInt]) = builder
+  private def verifyRepositoryAddCalled(scope: IScope, expected: Int = 2, builder: => (LookupChildren, Generator, Memoize2WithSet[IScope, PozInt], FactoryLookup)) = {
+    val (_, generator: Generator, repository: Memoize2WithSet[IScope, PozInt], _) = builder
     generator.calculateAndUpdate(scope).map { _ =>
       verify(repository, times(expected)).add(any[IScope], any[PozInt])
       verifyNoMoreInteractions(repository)
