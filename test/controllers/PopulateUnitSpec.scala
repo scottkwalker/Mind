@@ -31,30 +31,34 @@ final class PopulateUnitSpec extends UnitTestHelpers with TestComposition {
   }
 
   "calculate" must {
-    "return bad request when submission is empty" in {
+    "return bad request if given an empty submission" in {
       val emptyRequest = FakeRequest().withFormUrlEncodedBody()
       val (populate, _) = build
-      val result = populate.calculate(emptyRequest)
-      whenReady(result) { r =>
-        r.header.status must equal(BAD_REQUEST)
+
+      val calculated = populate.calculate(emptyRequest)
+
+      whenReady(calculated) {
+        _.header.status must equal(BAD_REQUEST)
       }(config = patienceConfig)
     }
 
-    "return ok when submission is valid" in {
+    "return ok if given a valid submission" in {
       val validRequest = requestWithDefaults()
       val (populate, _) = build
-      val result = populate.calculate(validRequest)
-      whenReady(result) { r =>
-        r.header.status must equal(OK)
+
+      val calculated = populate.calculate(validRequest)
+
+      whenReady(calculated) {
+        _.header.status must equal(OK)
       }(config = patienceConfig)
     }
 
-    "call lookupChildren.fetch when submission is valid" in {
+    "call lookupChildren.fetch once if given a valid submission" in {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
       val (populate, generator) = build
 
-      val result = populate.calculate(validRequest)
-      whenReady(result) { r =>
+      val calculated = populate.calculate(validRequest)
+      whenReady(calculated) { r =>
         verify(generator, times(1)).calculateAndUpdate(any[IScope])
         verifyNoMoreInteractions(generator)
       }(config = patienceConfig)

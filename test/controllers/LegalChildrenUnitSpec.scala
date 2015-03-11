@@ -34,82 +34,89 @@ final class LegalChildrenUnitSpec extends UnitTestHelpers with TestComposition {
   }
 
   "calculate" must {
-    "return bad request when submission is empty" in {
+    "return bad request if given an empty submission" in {
       val emptyRequest = FakeRequest().withFormUrlEncodedBody()
       val (legalChildren, _) = build(size = 0)
-      val result = legalChildren.calculate(emptyRequest)
-      whenReady(result) { r =>
-        r.header.status must equal(BAD_REQUEST)
+
+      val calculate = legalChildren.calculate(emptyRequest)
+
+      whenReady(calculate) {
+        _.header.status must equal(BAD_REQUEST)
       }(config = patienceConfig)
     }
 
-    "return ok when submission is valid" in {
+    "return ok if given a valid submission" in {
       val validRequest = requestWithDefaults()
       val (legalChildren, _) = build(size = 0)
-      val result = legalChildren.calculate(validRequest)
-      whenReady(result) { r =>
-        r.header.status must equal(OK)
+
+      val calculate = legalChildren.calculate(validRequest)
+
+      whenReady(calculate) {
+        _.header.status must equal(OK)
       }(config = patienceConfig)
     }
 
-    "return seq of ids when submission is valid and legal moves are found" in {
+    "call lookupChildren.calculate if given a valid submission" in {
+      val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
+      val (legalChildren, lookupChildren) = build()
+
+      val calculate = legalChildren.calculate(validRequest)
+
+      whenReady(calculate) { r =>
+        verify(lookupChildren, times(1)).get(any[IScope], any[PozInt])
+        verifyNoMoreInteractions(lookupChildren)
+      }(config = patienceConfig)
+    }
+
+    "return seq of ids if given a valid submission and legal moves are found" in {
       val validRequest = requestWithDefaults()
       val (legalChildren, _) = build(size = 0)
-      val result = legalChildren.calculate(validRequest)
-      whenReady(result) { r =>
-        r.body.map { b =>
+      val action = legalChildren.calculate(validRequest)
+      whenReady(action) {
+        _.body.map { b =>
           Json.parse(b) must equal(Seq(TypeTreeFactory.id))
         }
       }(config = patienceConfig)
     }
 
-    "return empty seq when submission is valid but no matches are in scope" in {
+    "return empty seq if given a valid submission but no legal moves are in scope" in {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
       val (legalChildren, _) = build(size = 0)
-      val result = legalChildren.calculate(validRequest)
-      whenReady(result) { r =>
-        r.body.map { b =>
+
+      val calculate = legalChildren.calculate(validRequest)
+
+      whenReady(calculate) {
+        _.body.map { b =>
           Json.parse(b) must equal(Seq.empty)
         }
-      }(config = patienceConfig)
-    }
-
-    "call lookupChildren.calculate when submission is valid" in {
-      val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
-      val (legalChildren, lookupChildren) = build()
-
-      val result = legalChildren.calculate(validRequest)
-      whenReady(result) { r =>
-        verify(lookupChildren, times(1)).get(any[IScope], any[PozInt])
-        verifyNoMoreInteractions(lookupChildren)
       }(config = patienceConfig)
     }
   }
 
   "size" must {
-    "call lookupChildren.size" in {
+    "call lookupChildren.size once" in {
       val (legalChildren, lookupChildren) = build(size = 0)
       legalChildren.size(FakeRequest())
       verify(lookupChildren, times(1)).size
       verifyNoMoreInteractions(lookupChildren)
     }
 
-    "return 0 when repository is empty" in {
+    "return 0 if given an empty repository" in {
       val (legalChildren, _) = build(size = 0)
-      val result = legalChildren.size(FakeRequest())
-      contentAsString(result)(timeout) must equal("repository size: 0")
+      val sizeOfRepository = legalChildren.size(FakeRequest())
+      contentAsString(sizeOfRepository)(timeout) must equal("repository size: 0")
     }
 
-    "return 1 when repository has 1 item" in {
+    "return 1 if given a repository containing 1 item" in {
       val (legalChildren, _) = build(size = 1)
-      val result = legalChildren.size(FakeRequest())
-      contentAsString(result)(timeout) must equal("repository size: 1")
+      val sizeOfRepository = legalChildren.size(FakeRequest())
+      contentAsString(sizeOfRepository)(timeout) must equal("repository size: 1")
     }
 
-    "return 3 when repository has 3 items" in {
+    "return 3 if given a repository containing 3 items" in {
       val (legalChildren, _) = build(size = 3)
-      val result = legalChildren.size(FakeRequest())
-      contentAsString(result)(timeout) must equal("repository size: 3")
+      val sizeOfRepository = legalChildren.size(FakeRequest())
+      contentAsString(sizeOfRepository)(timeout) must equal("repository size: 3")
     }
   }
 

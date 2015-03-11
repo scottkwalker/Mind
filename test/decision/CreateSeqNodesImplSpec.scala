@@ -18,12 +18,12 @@ final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition 
     "calls create on factory once given only space for 1 func in obj and mocked rng the same" in {
       val (possibleChildren, createSeqNodes, scope, createNode, _) = build(maxFuncsInObject = 1, nextInt = 1)
 
-      val result = createSeqNodes.create(possibleChildren = possibleChildren,
+      val created = createSeqNodes.create(possibleChildren = possibleChildren,
         initScope = scope,
         factoryLimit = scope.maxFuncsInObject
       )
 
-      whenReady(result) {
+      whenReady(created) {
         case AccumulateInstructions(instructions, _) =>
           verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
           verifyNoMoreInteractions(createNode)
@@ -35,12 +35,12 @@ final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition 
     "calls create on factory twice given space for 2 func in obj and mocked rng the same" in {
       val (possibleChildren, createSeqNodes, scope, createNode, _) = build(maxFuncsInObject = 2, nextInt = 2)
 
-      val result = createSeqNodes.create(possibleChildren = possibleChildren,
+      val created = createSeqNodes.create(possibleChildren = possibleChildren,
         initScope = scope,
         factoryLimit = scope.maxFuncsInObject
       )
 
-      whenReady(result) {
+      whenReady(created) {
         case AccumulateInstructions(instructions, _) =>
           verify(createNode, times(2)).create(possibleChildren = possibleChildren, scope = scope)
           verifyNoMoreInteractions(createNode)
@@ -52,12 +52,12 @@ final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition 
     "calls create on factory once given space for 2 func in obj but rng mocked to 1" in {
       val (possibleChildren, createSeqNodes, scope, createNode, _) = build(maxFuncsInObject = 2, nextInt = 1)
 
-      val result = createSeqNodes.create(possibleChildren = possibleChildren,
+      val created = createSeqNodes.create(possibleChildren = possibleChildren,
         initScope = scope,
         factoryLimit = scope.maxFuncsInObject
       )
 
-      whenReady(result) {
+      whenReady(created) {
         case AccumulateInstructions(instructions, _) =>
           verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
           verifyNoMoreInteractions(createNode)
@@ -69,13 +69,13 @@ final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition 
     "calls create on factory once given space for 2 func in obj and a rng mocked to 2 but 1 pre-made node already added" in {
       val (possibleChildren, createSeqNodes, scope, createNode, instruction) = build(maxFuncsInObject = 2, nextInt = 2)
 
-      val result = createSeqNodes.create(possibleChildren = possibleChildren,
+      val created = createSeqNodes.create(possibleChildren = possibleChildren,
         initScope = scope,
         initAcc = Seq(instruction),
         factoryLimit = scope.maxFuncsInObject
       )
 
-      whenReady(result) {
+      whenReady(created) {
         case AccumulateInstructions(instructions, _) =>
           verify(createNode, times(1)).create(possibleChildren = possibleChildren, scope = scope)
           verifyNoMoreInteractions(createNode)

@@ -131,9 +131,9 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
         nodes = Seq(node),
         name = name)
 
-      val result = instance.fillEmptySteps(scope(), factoryLookup)
+      val nonEmptyFunction = instance.fillEmptySteps(scope(), factoryLookup)
 
-      whenReady(result) {
+      whenReady(nonEmptyFunction) {
         _ must equal(instance)
       }(config = patienceConfig)
     }
@@ -145,9 +145,9 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
         nodes = Seq(Empty()),
         name = name)
 
-      val result = functionM.fillEmptySteps(scopeWithHeightRemaining, factoryLookup)
+      val nonEmptyFunction = functionM.fillEmptySteps(scopeWithHeightRemaining, factoryLookup)
 
-      whenReady(result) {
+      whenReady(nonEmptyFunction) {
         case FunctionMImpl(p2, n2, n) =>
           p2 match {
             case Seq(pSeq) => pSeq mustBe a[Step]

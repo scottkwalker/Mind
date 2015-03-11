@@ -24,9 +24,9 @@ final class IntegerMSpec extends UnitTestHelpers {
     "return same when no empty nodes" in {
       val factoryLookup = mock[FactoryLookup]
 
-      val result = integerM.fillEmptySteps(scope(), factoryLookup)
+      val nonEmptyInteger = integerM.fillEmptySteps(scope(), factoryLookup)
 
-      whenReady(result) {
+      whenReady(nonEmptyInteger) {
         _ must equal(integerM)
       }(config = patienceConfig)
     }

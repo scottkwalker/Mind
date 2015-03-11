@@ -20,7 +20,7 @@ import models.domain.scala.ValDclInFunctionParam
 final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
 
   "chooseChild" must {
-    "return expected type given only one valid choice" in {
+    "return expected type if given only one valid choice" in {
       val node = mock[Decision]
       val possibleChildren = Set(node)
       val (selectionStrategy, _) = build
@@ -48,11 +48,10 @@ final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
       val (_, factoryLookup) = build
 
       try {
-        val result = premade.fillEmptySteps(scope, factoryLookup)
-        whenReady(result) {
-          case typeTree: TypeTree =>
-            val f = new AddTwoInts(typeTree)
-            f.fitness
+        val typeTreeF = premade.fillEmptySteps(scope, factoryLookup)
+        whenReady(typeTreeF) { typeTree =>
+          val f = new AddTwoInts(typeTree)
+          f.fitness
         }(config = patienceConfig)
       }
       catch {
@@ -60,14 +59,14 @@ final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
       }
     }
 
-    "throw when sequence is empty" in {
+    "throw if given sequence is empty" in {
       val (selectionStrategy, _) = build
       a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Set.empty[Decision])
     }
   }
 
   "chooseIndex" must {
-    "throw when length is zero" in {
+    "throw if given length is zero" in {
       val (selectionStrategy, _) = build
       a[RuntimeException] must be thrownBy selectionStrategy.chooseIndex(seqLength = 0)
     }
@@ -79,17 +78,17 @@ final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
   }
 
   "canAddAnother" must {
-    "return false when accumulator length equals factoryLimit" in {
+    "return false if given an accumulator length equal to the factoryLimit" in {
       val (selectionStrategy, _) = build
       selectionStrategy.canAddAnother(accLength = 1, factoryLimit = 1) must equal(false)
     }
 
-    "return false when accumulator length is greater than factoryLimit" in {
+    "return false if given an accumulator length greater than factoryLimit" in {
       val (selectionStrategy, _) = build
       selectionStrategy.canAddAnother(accLength = 2, factoryLimit = 1) must equal(false)
     }
 
-    "return true when accumulator length is less than factoryLimit" in {
+    "return true if given an accumulator length less than factoryLimit" in {
       val (selectionStrategy, _) = build
       selectionStrategy.canAddAnother(accLength = 1, factoryLimit = 2) must equal(true)
     }

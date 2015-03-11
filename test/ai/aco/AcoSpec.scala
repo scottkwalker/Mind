@@ -23,7 +23,7 @@ import org.mockito.Mockito.verifyNoMoreInteractions
 final class AcoSpec extends UnitTestHelpers with TestComposition {
 
   "chooseChild" must {
-    "returns expected instance given only one valid choice" in {
+    "returns expected instance if given only one valid choice" in {
       val node = mock[Decision]
       val possibleChildren = Set(node)
       val (selectionStrategy, _, _) = build
@@ -52,11 +52,10 @@ final class AcoSpec extends UnitTestHelpers with TestComposition {
 
       try {
         for (i <- 1 to 10) {
-          val result = premade.fillEmptySteps(scope, factoryLookup)
-          whenReady(result) {
-            case typeTree: TypeTree =>
-              val f = new AddTwoInts(typeTree)
-              f.fitness
+          val typeTreeF = premade.fillEmptySteps(scope, factoryLookup)
+          whenReady(typeTreeF) { typeTree =>
+            val f = new AddTwoInts(typeTree)
+            f.fitness
           }(config = patienceConfig)
         }
       }
@@ -65,19 +64,19 @@ final class AcoSpec extends UnitTestHelpers with TestComposition {
       }
     }
 
-    "throw when sequence is empty" in {
+    "throw if sequence is empty" in {
       val (selectionStrategy, _, _) = build
       a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Set.empty[Decision])
     }
   }
 
   "chooseIndex" must {
-    "throw when length is zero" in {
+    "throw if length is zero" in {
       val (selectionStrategy, _, _) = build
       a[RuntimeException] must be thrownBy selectionStrategy.chooseIndex(seqLength = 0)
     }
 
-    "call random number generator nextInt" in {
+    "call random number generator nextInt once" in {
       val expected = 2
       val (selectionStrategy, _, randomNumberGenerator) = build
 

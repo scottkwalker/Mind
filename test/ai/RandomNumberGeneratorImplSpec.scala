@@ -7,13 +7,13 @@ import composition.UnitTestHelpers
 final class RandomNumberGeneratorImplSpec extends UnitTestHelpers with TestComposition {
 
   "nextBoolean" must {
-    "return a boolean when called" in {
+    "return a boolean" in {
       randomNumberGenerator.nextBoolean mustBe a[java.lang.Boolean]
     }
   }
 
   "nextInt" must {
-    "return an int when called" in {
+    "return an integer" in {
       randomNumberGenerator.nextInt(1) mustBe a[java.lang.Integer]
     }
   }

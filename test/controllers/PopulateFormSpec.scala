@@ -9,12 +9,12 @@ import models.common.Scope.Form._
 final class PopulateFormSpec extends UnitTestHelpers with TestComposition {
 
   "form" must {
-    "reject when submission is empty" in {
+    "reject if given an empty submission" in {
       val errors = populate.form.bind(Map("" -> "")).errors
       errors.length must equal(5)
     }
 
-    "reject when submission contains wrong types" in {
+    "reject if given a submission containing wrong types e.g. strings instead of integers" in {
       val errors = formBuilder(
         height = "INVALID",
         maxFuncsInObject = "INVALID",
@@ -37,7 +37,7 @@ final class PopulateFormSpec extends UnitTestHelpers with TestComposition {
       }
     }
 
-    "reject when input is above max" in {
+    "reject if given a submission with values above the form's max value" in {
       val errors = formBuilder(
         height = "100",
         maxFuncsInObject = "100",
@@ -60,7 +60,7 @@ final class PopulateFormSpec extends UnitTestHelpers with TestComposition {
       }
     }
 
-    "reject when input is below min" in {
+    "reject if given a submission with values below the form's min value" in {
       val errors = formBuilder(
         height = "-1",
         maxFuncsInObject = "-1",
@@ -83,7 +83,7 @@ final class PopulateFormSpec extends UnitTestHelpers with TestComposition {
       }
     }
 
-    "ignored values will be set to zero when submission is valid but values are provided" in {
+    "not map ignored values if given a submission that is valid but provides values that the mapping specifies as ignored" in {
       val numVals = 42
       val numFuncs = 42
       val numObjects = 42
@@ -94,7 +94,7 @@ final class PopulateFormSpec extends UnitTestHelpers with TestComposition {
       val maxObjectsInTree = 8
       val maxHeight = 9
       val currentNode = 1
-      val result = formBuilderWithIgnoredFields(
+      val form = formBuilderWithIgnoredFields(
         numVals.toString,
         numFuncs.toString,
         numObjects.toString,
@@ -106,8 +106,8 @@ final class PopulateFormSpec extends UnitTestHelpers with TestComposition {
         maxHeight.toString,
         currentNode.toString
       )
-      result.errors.length must equal(0)
-      val model = result.get
+      form.errors.length must equal(0)
+      val model = form.get
       model.maxScope.numVals must equal(0)
       model.maxScope.numFuncs must equal(0)
       model.maxScope.numObjects must equal(0)
@@ -119,14 +119,14 @@ final class PopulateFormSpec extends UnitTestHelpers with TestComposition {
       model.maxScope.maxHeight must equal(maxHeight)
     }
 
-    "accept when submission is valid" in {
+    "accept if given a valid submission" in {
       val height = 4
       val maxFuncsInObject = 6
       val maxParamsInFunc = 7
       val maxObjectsInTree = 8
       val maxHeight = 9
       val currentNode = 1
-      val result = formBuilder(
+      val form = formBuilder(
         height.toString,
         maxFuncsInObject.toString,
         maxParamsInFunc.toString,
@@ -134,8 +134,8 @@ final class PopulateFormSpec extends UnitTestHelpers with TestComposition {
         maxHeight.toString,
         currentNode.toString
       )
-      result.errors.length must equal(0)
-      val model = result.get
+      form.errors.length must equal(0)
+      val model = form.get
       model.maxScope.numVals must equal(0)
       model.maxScope.numFuncs must equal(0)
       model.maxScope.numObjects must equal(0)

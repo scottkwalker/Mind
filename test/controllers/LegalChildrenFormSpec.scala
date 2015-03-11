@@ -10,12 +10,12 @@ import models.common.Scope.Form._
 final class LegalChildrenFormSpec extends UnitTestHelpers with TestComposition {
 
   "form" must {
-    "reject when submission is empty" in {
+    "reject if given an empty submission" in {
       val errors = legalChildren.form.bind(Map("" -> "")).errors
       errors.length must equal(10)
     }
 
-    "reject when submission contains wrong types" in {
+    "reject if given a submission containing wrong types e.g. strings instead of integers" in {
       val errors = formBuilder(
         numVals = "INVALID",
         numFuncs = "INVALID",
@@ -47,7 +47,7 @@ final class LegalChildrenFormSpec extends UnitTestHelpers with TestComposition {
       }
     }
 
-    "reject when input is above max" in {
+    "reject if given a submission with values above the form's max value" in {
       val errors = formBuilder(
         numVals = "100",
         numFuncs = "100",
@@ -79,7 +79,7 @@ final class LegalChildrenFormSpec extends UnitTestHelpers with TestComposition {
       }
     }
 
-    "reject when input is below min" in {
+    "reject if given a submission with values below the form's min value" in {
       val errors = formBuilder(
         numVals = "-1",
         numFuncs = "-1",
@@ -111,7 +111,7 @@ final class LegalChildrenFormSpec extends UnitTestHelpers with TestComposition {
       }
     }
 
-    "accept when submission is valid" in {
+    "accept if given a valid submission" in {
       val numVals = 1
       val numFuncs = 2
       val numObjects = 3
@@ -122,7 +122,7 @@ final class LegalChildrenFormSpec extends UnitTestHelpers with TestComposition {
       val maxObjectsInTree = 8
       val maxHeight = 9
       val currentNode = 1
-      val result = formBuilder(
+      val form = formBuilder(
         numVals.toString,
         numFuncs.toString,
         numObjects.toString,
@@ -134,8 +134,8 @@ final class LegalChildrenFormSpec extends UnitTestHelpers with TestComposition {
         maxHeight.toString,
         currentNode.toString
       )
-      result.errors.length must equal(0)
-      val model = result.get
+      form.errors.length must equal(0)
+      val model = form.get
       model.scope.numVals must equal(numVals)
       model.scope.numFuncs must equal(numFuncs)
       model.scope.numObjects must equal(numObjects)

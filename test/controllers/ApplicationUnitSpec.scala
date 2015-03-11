@@ -9,8 +9,8 @@ final class ApplicationUnitSpec extends UnitTestHelpers with TestComposition {
 
   "present" must {
     "redirect to Intro page" in {
-      val result = application.index(FakeRequest())
-      whenReady(result) { r =>
+      val present = application.index(FakeRequest())
+      whenReady(present) { r =>
         r.header.headers.get(LOCATION) must equal(Some(routes.Intro.present().url))
       }(config = patienceConfig)
     }

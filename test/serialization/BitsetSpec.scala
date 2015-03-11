@@ -31,8 +31,8 @@ final class BitsetSpec extends UnitTestHelpers {
     }
 
     "to binary" in {
-      val result: BitSet = binarySerialize.read(dataAsArrayByte)
-      result must equal(dataAsBitSet)
+      val read: BitSet = binarySerialize.read(dataAsArrayByte)
+      read must equal(dataAsBitSet)
     }
   }
 
