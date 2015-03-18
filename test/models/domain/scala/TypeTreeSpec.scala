@@ -16,7 +16,7 @@ import scala.concurrent.Future
 final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
 
   "hasNoEmptySteps" must {
-    "return true given it can terminates in under N steps" in {
+    "return true if it can terminates in under N steps" in {
       val step = mock[Object]
       when(step.hasNoEmptySteps(any[IScope])).thenReturn(true)
       val typeTree = new TypeTree(Seq(step))
@@ -26,7 +26,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(true)
     }
 
-    "return false given it cannot terminate in under N steps" in {
+    "return false if it cannot terminate in under N steps" in {
       val step = mock[Step]
       when(step.hasNoEmptySteps(any[IScope])).thenReturn(false)
       val typeTree = new TypeTree(Seq(step))
@@ -36,7 +36,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(false)
     }
 
-    "return false given empty root node" in {
+    "return false if the root node is empty" in {
       val typeTree = new TypeTree(Seq(Empty()))
 
       val hasNoEmptySteps = typeTree.hasNoEmptySteps(scopeWithHeightRemaining)
@@ -44,7 +44,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(false)
     }
 
-    "return false when scope hasNoEmptySteps returns false" in {
+    "return false if scope has no height remaining" in {
       val step = mock[Step]
       val typeTree = new TypeTree(Seq(step))
 
@@ -53,7 +53,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(false)
     }
 
-    "throw when there is a node of an unhandled node type" in {
+    "throw an exception if there is a node of an unhandled node type" in {
       val unhandledNode = mock[Step]
       val typeTree = new TypeTree(Seq(unhandledNode))
 
@@ -77,7 +77,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "return same when no empty nodes" in {
+    "return the same if there are no empty nodes" in {
       val factoryLookup = mock[FactoryLookup]
       val step = mock[Step]
       when(step.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(step)
@@ -90,7 +90,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "return without empty nodes given there were empty nodes" in {
+    "return without empty nodes if there were empty nodes" in {
       val scope = Scope(maxExpressionsInFunc = 1,
         maxFuncsInObject = 1,
         maxParamsInFunc = 1,
@@ -116,7 +116,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "throw when passed empty seq (no empty or non-empty)" in {
+    "throw an exception if nodes list is empty (no empty or non-empty)" in {
       val factoryLookup = mock[FactoryLookup]
       val typeTree = new TypeTree(nodes = Seq.empty)
 

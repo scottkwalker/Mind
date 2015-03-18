@@ -10,13 +10,13 @@ final class PozIntSpec extends UnitTestHelpers {
       a[RuntimeException] must be thrownBy PozInt(value)
     }
 
-    "contain the expected value when the constructor arguments are valid for the lowest boundary" in {
+    "contain the expected value if the constructor argument is valid for the lowest boundary" in {
       val value = 0
       val pozInt = PozInt(value)
       pozInt.value must equal(value)
     }
 
-    "contain the expected value when the constructor arguments are valid for the highest boundary" in {
+    "contain the expected value if the constructor argument is valid for the highest boundary" in {
       val value = Int.MaxValue
       val pozInt = PozInt(value)
       pozInt.value must equal(value)

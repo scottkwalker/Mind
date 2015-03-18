@@ -15,7 +15,7 @@ import scala.concurrent.Future
 final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
-    "calls create on factory once given only space for 1 func in obj and mocked rng the same" in {
+    "call create on factory once if there is only space for 1 func in obj and mocked rng the same" in {
       val (possibleChildren, createSeqNodes, scope, createNode, _) = build(maxFuncsInObject = 1, nextInt = 1)
 
       val created = createSeqNodes.create(possibleChildren = possibleChildren,
@@ -32,7 +32,7 @@ final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition 
       }(config = patienceConfig)
     }
 
-    "calls create on factory twice given space for 2 func in obj and mocked rng the same" in {
+    "call create on factory twice if there is space for 2 func in obj and mocked rng the same" in {
       val (possibleChildren, createSeqNodes, scope, createNode, _) = build(maxFuncsInObject = 2, nextInt = 2)
 
       val created = createSeqNodes.create(possibleChildren = possibleChildren,
@@ -49,7 +49,7 @@ final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition 
       }(config = patienceConfig)
     }
 
-    "calls create on factory once given space for 2 func in obj but rng mocked to 1" in {
+    "call create on factory once if there is space for 2 func in obj but rng mocked to 1" in {
       val (possibleChildren, createSeqNodes, scope, createNode, _) = build(maxFuncsInObject = 2, nextInt = 1)
 
       val created = createSeqNodes.create(possibleChildren = possibleChildren,
@@ -66,7 +66,7 @@ final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition 
       }(config = patienceConfig)
     }
 
-    "calls create on factory once given space for 2 func in obj and a rng mocked to 2 but 1 pre-made node already added" in {
+    "call create on factory once if there is space for 2 func in obj and a rng mocked to 2 but 1 pre-made node already added" in {
       val (possibleChildren, createSeqNodes, scope, createNode, instruction) = build(maxFuncsInObject = 2, nextInt = 2)
 
       val created = createSeqNodes.create(possibleChildren = possibleChildren,

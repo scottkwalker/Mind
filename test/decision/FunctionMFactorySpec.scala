@@ -19,7 +19,7 @@ import scala.concurrent.Future
 final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
-    "return instance of this type" in {
+    "return an instance of the expected type" in {
       val (factory, _, scope) = functionMFactory()
 
       val step = factory.createStep(scope = scope)
@@ -29,7 +29,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "return expected given scope with 0 functions" in {
+    "return expected if scope has 0 existing functions" in {
       val (factory, _, scope) = functionMFactory()
 
       val step = factory.createStep(scope = scope)
@@ -40,7 +40,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "return expected given scope with 1 functions" in {
+    "return expected if scope has 1 existing function" in {
       val (factory, _, scope) = functionMFactory()
       when(scope.numFuncs).thenReturn(1)
 
@@ -52,7 +52,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "calls CreateSeqNodes.create twice (once for params and once for nodes)" in {
+    "call CreateSeqNodes.create twice (once for params and once for nodes)" in {
       val (factory, createSeqNodes, scope) = functionMFactory()
 
       val step = factory.createStep(scope = scope)

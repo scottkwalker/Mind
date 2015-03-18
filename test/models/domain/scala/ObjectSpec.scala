@@ -15,7 +15,7 @@ import utils.ScopeHelper._
 final class ObjectSpec extends UnitTestHelpers with TestComposition {
 
   "hasNoEmptySteps" must {
-    "true given it can terminates in under N steps" in {
+    "return true if it can terminates in under N steps" in {
       val step = mock[FunctionM]
       when(step.hasNoEmptySteps(any[IScope])).thenReturn(true)
       val objectDef = ObjectImpl(Seq(step), name)
@@ -25,7 +25,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(true)
     }
 
-    "false when scope does not have height remaining" in {
+    "return false if the scope does not have height remaining" in {
       val step = mock[Step]
       when(step.hasNoEmptySteps(any[IScope])).thenThrow(new RuntimeException("test should not get this far"))
       val objectDef = ObjectImpl(Seq(step), name)
@@ -35,7 +35,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(false)
     }
 
-    "false when nodes cannot terminate in under N steps" in {
+    "return false if the nodes cannot terminate in under N steps" in {
       val step = mock[FunctionM]
       when(step.hasNoEmptySteps(any[IScope])).thenReturn(false)
       val objectDef = ObjectImpl(Seq(step), name)
@@ -45,12 +45,12 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(false)
     }
 
-    "false given single empty method node" in {
+    "return false if there is a single empty node" in {
       val objectDef = ObjectImpl(Seq(Empty()), name)
       objectDef.hasNoEmptySteps(scopeWithHeightRemaining) must equal(false)
     }
 
-    "false given empty method node in a sequence" in {
+    "return false if there is an empty node in a sequence" in {
       val instruction = mock[FunctionM]
       when(instruction.hasNoEmptySteps(any[IScope])).thenReturn(true)
       val objectDef = ObjectImpl(Seq(instruction, Empty()), name)
@@ -60,7 +60,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(false)
     }
 
-    "throw when there is a node of an unhandled node type" in {
+    "throw an exception if there is a node of an unhandled node type" in {
       val unhandledNode = mock[Step]
       val objectImpl = new ObjectImpl(nodes = Seq(unhandledNode), name = "o0")
 
@@ -81,7 +81,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
   }
 
   "fillEmptySteps" must {
-    "calls fillEmptySteps and updateScope once on non-empty child nodes" in {
+    "call fillEmptySteps and updateScope once on non-empty child nodes" in {
       val factoryLookup = mock[FactoryLookup]
       val instruction = mock[Step]
       when(instruction.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(instruction)
@@ -96,7 +96,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "returns same when no empty nodes" in {
+    "return the same if there are no empty nodes" in {
       val factoryLookup = mock[FactoryLookup]
       val instruction = mock[Step]
       when(instruction.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(instruction)
@@ -109,7 +109,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "returns without empty nodes given there were empty nodes" in {
+    "return without empty nodes if there were empty nodes" in {
       val scope = Scope(maxExpressionsInFunc = 1,
         maxFuncsInObject = 1,
         maxParamsInFunc = 1,
@@ -134,7 +134,7 @@ final class ObjectSpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "throw when passed empty seq (no empty or non-empty)" in {
+    "throw an exception if nodes list is empty (no empty or non-empty)" in {
       val factoryLookup = mock[FactoryLookup]
       val instance = new ObjectImpl(nodes = Seq.empty, name = name)
 

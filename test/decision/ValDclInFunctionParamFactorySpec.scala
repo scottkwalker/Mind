@@ -17,7 +17,7 @@ import org.mockito.Mockito.verify
 final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
-    "returns instance of this type" in {
+    "return an instance of the expected type" in {
       val (valDclInFunctionParamFactory, scope) = build
       when(scope.maxParamsInFunc).thenReturn(1)
 
@@ -28,7 +28,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
       }(config = patienceConfig)
     }
 
-    "returns expected given scope with 0 vals" in {
+    "returns expected if scope has 0 existing vals" in {
       val (valDclInFunctionParamFactory, scope) = build
       when(scope.maxParamsInFunc).thenReturn(1)
 
@@ -42,7 +42,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
       }(config = patienceConfig)
     }
 
-    "returns expected given scope with 1 val" in {
+    "returns expected if scope has 1 existing val" in {
       val (valDclInFunctionParamFactory, scope) = build
       when(scope.numVals).thenReturn(1)
       when(scope.maxParamsInFunc).thenReturn(2)
@@ -59,7 +59,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
   }
 
   "createParams" must {
-    "throw exception" in {
+    "throw an exception" in {
       val (valDclInFunctionParamFactory, scope) = build
 
       a[RuntimeException] must be thrownBy valDclInFunctionParamFactory.createParams(scope).futureValue
@@ -67,7 +67,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
   }
 
   "createNodes" must {
-    "throw exception" in {
+    "throw an exception" in {
       val (valDclInFunctionParamFactory, scope) = build
 
       a[RuntimeException] must be thrownBy valDclInFunctionParamFactory.createNodes(scope).futureValue

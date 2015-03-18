@@ -28,7 +28,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
   }
 
   "hasNoEmptySteps" must {
-    "false given it cannot terminate in under N steps" in {
+    "return false if it cannot terminate in under N steps" in {
       val name = "a"
       val step = mock[Step]
       val valDclInFunctionParam = ValDclInFunctionParam(name, step)
@@ -38,7 +38,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
       hasNoEmptySteps must equal(false)
     }
 
-    "false given an empty name" in {
+    "return false if the name is empty" in {
       val name = ""
       val step = mock[Step]
       val valDclInFunctionParam = ValDclInFunctionParam(name, step)
@@ -48,7 +48,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
       hasNoEmptySteps must equal(false)
     }
 
-    "false given an invalid child" in {
+    "return false if there is an invalid type of child" in {
       val name = "a"
       val step = mock[Step]
       when(step.hasNoEmptySteps(any[IScope])).thenReturn(false)
@@ -59,7 +59,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
       hasNoEmptySteps must equal(false)
     }
 
-    "true given it can terminate, has a non-empty name and valid child" in {
+    "return true if it can terminate, has a non-empty name and valid type of child" in {
       val name = "a"
       val integerM = IntegerM()
       val valDclInFunctionParam = ValDclInFunctionParam(name, integerM)
@@ -71,7 +71,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
   }
 
   "fillEmptySteps" must {
-    "calls fillEmptySteps on non-empty child nodes" in {
+    "call fillEmptySteps once for each non-empty child node" in {
       val name = "a"
       val factoryLookup = mock[FactoryLookup]
       val step = mock[Step]
@@ -86,7 +86,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
       }(config = patienceConfig)
     }
 
-    "returns same when no empty nodes" in {
+    "return the same if there are no empty nodes" in {
       val name = "a"
       val factoryLookup = mock[FactoryLookup]
       val step = mock[Step]
@@ -100,7 +100,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
       }(config = patienceConfig)
     }
 
-    "returns without empty nodes given there were empty nodes" in {
+    "return without empty nodes if there were empty nodes" in {
       val name = "a"
       val primitiveTypeEmpty = Empty()
       val factoryLookup = testInjector(

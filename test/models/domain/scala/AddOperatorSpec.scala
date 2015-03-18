@@ -27,7 +27,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
   }
 
   "hasNoEmptySteps" must {
-    "true given child nodes can terminate in under N steps" in {
+    "return true if child nodes can terminate in under N steps" in {
       val terminal = mock[ValueRef]
       when(terminal.hasNoEmptySteps(any[IScope])).thenReturn(true)
 
@@ -36,7 +36,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(true)
     }
 
-    "false given it cannot terminate in 0 steps" in {
+    "return false if it cannot terminate in 0 steps" in {
       val nonTerminal = mock[Step]
       when(nonTerminal.hasNoEmptySteps(any[IScope])).thenThrow(new RuntimeException)
 
@@ -45,7 +45,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(false)
     }
 
-    "false given child nodes cannot terminate in under N steps" in {
+    "return false if child nodes cannot terminate in under N steps" in {
       val nonTerminal = mock[Step]
       when(nonTerminal.hasNoEmptySteps(any[IScope])).thenReturn(false)
 
@@ -54,7 +54,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(false)
     }
 
-    "false when left node is empty" in {
+    "return false if left node is empty" in {
       val nonEmpty = ValueRefImpl("stub")
 
       val hasNoEmptySteps = AddOperatorImpl(Empty(), nonEmpty).hasNoEmptySteps(scopeWithHeightRemaining)
@@ -62,7 +62,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(false)
     }
 
-    "false when right node is empty" in {
+    "return false if right node is empty" in {
       val nonEmpty = ValueRefImpl("stub")
 
       val hasNoEmptySteps = AddOperatorImpl(nonEmpty, Empty()).hasNoEmptySteps(scopeWithHeightRemaining)
@@ -70,7 +70,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(false)
     }
 
-    "throw when there is a node of an unhandled node type" in {
+    "throw an exception if there is a node of an unhandled node type" in {
       val unhandledNode = mock[Step]
       val objectImpl = new AddOperatorImpl(left = unhandledNode, right = unhandledNode)
 
@@ -79,7 +79,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
   }
 
   "fillEmptySteps" must {
-    "calls fillEmptySteps on non-empty child nodes" in {
+    "call fillEmptySteps on non-empty child nodes" in {
       val factoryLookup = mock[FactoryLookup]
       val nonEmpty = mock[Step]
       when(nonEmpty.fillEmptySteps(any[IScope], any[FactoryLookup])).thenReturn(Future.successful(nonEmpty))
@@ -93,7 +93,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "returns same when no empty nodes" in {
+    "returns the same if there are no empty nodes" in {
       val factoryLookup = mock[FactoryLookup]
       val nonEmpty = mock[Step]
       when(nonEmpty.fillEmptySteps(any[IScope], any[FactoryLookup])).thenReturn(Future.successful(nonEmpty))
@@ -106,7 +106,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "returns without empty nodes given there were empty nodes" in {
+    "returns without empty nodes if given a tree with empty nodes" in {
       val empty: Step = Empty()
       val factoryLookup = testInjector(new StubFactoryLookupAnyBinding).getInstance(classOf[FactoryLookup])
       val instance = AddOperatorImpl(empty, empty)

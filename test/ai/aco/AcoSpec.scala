@@ -23,7 +23,7 @@ import org.mockito.Mockito.verifyNoMoreInteractions
 final class AcoSpec extends UnitTestHelpers with TestComposition {
 
   "chooseChild" must {
-    "returns expected instance if given only one valid choice" in {
+    "return an instance of the expected type" in {
       val node = mock[Decision]
       val possibleChildren = Set(node)
       val (selectionStrategy, _, _) = build

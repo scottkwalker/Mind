@@ -15,7 +15,7 @@ import scala.concurrent.Future
 final class FunctionMSpec extends UnitTestHelpers with TestComposition {
 
   "hasNoEmptySteps" must {
-    "false given an empty name" in {
+    "return false if name is empty" in {
       val step = mock[Step]
       when(step.hasNoEmptySteps(any[IScope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
 
@@ -26,7 +26,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(false)
     }
 
-    "true given it can terminate in under N steps" in {
+    "return true if it can terminate in under N steps" in {
       val hasNoEmptySteps = FunctionMImpl(params = params,
         nodes = Seq(nonEmpty, nonEmpty),
         name = name).hasNoEmptySteps(scopeWithHeightRemaining)
@@ -34,7 +34,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(true)
     }
 
-    "false given it cannot terminate in 0 steps" in {
+    "return false if it cannot terminate in 0 steps" in {
       val node = mock[Step]
       when(node.hasNoEmptySteps(any[IScope])).thenThrow(new RuntimeException("hasNoEmpty should not have been called"))
 
@@ -45,7 +45,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(false)
     }
 
-    "false given it cannot terminate in under N steps" in {
+    "return false if it cannot terminate in under N steps" in {
       val nonTerminal = mock[Step]
       when(nonTerminal.hasNoEmptySteps(any[IScope])).thenReturn(false)
 
@@ -56,7 +56,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(false)
     }
 
-    "true given no empty nodes" in {
+    "return true if it has no empty nodes" in {
       val hasNoEmptySteps = FunctionMImpl(params = params,
         nodes = Seq(nonEmpty, nonEmpty),
         name = name).hasNoEmptySteps(scopeWithHeightRemaining)
@@ -64,7 +64,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
       hasNoEmptySteps must equal(true)
     }
 
-    "false given an empty node" in {
+    "return false if it has an empty node" in {
       val hasNoEmptySteps = FunctionMImpl(params = params,
         nodes = Seq(nonEmpty, Empty()),
         name = name).hasNoEmptySteps(scopeWithHeightRemaining)
@@ -86,7 +86,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
       toCompilable must equal("def f0(a: Int, b: Int) = { STUB }")
     }
 
-    "throws if has no name" in {
+    "throws an exception if name is empty" in {
       val node = mock[Step]
       when(node.toCompilable).thenReturn("STUB")
       val functionM = FunctionMImpl(params = params,
@@ -121,7 +121,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "returns same when no empty nodes" in {
+    "returns the same if there are no empty nodes" in {
       val factoryLookup = testInjector(new StubFactoryLookupAnyBinding).getInstance(classOf[FactoryLookup])
       val param = mock[Step]
       when(param.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(param)
@@ -138,7 +138,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "returns without empty nodes given there were empty nodes" in {
+    "returns without empty nodes if there were empty nodes" in {
       val empty = Empty()
       val factoryLookup = testInjector(new StubFactoryLookupAnyBinding).getInstance(classOf[FactoryLookup])
       val functionM = FunctionMImpl(params = Seq(empty),
@@ -160,18 +160,20 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "throw when passed empty params seq (no empty or non-empty)" in {
+    "throw an exception if passed an empty list of params (no empty or non-empty)" in {
       val factoryLookup = mock[FactoryLookup]
+      val step = mock[Step]
       val functionM = FunctionMImpl(params = Seq.empty,
-        nodes = Seq(Empty()),
+        nodes = Seq(step),
         name = name)
 
       a[RuntimeException] must be thrownBy Await.result(functionM.fillEmptySteps(scopeWithHeightRemaining, factoryLookup), finiteTimeout)
     }
 
-    "throw when passed empty nodes seq (no empty or non-empty)" in {
+    "throw an exception if passed an empty list of nodes (no empty or non-empty)" in {
       val factoryLookup = mock[FactoryLookup]
-      val functionM = FunctionMImpl(params = Seq(Empty()),
+      val step = mock[Step]
+      val functionM = FunctionMImpl(params = Seq(step),
         nodes = Seq.empty,
         name = name)
 
@@ -180,7 +182,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
   }
 
   "height" must {
-    "returns 1 + child height" in {
+    "return 1 + the child node's height" in {
       val node = mock[Step]
       when(node.height) thenReturn 2
       val functionM = FunctionMImpl(params = params,
@@ -192,18 +194,18 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
       height must equal(3)
     }
 
-    "returns 1 + child height when children have different depths" in {
+    "return 1 + the highest child node's height if the children have different heights" in {
       val node1 = mock[Step]
       when(node1.height) thenReturn 1
       val node2 = mock[Step]
-      when(node2.height) thenReturn 2
+      when(node2.height) thenReturn 5
       val functionM = FunctionMImpl(params = params,
         nodes = Seq(node1, node2),
         name = name)
 
       val height = functionM.height
 
-      height must equal(3)
+      height must equal(6)
     }
   }
 

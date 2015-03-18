@@ -19,7 +19,7 @@ import scala.concurrent.Future
 final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
-    "returns instance of this type" in {
+    "return an instance of the expected type" in {
       val (typeTreeFactory, _, scope) = build()
 
       val step = typeTreeFactory.createStep(scope)
@@ -40,7 +40,7 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "returns 2 children given 1 premade and 1 generated (by mocked dependency)" in {
+    "returns 2 children if there is 1 premade and we allow 1 to be generated (by mocked dependency)" in {
       val premadeNode = mock[Step]
       val premadeChildren = {
         val decision = mock[Decision]
@@ -58,15 +58,17 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
         case _ => fail("wrong type")
       }(config = patienceConfig)
     }
+  }
 
-    "throw if you ask updateScope" in {
+  "updateScope" must {
+    "throw an exception" in {
       val (typeTreeFactory, _, scope) = build()
       a[RuntimeException] must be thrownBy typeTreeFactory.updateScope(scope)
     }
   }
 
   "createParams" must {
-    "throw exception" in {
+    "throw an exception" in {
       val (typeTreeFactory, _, scope) = build()
 
       a[RuntimeException] must be thrownBy typeTreeFactory.createParams(scope).futureValue

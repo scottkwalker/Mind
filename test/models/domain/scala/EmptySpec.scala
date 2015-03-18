@@ -6,7 +6,7 @@ import utils.ScopeHelper._
 final class EmptySpec extends UnitTestHelpers {
 
   "toCompilable" must {
-    "throw if you ask toRawScala" in {
+    "throw an exception" in {
       an[RuntimeException] must be thrownBy Empty().toCompilable
     }
   }
@@ -19,7 +19,7 @@ final class EmptySpec extends UnitTestHelpers {
   }
 
   "fillEmptySteps" must {
-    "throws" in {
+    "throw an exception" in {
       val factoryLookup = mock[FactoryLookup]
       val step = Empty()
 

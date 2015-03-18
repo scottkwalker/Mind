@@ -13,7 +13,7 @@ import models.domain.scala.ValueRefImpl
 final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
-    "return instance of this type" in {
+    "return an instance of the expected type" in {
       val (valueRefFactory, scope) = build()
 
       val step = valueRefFactory.createStep(scope = scope)
@@ -23,7 +23,7 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "return expected type and name when ai stubbed to choose index zero" in {
+    "return expected type and name if ai is stubbed to choose index zero" in {
       val (valueRefFactory, scope) = build()
 
       val step = valueRefFactory.createStep(scope = scope)
@@ -33,7 +33,7 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "return expected type and name when ai stubbed to choose index 1" in {
+    "return expected type and name if ai is stubbed to choose index 1" in {
       val (valueRefFactory, scope) = build(chooseIndex = 1)
 
       val step = valueRefFactory.createStep(scope = scope)
@@ -63,14 +63,14 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
   }
 
   "createParams" must {
-    "throw exception" in {
+    "throw an exception" in {
       val (valueRefFactory, scope) = build()
       a[RuntimeException] must be thrownBy valueRefFactory.createParams(scope).futureValue
     }
   }
 
   "createNodes" must {
-    "throw exception" in {
+    "throw an exception" in {
       val (valueRefFactory, scope) = build()
       a[RuntimeException] must be thrownBy valueRefFactory.createNodes(scope).futureValue
     }

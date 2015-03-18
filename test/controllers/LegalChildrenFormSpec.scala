@@ -6,27 +6,30 @@ import composition.UnitTestHelpers
 import models.common.LookupChildrenRequest.Form.CurrentNodeId
 import models.common.LookupChildrenRequest.Form.ScopeId
 import models.common.Scope.Form._
+import models.common.LookupChildrenRequest.Form.CurrentNodeMax
+import models.common.LookupChildrenRequest.Form.CurrentNodeMin
 
 final class LegalChildrenFormSpec extends UnitTestHelpers with TestComposition {
 
   "form" must {
-    "reject if given an empty submission" in {
+    "reject if submission is empty" in {
       val errors = legalChildren.form.bind(Map("" -> "")).errors
       errors.length must equal(10)
     }
 
-    "reject if given a submission containing wrong types e.g. strings instead of integers" in {
+    "reject if the submission contains wrong types e.g. strings instead of integers" in {
+      val invalid = "INVALID"
       val errors = formBuilder(
-        numVals = "INVALID",
-        numFuncs = "INVALID",
-        numObjects = "INVALID",
-        height = "INVALID",
-        maxExpressionsInFunc = "INVALID",
-        maxFuncsInObject = "INVALID",
-        maxParamsInFunc = "INVALID",
-        maxObjectsInTree = "INVALID",
-        maxHeight = "INVALID",
-        currentNode = "INVALID"
+        numVals = invalid,
+        numFuncs = invalid,
+        numObjects = invalid,
+        height = invalid,
+        maxExpressionsInFunc = invalid,
+        maxFuncsInObject = invalid,
+        maxParamsInFunc = invalid,
+        maxObjectsInTree = invalid,
+        maxHeight = invalid,
+        currentNode = invalid
       ).errors
 
       errors.length must equal(10)
@@ -47,18 +50,19 @@ final class LegalChildrenFormSpec extends UnitTestHelpers with TestComposition {
       }
     }
 
-    "reject if given a submission with values above the form's max value" in {
+    "reject if the submission contains values above the form's max boundary" in {
+      val tooLarge = (CurrentNodeMax + 1).toString
       val errors = formBuilder(
-        numVals = "100",
-        numFuncs = "100",
-        numObjects = "100",
-        height = "100",
-        maxExpressionsInFunc = "100",
-        maxFuncsInObject = "100",
-        maxParamsInFunc = "100",
-        maxObjectsInTree = "100",
-        maxHeight = "100",
-        currentNode = "100"
+        numVals = tooLarge,
+        numFuncs = tooLarge,
+        numObjects = tooLarge,
+        height = tooLarge,
+        maxExpressionsInFunc = tooLarge,
+        maxFuncsInObject = tooLarge,
+        maxParamsInFunc = tooLarge,
+        maxObjectsInTree = tooLarge,
+        maxHeight = tooLarge,
+        currentNode = tooLarge
       ).errors
 
       errors.length must equal(10)
@@ -79,18 +83,19 @@ final class LegalChildrenFormSpec extends UnitTestHelpers with TestComposition {
       }
     }
 
-    "reject if given a submission with values below the form's min value" in {
+    "reject if the submission contains values below the form's min value" in {
+      val toSmall = (CurrentNodeMin - 1).toString
       val errors = formBuilder(
-        numVals = "-1",
-        numFuncs = "-1",
-        numObjects = "-1",
-        height = "-1",
-        maxExpressionsInFunc = "-1",
-        maxFuncsInObject = "-1",
-        maxParamsInFunc = "-1",
-        maxObjectsInTree = "-1",
-        maxHeight = "-1",
-        currentNode = "-1"
+        numVals = toSmall,
+        numFuncs = toSmall,
+        numObjects = toSmall,
+        height = toSmall,
+        maxExpressionsInFunc = toSmall,
+        maxFuncsInObject = toSmall,
+        maxParamsInFunc = toSmall,
+        maxObjectsInTree = toSmall,
+        maxHeight = toSmall,
+        currentNode = toSmall
       ).errors
 
       errors.length must equal(10)

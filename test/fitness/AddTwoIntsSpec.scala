@@ -10,14 +10,14 @@ import org.mockito.Mockito._
 final class AddTwoIntsSpec extends UnitTestHelpers {
 
   "Addition" must {
-    "1 add 1 equals 2 with TypeTree that returns hard coded raw Scala" in {
+    "return expected fitness if given a hard coded string of valid Scala" in {
       val steps = mock[Step]
       when(steps.toCompilable).thenReturn("object o0 { def f0(a: Int, b: Int) = a + b }")
       val addTwoInts = new AddTwoInts(steps)
       addTwoInts.fitness must equal(addTwoInts.maxFitness)
     }
 
-    "1 add 1 equals 2 with TypeTree that converts nodes to raw Scala" in {
+    "return expected fitness if given a TypeTree of valid Scala" in {
       val steps = new TypeTree(
         Seq(
           ObjectImpl(Seq(

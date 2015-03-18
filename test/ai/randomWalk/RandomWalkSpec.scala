@@ -19,7 +19,7 @@ import org.mockito.Mockito.verifyNoMoreInteractions
 final class RandomWalkSpec extends UnitTestHelpers with TestComposition {
 
   "chooseChild" must {
-    "return expected type if given only one valid choice" in {
+    "return an instance of the expected type" in {
       val node = mock[Decision]
       val possibleChildren = Set(node)
       val (selectionStrategy, _) = build
@@ -60,14 +60,14 @@ final class RandomWalkSpec extends UnitTestHelpers with TestComposition {
       }
     }
 
-    "throw if given sequence is empty" in {
+    "throw if sequence is empty" in {
       val (selectionStrategy, _) = build
       a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Set.empty[Decision])
     }
   }
 
   "chooseIndex" must {
-    "throw if given a length of zero" in {
+    "throw if length is zero" in {
       val (selectionStrategy, _) = build
       a[RuntimeException] must be thrownBy selectionStrategy.chooseIndex(seqLength = 0)
     }

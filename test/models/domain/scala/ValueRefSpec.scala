@@ -17,7 +17,7 @@ final class ValueRefSpec extends UnitTestHelpers {
   }
 
   "hasNoEmptySteps" must {
-    "true when it has a non-empty name and height is 0" in {
+    "return true if it has a non-empty name and height is 0" in {
       val scope = mock[IScope]
       val name = "a"
       val valueRef = ValueRefImpl(name)
@@ -27,7 +27,7 @@ final class ValueRefSpec extends UnitTestHelpers {
       hasNoEmptySteps must equal(true)
     }
 
-    "true given a non-empty name" in {
+    "return true if the name is not empty" in {
       val scope = mock[IScope]
       val name = "a"
       val valueRef = ValueRefImpl(name)
@@ -37,7 +37,7 @@ final class ValueRefSpec extends UnitTestHelpers {
       hasNoEmptySteps must equal(true)
     }
 
-    "false given an empty name" in {
+    "return false if the name is empty" in {
       val scope = mock[IScope]
       val name = ""
       val valueRef = ValueRefImpl(name)
@@ -49,7 +49,7 @@ final class ValueRefSpec extends UnitTestHelpers {
   }
 
   "fillEmptySteps" must {
-    "returns same when no empty nodes" in {
+    "return the same if there are no empty nodes" in {
       val scope = mock[IScope]
       val name = "a"
       val factoryLookup = mock[FactoryLookup]

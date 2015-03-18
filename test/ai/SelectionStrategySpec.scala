@@ -11,12 +11,12 @@ import scala.concurrent.Future
 final class SelectionStrategySpec extends UnitTestHelpers with TestComposition {
 
   "chooseChild" must {
-    "throw if given an empty seq of possible children" in {
+    "throw if the list of possible children is empty" in {
       val (sut, _) = selectionStrategy(nextInt = 42)
       a[RuntimeException] must be thrownBy sut.chooseChild(possibleChildren = Future.successful(Set.empty[Decision])).futureValue
     }
 
-    "return expected type if given only one valid choice" in {
+    "return an instance of the expected type" in {
       val (sut, _) = selectionStrategy(nextInt = 0)
       val possibleChildren = Future.successful(Set(mock[Decision]))
       whenReady(sut.chooseChild(possibleChildren)) {
@@ -26,39 +26,39 @@ final class SelectionStrategySpec extends UnitTestHelpers with TestComposition {
   }
 
   "canAddAnother" must {
-    "return true if given an accumulator length of zero" in {
+    "return true if the accumulator length is zero" in {
       val (sut, _) = selectionStrategy(nextInt = 0)
       sut.canAddAnother(accLength = 0, factoryLimit = 0) must equal(true)
     }
 
-    "return false if given an accumulator length greater than zero and equal to the factory limit" in {
+    "return false if the accumulator length is greater than zero and equal to the factory limit" in {
       val (sut, _) = selectionStrategy(nextInt = 1)
       sut.canAddAnother(accLength = 1, factoryLimit = 1) must equal(false)
     }
 
-    "return false if given an accumulator length greater than zero and greater than factory limit" in {
+    "return false if the accumulator length is greater than zero and greater than factory limit" in {
       val (sut, _) = selectionStrategy(nextInt = 1)
       sut.canAddAnother(accLength = 2, factoryLimit = 1) must equal(false)
     }
 
-    "return false if given an accumulator length greater than zero and less than factory limit and rng stubbed to false" in {
+    "return false if the accumulator length is greater than zero and less than factory limit and rng stubbed to false" in {
       val (sut, _) = selectionStrategy(nextInt = 1, nextBoolean = false)
       sut.canAddAnother(accLength = 1, factoryLimit = 2) must equal(false)
     }
 
-    "return true if given an accumulator length greater than zero and accumulator length less than factory limit and rng stubbed to true" in {
+    "return true if the accumulator length is greater than zero and accumulator length less than factory limit and rng stubbed to true" in {
       val (sut, _) = selectionStrategy(nextInt = 1, nextBoolean = true)
       sut.canAddAnother(accLength = 1, factoryLimit = 2) must equal(true)
     }
   }
 
   "generateLengthOfSeq" must {
-    "return a minimum of 1 if given a random number generator stubbed to return zero" in {
+    "return a lower bound of 1 even if the random number generator returns zero" in {
       val (sut, _) = selectionStrategy(nextInt = 0)
       sut.generateLengthOfSeq(factoryLimit = 42) must equal(1)
     }
 
-    "calls random number generator with the limit passed in" in {
+    "call the random number generator's nextInt once with the factoryLimit" in {
       val (sut, randomNumberGenerator) = selectionStrategy(nextInt = 5)
       val factoryLimit = 42
 
@@ -68,7 +68,7 @@ final class SelectionStrategySpec extends UnitTestHelpers with TestComposition {
       verifyNoMoreInteractions(randomNumberGenerator)
     }
 
-    "returns random number generator stubbed value if given a nextInt greater than zero" in {
+    "returns the random number generator's stubbed value" in {
       val nextInt = 5
       val (sut, _) = selectionStrategy(nextInt = nextInt)
       val factoryLimit = 42
@@ -76,7 +76,7 @@ final class SelectionStrategySpec extends UnitTestHelpers with TestComposition {
       sut.generateLengthOfSeq(factoryLimit = factoryLimit) must equal(nextInt)
     }
 
-    "throws if given a factoryLimit equal to zero" in {
+    "throws an exception if the factoryLimit is zero" in {
       val (sut, _) = selectionStrategy(nextInt = 0)
       a[RuntimeException] must be thrownBy sut.generateLengthOfSeq(factoryLimit = 0)
     }

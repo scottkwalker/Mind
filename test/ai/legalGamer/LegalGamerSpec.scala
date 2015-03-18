@@ -20,7 +20,7 @@ import models.domain.scala.ValDclInFunctionParam
 final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
 
   "chooseChild" must {
-    "return expected type if given only one valid choice" in {
+    "return an instance of the expected type" in {
       val node = mock[Decision]
       val possibleChildren = Set(node)
       val (selectionStrategy, _) = build
@@ -59,14 +59,14 @@ final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
       }
     }
 
-    "throw if given sequence is empty" in {
+    "throw if sequence is empty" in {
       val (selectionStrategy, _) = build
       a[RuntimeException] must be thrownBy selectionStrategy.chooseChild(possibleChildren = Set.empty[Decision])
     }
   }
 
   "chooseIndex" must {
-    "throw if given length is zero" in {
+    "throw if length is zero" in {
       val (selectionStrategy, _) = build
       a[RuntimeException] must be thrownBy selectionStrategy.chooseIndex(seqLength = 0)
     }
@@ -78,17 +78,17 @@ final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
   }
 
   "canAddAnother" must {
-    "return false if given an accumulator length equal to the factoryLimit" in {
+    "return false if the accumulator length is equal to the factoryLimit" in {
       val (selectionStrategy, _) = build
       selectionStrategy.canAddAnother(accLength = 1, factoryLimit = 1) must equal(false)
     }
 
-    "return false if given an accumulator length greater than factoryLimit" in {
+    "return false if the accumulator length is greater than factoryLimit" in {
       val (selectionStrategy, _) = build
       selectionStrategy.canAddAnother(accLength = 2, factoryLimit = 1) must equal(false)
     }
 
-    "return true if given an accumulator length less than factoryLimit" in {
+    "return true if the accumulator length is less than factoryLimit" in {
       val (selectionStrategy, _) = build
       selectionStrategy.canAddAnother(accLength = 1, factoryLimit = 2) must equal(true)
     }

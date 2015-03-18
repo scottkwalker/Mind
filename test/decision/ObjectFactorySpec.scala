@@ -19,7 +19,7 @@ import scala.concurrent.Future
 final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
-    "returns instance of this type" in {
+    "return an instance of the expected type" in {
       val (objectFactory, _, scope) = build()
 
       val step = objectFactory.createStep(scope = scope)
@@ -29,7 +29,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "returns expected given scope with 0 existing objects" in {
+    "returns expected if scope has 0 existing objects" in {
       val (objectFactory, _, scope) = build()
 
       val step = objectFactory.createStep(scope = scope)
@@ -40,7 +40,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "returns expected given scope with 1 existing objects" in {
+    "returns expected if scope has 1 existing object" in {
       val (objectFactory, _, scope) = build()
       when(scope.numObjects).thenReturn(1)
 
@@ -89,7 +89,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
   }
 
   "createParams" must {
-    "throw exception" in {
+    "throw an exception" in {
       val (objectFactory, _, scope) = build()
 
       a[RuntimeException] must be thrownBy objectFactory.createParams(scope).futureValue

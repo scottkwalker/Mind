@@ -13,7 +13,7 @@ import models.domain.scala.AddOperatorImpl
 final class AddOperatorFactorySpec extends UnitTestHelpers with TestComposition {
 
   "create step" must {
-    "return instance of this type" in {
+    "return an instance of the expected type" in {
       val (addOperatorFactory, scope) = build
 
       val step = addOperatorFactory.createStep(scope = scope)
@@ -25,14 +25,14 @@ final class AddOperatorFactorySpec extends UnitTestHelpers with TestComposition 
   }
 
   "createParams" must {
-    "throw exception" in {
+    "throw an exception" in {
       val (addOperatorFactory, scope) = build
       a[RuntimeException] must be thrownBy addOperatorFactory.createParams(scope).futureValue
     }
   }
 
   "createNodes" must {
-    "throw exception" in {
+    "throw an exception" in {
       val (addOperatorFactory, scope) = build
       a[RuntimeException] must be thrownBy addOperatorFactory.createNodes(scope).futureValue
     }

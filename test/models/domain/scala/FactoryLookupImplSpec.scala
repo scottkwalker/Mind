@@ -25,7 +25,7 @@ final class FactoryLookupImplSpec extends UnitTestHelpers with TestComposition {
   }
 
   "convert factory to id" must {
-    "throw when id is not in the list" in {
+    "throw an exception if id is not in the list" in {
       a[RuntimeException] must be thrownBy factoryLookup.convert(mock[Decision])
     }
 

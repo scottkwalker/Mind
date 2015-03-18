@@ -16,7 +16,7 @@ final class IntegerMFactorySpec extends UnitTestHelpers with TestComposition {
   }
 
   "create step" must {
-    "return instance of this type" in {
+    "return an instance of the expected type" in {
       val (integerMFactory, scope) = build
 
       val step = integerMFactory.createStep(scope)
@@ -28,14 +28,14 @@ final class IntegerMFactorySpec extends UnitTestHelpers with TestComposition {
   }
 
   "createParams" must {
-    "throw exception" in {
+    "throw an exception" in {
       val (integerMFactory, scope) = build
       a[RuntimeException] must be thrownBy integerMFactory.createParams(scope).futureValue
     }
   }
 
   "createNodes" must {
-    "throw exception" in {
+    "throw an exception" in {
       val (integerMFactory, scope) = build
       a[RuntimeException] must be thrownBy integerMFactory.createNodes(scope).futureValue
     }

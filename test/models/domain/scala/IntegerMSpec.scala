@@ -14,14 +14,14 @@ final class IntegerMSpec extends UnitTestHelpers {
   }
 
   "hasNoEmptySteps" must {
-    "returns true" in {
+    "return true" in {
       val hasNoEmptySteps = integerM.hasNoEmptySteps(scope())
       hasNoEmptySteps must equal(true)
     }
   }
 
   "fillEmptySteps" must {
-    "return same when no empty nodes" in {
+    "return the same if there are no empty nodes" in {
       val factoryLookup = mock[FactoryLookup]
 
       val nonEmptyInteger = integerM.fillEmptySteps(scope(), factoryLookup)
