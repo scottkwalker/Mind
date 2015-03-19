@@ -18,8 +18,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
     "return expected" in {
       val step = mock[Step]
       when(step.toCompilable).thenReturn("Int")
-      val name = "a"
-      val valDclInFunctionParam = ValDclInFunctionParam(name, step)
+      val valDclInFunctionParam = build(primitiveType = step)
 
       val compilable = valDclInFunctionParam.toCompilable
 
@@ -29,9 +28,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
 
   "hasNoEmptySteps" must {
     "return false if it cannot terminate in under N steps" in {
-      val name = "a"
-      val step = mock[Step]
-      val valDclInFunctionParam = ValDclInFunctionParam(name, step)
+      val valDclInFunctionParam = build()
 
       val hasNoEmptySteps = valDclInFunctionParam.hasNoEmptySteps(scopeWithoutHeightRemaining)
 
@@ -39,9 +36,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
     }
 
     "return false if the name is empty" in {
-      val name = ""
-      val step = mock[Step]
-      val valDclInFunctionParam = ValDclInFunctionParam(name, step)
+      val valDclInFunctionParam = build(name = "")
 
       val hasNoEmptySteps = valDclInFunctionParam.hasNoEmptySteps(scopeWithHeightRemaining)
 
@@ -49,10 +44,9 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
     }
 
     "return false if there is an invalid type of child" in {
-      val name = "a"
       val step = mock[Step]
       when(step.hasNoEmptySteps(any[IScope])).thenReturn(false)
-      val valDclInFunctionParam = ValDclInFunctionParam(name, step)
+      val valDclInFunctionParam = build(primitiveType = step)
 
       val hasNoEmptySteps = valDclInFunctionParam.hasNoEmptySteps(scopeWithHeightRemaining)
 
@@ -60,9 +54,8 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
     }
 
     "return true if it can terminate, has a non-empty name and valid type of child" in {
-      val name = "a"
       val integerM = IntegerM()
-      val valDclInFunctionParam = ValDclInFunctionParam(name, integerM)
+      val valDclInFunctionParam = build(primitiveType = integerM)
 
       val hasNoEmptySteps = valDclInFunctionParam.hasNoEmptySteps(scopeWithHeightRemaining)
 
@@ -72,11 +65,10 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
 
   "fillEmptySteps" must {
     "call fillEmptySteps once for each non-empty child node" in {
-      val name = "a"
       val factoryLookup = mock[FactoryLookup]
       val step = mock[Step]
       when(step.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(step)
-      val valDclInFunctionParam = ValDclInFunctionParam(name, step)
+      val valDclInFunctionParam = build(primitiveType = step)
 
       val fillEmptySteps = valDclInFunctionParam.fillEmptySteps(scope(), factoryLookup)
 
@@ -87,11 +79,10 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
     }
 
     "return the same if there are no empty nodes" in {
-      val name = "a"
       val factoryLookup = mock[FactoryLookup]
       val step = mock[Step]
       when(step.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(step)
-      val valDclInFunctionParam = ValDclInFunctionParam(name, step)
+      val valDclInFunctionParam = build(primitiveType = step)
 
       val fillEmptySteps = valDclInFunctionParam.fillEmptySteps(scope(), factoryLookup)
 
@@ -101,13 +92,11 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
     }
 
     "return without empty nodes if there were empty nodes" in {
-      val name = "a"
-      val primitiveTypeEmpty = Empty()
       val factoryLookup = testInjector(
         new StubFactoryLookupAnyBinding,
         new StubSelectionStrategyBinding
       ).getInstance(classOf[FactoryLookup])
-      val valDclInFunctionParam = ValDclInFunctionParam(name, primitiveTypeEmpty)
+      val valDclInFunctionParam = build(primitiveType = Empty())
 
       val fillEmptySteps = valDclInFunctionParam.fillEmptySteps(scope(), factoryLookup)
 
@@ -122,14 +111,16 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
 
   "height" must {
     "returns 1 + child height" in {
-      val name = "a"
-      val instruction = mock[Step]
-      when(instruction.height).thenReturn(1)
-      val valDclInFunctionParam = ValDclInFunctionParam(name, instruction)
+      val step = mock[Step]
+      when(step.height).thenReturn(1)
+      val valDclInFunctionParam = build(primitiveType = step)
 
       val height = valDclInFunctionParam.height
 
       height must equal(2)
     }
   }
+
+  private def build(name: String = "a", primitiveType: Step = mock[Step]) =
+    ValDclInFunctionParam(name = name, primitiveType = primitiveType)
 }
