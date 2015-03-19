@@ -7,20 +7,18 @@ final class ValueRefSpec extends UnitTestHelpers {
 
   "toCompilable" must {
     "return name" in {
-      val name = "a"
-      val valueRef = ValueRefImpl(name)
+      val valueRef = build()
 
       val compilable = valueRef.toCompilable
 
-      compilable must equal(name)
+      compilable must equal(defaultName)
     }
   }
 
   "hasNoEmptySteps" must {
     "return true if it has a non-empty name and height is 0" in {
       val scope = mock[IScope]
-      val name = "a"
-      val valueRef = ValueRefImpl(name)
+      val valueRef = build()
 
       val hasNoEmptySteps = valueRef.hasNoEmptySteps(scope)
 
@@ -29,8 +27,7 @@ final class ValueRefSpec extends UnitTestHelpers {
 
     "return true if the name is not empty" in {
       val scope = mock[IScope]
-      val name = "a"
-      val valueRef = ValueRefImpl(name)
+      val valueRef = build()
 
       val hasNoEmptySteps = valueRef.hasNoEmptySteps(scope)
 
@@ -39,8 +36,7 @@ final class ValueRefSpec extends UnitTestHelpers {
 
     "return false if the name is empty" in {
       val scope = mock[IScope]
-      val name = ""
-      val valueRef = ValueRefImpl(name)
+      val valueRef = build(name = "")
 
       val hasNoEmptySteps = valueRef.hasNoEmptySteps(scope)
 
@@ -51,9 +47,8 @@ final class ValueRefSpec extends UnitTestHelpers {
   "fillEmptySteps" must {
     "return the same if there are no empty nodes" in {
       val scope = mock[IScope]
-      val name = "a"
       val factoryLookup = mock[FactoryLookup]
-      val valueRef = ValueRefImpl(name)
+      val valueRef = build()
 
       val step = valueRef.fillEmptySteps(scope, factoryLookup)
 
@@ -65,11 +60,15 @@ final class ValueRefSpec extends UnitTestHelpers {
 
   "height" must {
     "returns 1" in {
-      val name = "a"
+      val valueRef = build()
 
-      val height = ValueRefImpl(name).height
+      val height = valueRef.height
 
       height must equal(1)
     }
   }
+
+  private val defaultName = "a"
+
+  private def build(name: String = defaultName, scope: IScope = mock[IScope]) = ValueRefImpl(name)
 }
