@@ -19,7 +19,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
     "return true if it can terminates in under N steps" in {
       val step = mock[Object]
       when(step.hasNoEmptySteps(any[IScope])).thenReturn(true)
-      val typeTree = new TypeTree(Seq(step))
+      val typeTree = build(step)
 
       val hasNoEmptySteps = typeTree.hasNoEmptySteps(scopeWithHeightRemaining)
 
@@ -29,7 +29,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
     "return false if it cannot terminate in under N steps" in {
       val step = mock[Step]
       when(step.hasNoEmptySteps(any[IScope])).thenReturn(false)
-      val typeTree = new TypeTree(Seq(step))
+      val typeTree = build(step)
 
       val hasNoEmptySteps = typeTree.hasNoEmptySteps(scopeWithoutHeightRemaining)
 
@@ -37,7 +37,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
     }
 
     "return false if the root node is empty" in {
-      val typeTree = new TypeTree(Seq(Empty()))
+      val typeTree = build(Empty())
 
       val hasNoEmptySteps = typeTree.hasNoEmptySteps(scopeWithHeightRemaining)
 
@@ -45,8 +45,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
     }
 
     "return false if scope has no height remaining" in {
-      val step = mock[Step]
-      val typeTree = new TypeTree(Seq(step))
+      val typeTree = build()
 
       val hasNoEmptySteps = typeTree.hasNoEmptySteps(scopeWithoutHeightRemaining)
 
@@ -55,7 +54,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
 
     "throw an exception if there is a node of an unhandled node type" in {
       val unhandledNode = mock[Step]
-      val typeTree = new TypeTree(Seq(unhandledNode))
+      val typeTree = build(unhandledNode)
 
       a[RuntimeException] must be thrownBy typeTree.hasNoEmptySteps(scopeWithHeightRemaining)
     }
@@ -66,7 +65,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       val factoryLookup = mock[FactoryLookup]
       val step = mock[Step]
       when(step.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(step)
-      val typeTree = TypeTree(Seq(step))
+      val typeTree = build(step)
 
       val fillEmptySteps = typeTree.fillEmptySteps(scope(), factoryLookup)
 
@@ -81,7 +80,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       val factoryLookup = mock[FactoryLookup]
       val step = mock[Step]
       when(step.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(step)
-      val typeTree = new TypeTree(Seq(step))
+      val typeTree = build(step)
 
       val fillEmptySteps = typeTree.fillEmptySteps(scope(), factoryLookup)
 
@@ -102,7 +101,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
         new StubFactoryLookupAnyBinding,
         new StubSelectionStrategyBinding
       ).getInstance(classOf[FactoryLookup])
-      val typeTree = TypeTree(nodes = Seq(empty))
+      val typeTree = build(empty)
 
       val fillEmptySteps = typeTree.fillEmptySteps(scope, factoryLookup)
 
@@ -128,7 +127,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
     "return 1 + child height when has one child" in {
       val step = mock[Step]
       when(step.height).thenReturn(2)
-      val typeTree = new TypeTree(Seq(step))
+      val typeTree = build(step)
 
       val height = typeTree.height
 
@@ -140,7 +139,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       when(step1.height).thenReturn(1)
       val step2 = mock[Step]
       when(step2.height).thenReturn(2)
-      val typeTree = new TypeTree(Seq(step1, step2))
+      val typeTree = build(Seq(step1, step2))
 
       val height = typeTree.height
 
@@ -148,7 +147,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
     }
 
     "return expected value for realistic tree" in {
-      val typeTree = new TypeTree(
+      val typeTree = build(
         Seq(
           ObjectImpl(Seq(
             FunctionMImpl(params = Seq(ValDclInFunctionParam("a", IntegerM()), ValDclInFunctionParam("b", IntegerM())),
@@ -163,4 +162,8 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
       height must equal(5)
     }
   }
+
+  private def build(step: Step = mock[Step]) = TypeTree(Seq(step))
+
+  private def build(step: Seq[Step]) = TypeTree(step)
 }
