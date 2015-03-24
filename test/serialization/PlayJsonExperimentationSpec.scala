@@ -18,7 +18,7 @@ import models.common.Scope.Form._
 
 import scala.collection.immutable.BitSet
 
-final class ExperimentingSpec extends UnitTestHelpers {
+final class PlayJsonExperimentationSpec extends UnitTestHelpers {
 
   "experiment with json serialization" must {
     "Seq[Int]" in {
