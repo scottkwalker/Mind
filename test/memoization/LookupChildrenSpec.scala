@@ -1,7 +1,7 @@
 package memoization
 
-import composition.StubFactoryLookupAnyBinding.fakeFactoryHasChildrenId
-import composition.StubFactoryLookupAnyBinding.fakeFactoryTerminates2Id
+import composition.StubFactoryLookupAnyBinding.hasChildrenThatTerminateId
+import composition.StubFactoryLookupAnyBinding.leaf2Id
 import composition.StubFactoryLookupAnyBinding.leaf1Id
 import composition._
 import models.common.IScope
@@ -53,7 +53,7 @@ final class LookupChildrenSpec extends UnitTestHelpers with TestComposition {
   "get (scope, parent)" must {
     "call factoryLookup.convert(id) once with the id of the parent" in {
       val (lookupChildren, scope, factoryLookup, _) = build
-      val parent = fakeFactoryHasChildrenId
+      val parent = hasChildrenThatTerminateId
 
       lookupChildren.get(scope, parent)
 
@@ -62,12 +62,12 @@ final class LookupChildrenSpec extends UnitTestHelpers with TestComposition {
 
     "call repository.contains once for each neighbour" in {
       val (lookupChildren, scope, _, repository) = build
-      val parent = fakeFactoryHasChildrenId
+      val parent = hasChildrenThatTerminateId
 
       lookupChildren.get(scope, parent)
 
       verify(repository, times(1)).contains(key1 = scope, key2 = leaf1Id)
-      verify(repository, times(1)).contains(key1 = scope, key2 = fakeFactoryTerminates2Id)
+      verify(repository, times(1)).contains(key1 = scope, key2 = leaf2Id)
       verifyNoMoreInteractions(repository)
     }
   }
