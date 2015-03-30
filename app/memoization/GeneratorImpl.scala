@@ -62,6 +62,6 @@ class GeneratorImpl @Inject()(
 
   private def hasChildTheTerminates(scope: IScope, decision: Decision): Boolean =
     decision.nodesToChooseFrom.exists { child =>
-      repository.apply(key1 = scope.decrementHeight, key2 = child)
+      repository.contains(key1 = scope.decrementHeight, key2 = child)
     }
 }

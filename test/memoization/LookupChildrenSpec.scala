@@ -1,6 +1,8 @@
 package memoization
 
-import composition.StubFactoryLookupAnyBinding.{fakeFactoryHasChildrenId,fakeFactoryTerminates1Id,fakeFactoryTerminates2Id}
+import composition.StubFactoryLookupAnyBinding.fakeFactoryHasChildrenId
+import composition.StubFactoryLookupAnyBinding.fakeFactoryTerminates2Id
+import composition.StubFactoryLookupAnyBinding.leaf1Id
 import composition._
 import models.common.IScope
 import org.mockito.Mockito._
@@ -17,7 +19,7 @@ final class LookupChildrenSpec extends UnitTestHelpers with TestComposition {
   }
 
   "get (scope, childrenToChooseFrom)" must {
-    "call repository.apply once for each neighbour" in {
+    "call repository.contains once for each neighbour" in {
       val (lookupChildren, scope, _, repository) = build
       val neighbour0 = PozInt(0)
       val neighbour1 = PozInt(1)
@@ -26,9 +28,9 @@ final class LookupChildrenSpec extends UnitTestHelpers with TestComposition {
 
       lookupChildren.get(scope, childrenToChooseFrom)
 
-      verify(repository, times(1)).apply(key1 = scope, key2 = neighbour0)
-      verify(repository, times(1)).apply(key1 = scope, key2 = neighbour1)
-      verify(repository, times(1)).apply(key1 = scope, key2 = neighbour2)
+      verify(repository, times(1)).contains(key1 = scope, key2 = neighbour0)
+      verify(repository, times(1)).contains(key1 = scope, key2 = neighbour1)
+      verify(repository, times(1)).contains(key1 = scope, key2 = neighbour2)
       verifyNoMoreInteractions(repository)
     }
 
@@ -58,14 +60,14 @@ final class LookupChildrenSpec extends UnitTestHelpers with TestComposition {
       verify(factoryLookup, times(1)).convert(id = parent)
     }
 
-    "call repository.apply once for each neighbour" in {
+    "call repository.contains once for each neighbour" in {
       val (lookupChildren, scope, _, repository) = build
       val parent = fakeFactoryHasChildrenId
 
       lookupChildren.get(scope, parent)
 
-      verify(repository, times(1)).apply(key1 = scope, key2 = fakeFactoryTerminates1Id)
-      verify(repository, times(1)).apply(key1 = scope, key2 = fakeFactoryTerminates2Id)
+      verify(repository, times(1)).contains(key1 = scope, key2 = leaf1Id)
+      verify(repository, times(1)).contains(key1 = scope, key2 = fakeFactoryTerminates2Id)
       verifyNoMoreInteractions(repository)
     }
   }

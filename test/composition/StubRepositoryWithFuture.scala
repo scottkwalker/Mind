@@ -19,7 +19,7 @@ final class StubRepositoryWithFuture(size: Int = 0) extends AbstractModule with 
     val repositoryWithFutures = mock[Memoize2[IScope, PozInt, Future[Boolean]]]
     when(repositoryWithFutures.size).thenReturn(size)
     when(repositoryWithFutures.apply(any[IScope], Matchers.eq(fakeFactoryDoesNotTerminateId))).thenReturn(Future.successful(false))
-    when(repositoryWithFutures.apply(any[IScope], Matchers.eq(fakeFactoryTerminates1Id))).thenReturn(Future.successful(true))
+    when(repositoryWithFutures.apply(any[IScope], Matchers.eq(leaf1Id))).thenReturn(Future.successful(true))
     when(repositoryWithFutures.apply(any[IScope], Matchers.eq(fakeFactoryTerminates2Id))).thenReturn(Future.successful(true))
     when(repositoryWithFutures.apply(any[IScope], Matchers.eq(fakeFactoryHasChildrenId))).thenReturn(Future.successful(true))
     when(repositoryWithFutures.apply(any[IScope], any[PozInt])).thenReturn(Future.successful(true))

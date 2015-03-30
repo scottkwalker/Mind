@@ -1,10 +1,12 @@
 package memoization
 
 import composition.StubFactoryLookupAnyBinding.fakeFactoryDoesNotTerminateId
+import composition.StubFactoryLookupAnyBinding.fakeFactoryHasChildrenId
+import composition.StubFactoryLookupAnyBinding.fakeFactoryTerminates2Id
 import composition.StubFactoryLookupAnyBinding.numberOfFactories
+import composition.StubFactoryLookupAnyBinding.leaf1Id
 import composition._
-import models.common.IScope
-import models.common.Scope
+import models.common.{IScope, Scope}
 import models.domain.scala.FactoryLookup
 import org.mockito.Matchers
 import org.mockito.Matchers._
@@ -17,7 +19,7 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
 
   "generate (without futures)" must {
     "return expected message" in {
-      val (_, generator, _, _) = buildWithoutFutures
+      val (_, generator, _, _) = build
       val scope = mock[IScope]
 
       whenReady(generator.calculateAndUpdate(scope)) {
@@ -27,19 +29,31 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
 
     "call repository.add once for each factory (when scope has no values)" in {
       val scope = mock[IScope]
-      verifyRepositoryAddCalled(scope = scope, expected = 1, builder = buildWithoutFutures)
+      verifyRepositoryAddCalled(scope = scope, expected = 1, builder = build)
     }
 
     "call repository.add once for each scope maxFuncsInObject on each registered factory" in {
       val scope = mock[IScope]
       when(scope.maxFuncsInObject).thenReturn(1)
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, factoryLookup) = buildWithoutFutures
+      val (_, generator, repository, factoryLookup) = build
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
-        factoryLookup.factories.foreach { id =>
-          verify(repository, times(1)).add(Matchers.eq(Scope(numFuncs = 0, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(id))
-          verify(repository, times(1)).add(Matchers.eq(Scope(numFuncs = 1, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(id))
+        factoryLookup.factories.foreach {
+          case `fakeFactoryDoesNotTerminateId` =>
+            verify(repository, times(1)).contains(Matchers.eq(Scope(numFuncs = 0, maxFuncsInObject = 1, height = 0, maxHeight = 1): IScope), Matchers.eq(fakeFactoryDoesNotTerminateId))
+            verify(repository, times(1)).contains(Matchers.eq(Scope(numFuncs = 1, maxFuncsInObject = 1, height = 0, maxHeight = 1): IScope), Matchers.eq(fakeFactoryDoesNotTerminateId))
+          case `leaf1Id` =>
+            verify(repository, times(1)).add(Matchers.eq(Scope(numFuncs = 0, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(leaf1Id))
+            verify(repository, times(1)).add(Matchers.eq(Scope(numFuncs = 1, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(leaf1Id))
+          case `fakeFactoryTerminates2Id` =>
+            verify(repository, times(1)).add(Matchers.eq(Scope(numFuncs = 0, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(fakeFactoryTerminates2Id))
+            verify(repository, times(1)).add(Matchers.eq(Scope(numFuncs = 1, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(fakeFactoryTerminates2Id))
+          case `fakeFactoryHasChildrenId` =>
+            verify(repository, times(1)).contains(Matchers.eq(Scope(numFuncs = 0, maxFuncsInObject = 1, height = 0, maxHeight = 1): IScope), Matchers.eq(leaf1Id))
+            verify(repository, times(1)).contains(Matchers.eq(Scope(numFuncs = 1, maxFuncsInObject = 1, height = 0, maxHeight = 1): IScope), Matchers.eq(leaf1Id))
+            verify(repository, times(1)).add(Matchers.eq(Scope(numFuncs = 0, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(fakeFactoryHasChildrenId))
+            verify(repository, times(1)).add(Matchers.eq(Scope(numFuncs = 1, maxFuncsInObject = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(fakeFactoryHasChildrenId))
         }
         verify(repository, times(1)).size
         verifyNoMoreInteractions(repository)
@@ -50,12 +64,24 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       when(scope.maxParamsInFunc).thenReturn(1)
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, factoryLookup) = buildWithoutFutures
+      val (_, generator, repository, factoryLookup) = build
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
-        factoryLookup.factories.foreach { id =>
-          verify(repository, atLeastOnce).add(Matchers.eq(Scope(numVals = 0, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(id))
-          verify(repository, atLeastOnce).add(Matchers.eq(Scope(numVals = 1, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(id))
+        factoryLookup.factories.foreach {
+          case `fakeFactoryDoesNotTerminateId` =>
+            verify(repository, times(1)).contains(Matchers.eq(Scope(numVals = 0, maxParamsInFunc = 1, height = 0, maxHeight = 1): IScope), Matchers.eq(fakeFactoryDoesNotTerminateId))
+            verify(repository, times(1)).contains(Matchers.eq(Scope(numVals = 1, maxParamsInFunc = 1, height = 0, maxHeight = 1): IScope), Matchers.eq(fakeFactoryDoesNotTerminateId))
+          case `leaf1Id` =>
+            verify(repository, times(1)).add(Matchers.eq(Scope(numVals = 0, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(leaf1Id))
+            verify(repository, times(1)).add(Matchers.eq(Scope(numVals = 1, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(leaf1Id))
+          case `fakeFactoryTerminates2Id` =>
+            verify(repository, times(1)).add(Matchers.eq(Scope(numVals = 0, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(fakeFactoryTerminates2Id))
+            verify(repository, times(1)).add(Matchers.eq(Scope(numVals = 1, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(fakeFactoryTerminates2Id))
+          case `fakeFactoryHasChildrenId` =>
+            verify(repository, times(1)).contains(Matchers.eq(Scope(numVals = 0, maxParamsInFunc = 1, height = 0, maxHeight = 1): IScope), Matchers.eq(leaf1Id))
+            verify(repository, times(1)).contains(Matchers.eq(Scope(numVals = 1, maxParamsInFunc = 1, height = 0, maxHeight = 1): IScope), Matchers.eq(leaf1Id))
+            verify(repository, times(1)).add(Matchers.eq(Scope(numVals = 0, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(fakeFactoryHasChildrenId))
+            verify(repository, times(1)).add(Matchers.eq(Scope(numVals = 1, maxParamsInFunc = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(fakeFactoryHasChildrenId))
         }
         verify(repository, times(1)).size
         verifyNoMoreInteractions(repository)
@@ -66,12 +92,24 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       when(scope.maxObjectsInTree).thenReturn(1)
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, factoryLookup) = buildWithoutFutures
+      val (_, generator, repository, factoryLookup) = build
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
-        factoryLookup.factories.foreach { id =>
-          verify(repository, atLeastOnce).add(Matchers.eq(Scope(numObjects = 0, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
-          verify(repository, atLeastOnce).add(Matchers.eq(Scope(numObjects = 1, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), any[PozInt])
+        factoryLookup.factories.foreach {
+          case `fakeFactoryDoesNotTerminateId` =>
+            verify(repository, times(1)).contains(Matchers.eq(Scope(numObjects = 0, maxObjectsInTree = 1, height = 0, maxHeight = 1): IScope), Matchers.eq(fakeFactoryDoesNotTerminateId))
+            verify(repository, times(1)).contains(Matchers.eq(Scope(numObjects = 1, maxObjectsInTree = 1, height = 0, maxHeight = 1): IScope), Matchers.eq(fakeFactoryDoesNotTerminateId))
+          case `leaf1Id` =>
+            verify(repository, times(1)).add(Matchers.eq(Scope(numObjects = 0, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(leaf1Id))
+            verify(repository, times(1)).add(Matchers.eq(Scope(numObjects = 1, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(leaf1Id))
+          case `fakeFactoryTerminates2Id` =>
+            verify(repository, times(1)).add(Matchers.eq(Scope(numObjects = 0, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(fakeFactoryTerminates2Id))
+            verify(repository, times(1)).add(Matchers.eq(Scope(numObjects = 1, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(fakeFactoryTerminates2Id))
+          case `fakeFactoryHasChildrenId` =>
+            verify(repository, times(1)).contains(Matchers.eq(Scope(numObjects = 0, maxObjectsInTree = 1, height = 0, maxHeight = 1): IScope), Matchers.eq(leaf1Id))
+            verify(repository, times(1)).contains(Matchers.eq(Scope(numObjects = 1, maxObjectsInTree = 1, height = 0, maxHeight = 1): IScope), Matchers.eq(leaf1Id))
+            verify(repository, times(1)).add(Matchers.eq(Scope(numObjects = 0, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(fakeFactoryHasChildrenId))
+            verify(repository, times(1)).add(Matchers.eq(Scope(numObjects = 1, maxObjectsInTree = 1, height = 1, maxHeight = 1): IScope), Matchers.eq(fakeFactoryHasChildrenId))
         }
         verify(repository, times(1)).size
         verifyNoMoreInteractions(repository)
@@ -81,11 +119,19 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
     "call repository.add once for each scope height on each registered factory" in {
       val scope = mock[IScope]
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, factoryLookup) = buildWithoutFutures
+      val (_, generator, repository, factoryLookup) = build
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
-        factoryLookup.factories.foreach { id =>
-          verify(repository, atLeastOnce).add(Matchers.eq(Scope(height = 1, maxHeight = 1): IScope), any[PozInt])
+        factoryLookup.factories.foreach {
+          case `fakeFactoryDoesNotTerminateId` =>
+            verify(repository, times(1)).contains(Matchers.eq(Scope(height = 0, maxHeight = 1): IScope), Matchers.eq(fakeFactoryDoesNotTerminateId))
+          case `leaf1Id` =>
+            verify(repository, times(1)).add(Matchers.eq(Scope(height = 1, maxHeight = 1): IScope), Matchers.eq(leaf1Id))
+          case `fakeFactoryTerminates2Id` =>
+            verify(repository, times(1)).add(Matchers.eq(Scope(height = 1, maxHeight = 1): IScope), Matchers.eq(fakeFactoryTerminates2Id))
+          case `fakeFactoryHasChildrenId` =>
+            verify(repository, times(1)).contains(Matchers.eq(Scope(height = 0, maxHeight = 1): IScope), Matchers.eq(leaf1Id))
+            verify(repository, times(1)).add(Matchers.eq(Scope(height = 1, maxHeight = 1): IScope), Matchers.eq(fakeFactoryHasChildrenId))
         }
         verify(repository, times(1)).size
         verifyNoMoreInteractions(repository)
@@ -95,12 +141,9 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
     "does not call repository.add if scope has no height remaining" in {
       val scope = mock[IScope]
       when(scope.maxHeight).thenReturn(0)
-      val (_, generator, repository, factoryLookup) = buildWithoutFutures
+      val (_, generator, repository, _) = build
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
-        factoryLookup.factories.foreach { id =>
-          verify(repository, never).add(any[IScope], any[PozInt])
-        }
         verify(repository, times(1)).size
         verifyNoMoreInteractions(repository)
       }(config = patienceConfig)
@@ -109,23 +152,42 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
     "does not call repository.add if scope has height remaining but decision is not a leaf and none of the children terminate" in {
       val scope = mock[IScope]
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, factoryLookup) = buildDoesNotTerminate
+      val (_, generator, repository, _) = buildWithDecisionThatDoesNotTerminate
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
-        factoryLookup.factories.foreach { id =>
-          verify(repository, never).add(any[IScope], any[PozInt])
-          verify(repository, times(1)).apply(any[IScope], Matchers.eq(fakeFactoryDoesNotTerminateId))
-        }
+        verify(repository, times(1)).contains(any[IScope], Matchers.eq(fakeFactoryDoesNotTerminateId))
         verify(repository, times(1)).size
         verifyNoMoreInteractions(repository)
       }(config = patienceConfig)
     }
 
-    "call repository.add once if scope has height remaining and decision is a leaf node" in pending
-    "call repository.add once if scope has height remaining and decision has at least one of the children will terminate" in pending
+    "call repository.add once if scope has height remaining and decision is a leaf node" in {
+      val scope = mock[IScope]
+      when(scope.maxHeight).thenReturn(1)
+      val (_, generator, repository, _) = buildWithDecisionThatIsLeaf
+
+      whenReady(generator.calculateAndUpdate(scope)) { _ =>
+        verify(repository, times(1)).add(any[IScope], Matchers.eq(leaf1Id))
+        verify(repository, times(1)).size
+        verifyNoMoreInteractions(repository)
+      }(config = patienceConfig)
+    }
+
+    "call repository.add once if scope has height remaining and decision has at least one of the children will terminate" in {
+      val scope = mock[IScope]
+      when(scope.maxHeight).thenReturn(1)
+      val (_, generator, repository, _) = buildWithDecisionThatHasChildrenThatTerminate
+
+      whenReady(generator.calculateAndUpdate(scope)) { _ =>
+        verify(repository, times(1)).contains(any[IScope], Matchers.eq(leaf1Id))
+        verify(repository, times(1)).add(any[IScope], Matchers.eq(fakeFactoryHasChildrenId))
+        verify(repository, times(1)).size
+        verifyNoMoreInteractions(repository)
+      }(config = patienceConfig)
+    }
   }
 
-  private def buildWithoutFutures = {
+  private def build = {
     val lookupChildren = new StubLookupChildrenBinding(size = numberOfFactories)
     val repository = new StubRepositoryBinding
     val factoryLookup = new StubFactoryLookupAnyBinding
@@ -138,10 +200,36 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
     (lookupChildren.stub, generator, repository.stub, factoryLookup.stub)
   }
 
-  private def buildDoesNotTerminate = {
+  private def buildWithDecisionThatDoesNotTerminate = {
     val lookupChildren = new StubLookupChildrenBinding(size = numberOfFactories)
     val repository = new StubRepositoryBinding
-    val factoryLookup = new StubFactoryDoesNotTerminateBinding
+    val factoryLookup = new StubFactoryWithDecisionThatDoesNotTerminateBinding
+    val generator = testInjector(
+      factoryLookup,
+      lookupChildren,
+      repository,
+      new GeneratorBinding
+    ).getInstance(classOf[Generator])
+    (lookupChildren.stub, generator, repository.stub, factoryLookup.stub)
+  }
+
+  private def buildWithDecisionThatIsLeaf = {
+    val lookupChildren = new StubLookupChildrenBinding(size = numberOfFactories)
+    val repository = new StubRepositoryBinding
+    val factoryLookup = new StubFactoryWithDecisionThatIsLeafBinding
+    val generator = testInjector(
+      factoryLookup,
+      lookupChildren,
+      repository,
+      new GeneratorBinding
+    ).getInstance(classOf[Generator])
+    (lookupChildren.stub, generator, repository.stub, factoryLookup.stub)
+  }
+
+  private def buildWithDecisionThatHasChildrenThatTerminate = {
+    val lookupChildren = new StubLookupChildrenBinding(size = numberOfFactories)
+    val repository = new StubRepositoryBinding
+    val factoryLookup = new StubFactoryWithDecisionThatHasChildrenThatTerminateBinding
     val generator = testInjector(
       factoryLookup,
       lookupChildren,

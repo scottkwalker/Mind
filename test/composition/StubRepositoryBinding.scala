@@ -16,8 +16,8 @@ final class StubRepositoryBinding extends AbstractModule with MockitoSugar {
   val stub = {
     val repository: Memoize2WithSet[IScope, PozInt] = mock[Memoize2WithSet[IScope, PozInt]]
     when(repository.size).thenReturn(4)
-    when(repository.apply(any[IScope], any[PozInt])).thenReturn(true) // Stub that value is always found.
-    when(repository.apply(any[IScope], Matchers.eq(fakeFactoryDoesNotTerminateId))).thenReturn(false) // Stub that value is never found.
+    when(repository.contains(any[IScope], any[PozInt])).thenReturn(true) // Stub that value is always found.
+    when(repository.contains(any[IScope], Matchers.eq(fakeFactoryDoesNotTerminateId))).thenReturn(false) // Stub that value is never found.
     repository
   }
 

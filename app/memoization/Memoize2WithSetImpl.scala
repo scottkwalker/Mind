@@ -10,7 +10,7 @@ abstract class Memoize2WithSetImpl[TKey1, TKey2](
 
   private var cache: Set[String] = Set.empty[String]
 
-  override def apply(implicit key1: TKey1, key2: TKey2): Boolean = {
+  override def contains(implicit key1: TKey1, key2: TKey2): Boolean = {
     cache.contains(combineKeys)
   }
 

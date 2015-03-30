@@ -6,14 +6,14 @@ import serialization.JsonValidationException
 
 final class Memoize2WithSetImplSpec extends UnitTestHelpers {
 
-  "apply" must {
+  "contains" must {
 
     "return false when key is not in cache" in {
       val sut = new Memoize2WithSetImpl[Int, Int](versioning = "test") {
         override def size = ???
       }
       sut.add(Set.empty[String])
-      sut.apply(0, 0) must equal(false)
+      sut.contains(0, 0) must equal(false)
     }
 
     "return true when key is in cache" in {
@@ -21,7 +21,7 @@ final class Memoize2WithSetImplSpec extends UnitTestHelpers {
         override def size = ???
       }
       sut.add(Set("0|0"))
-      sut.apply(0, 0) must equal(true)
+      sut.contains(0, 0) must equal(true)
     }
   }
 
@@ -32,9 +32,9 @@ final class Memoize2WithSetImplSpec extends UnitTestHelpers {
       }
       sut.add(Set("1|1", "1|2", "2|2"))
 
-      sut(1, 1) must equal(true)
-      sut(1, 2) must equal(true)
-      sut(2, 2) must equal(true)
+      sut.contains(1, 1) must equal(true)
+      sut.contains(1, 2) must equal(true)
+      sut.contains(2, 2) must equal(true)
 
       sut.write must equal(
         JsObject(
@@ -74,10 +74,10 @@ final class Memoize2WithSetImplSpec extends UnitTestHelpers {
 
       val asObj = Memoize2WithSetImpl.read[Dummy](json)
 
-      asObj(0, 0) must equal(false)
-      asObj(1, 1) must equal(true)
-      asObj(1, 2) must equal(true)
-      asObj(2, 2) must equal(true)
+      asObj.contains(0, 0) must equal(false)
+      asObj.contains(1, 1) must equal(true)
+      asObj.contains(1, 2) must equal(true)
+      asObj.contains(2, 2) must equal(true)
     }
 
     "throw when empty json" in {
