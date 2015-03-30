@@ -1,5 +1,6 @@
 package memoization
 
+import com.google.inject.AbstractModule
 import composition.StubFactoryLookupAnyBinding.fakeFactoryDoesNotTerminateId
 import composition.StubFactoryLookupAnyBinding.fakeFactoryHasChildrenId
 import composition.StubFactoryLookupAnyBinding.fakeFactoryTerminates2Id
@@ -227,16 +228,21 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
   }
 
   private def buildWithDecisionThatHasChildrenThatTerminate = {
+    val factoryLookup = new StubFactoryWithDecisionThatHasChildrenThatTerminateBinding
+    val (lookupChildren, generator, repository) = buildStuff(factoryLookup)
+    (lookupChildren, generator, repository, factoryLookup.stub)
+  }
+
+  private def buildStuff(factoryLookup: AbstractModule) = {
     val lookupChildren = new StubLookupChildrenBinding(size = numberOfFactories)
     val repository = new StubRepositoryBinding
-    val factoryLookup = new StubFactoryWithDecisionThatHasChildrenThatTerminateBinding
     val generator = testInjector(
       factoryLookup,
       lookupChildren,
       repository,
       new GeneratorBinding
     ).getInstance(classOf[Generator])
-    (lookupChildren.stub, generator, repository.stub, factoryLookup.stub)
+    (lookupChildren.stub, generator, repository.stub)
   }
 
   private def verifyRepositoryAddCalled(scope: IScope, expected: Int = 2, builder: => (LookupChildren, Generator, Memoize2WithSet[IScope, PozInt], FactoryLookup)) = {
