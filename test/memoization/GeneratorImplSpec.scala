@@ -28,6 +28,54 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
+    "does not call repository.add if scope has no height remaining" in {
+      val scope = mock[IScope]
+      when(scope.maxHeight).thenReturn(0)
+      val (_, generator, repository, _) = buildMixedDecisions
+
+      whenReady(generator.calculateAndUpdate(scope)) { _ =>
+        verify(repository, times(1)).size
+        verifyNoMoreInteractions(repository)
+      }(config = patienceConfig)
+    }
+
+    "does not call repository.add if scope has height remaining but decision is not a leaf and none of the children terminate" in {
+      val scope = mock[IScope]
+      when(scope.maxHeight).thenReturn(1)
+      val (_, generator, repository, _) = buildWithDecisionThatDoesNotTerminate
+
+      whenReady(generator.calculateAndUpdate(scope)) { _ =>
+        verify(repository, times(1)).contains(any[IScope], Matchers.eq(doesNotTerminateId))
+        verify(repository, times(1)).size
+        verifyNoMoreInteractions(repository)
+      }(config = patienceConfig)
+    }
+
+    "call repository.add once if scope has height remaining and decision is a leaf node" in {
+      val scope = mock[IScope]
+      when(scope.maxHeight).thenReturn(1)
+      val (_, generator, repository, _) = buildWithDecisionThatIsLeaf
+
+      whenReady(generator.calculateAndUpdate(scope)) { _ =>
+        verify(repository, times(1)).add(any[IScope], Matchers.eq(leaf1Id))
+        verify(repository, times(1)).size
+        verifyNoMoreInteractions(repository)
+      }(config = patienceConfig)
+    }
+
+    "call repository.add once if scope has height remaining and decision has at least one of the children will terminate" in {
+      val scope = mock[IScope]
+      when(scope.maxHeight).thenReturn(1)
+      val (_, generator, repository, _) = buildWithDecisionThatHasChildrenThatTerminate
+
+      whenReady(generator.calculateAndUpdate(scope)) { _ =>
+        verify(repository, times(1)).contains(any[IScope], Matchers.eq(leaf1Id))
+        verify(repository, times(1)).add(any[IScope], Matchers.eq(hasChildrenThatTerminateId))
+        verify(repository, times(1)).size
+        verifyNoMoreInteractions(repository)
+      }(config = patienceConfig)
+    }
+
     "call repository.add once for each factory (when scope has no values)" in {
       val scope = mock[IScope]
       verifyRepositoryAddCalled(scope = scope, expected = 1, builder = buildMixedDecisions)
@@ -134,54 +182,6 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
             verify(repository, times(1)).contains(Matchers.eq(Scope(height = 0, maxHeight = 1): IScope), Matchers.eq(leaf1Id))
             verify(repository, times(1)).add(Matchers.eq(Scope(height = 1, maxHeight = 1): IScope), Matchers.eq(hasChildrenThatTerminateId))
         }
-        verify(repository, times(1)).size
-        verifyNoMoreInteractions(repository)
-      }(config = patienceConfig)
-    }
-
-    "does not call repository.add if scope has no height remaining" in {
-      val scope = mock[IScope]
-      when(scope.maxHeight).thenReturn(0)
-      val (_, generator, repository, _) = buildMixedDecisions
-
-      whenReady(generator.calculateAndUpdate(scope)) { _ =>
-        verify(repository, times(1)).size
-        verifyNoMoreInteractions(repository)
-      }(config = patienceConfig)
-    }
-
-    "does not call repository.add if scope has height remaining but decision is not a leaf and none of the children terminate" in {
-      val scope = mock[IScope]
-      when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, _) = buildWithDecisionThatDoesNotTerminate
-
-      whenReady(generator.calculateAndUpdate(scope)) { _ =>
-        verify(repository, times(1)).contains(any[IScope], Matchers.eq(doesNotTerminateId))
-        verify(repository, times(1)).size
-        verifyNoMoreInteractions(repository)
-      }(config = patienceConfig)
-    }
-
-    "call repository.add once if scope has height remaining and decision is a leaf node" in {
-      val scope = mock[IScope]
-      when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, _) = buildWithDecisionThatIsLeaf
-
-      whenReady(generator.calculateAndUpdate(scope)) { _ =>
-        verify(repository, times(1)).add(any[IScope], Matchers.eq(leaf1Id))
-        verify(repository, times(1)).size
-        verifyNoMoreInteractions(repository)
-      }(config = patienceConfig)
-    }
-
-    "call repository.add once if scope has height remaining and decision has at least one of the children will terminate" in {
-      val scope = mock[IScope]
-      when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, _) = buildWithDecisionThatHasChildrenThatTerminate
-
-      whenReady(generator.calculateAndUpdate(scope)) { _ =>
-        verify(repository, times(1)).contains(any[IScope], Matchers.eq(leaf1Id))
-        verify(repository, times(1)).add(any[IScope], Matchers.eq(hasChildrenThatTerminateId))
         verify(repository, times(1)).size
         verifyNoMoreInteractions(repository)
       }(config = patienceConfig)
