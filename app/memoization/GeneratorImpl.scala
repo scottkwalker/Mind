@@ -1,6 +1,7 @@
 package memoization
 
 import com.google.inject.Inject
+import decision.Decision
 import models.common.IScope
 import models.common.Scope
 import models.domain.scala.FactoryLookup
@@ -34,40 +35,33 @@ class GeneratorImpl @Inject()(
     } {
       // We can evaluate across all the types of factories in parallel as they all depend on results calculated
       // further "down" the map, no dependencies on the same level.
-      calculateAndUpdate(currentScope, id)
+      addIfLeafOrParentOfLeaf(currentScope, id)
     }
-    Future.successful(repository.size)
+    Future.successful(repository.size) // TODO return a response object that can be serialized to JSON.
   }
 
-  private def calculateAndUpdate(scope: IScope, parent: PozInt): Boolean = {
+  private def addIfLeafOrParentOfLeaf(scope: IScope, parent: PozInt): Unit = {
     if (scope.hasHeightRemaining) {
       val decision = factoryLookup.convert(parent)
-      val nodesToChooseFrom = decision.nodesToChooseFrom
-      if (nodesToChooseFrom.isEmpty) {
+      if (isLeaf(decision)) {
         // If this parent at this scope has no children to choose from, then it is a terminal node.
         repository.add(key1 = scope, key2 = parent)
-        true
       }
-      else {
-        val hasChildThatTerminates = nodesToChooseFrom.exists { possibleNeighbour =>
-          repository.apply(key1 = scope.decrementHeight, key2 = possibleNeighbour)
-        }
-        if (hasChildThatTerminates) {
-          // If this parent at this scope has children in the repository (they are in the repository only because they
-          // can terminate!) then the parent can terminate.
-          repository.add(key1 = scope, key2 = parent)
-          true
-        }
-        else {
-          // Else no children can be found in the repository. As the repository is populated bottom-up, this means that
-          // this parent cannot terminate.
-          false
-        }
+      else if (hasChildTheTerminates(scope, decision)) {
+        // If this parent at this scope has children in the repository (they are in the repository only because they
+        // can terminate!) then the parent can terminate.
+        repository.add(key1 = scope, key2 = parent)
       }
+      // Else no children can be found in the repository. As the repository is populated bottom-up, this means that
+      // this parent cannot terminate.
     }
-    else {
-      // Else there is no height remaining so no child can be added
-      false
-    }
+    // Else there is no height remaining so no child can be added
   }
+
+  private def isLeaf(decision: Decision): Boolean = decision.nodesToChooseFrom.isEmpty
+
+  private def hasChildTheTerminates(scope: IScope, decision: Decision): Boolean =
+    decision.nodesToChooseFrom.exists { child =>
+      repository.apply(key1 = scope.decrementHeight, key2 = child)
+    }
 }

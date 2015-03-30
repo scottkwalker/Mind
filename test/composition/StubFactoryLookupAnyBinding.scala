@@ -40,7 +40,22 @@ final class StubFactoryLookupAnyBinding extends AbstractModule with MockitoSugar
     // Factory -> Id
     when(factoryLookup.convert(fakeFactoryTerminates1)).thenReturn(fakeFactoryTerminates1Id)
     when(factoryLookup.convert(fakeFactoryTerminates2)).thenReturn(fakeFactoryTerminates2Id)
+    // factories
     when(factoryLookup.factories).thenReturn(Set(fakeFactoryDoesNotTerminateId, fakeFactoryTerminates1Id, fakeFactoryTerminates2Id, fakeFactoryHasChildrenId))
+    factoryLookup
+  }
+
+  override def configure(): Unit = bind(classOf[FactoryLookup]).toInstance(stub)
+}
+
+final class StubFactoryDoesNotTerminateBinding extends AbstractModule with MockitoSugar {
+
+  val stub = {
+    val factoryLookup: FactoryLookup = mock[FactoryLookup]
+    // Id -> factory
+    when(factoryLookup.convert(any[PozInt])).thenReturn(fNot)
+    // factories
+    when(factoryLookup.factories).thenReturn(Set(fakeFactoryDoesNotTerminateId))
     factoryLookup
   }
 

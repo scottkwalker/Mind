@@ -1,5 +1,6 @@
 package memoization
 
+import composition.StubFactoryLookupAnyBinding.fakeFactoryDoesNotTerminateId
 import composition.StubFactoryLookupAnyBinding.numberOfFactories
 import composition._
 import models.common.IScope
@@ -90,12 +91,57 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
         verifyNoMoreInteractions(repository)
       }(config = patienceConfig)
     }
+
+    "does not call repository.add if scope has no height remaining" in {
+      val scope = mock[IScope]
+      when(scope.maxHeight).thenReturn(0)
+      val (_, generator, repository, factoryLookup) = buildWithoutFutures
+
+      whenReady(generator.calculateAndUpdate(scope)) { _ =>
+        factoryLookup.factories.foreach { id =>
+          verify(repository, never).add(any[IScope], any[PozInt])
+        }
+        verify(repository, times(1)).size
+        verifyNoMoreInteractions(repository)
+      }(config = patienceConfig)
+    }
+
+    "does not call repository.add if scope has height remaining but decision is not a leaf and none of the children terminate" in {
+      val scope = mock[IScope]
+      when(scope.maxHeight).thenReturn(1)
+      val (_, generator, repository, factoryLookup) = buildDoesNotTerminate
+
+      whenReady(generator.calculateAndUpdate(scope)) { _ =>
+        factoryLookup.factories.foreach { id =>
+          verify(repository, never).add(any[IScope], any[PozInt])
+          verify(repository, times(1)).apply(any[IScope], Matchers.eq(fakeFactoryDoesNotTerminateId))
+        }
+        verify(repository, times(1)).size
+        verifyNoMoreInteractions(repository)
+      }(config = patienceConfig)
+    }
+
+    "call repository.add once if scope has height remaining and decision is a leaf node" in pending
+    "call repository.add once if scope has height remaining and decision has at least one of the children will terminate" in pending
   }
 
   private def buildWithoutFutures = {
     val lookupChildren = new StubLookupChildrenBinding(size = numberOfFactories)
     val repository = new StubRepositoryBinding
     val factoryLookup = new StubFactoryLookupAnyBinding
+    val generator = testInjector(
+      factoryLookup,
+      lookupChildren,
+      repository,
+      new GeneratorBinding
+    ).getInstance(classOf[Generator])
+    (lookupChildren.stub, generator, repository.stub, factoryLookup.stub)
+  }
+
+  private def buildDoesNotTerminate = {
+    val lookupChildren = new StubLookupChildrenBinding(size = numberOfFactories)
+    val repository = new StubRepositoryBinding
+    val factoryLookup = new StubFactoryDoesNotTerminateBinding
     val generator = testInjector(
       factoryLookup,
       lookupChildren,
