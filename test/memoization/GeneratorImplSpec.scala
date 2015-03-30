@@ -20,7 +20,7 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
 
   "generate (without futures)" must {
     "return expected message" in {
-      val (_, generator, _, _) = buildMixedDecisions
+      val (_, generator, _, _) = buildWithAllDecisions
       val scope = mock[IScope]
 
       whenReady(generator.calculateAndUpdate(scope)) {
@@ -31,7 +31,7 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
     "does not call repository.add if scope has no height remaining" in {
       val scope = mock[IScope]
       when(scope.maxHeight).thenReturn(0)
-      val (_, generator, repository, _) = buildMixedDecisions
+      val (_, generator, repository, _) = buildWithAllDecisions
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
         verify(repository, times(1)).size
@@ -42,7 +42,7 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
     "does not call repository.add if scope has height remaining but decision is not a leaf and none of the children terminate" in {
       val scope = mock[IScope]
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, _) = buildWithDecisionThatDoesNotTerminate
+      val (_, generator, repository, _) = buildWithDoesNotTerminate
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
         verify(repository, times(1)).contains(any[IScope], Matchers.eq(doesNotTerminateId))
@@ -54,10 +54,11 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
     "call repository.add once if scope has height remaining and decision is a leaf node" in {
       val scope = mock[IScope]
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, _) = buildWithDecisionThatIsLeaf
+      val (_, generator, repository, _) = buildWithLeafs
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
         verify(repository, times(1)).add(any[IScope], Matchers.eq(leaf1Id))
+        verify(repository, times(1)).add(any[IScope], Matchers.eq(leaf2Id))
         verify(repository, times(1)).size
         verifyNoMoreInteractions(repository)
       }(config = patienceConfig)
@@ -66,7 +67,7 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
     "call repository.add once if scope has height remaining and decision has at least one of the children will terminate" in {
       val scope = mock[IScope]
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, _) = buildWithDecisionThatHasChildrenThatTerminate
+      val (_, generator, repository, _) = buildWithChildrenThatTerminate
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
         verify(repository, times(1)).contains(any[IScope], Matchers.eq(leaf1Id))
@@ -78,14 +79,14 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
 
     "call repository.add once for each factory (when scope has no values)" in {
       val scope = mock[IScope]
-      verifyRepositoryAddCalled(scope = scope, expected = 1, builder = buildMixedDecisions)
+      verifyRepositoryAddCalled(scope = scope, expected = 1, builder = buildWithAllDecisions)
     }
 
     "call repository.add once for each scope maxFuncsInObject on each registered factory" in {
       val scope = mock[IScope]
       when(scope.maxFuncsInObject).thenReturn(1)
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, factoryLookup) = buildMixedDecisions
+      val (_, generator, repository, factoryLookup) = buildWithAllDecisions
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
         factoryLookup.factories.foreach {
@@ -113,7 +114,7 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       when(scope.maxParamsInFunc).thenReturn(1)
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, factoryLookup) = buildMixedDecisions
+      val (_, generator, repository, factoryLookup) = buildWithAllDecisions
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
         factoryLookup.factories.foreach {
@@ -141,7 +142,7 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
       val scope = mock[IScope]
       when(scope.maxObjectsInTree).thenReturn(1)
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, factoryLookup) = buildMixedDecisions
+      val (_, generator, repository, factoryLookup) = buildWithAllDecisions
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
         factoryLookup.factories.foreach {
@@ -168,7 +169,7 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
     "call repository.add once for each scope height on each registered factory" in {
       val scope = mock[IScope]
       when(scope.maxHeight).thenReturn(1)
-      val (_, generator, repository, factoryLookup) = buildMixedDecisions
+      val (_, generator, repository, factoryLookup) = buildWithAllDecisions
 
       whenReady(generator.calculateAndUpdate(scope)) { _ =>
         factoryLookup.factories.foreach {
@@ -188,26 +189,29 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
     }
   }
 
-  private def buildMixedDecisions = {
-    val factoryLookup = new StubFactoryLookupAnyBinding
+  private def buildWithAllDecisions = {
+    val factoryLookup = new StubFactoryLookupBindingBuilder().
+      withDoesNotTerminate.
+      withLeafs.
+      withChildrenThatTerminate
     val (lookupChildren, generator, repository) = build(factoryLookup)
     (lookupChildren, generator, repository, factoryLookup.stub)
   }
 
-  private def buildWithDecisionThatDoesNotTerminate = {
-    val factoryLookup = new StubFactoryWithDecisionThatDoesNotTerminateBinding
+  private def buildWithDoesNotTerminate = {
+    val factoryLookup = new StubFactoryLookupBindingBuilder().withDoesNotTerminate
     val (lookupChildren, generator, repository) = build(factoryLookup)
     (lookupChildren, generator, repository, factoryLookup.stub)
   }
 
-  private def buildWithDecisionThatIsLeaf = {
-    val factoryLookup = new StubFactoryWithDecisionThatIsLeafBinding
+  private def buildWithLeafs = {
+    val factoryLookup = new StubFactoryLookupBindingBuilder().withLeafs
     val (lookupChildren, generator, repository) = build(factoryLookup)
     (lookupChildren, generator, repository, factoryLookup.stub)
   }
 
-  private def buildWithDecisionThatHasChildrenThatTerminate = {
-    val factoryLookup = new StubFactoryWithDecisionThatHasChildrenThatTerminateBinding
+  private def buildWithChildrenThatTerminate = {
+    val factoryLookup = new StubFactoryLookupBindingBuilder().withChildrenThatTerminate
     val (lookupChildren, generator, repository) = build(factoryLookup)
     (lookupChildren, generator, repository, factoryLookup.stub)
   }

@@ -2,14 +2,13 @@ package composition
 
 import com.google.inject.AbstractModule
 import composition.StubFactoryLookupAnyBinding._
-import decision.AccumulateInstructions
-import decision.Decision
+import decision.{AccumulateInstructions, Decision}
 import models.common.IScope
 import models.domain.Step
 import models.domain.scala.FactoryLookup
+import org.mockito.Matchers
 import org.mockito.Matchers.any
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.when
+import org.mockito.Mockito.{mock, when}
 import org.scalatest.mock.MockitoSugar
 import utils.PozInt
 
@@ -48,43 +47,33 @@ final class StubFactoryLookupAnyBinding extends AbstractModule with MockitoSugar
   override def configure(): Unit = bind(classOf[FactoryLookup]).toInstance(stub)
 }
 
-final class StubFactoryWithDecisionThatDoesNotTerminateBinding extends AbstractModule with MockitoSugar {
+final class StubFactoryLookupBindingBuilder extends AbstractModule with MockitoSugar {
 
-  val stub = {
-    val factoryLookup: FactoryLookup = mock[FactoryLookup]
+  val stub: FactoryLookup = mock[FactoryLookup]
+
+  def withChildrenThatTerminate = {
     // Id -> factory
-    when(factoryLookup.convert(any[PozInt])).thenReturn(doesNotTerminate)
+    when(stub.convert(Matchers.eq(hasChildrenThatTerminateId))).thenReturn(hasChildrenThatTerminate)
     // factories
-    when(factoryLookup.factories).thenReturn(Set(doesNotTerminateId))
-    factoryLookup
+    when(stub.factories).thenReturn(Set(hasChildrenThatTerminateId))
+    this
   }
 
-  override def configure(): Unit = bind(classOf[FactoryLookup]).toInstance(stub)
-}
-
-final class StubFactoryWithDecisionThatIsLeafBinding extends AbstractModule with MockitoSugar {
-
-  val stub = {
-    val factoryLookup: FactoryLookup = mock[FactoryLookup]
+  def withLeafs = {
     // Id -> factory
-    when(factoryLookup.convert(any[PozInt])).thenReturn(leaf1)
+    when(stub.convert(Matchers.eq(leaf1Id))).thenReturn(leaf1)
+    when(stub.convert(Matchers.eq(leaf2Id))).thenReturn(leaf2)
     // factories
-    when(factoryLookup.factories).thenReturn(Set(leaf1Id))
-    factoryLookup
+    when(stub.factories).thenReturn(Set(leaf1Id, leaf2Id))
+    this
   }
 
-  override def configure(): Unit = bind(classOf[FactoryLookup]).toInstance(stub)
-}
-
-final class StubFactoryWithDecisionThatHasChildrenThatTerminateBinding extends AbstractModule with MockitoSugar {
-
-  val stub = {
-    val factoryLookup: FactoryLookup = mock[FactoryLookup]
+  def withDoesNotTerminate = {
     // Id -> factory
-    when(factoryLookup.convert(any[PozInt])).thenReturn(hasChildrenThatTerminate)
+    when(stub.convert(Matchers.eq(doesNotTerminateId))).thenReturn(doesNotTerminate)
     // factories
-    when(factoryLookup.factories).thenReturn(Set(hasChildrenThatTerminateId))
-    factoryLookup
+    when(stub.factories).thenReturn(Set(doesNotTerminateId))
+   this
   }
 
   override def configure(): Unit = bind(classOf[FactoryLookup]).toInstance(stub)
