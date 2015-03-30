@@ -16,20 +16,19 @@ import scala.concurrent.Future
 
 final class StubFactoryLookupAnyBinding extends AbstractModule with MockitoSugar {
 
-  val stubDecision = {
-    val decision = mock[Decision]
-    when(decision.nodesToChooseFrom).thenReturn(Set.empty[PozInt])
-    val step = mock[Step]
-    when(decision.createStep(any[IScope])).thenReturn(Future.successful(step))
-    val accumulateInstructions = mock[AccumulateInstructions]
-    when(accumulateInstructions.instructions).thenReturn(Seq(step))
-    when(decision.createParams(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
-    when(decision.createNodes(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
-    decision
-  }
-
   val stub = {
     val factoryLookup: FactoryLookup = mock[FactoryLookup]
+    val stubDecision = {
+      val decision = mock[Decision]
+      when(decision.nodesToChooseFrom).thenReturn(Set.empty[PozInt])
+      val step = mock[Step]
+      when(decision.createStep(any[IScope])).thenReturn(Future.successful(step))
+      val accumulateInstructions = mock[AccumulateInstructions]
+      when(accumulateInstructions.instructions).thenReturn(Seq(step))
+      when(decision.createParams(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
+      when(decision.createNodes(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
+      decision
+    }
     // Id -> factory
     when(factoryLookup.convert(any[PozInt])).thenReturn(stubDecision)
     when(factoryLookup.convert(doesNotTerminateId)).thenReturn(doesNotTerminate)
@@ -50,6 +49,23 @@ final class StubFactoryLookupAnyBinding extends AbstractModule with MockitoSugar
 final class StubFactoryLookupBindingBuilder extends AbstractModule with MockitoSugar {
 
   val stub: FactoryLookup = mock[FactoryLookup]
+
+  def withGenericDecision = {
+    val stubDecision = {
+      val decision = mock[Decision]
+      when(decision.nodesToChooseFrom).thenReturn(Set.empty[PozInt])
+      val step = mock[Step]
+      when(decision.createStep(any[IScope])).thenReturn(Future.successful(step))
+      val accumulateInstructions = mock[AccumulateInstructions]
+      when(accumulateInstructions.instructions).thenReturn(Seq(step))
+      when(decision.createParams(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
+      when(decision.createNodes(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
+      decision
+    }
+
+    when(stub.convert(any[PozInt])).thenReturn(stubDecision)
+    this
+  }
 
   def withChildrenThatTerminate = {
     // Id -> factory

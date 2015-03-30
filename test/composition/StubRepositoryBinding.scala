@@ -1,7 +1,6 @@
 package composition
 
-import com.google.inject.AbstractModule
-import com.google.inject.TypeLiteral
+import com.google.inject.{AbstractModule, TypeLiteral}
 import composition.StubFactoryLookupAnyBinding.doesNotTerminateId
 import memoization.Memoize2WithSet
 import models.common.IScope

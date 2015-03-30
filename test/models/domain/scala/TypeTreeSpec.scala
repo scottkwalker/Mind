@@ -1,9 +1,6 @@
 package models.domain.scala
 
-import composition.StubFactoryLookupAnyBinding
-import composition.StubSelectionStrategyBinding
-import composition.TestComposition
-import composition.UnitTestHelpers
+import composition._
 import models.common.IScope
 import models.common.Scope
 import models.domain.Step
@@ -98,7 +95,7 @@ final class TypeTreeSpec extends UnitTestHelpers with TestComposition {
         maxHeight = 10)
       val empty = Empty()
       val factoryLookup = testInjector(
-        new StubFactoryLookupAnyBinding,
+        new StubFactoryLookupBindingBuilder().withGenericDecision,
         new StubSelectionStrategyBinding
       ).getInstance(classOf[FactoryLookup])
       val typeTree = build(empty)

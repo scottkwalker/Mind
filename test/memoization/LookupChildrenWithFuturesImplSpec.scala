@@ -89,7 +89,7 @@ final class LookupChildrenWithFuturesImplSpec extends UnitTestHelpers with TestC
 
   private def build(size: Int = 0) = {
     val scope = Scope(height = 1, maxHeight = 1)
-    val factoryLookup = new StubFactoryLookupAnyBinding
+    val factoryLookup = new StubFactoryLookupBindingBuilder().withGenericDecision
     val injector = testInjector(
       factoryLookup, // Override an implementation returned by IoC with a stubbed version.
       new StubRepositoryWithFuture(size = size),
@@ -100,7 +100,7 @@ final class LookupChildrenWithFuturesImplSpec extends UnitTestHelpers with TestC
 
   private def buildWithStubbedRepository = {
     val scope = Scope(height = 1, maxHeight = 1)
-    val factoryLookup = new StubFactoryLookupAnyBinding
+    val factoryLookup = new StubFactoryLookupBindingBuilder().withGenericDecision
     val injector = testInjector(
       factoryLookup, // Override an implementation returned by IoC with a stubbed version.
       new LookupChildrenWithFuturesBinding
@@ -110,7 +110,7 @@ final class LookupChildrenWithFuturesImplSpec extends UnitTestHelpers with TestC
 
   private def buildWithRealRepository = {
     val scope = Scope(height = 1, maxHeight = 1)
-    val factoryLookup = new StubFactoryLookupAnyBinding
+    val factoryLookup = new StubFactoryLookupBindingBuilder().withGenericDecision
     val injector = testInjector(
       factoryLookup, // Override an implementation returned by IoC with a stubbed version.
       new RepositoryWithFuturesBinding,

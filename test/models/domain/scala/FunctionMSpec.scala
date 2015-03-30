@@ -1,8 +1,6 @@
 package models.domain.scala
 
-import composition.StubFactoryLookupAnyBinding
-import composition.TestComposition
-import composition.UnitTestHelpers
+import composition.{StubFactoryLookupBindingBuilder, StubFactoryLookupAnyBinding, TestComposition, UnitTestHelpers}
 import models.common.IScope
 import models.domain.Step
 import org.mockito.Matchers._
@@ -100,7 +98,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
   "fillEmptySteps" must {
 
     "calls fillEmptySteps and updateScope once on non-empty child nodes" in {
-      val factoryLookup = testInjector(new StubFactoryLookupAnyBinding).getInstance(classOf[FactoryLookup])
+      val factoryLookup = testInjector(new StubFactoryLookupBindingBuilder().withGenericDecision).getInstance(classOf[FactoryLookup])
       val param = mock[Step]
       when(param.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(param)
       val node = mock[Step]
@@ -122,7 +120,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
     }
 
     "returns the same if there are no empty nodes" in {
-      val factoryLookup = testInjector(new StubFactoryLookupAnyBinding).getInstance(classOf[FactoryLookup])
+      val factoryLookup = testInjector(new StubFactoryLookupBindingBuilder().withGenericDecision).getInstance(classOf[FactoryLookup])
       val param = mock[Step]
       when(param.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(param)
       val node = mock[Step]
@@ -140,7 +138,7 @@ final class FunctionMSpec extends UnitTestHelpers with TestComposition {
 
     "returns without empty nodes if there were empty nodes" in {
       val empty = Empty()
-      val factoryLookup = testInjector(new StubFactoryLookupAnyBinding).getInstance(classOf[FactoryLookup])
+      val factoryLookup = testInjector(new StubFactoryLookupBindingBuilder().withGenericDecision).getInstance(classOf[FactoryLookup])
       val functionM = FunctionMImpl(params = Seq(empty),
         nodes = Seq(Empty()),
         name = name)

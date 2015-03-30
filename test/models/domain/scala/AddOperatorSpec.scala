@@ -1,8 +1,6 @@
 package models.domain.scala
 
-import composition.StubFactoryLookupAnyBinding
-import composition.TestComposition
-import composition.UnitTestHelpers
+import composition.{StubFactoryLookupBindingBuilder, StubFactoryLookupAnyBinding, TestComposition, UnitTestHelpers}
 import models.common.IScope
 import models.domain.Step
 import org.mockito.Matchers._
@@ -108,7 +106,7 @@ final class AddOperatorSpec extends UnitTestHelpers with TestComposition {
 
     "returns without empty nodes if given a tree with empty nodes" in {
       val empty: Step = Empty()
-      val factoryLookup = testInjector(new StubFactoryLookupAnyBinding).getInstance(classOf[FactoryLookup])
+      val factoryLookup = testInjector(new StubFactoryLookupBindingBuilder().withGenericDecision).getInstance(classOf[FactoryLookup])
       val instance = AddOperatorImpl(empty, empty)
 
       val fillEmptySteps = instance.fillEmptySteps(scopeWithNumVals(1), factoryLookup)

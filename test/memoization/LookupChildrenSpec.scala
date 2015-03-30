@@ -74,7 +74,7 @@ final class LookupChildrenSpec extends UnitTestHelpers with TestComposition {
 
   private def build = {
     val scope = mock[IScope]
-    val factoryLookup = new StubFactoryLookupAnyBinding
+    val factoryLookup = new StubFactoryLookupAnyBinding //StubFactoryLookupBindingBuilder().withGenericDecision
     val repositoryBinding = new StubRepositoryBinding
     val injector = testInjector(
       factoryLookup, // Override an implementation returned by IoC with a stubbed version.

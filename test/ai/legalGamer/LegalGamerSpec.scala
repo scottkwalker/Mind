@@ -1,10 +1,7 @@
 package ai.legalGamer
 
-import ai.SelectionStrategy
-import composition.StubFactoryLookupAnyBinding
-import composition.StubRngBinding
-import composition.TestComposition
-import composition.UnitTestHelpers
+import _root_.ai.SelectionStrategy
+import composition._
 import composition.ai.legalGamer.LegalGamerBinding
 import decision.Decision
 import fitness.AddTwoInts
@@ -97,7 +94,7 @@ final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
   private def build = {
     val injector = testInjector(
       new LegalGamerBinding,
-      new StubFactoryLookupAnyBinding,
+      new StubFactoryLookupBindingBuilder().withGenericDecision,
       new StubRngBinding
     )
     (injector.getInstance(classOf[SelectionStrategy]), injector.getInstance(classOf[FactoryLookup]))

@@ -1,10 +1,7 @@
 package ai.aco
 
-import ai.SelectionStrategy
-import composition.StubFactoryLookupAnyBinding
-import composition.StubRngBinding
-import composition.TestComposition
-import composition.UnitTestHelpers
+import _root_.ai.SelectionStrategy
+import composition._
 import composition.ai.aco.AcoBinding
 import decision.Decision
 import fitness.AddTwoInts
@@ -91,7 +88,7 @@ final class AcoSpec extends UnitTestHelpers with TestComposition {
     val randomNumberGenerator = new StubRngBinding
     val injector = testInjector(
       new AcoBinding,
-      new StubFactoryLookupAnyBinding,
+      new StubFactoryLookupBindingBuilder().withGenericDecision,
       randomNumberGenerator
     )
     (injector.getInstance(classOf[SelectionStrategy]), injector.getInstance(classOf[FactoryLookup]), randomNumberGenerator.stub)

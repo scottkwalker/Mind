@@ -1,9 +1,6 @@
 package models.domain.scala
 
-import composition.StubFactoryLookupAnyBinding
-import composition.StubSelectionStrategyBinding
-import composition.TestComposition
-import composition.UnitTestHelpers
+import composition._
 import models.common.IScope
 import models.domain.Step
 import org.mockito.Matchers._
@@ -93,7 +90,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
 
     "return without empty nodes if there were empty nodes" in {
       val factoryLookup = testInjector(
-        new StubFactoryLookupAnyBinding,
+        new StubFactoryLookupBindingBuilder().withGenericDecision,
         new StubSelectionStrategyBinding
       ).getInstance(classOf[FactoryLookup])
       val valDclInFunctionParam = build(primitiveType = Empty())
