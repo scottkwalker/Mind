@@ -21,7 +21,6 @@ final class StubFactoryLookupBindingBuilder extends AbstractModule with MockitoS
   def withGenericDecision = {
     val stubDecision = {
       val decision = mock[Decision]
-      when(decision.nodesToChooseFrom).thenReturn(Set.empty[PozInt])
       val step = mock[Step]
       when(decision.createStep(any[IScope])).thenReturn(Future.successful(step))
       val accumulateInstructions = mock[AccumulateInstructions]
@@ -70,23 +69,33 @@ object StubFactoryLookupAnyBinding {
   val leaf1Id = PozInt(101)
   val leaf2Id = PozInt(102)
   val hasChildrenThatTerminateId = PozInt(103)
-  val leaf1 = {
+  private def decisionStub = {
     val decision = mock(classOf[Decision])
+    val step = mock(classOf[Step])
+    when(decision.createStep(any[IScope])).thenReturn(Future.successful(step))
+    val accumulateInstructions = mock(classOf[AccumulateInstructions])
+    when(accumulateInstructions.instructions).thenReturn(Seq(step))
+    when(decision.createParams(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
+    when(decision.createNodes(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
+    decision
+  }
+  val leaf1 = {
+    val decision = decisionStub
     when(decision.nodesToChooseFrom).thenReturn(Set.empty[PozInt])
     decision
   }
   val leaf2 = {
-    val decision = mock(classOf[Decision])
+    val decision = decisionStub
     when(decision.nodesToChooseFrom).thenReturn(Set.empty[PozInt])
     decision
   }
   val doesNotTerminate: Decision = {
-    val decision = mock(classOf[Decision])
+    val decision = decisionStub
     when(decision.nodesToChooseFrom).thenReturn(Set(doesNotTerminateId))
     decision
   }
   val hasChildrenThatTerminate: Decision = {
-    val decision = mock(classOf[Decision])
+    val decision = decisionStub
     when(decision.nodesToChooseFrom).thenReturn(Set(leaf1Id, leaf2Id))
     decision
   }
