@@ -14,38 +14,6 @@ import utils.PozInt
 
 import scala.concurrent.Future
 
-final class StubFactoryLookupAnyBinding extends AbstractModule with MockitoSugar {
-
-  val stub = {
-    val factoryLookup: FactoryLookup = mock[FactoryLookup]
-    val stubDecision = {
-      val decision = mock[Decision]
-      when(decision.nodesToChooseFrom).thenReturn(Set.empty[PozInt])
-      val step = mock[Step]
-      when(decision.createStep(any[IScope])).thenReturn(Future.successful(step))
-      val accumulateInstructions = mock[AccumulateInstructions]
-      when(accumulateInstructions.instructions).thenReturn(Seq(step))
-      when(decision.createParams(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
-      when(decision.createNodes(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
-      decision
-    }
-    // Id -> factory
-    when(factoryLookup.convert(any[PozInt])).thenReturn(stubDecision)
-    when(factoryLookup.convert(doesNotTerminateId)).thenReturn(doesNotTerminate)
-    when(factoryLookup.convert(leaf1Id)).thenReturn(leaf1)
-    when(factoryLookup.convert(leaf2Id)).thenReturn(leaf2)
-    when(factoryLookup.convert(hasChildrenThatTerminateId)).thenReturn(hasChildrenThatTerminate)
-    // Factory -> Id
-    when(factoryLookup.convert(leaf1)).thenReturn(leaf1Id)
-    when(factoryLookup.convert(leaf2)).thenReturn(leaf2Id)
-    // factories
-    when(factoryLookup.factories).thenReturn(Set(doesNotTerminateId, leaf1Id, leaf2Id, hasChildrenThatTerminateId))
-    factoryLookup
-  }
-
-  override def configure(): Unit = bind(classOf[FactoryLookup]).toInstance(stub)
-}
-
 final class StubFactoryLookupBindingBuilder extends AbstractModule with MockitoSugar {
 
   val stub: FactoryLookup = mock[FactoryLookup]
