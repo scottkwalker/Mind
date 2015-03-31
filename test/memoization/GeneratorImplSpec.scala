@@ -217,7 +217,7 @@ class GeneratorImplSpec extends UnitTestHelpers with TestComposition {
   }
 
   private def build(factoryLookup: AbstractModule) = {
-    val lookupChildren = new StubLookupChildrenBinding(size = numberOfFactories)
+    val lookupChildren = new StubLookupChildrenBinding(size = numberOfFactories).withNoChildren
     val repository = new StubRepositoryBinding
     val generator = testInjector(
       factoryLookup,

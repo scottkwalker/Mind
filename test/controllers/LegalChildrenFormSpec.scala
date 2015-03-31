@@ -179,5 +179,5 @@ final class LegalChildrenFormSpec extends UnitTestHelpers with TestComposition {
     )
   }
 
-  private def legalChildren = testInjector(new StubLookupChildrenBinding).getInstance(classOf[LegalChildren])
+  private def legalChildren = testInjector(new StubLookupChildrenBinding().withNoChildren).getInstance(classOf[LegalChildren])
 }

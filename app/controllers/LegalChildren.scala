@@ -28,7 +28,8 @@ final class LegalChildren @Inject()(lookupChildren: LookupChildren) extends Cont
         val scope = validForm.scope
         val parent = PozInt(validForm.currentNode)
         val children = lookupChildren.get(scope = scope, parent = parent)
-        Ok(toJson(children.map(_.value))).as(JSON)
+        val childrenJson = toJson(children.map(_.value))
+        Ok(childrenJson).as(JSON)
       }
     )
   }

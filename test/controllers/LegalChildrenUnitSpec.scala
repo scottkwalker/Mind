@@ -4,7 +4,7 @@ import composition.StubLookupChildrenBinding
 import composition.StubSelectionStrategyBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
-import decision.TypeTreeFactory
+import decision.{FunctionMFactory, ObjectFactory, TypeTreeFactory}
 import models.common.IScope
 import models.common.LookupChildrenRequest
 import models.common.Scope
@@ -14,7 +14,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.{OK, BAD_REQUEST, contentAsString}
 import utils.PozInt
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -36,7 +36,7 @@ final class LegalChildrenUnitSpec extends UnitTestHelpers with TestComposition {
   "calculate" must {
     "return bad request if given an empty submission" in {
       val emptyRequest = FakeRequest().withFormUrlEncodedBody()
-      val (legalChildren, _) = build(size = 0)
+      val (legalChildren, _) = buildWithNoChildren(size = 0)
 
       val calculate = legalChildren.calculate(emptyRequest)
 
@@ -47,7 +47,7 @@ final class LegalChildrenUnitSpec extends UnitTestHelpers with TestComposition {
 
     "return ok if given a valid submission" in {
       val validRequest = requestWithDefaults()
-      val (legalChildren, _) = build(size = 0)
+      val (legalChildren, _) = buildWithNoChildren(size = 0)
 
       val calculate = legalChildren.calculate(validRequest)
 
@@ -58,7 +58,7 @@ final class LegalChildrenUnitSpec extends UnitTestHelpers with TestComposition {
 
     "call lookupChildren.calculate if given a valid submission" in {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
-      val (legalChildren, lookupChildren) = build()
+      val (legalChildren, lookupChildren) = buildWithNoChildren()
 
       val calculate = legalChildren.calculate(validRequest)
 
@@ -70,18 +70,14 @@ final class LegalChildrenUnitSpec extends UnitTestHelpers with TestComposition {
 
     "return seq of ids if given a valid submission and legal moves are found" in {
       val validRequest = requestWithDefaults()
-      val (legalChildren, _) = build(size = 0)
-      val action = legalChildren.calculate(validRequest)
-      whenReady(action) {
-        _.body.map { b =>
-          Json.parse(b) must equal(Seq(TypeTreeFactory.id))
-        }
-      }(config = patienceConfig)
+      val (legalChildren, _) = buildWithChildren
+      val calculate = legalChildren.calculate(validRequest)
+      contentAsString(calculate)(timeout) must equal(s"[${TypeTreeFactory.id.value},${ObjectFactory.id.value},${FunctionMFactory.id.value}]")
     }
 
     "return empty seq if given a valid submission but no legal moves are in scope" in {
       val validRequest = requestWithDefaults(scopeDefault.copy(height = 0))
-      val (legalChildren, _) = build(size = 0)
+      val (legalChildren, _) = buildWithNoChildren()
 
       val calculate = legalChildren.calculate(validRequest)
 
@@ -95,26 +91,26 @@ final class LegalChildrenUnitSpec extends UnitTestHelpers with TestComposition {
 
   "size" must {
     "call lookupChildren.size once" in {
-      val (legalChildren, lookupChildren) = build(size = 0)
+      val (legalChildren, lookupChildren) = buildWithNoChildren(size = 0)
       legalChildren.size(FakeRequest())
       verify(lookupChildren, times(1)).size
       verifyNoMoreInteractions(lookupChildren)
     }
 
     "return 0 if given an empty repository" in {
-      val (legalChildren, _) = build(size = 0)
+      val (legalChildren, _) = buildWithNoChildren(size = 0)
       val sizeOfRepository = legalChildren.size(FakeRequest())
       contentAsString(sizeOfRepository)(timeout) must equal("repository size: 0")
     }
 
     "return 1 if given a repository containing 1 item" in {
-      val (legalChildren, _) = build(size = 1)
+      val (legalChildren, _) = buildWithNoChildren(size = 1)
       val sizeOfRepository = legalChildren.size(FakeRequest())
       contentAsString(sizeOfRepository)(timeout) must equal("repository size: 1")
     }
 
     "return 3 if given a repository containing 3 items" in {
-      val (legalChildren, _) = build(size = 3)
+      val (legalChildren, _) = buildWithNoChildren(size = 3)
       val sizeOfRepository = legalChildren.size(FakeRequest())
       contentAsString(sizeOfRepository)(timeout) must equal("repository size: 3")
     }
@@ -122,12 +118,21 @@ final class LegalChildrenUnitSpec extends UnitTestHelpers with TestComposition {
 
   private def present = {
     val emptyRequest = FakeRequest()
-    val (legalChildren, _) = build(size = 0)
+    val (legalChildren, _) = buildWithNoChildren(size = 0)
     legalChildren.present(emptyRequest)
   }
 
-  private def build(size: Int = 0) = {
-    val lookupChildren = new StubLookupChildrenBinding(size = size)
+  private def buildWithNoChildren(size: Int = 0) = {
+    val lookupChildren = new StubLookupChildrenBinding(size = size).withNoChildren
+    build(lookupChildren = lookupChildren)
+  }
+
+  private def buildWithChildren = {
+    val lookupChildren = new StubLookupChildrenBinding(size = 3).withChildren
+    build(lookupChildren = lookupChildren)
+  }
+
+  private def build(lookupChildren: StubLookupChildrenBinding) = {
     val injector = testInjector(
       lookupChildren,
       new StubSelectionStrategyBinding
