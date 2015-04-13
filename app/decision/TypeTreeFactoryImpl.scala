@@ -18,7 +18,7 @@ case class TypeTreeFactoryImpl @Inject()(
 
   override val nodesToChooseFrom = Set(ObjectFactory.id)
 
-  override def create(scope: IScope, premadeChildren: Seq[Decision]): Future[Step] = async {
+  override def fillEmptySteps(scope: IScope, premadeChildren: Seq[Decision]): Future[Step] = async {
     val generatedNodes = await(createNodes(scope))
     val fPremadeWithoutEmpties = premadeChildren.map(p => p.fillEmptySteps(scope)) // TODO doesn't the scope need to be updated each pass
     val premadeWithoutEmpties = await(Future.sequence(fPremadeWithoutEmpties))

@@ -32,7 +32,7 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
     "call CreateSeqNodes.create once" in {
       val (typeTreeFactory, createSeqNodes, scope) = build()
 
-      val step = typeTreeFactory.create(scope, Seq.empty)
+      val step = typeTreeFactory.fillEmptySteps(scope, Seq.empty)
 
       whenReady(step) { _ =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])
@@ -49,7 +49,7 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
       }
       val (typeTreeFactory, _, scope) = build(nextInt = 3)
 
-      val step = typeTreeFactory.create(scope = scope, premadeChildren = premadeChildren)
+      val step = typeTreeFactory.fillEmptySteps(scope = scope, premadeChildren = premadeChildren)
 
       whenReady(step) {
         case TypeTree(child) =>
