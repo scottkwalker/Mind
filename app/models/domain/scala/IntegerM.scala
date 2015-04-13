@@ -6,7 +6,7 @@ import models.domain.Step
 
 import scala.concurrent.Future
 
-final case class IntegerM() extends Step with UpdateScopeNoChange {
+final case class IntegerM() extends PrimitiveType with UpdateScopeNoChange {
 
   override def toCompilable: String = "Int"
 

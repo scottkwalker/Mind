@@ -63,7 +63,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
   "fillEmptySteps" must {
     "call fillEmptySteps once for each non-empty child node" in {
       val factoryLookup = mock[FactoryLookup]
-      val step = mock[Step]
+      val step = mock[PrimitiveType]
       when(step.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(step)
       val valDclInFunctionParam = build(primitiveType = step)
 
@@ -77,7 +77,7 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
 
     "return the same if there are no empty nodes" in {
       val factoryLookup = mock[FactoryLookup]
-      val step = mock[Step]
+      val step = mock[PrimitiveType]
       when(step.fillEmptySteps(any[IScope], any[FactoryLookup])) thenReturn Future.successful(step)
       val valDclInFunctionParam = build(primitiveType = step)
 

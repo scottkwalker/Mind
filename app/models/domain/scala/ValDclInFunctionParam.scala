@@ -26,7 +26,8 @@ final case class ValDclInFunctionParam(name: String, primitiveType: Step) extend
       case _: Empty =>
         def decision = factoryLookup.convert(IntegerMFactory.id)
         decision.fillEmptySteps(scope)
-      case nonEmpty: Step => nonEmpty.fillEmptySteps(scope = updateScope(scope.decrementHeight), factoryLookup = factoryLookup)
+      case nonEmpty: PrimitiveType => nonEmpty.fillEmptySteps(scope = updateScope(scope.decrementHeight), factoryLookup = factoryLookup)
+      case _ => throw new RuntimeException("the child needs to be either type Empty or type PrimitiveType")
     }
     ValDclInFunctionParam(name, await(instruction))
   }
