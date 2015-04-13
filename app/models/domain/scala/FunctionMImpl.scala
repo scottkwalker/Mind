@@ -35,7 +35,8 @@ final case class FunctionMImpl(params: Seq[Step],
   }
 
   private def fillEmptySteps(initScope: IScope, initInstructions: Seq[Step], funcReplaceEmpty: (IScope) => Future[AccumulateInstructions], factoryLookup: FactoryLookup): Future[AccumulateInstructions] = {
-    initInstructions.foldLeft(Future.successful(AccumulateInstructions(instructions = Seq.empty[Step], scope = initScope))) {
+    val init = Future.successful(AccumulateInstructions(instructions = Seq.empty[Step], scope = initScope))
+    initInstructions.foldLeft(init) {
       (previousResult, currentInstruction) => previousResult.flatMap { previous =>
         fillEmptySteps(scope = previous.scope, currentInstruction = currentInstruction, acc = previous.instructions, funcReplaceEmpty = funcReplaceEmpty, factoryLookup = factoryLookup)
       }

@@ -36,7 +36,8 @@ final case class ObjectImpl(nodes: Seq[Step], name: String) extends Object {
 
   override def fillEmptySteps(scope: IScope, factoryLookup: FactoryLookup): Future[Step] = async {
     require(nodes.length > 0, "must not be empty as then we have nothing to replace")
-    val fNodesWithoutEmpties = nodes.foldLeft(Future.successful(AccumulateInstructions(instructions = Seq.empty[Step], scope = scope))) {
+    val init = Future.successful(AccumulateInstructions(instructions = Seq.empty[Step], scope = scope))
+    val fNodesWithoutEmpties = nodes.foldLeft(init) {
       (previousResult, currentInstruction) => previousResult.flatMap { previous =>
         fillEmptySteps(scope = previous.scope, currentInstruction = currentInstruction, acc = previous.instructions, factoryLookup = factoryLookup)
       }
