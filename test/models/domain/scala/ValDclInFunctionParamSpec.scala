@@ -5,9 +5,9 @@ import models.common.IScope
 import models.domain.Step
 import org.mockito.Matchers._
 import org.mockito.Mockito._
+import utils.ScopeHelper._
 
 import scala.concurrent.Future
-import utils.ScopeHelper._
 
 final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestComposition {
 
@@ -103,6 +103,16 @@ final class ValDclInFunctionParamSpec extends UnitTestHelpers with TestCompositi
           primitiveType mustBe a[Step]
         case _ => fail("wrong type")
       }(config = patienceConfig)
+    }
+
+    "throw exception if the child is neither type Empty or type PrimitiveType" in {
+      val factoryLookup = mock[FactoryLookup]
+      val step = mock[Step]
+      val valDclInFunctionParam = build(primitiveType = step)
+
+      val fillEmptySteps = valDclInFunctionParam.fillEmptySteps(scope(), factoryLookup)
+
+      a[RuntimeException] must be thrownBy fillEmptySteps.futureValue
     }
   }
 
