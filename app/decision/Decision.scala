@@ -10,7 +10,7 @@ trait Decision {
 
   val nodesToChooseFrom: Set[PozInt]
 
-  def createStep(scope: IScope): Future[Step]
+  def fillEmptySteps(scope: IScope): Future[Step]
 
   def updateScope(scope: IScope): IScope
 

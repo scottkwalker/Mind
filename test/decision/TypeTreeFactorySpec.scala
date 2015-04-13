@@ -22,7 +22,7 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
     "return an instance of the expected type" in {
       val (typeTreeFactory, _, scope) = build()
 
-      val step = typeTreeFactory.createStep(scope)
+      val step = typeTreeFactory.fillEmptySteps(scope)
 
       whenReady(step) {
         _ mustBe a[TypeTree]
@@ -44,7 +44,7 @@ final class TypeTreeFactorySpec extends UnitTestHelpers with TestComposition {
       val premadeNode = mock[Step]
       val premadeChildren = {
         val decision = mock[Decision]
-        when(decision.createStep(any[IScope])).thenReturn(Future.successful(premadeNode))
+        when(decision.fillEmptySteps(any[IScope])).thenReturn(Future.successful(premadeNode))
         Seq(decision)
       }
       val (typeTreeFactory, _, scope) = build(nextInt = 3)

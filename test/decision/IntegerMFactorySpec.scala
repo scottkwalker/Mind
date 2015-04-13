@@ -19,7 +19,7 @@ final class IntegerMFactorySpec extends UnitTestHelpers with TestComposition {
     "return an instance of the expected type" in {
       val (integerMFactory, scope) = build
 
-      val step = integerMFactory.createStep(scope)
+      val step = integerMFactory.fillEmptySteps(scope)
 
       whenReady(step) {
         _ mustBe a[IntegerM]

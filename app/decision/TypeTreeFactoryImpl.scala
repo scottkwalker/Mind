@@ -20,7 +20,7 @@ case class TypeTreeFactoryImpl @Inject()(
 
   override def create(scope: IScope, premadeChildren: Seq[Decision]): Future[Step] = async {
     val generatedNodes = await(createNodes(scope))
-    val fPremadeWithoutEmpties = premadeChildren.map(p => p.createStep(scope)) // TODO doesn't the scope need to be updated each pass
+    val fPremadeWithoutEmpties = premadeChildren.map(p => p.fillEmptySteps(scope)) // TODO doesn't the scope need to be updated each pass
     val premadeWithoutEmpties = await(Future.sequence(fPremadeWithoutEmpties))
     val nodes = generatedNodes.instructions ++ premadeWithoutEmpties
 
@@ -37,7 +37,7 @@ case class TypeTreeFactoryImpl @Inject()(
     )
   }
 
-  override def createStep(scope: IScope): Future[Step] = async {
+  override def fillEmptySteps(scope: IScope): Future[Step] = async {
     val nodes = await(createNodes(scope))
     TypeTree(nodes.instructions)
   }

@@ -35,7 +35,7 @@ final case class AddOperatorImpl(left: Step, right: Step) extends AddOperator {
   private def fillEmptySteps(scope: IScope, instruction: Step, factoryLookup: FactoryLookup): Future[Step] = {
     def decision = factoryLookup.convert(ValueRefFactory.id)
     instruction match {
-      case _: Empty => decision.createStep(scope)
+      case _: Empty => decision.fillEmptySteps(scope)
       case nonEmpty: Step => nonEmpty.fillEmptySteps(scope = scope.decrementHeight, factoryLookup = factoryLookup) // This node is non-empty but its children may not be, so do the same check on this node's children.
     }
   }

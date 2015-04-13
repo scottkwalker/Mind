@@ -22,7 +22,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
     "return an instance of the expected type" in {
       val (objectFactory, _, scope) = build()
 
-      val step = objectFactory.createStep(scope = scope)
+      val step = objectFactory.fillEmptySteps(scope = scope)
 
       whenReady(step) {
         _ mustBe an[ObjectImpl]
@@ -32,7 +32,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
     "returns expected if scope has 0 existing objects" in {
       val (objectFactory, _, scope) = build()
 
-      val step = objectFactory.createStep(scope = scope)
+      val step = objectFactory.fillEmptySteps(scope = scope)
 
       whenReady(step) {
         case ObjectImpl(_, name) => name must equal("o0")
@@ -44,7 +44,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
       val (objectFactory, _, scope) = build()
       when(scope.numObjects).thenReturn(1)
 
-      val step = objectFactory.createStep(scope = scope)
+      val step = objectFactory.fillEmptySteps(scope = scope)
 
       whenReady(step) {
         case ObjectImpl(_, name) => name must equal("o1")
@@ -55,7 +55,7 @@ final class ObjectFactorySpec extends UnitTestHelpers with TestComposition {
     "call CreateSeqNodes.create once" in {
       val (objectFactory, createSeqNodes, scope) = build()
 
-      val step = objectFactory.createStep(scope = scope)
+      val step = objectFactory.fillEmptySteps(scope = scope)
 
       whenReady(step) { _ =>
         verify(createSeqNodes, times(1)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])

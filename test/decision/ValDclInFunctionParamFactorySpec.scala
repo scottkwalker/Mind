@@ -21,7 +21,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
       val (valDclInFunctionParamFactory, scope) = build
       when(scope.maxParamsInFunc).thenReturn(1)
 
-      val instruction = valDclInFunctionParamFactory.createStep(scope = scope)
+      val instruction = valDclInFunctionParamFactory.fillEmptySteps(scope = scope)
 
       whenReady(instruction) {
         _ mustBe a[ValDclInFunctionParam]
@@ -32,7 +32,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
       val (valDclInFunctionParamFactory, scope) = build
       when(scope.maxParamsInFunc).thenReturn(1)
 
-      val instruction = valDclInFunctionParamFactory.createStep(scope = scope)
+      val instruction = valDclInFunctionParamFactory.fillEmptySteps(scope = scope)
 
       whenReady(instruction) {
         case ValDclInFunctionParam(name, primitiveType) =>
@@ -47,7 +47,7 @@ final class ValDclInFunctionParamFactorySpec extends UnitTestHelpers with TestCo
       when(scope.numVals).thenReturn(1)
       when(scope.maxParamsInFunc).thenReturn(2)
 
-      val instruction = valDclInFunctionParamFactory.createStep(scope = scope)
+      val instruction = valDclInFunctionParamFactory.fillEmptySteps(scope = scope)
 
       whenReady(instruction) {
         case ValDclInFunctionParam(name, primitiveType) =>

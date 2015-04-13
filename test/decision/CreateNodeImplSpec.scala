@@ -21,11 +21,11 @@ final class CreateNodeImplSpec extends UnitTestHelpers with TestComposition {
       }(config = patienceConfig)
     }
 
-    "calls createStep and updateScope once" in {
+    "calls fillEmptySteps and updateScope once" in {
       val (decision, scope, _, possibleChildren, createNode) = build
 
       whenReady(createNode.create(possibleChildren, scope)) { _ =>
-        verify(decision, times(1)).createStep(scope)
+        verify(decision, times(1)).fillEmptySteps(scope)
         verify(decision, times(1)).updateScope(scope)
         verifyNoMoreInteractions(decision)
       }(config = patienceConfig)

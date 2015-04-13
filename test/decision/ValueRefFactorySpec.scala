@@ -16,7 +16,7 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
     "return an instance of the expected type" in {
       val (valueRefFactory, scope) = build()
 
-      val step = valueRefFactory.createStep(scope = scope)
+      val step = valueRefFactory.fillEmptySteps(scope = scope)
 
       whenReady(step) {
         _ mustBe a[ValueRefImpl]
@@ -26,7 +26,7 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
     "return expected type and name if ai is stubbed to choose index zero" in {
       val (valueRefFactory, scope) = build()
 
-      val step = valueRefFactory.createStep(scope = scope)
+      val step = valueRefFactory.fillEmptySteps(scope = scope)
 
       whenReady(step) {
         case ValueRefImpl(name) => name must equal("v0")
@@ -36,7 +36,7 @@ final class ValueRefFactorySpec extends UnitTestHelpers with TestComposition {
     "return expected type and name if ai is stubbed to choose index 1" in {
       val (valueRefFactory, scope) = build(chooseIndex = 1)
 
-      val step = valueRefFactory.createStep(scope = scope)
+      val step = valueRefFactory.fillEmptySteps(scope = scope)
 
       whenReady(step) {
         case ValueRefImpl(name) => name must equal("v1")

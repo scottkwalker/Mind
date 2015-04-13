@@ -20,7 +20,7 @@ case class FunctionMFactoryImpl @Inject()(
   override val nodesToChooseFrom = Set(AddOperatorFactory.id, ValueRefFactory.id)
   private val childrenToChooseFromForParams = Set(ValDclInFunctionParamFactory.id)
 
-  override def createStep(scope: IScope): Future[Step] = async {
+  override def fillEmptySteps(scope: IScope): Future[Step] = async {
     val paramsWithoutEmpties = await(createParams(scope))
 
     val nodesWithoutEmpties = await(createNodes(paramsWithoutEmpties.scope))

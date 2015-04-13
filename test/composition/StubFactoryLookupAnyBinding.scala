@@ -22,7 +22,7 @@ final class StubFactoryLookupBindingBuilder extends AbstractModule with MockitoS
     val stubDecision = {
       val decision = mock[Decision]
       val step = mock[Step]
-      when(decision.createStep(any[IScope])).thenReturn(Future.successful(step))
+      when(decision.fillEmptySteps(any[IScope])).thenReturn(Future.successful(step))
       val accumulateInstructions = mock[AccumulateInstructions]
       when(accumulateInstructions.instructions).thenReturn(Seq(step))
       when(decision.createParams(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
@@ -72,7 +72,7 @@ object StubFactoryLookupAnyBinding {
   private def decisionStub = {
     val decision = mock(classOf[Decision])
     val step = mock(classOf[Step])
-    when(decision.createStep(any[IScope])).thenReturn(Future.successful(step))
+    when(decision.fillEmptySteps(any[IScope])).thenReturn(Future.successful(step))
     val accumulateInstructions = mock(classOf[AccumulateInstructions])
     when(accumulateInstructions.instructions).thenReturn(Seq(step))
     when(decision.createParams(any[IScope])).thenReturn(Future.successful(accumulateInstructions))

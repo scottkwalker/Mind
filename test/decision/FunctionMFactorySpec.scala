@@ -22,7 +22,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
     "return an instance of the expected type" in {
       val (factory, _, scope) = functionMFactory()
 
-      val step = factory.createStep(scope = scope)
+      val step = factory.fillEmptySteps(scope = scope)
 
       whenReady(step) {
         _ mustBe a[FunctionMImpl]
@@ -32,7 +32,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
     "return expected if scope has 0 existing functions" in {
       val (factory, _, scope) = functionMFactory()
 
-      val step = factory.createStep(scope = scope)
+      val step = factory.fillEmptySteps(scope = scope)
 
       whenReady(step) {
         case FunctionMImpl(_, _, name) => name must equal("f0")
@@ -44,7 +44,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
       val (factory, _, scope) = functionMFactory()
       when(scope.numFuncs).thenReturn(1)
 
-      val step = factory.createStep(scope = scope)
+      val step = factory.fillEmptySteps(scope = scope)
 
       whenReady(step) {
         case FunctionMImpl(_, _, name) => name must equal("f1")
@@ -55,7 +55,7 @@ final class FunctionMFactorySpec extends UnitTestHelpers with TestComposition {
     "call CreateSeqNodes.create twice (once for params and once for nodes)" in {
       val (factory, createSeqNodes, scope) = functionMFactory()
 
-      val step = factory.createStep(scope = scope)
+      val step = factory.fillEmptySteps(scope = scope)
 
       whenReady(step) { _ =>
         verify(createSeqNodes, times(2)).create(any[Future[Set[Decision]]], any[IScope], any[Seq[Step]], any[Int])

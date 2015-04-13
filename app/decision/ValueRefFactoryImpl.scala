@@ -16,7 +16,7 @@ final case class ValueRefFactoryImpl @Inject()(ai: SelectionStrategy) extends Va
 
   override val nodesToChooseFrom = Set.empty[PozInt]
 
-  override def createStep(scope: IScope): Future[Step] = async {
+  override def fillEmptySteps(scope: IScope): Future[Step] = async {
     ValueRefImpl(index = ai.chooseIndex(scope.numVals))
   }
 

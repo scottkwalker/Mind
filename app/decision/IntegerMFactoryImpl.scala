@@ -14,7 +14,7 @@ case class IntegerMFactoryImpl @Inject()() extends IntegerMFactory with UpdateSc
 
   override val nodesToChooseFrom = Set.empty[PozInt]
 
-  override def createStep(scope: IScope): Future[Step] = async {
+  override def fillEmptySteps(scope: IScope): Future[Step] = async {
     IntegerM()
   }
 

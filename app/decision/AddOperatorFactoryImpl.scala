@@ -18,7 +18,7 @@ case class AddOperatorFactoryImpl @Inject()(
 
   override val nodesToChooseFrom = Set(ValueRefFactory.id)
 
-  override def createStep(scope: IScope): Future[Step] = async {
+  override def fillEmptySteps(scope: IScope): Future[Step] = async {
     val possibleNodes = lookupChildren.get(scope, nodesToChooseFrom)
     val (updatedScope, left) = await(creator.create(possibleNodes, scope))
     val (_, right) = await(creator.create(possibleNodes, updatedScope))

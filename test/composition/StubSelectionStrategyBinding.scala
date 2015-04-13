@@ -17,7 +17,7 @@ final class StubSelectionStrategyBinding(chooseIndex: Int = 0) extends AbstractM
     val scope = mock[IScope]
     val instruction = mock[Step]
     val decision = mock[Decision]
-    when(decision.createStep(any[IScope])).thenReturn(Future.successful(instruction))
+    when(decision.fillEmptySteps(any[IScope])).thenReturn(Future.successful(instruction))
     when(decision.updateScope(any[IScope])).thenReturn(scope)
     decision
   }

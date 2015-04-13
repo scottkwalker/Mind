@@ -19,7 +19,7 @@ case class ObjectFactoryImpl @Inject()(
 
   override val nodesToChooseFrom = Set(FunctionMFactory.id)
 
-  override def createStep(scope: IScope): Future[Step] = async {
+  override def fillEmptySteps(scope: IScope): Future[Step] = async {
     val nodesWithoutEmpties = await(createNodes(scope))
 
     ObjectImpl(nodes = nodesWithoutEmpties.instructions,

@@ -18,7 +18,7 @@ case class ValDclInFunctionParamFactoryImpl @Inject()(
 
   override val nodesToChooseFrom = Set(IntegerMFactory.id)
 
-  override def createStep(scope: IScope): Future[Step] = async {
+  override def fillEmptySteps(scope: IScope): Future[Step] = async {
     val name = "v" + scope.numVals
     val ln = lookupChildren.get(scope, nodesToChooseFrom)
     val (_, primitiveType) = await(creator.create(ln, scope))

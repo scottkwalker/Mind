@@ -16,7 +16,7 @@ final class AddOperatorFactorySpec extends UnitTestHelpers with TestComposition 
     "return an instance of the expected type" in {
       val (addOperatorFactory, scope) = build
 
-      val step = addOperatorFactory.createStep(scope = scope)
+      val step = addOperatorFactory.fillEmptySteps(scope = scope)
 
       whenReady(step) {
         _ mustBe a[AddOperatorImpl]

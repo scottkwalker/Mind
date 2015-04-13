@@ -14,7 +14,7 @@ final case class CreateNodeImpl @Inject()(ai: SelectionStrategy) extends CreateN
 
   def create(possibleChildren: Future[Set[Decision]], scope: IScope): Future[(IScope, Step)] = async {
     val factory = await(ai.chooseChild(possibleChildren))
-    val child = factory.createStep(scope)
+    val child = factory.fillEmptySteps(scope)
     val updatedScope = factory.updateScope(scope)
     (updatedScope, await(child))
   }

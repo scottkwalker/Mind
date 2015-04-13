@@ -15,7 +15,7 @@ final class StubReplaceEmptyBinding extends AbstractModule {
   val stub = {
     val instruction: Step = mock(classOf[Step])
     val node = mock(classOf[Decision])
-    when(node.createStep(any[IScope])).thenReturn(Future.successful(instruction))
+    when(node.fillEmptySteps(any[IScope])).thenReturn(Future.successful(instruction))
     node
   }
 
