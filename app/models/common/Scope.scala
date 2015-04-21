@@ -4,14 +4,14 @@ import play.api.data.Forms._
 import play.api.libs.json.Json
 
 final case class Scope(numVals: Int = 0,
-                       numFuncs: Int = 0,
-                       numObjects: Int = 0,
-                       height: Int = 0,
-                       maxExpressionsInFunc: Int = 0,
-                       maxFuncsInObject: Int = 0,
-                       maxParamsInFunc: Int = 0,
-                       maxObjectsInTree: Int = 0,
-                       maxHeight: Int = 0) extends IScope {
+    numFuncs: Int = 0,
+    numObjects: Int = 0,
+    height: Int = 0,
+    maxExpressionsInFunc: Int = 0,
+    maxFuncsInObject: Int = 0,
+    maxParamsInFunc: Int = 0,
+    maxObjectsInTree: Int = 0,
+    maxHeight: Int = 0) extends IScope {
 
   require(height <= maxHeight, s"scope's height ($height) must not be greater than max height ($maxHeight)")
 

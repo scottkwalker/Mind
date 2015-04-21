@@ -6,10 +6,9 @@ import models.common.IScope
 import models.domain.scala.FactoryLookup
 import utils.PozInt
 
-final class LookupChildrenImpl @Inject()(
-                                          override val factoryLookup: FactoryLookup,
-                                          repository: Memoize2WithSet[IScope, PozInt]
-                                          ) extends LookupChildren {
+final class LookupChildrenImpl @Inject() (
+    override val factoryLookup: FactoryLookup,
+    repository: Memoize2WithSet[IScope, PozInt]) extends LookupChildren {
 
   override def get(scope: IScope, childrenToChooseFrom: Set[PozInt]): Set[Decision] =
     fetchFromRepository(scope, childrenToChooseFrom).

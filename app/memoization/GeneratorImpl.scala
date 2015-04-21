@@ -9,10 +9,9 @@ import utils.PozInt
 
 import scala.concurrent.Future
 
-class GeneratorImpl @Inject()(
-                               factoryLookup: FactoryLookup,
-                               repository: Memoize2WithSet[IScope, PozInt]
-                               ) extends Generator {
+class GeneratorImpl @Inject() (
+    factoryLookup: FactoryLookup,
+    repository: Memoize2WithSet[IScope, PozInt]) extends Generator {
 
   // Calculate all values from the minimum Scope up to the maxScope. Add those that can terminate to the repository.
   override def calculateAndUpdate(maxScope: IScope): Future[Int] = {
@@ -46,8 +45,7 @@ class GeneratorImpl @Inject()(
       if (isLeaf(decision)) {
         // If this parent at this scope has no children to choose from, then it is a terminal node.
         repository.add(key1 = scope, key2 = parent)
-      }
-      else if (hasChildTheTerminates(scope, decision)) {
+      } else if (hasChildTheTerminates(scope, decision)) {
         // If this parent at this scope has children in the repository (they are in the repository only because they
         // can terminate!) then the parent can terminate.
         repository.add(key1 = scope, key2 = parent)

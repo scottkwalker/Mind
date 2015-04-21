@@ -11,8 +11,8 @@ import utils.PozInt
 
 import scala.language.implicitConversions
 
-final class RepositoryReturningBool @Inject()(factoryLookup: FactoryLookup)
-  extends Memoize2Impl[IScope, PozInt, Boolean](factoryLookup.version)(writes) {
+final class RepositoryReturningBool @Inject() (factoryLookup: FactoryLookup)
+    extends Memoize2Impl[IScope, PozInt, Boolean](factoryLookup.version)(writes) {
 
   override def funcCalculate(scope: IScope, neighbourId: PozInt): Boolean =
     if (scope.hasHeightRemaining) {
@@ -24,8 +24,7 @@ final class RepositoryReturningBool @Inject()(factoryLookup: FactoryLookup)
         }
         futures.contains(true)
       }
-    }
-    else false
+    } else false
 
   override def size: Int = cache.size
 }

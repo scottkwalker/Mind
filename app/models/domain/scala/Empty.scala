@@ -7,7 +7,7 @@ import models.domain.Step
 
 import scala.concurrent.Future
 
-final case class Empty @Inject()() extends Step with UpdateScopeThrows {
+final case class Empty @Inject() () extends Step with UpdateScopeThrows {
 
   override def toCompilable: String = throw new scala.RuntimeException
 

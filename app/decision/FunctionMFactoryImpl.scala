@@ -12,10 +12,9 @@ import scala.async.Async.await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-case class FunctionMFactoryImpl @Inject()(
-                                           creator: CreateSeqNodes,
-                                           lookupChildren: LookupChildrenWithFutures
-                                           ) extends FunctionMFactory with UpdateScopeIncrementFuncs {
+case class FunctionMFactoryImpl @Inject() (
+    creator: CreateSeqNodes,
+    lookupChildren: LookupChildrenWithFutures) extends FunctionMFactory with UpdateScopeIncrementFuncs {
 
   override val nodesToChooseFrom = Set(AddOperatorFactory.id, ValueRefFactory.id)
   private val childrenToChooseFromForParams = Set(ValDclInFunctionParamFactory.id)

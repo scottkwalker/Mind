@@ -11,10 +11,9 @@ import scala.async.Async.await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-case class TypeTreeFactoryImpl @Inject()(
-                                          creator: CreateSeqNodes,
-                                          lookupChildren: LookupChildrenWithFutures
-                                          ) extends TypeTreeFactory with UpdateScopeThrows {
+case class TypeTreeFactoryImpl @Inject() (
+    creator: CreateSeqNodes,
+    lookupChildren: LookupChildrenWithFutures) extends TypeTreeFactory with UpdateScopeThrows {
 
   override val nodesToChooseFrom = Set(ObjectFactory.id)
 

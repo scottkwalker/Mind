@@ -11,10 +11,9 @@ import scala.async.Async.await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-case class AddOperatorFactoryImpl @Inject()(
-                                             creator: CreateNode,
-                                             lookupChildren: LookupChildrenWithFutures
-                                             ) extends AddOperatorFactory with UpdateScopeNoChange {
+case class AddOperatorFactoryImpl @Inject() (
+    creator: CreateNode,
+    lookupChildren: LookupChildrenWithFutures) extends AddOperatorFactory with UpdateScopeNoChange {
 
   override val nodesToChooseFrom = Set(ValueRefFactory.id)
 

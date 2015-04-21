@@ -5,7 +5,7 @@ import com.google.inject.Injector
 import decision._
 import utils.PozInt
 
-final class FactoryLookupImpl @Inject()(injector: Injector) extends FactoryLookup {
+final class FactoryLookupImpl @Inject() (injector: Injector) extends FactoryLookup {
 
   override val factories: Set[PozInt] = Set(AddOperatorFactory.id, FunctionMFactory.id, IntegerMFactory.id, TypeTreeFactory.id, ObjectFactory.id, ValDclInFunctionParamFactory.id, ValueRefFactory.id)
   override val version: String = factories.mkString("|")

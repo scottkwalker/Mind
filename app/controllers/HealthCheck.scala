@@ -5,7 +5,7 @@ import org.joda.time.format.ISODateTimeFormat
 import play.api.mvc.Action
 import play.api.mvc.Controller
 
-final class HealthCheck @Inject()() extends Controller {
+final class HealthCheck @Inject() () extends Controller {
 
   def respond = Action { implicit request =>
     val now = org.joda.time.DateTime.now()

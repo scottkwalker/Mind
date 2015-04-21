@@ -8,8 +8,7 @@ import play.api.libs.json.Writes
 
 import scala.annotation.tailrec
 
-abstract class Memoize1Impl[-TKey, +TOutput]()
-                                            (implicit cacheFormat: Writes[Map[TKey, Either[CountDownLatch, TOutput]]]) extends Memoize1[TKey, TOutput] {
+abstract class Memoize1Impl[-TKey, +TOutput]()(implicit cacheFormat: Writes[Map[TKey, Either[CountDownLatch, TOutput]]]) extends Memoize1[TKey, TOutput] {
 
   /**
    * Thread-safe memoization for a function.
@@ -41,9 +40,9 @@ abstract class Memoize1Impl[-TKey, +TOutput]()
   private[this] var cache = Map.empty[TKey, Either[CountDownLatch, TOutput]]
 
   override def apply(key: TKey): TOutput =
-  // Look in the (possibly stale) memo table. If the value is present, then
-  // it is guaranteed to be the value.
-  // Else it is absent, call missing() to determine what to do.
+    // Look in the (possibly stale) memo table. If the value is present, then
+    // it is guaranteed to be the value.
+    // Else it is absent, call missing() to determine what to do.
     cache.get(key) match {
       case Some(Right(b)) => b
       case _ => missing(key)

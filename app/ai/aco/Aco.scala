@@ -7,7 +7,7 @@ import decision.Decision
 
 // Ant Colony Optimisation
 // https://en.wikipedia.org/wiki/Ant_colony_optimization_algorithms
-final case class Aco @Inject()(rng: RandomNumberGenerator) extends SelectionStrategy {
+final case class Aco @Inject() (rng: RandomNumberGenerator) extends SelectionStrategy {
 
   override def chooseChild(possibleChildren: Set[Decision]): Decision = {
     require(possibleChildren.size > 0, "Sequence must not be empty otherwise we cannot pick an index from it")

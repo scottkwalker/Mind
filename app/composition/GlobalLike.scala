@@ -31,9 +31,9 @@ trait GlobalLike extends WithFilters with GlobalSettings {
    * play -Dconfig.file=conf/application.test.conf run
    */
   override def onLoadConfig(configuration: Configuration,
-                            path: File,
-                            classloader: ClassLoader,
-                            mode: Mode.Mode): Configuration = {
+    path: File,
+    classloader: ClassLoader,
+    mode: Mode.Mode): Configuration = {
     val applicationConf = System.getProperty("config.file", s"application.${mode.toString.toLowerCase}.conf")
     val environmentOverridingConfiguration = configuration ++
       Configuration(ConfigFactory.load(applicationConf))

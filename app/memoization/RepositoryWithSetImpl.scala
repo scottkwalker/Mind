@@ -9,8 +9,8 @@ import utils.PozInt
 
 import scala.language.implicitConversions
 
-class RepositoryWithSetImpl @Inject()(factoryLookup: FactoryLookup)
-  extends Memoize2WithSetImpl[IScope, PozInt](factoryLookup.version)(writes) {
+class RepositoryWithSetImpl @Inject() (factoryLookup: FactoryLookup)
+    extends Memoize2WithSetImpl[IScope, PozInt](factoryLookup.version)(writes) {
 }
 
 object RepositoryWithSetImpl {

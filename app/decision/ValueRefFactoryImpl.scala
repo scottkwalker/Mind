@@ -12,7 +12,7 @@ import scala.async.Async.async
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final case class ValueRefFactoryImpl @Inject()(ai: SelectionStrategy) extends ValueRefFactory with UpdateScopeNoChange {
+final case class ValueRefFactoryImpl @Inject() (ai: SelectionStrategy) extends ValueRefFactory with UpdateScopeNoChange {
 
   override val nodesToChooseFrom = Set.empty[PozInt]
 

@@ -4,9 +4,8 @@ import play.api.libs.json._
 import serialization.JsonDeserialiser
 
 abstract class Memoize2WithSetImpl[TKey1, TKey2](
-                                                  private val versioning: String = "unset" // For versioning purposes save something unique such as the list of all neighbour ids.
-                                                  )
-                                                (implicit cacheFormat: Writes[Set[String]]) extends Memoize2WithSet[TKey1, TKey2] {
+    private val versioning: String = "unset" // For versioning purposes save something unique such as the list of all neighbour ids.
+    )(implicit cacheFormat: Writes[Set[String]]) extends Memoize2WithSet[TKey1, TKey2] {
 
   private var cache: Set[String] = Set.empty[String]
 

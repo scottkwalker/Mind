@@ -11,8 +11,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 final case class FunctionMImpl(params: Seq[Step],
-                               nodes: Seq[Step],
-                               name: String) extends FunctionM {
+    nodes: Seq[Step],
+    name: String) extends FunctionM {
 
   override def toCompilable: String = {
     require(!name.isEmpty)
@@ -37,9 +37,10 @@ final case class FunctionMImpl(params: Seq[Step],
   private def fillEmptySteps(initScope: IScope, initInstructions: Seq[Step], funcReplaceEmpty: (IScope) => Future[AccumulateInstructions], factoryLookup: FactoryLookup): Future[AccumulateInstructions] = {
     val init = Future.successful(AccumulateInstructions(instructions = Seq.empty[Step], scope = initScope))
     initInstructions.foldLeft(init) {
-      (previousResult, currentInstruction) => previousResult.flatMap { previous =>
-        fillEmptySteps(scope = previous.scope, currentInstruction = currentInstruction, acc = previous.instructions, funcReplaceEmpty = funcReplaceEmpty, factoryLookup = factoryLookup)
-      }
+      (previousResult, currentInstruction) =>
+        previousResult.flatMap { previous =>
+          fillEmptySteps(scope = previous.scope, currentInstruction = currentInstruction, acc = previous.instructions, funcReplaceEmpty = funcReplaceEmpty, factoryLookup = factoryLookup)
+        }
     }
   }
 
@@ -61,6 +62,6 @@ final case class FunctionMImpl(params: Seq[Step],
 object FunctionMImpl {
 
   def apply(params: Seq[Step],
-            nodes: Seq[Step],
-            index: Int): FunctionMImpl = FunctionMImpl(params, nodes, name = s"f$index")
+    nodes: Seq[Step],
+    index: Int): FunctionMImpl = FunctionMImpl(params, nodes, name = s"f$index")
 }

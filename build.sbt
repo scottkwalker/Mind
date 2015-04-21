@@ -75,3 +75,18 @@ scalacOptions ++= Seq("-optimise", "-Yinline-warnings", "-Yclosure-elim", "-Yinl
 
 // End Scalaxy
 /////////////////////////////////////
+
+
+/////////////////////////////////////
+// scalariform
+//
+// support for source code formatting
+// https://github.com/sbt/sbt-scalariform
+// Run with 'sbt scalariformFormat'
+
+import scalariform.formatter.preferences._
+
+defaultScalariformSettings
+
+// End scalariform
+/////////////////////////////////////

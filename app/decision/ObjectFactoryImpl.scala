@@ -12,10 +12,9 @@ import scala.async.Async.await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-case class ObjectFactoryImpl @Inject()(
-                                        creator: CreateSeqNodes,
-                                        lookupChildren: LookupChildrenWithFutures
-                                        ) extends ObjectFactory with UpdateScopeIncrementObjects {
+case class ObjectFactoryImpl @Inject() (
+    creator: CreateSeqNodes,
+    lookupChildren: LookupChildrenWithFutures) extends ObjectFactory with UpdateScopeIncrementObjects {
 
   override val nodesToChooseFrom = Set(FunctionMFactory.id)
 

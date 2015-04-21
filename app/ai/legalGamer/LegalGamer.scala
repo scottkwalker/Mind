@@ -6,7 +6,7 @@ import com.google.inject.Inject
 import decision.Decision
 
 // Always chooses the first legal move available
-final case class LegalGamer @Inject()(rng: RandomNumberGenerator) extends SelectionStrategy {
+final case class LegalGamer @Inject() (rng: RandomNumberGenerator) extends SelectionStrategy {
 
   override def chooseChild(possibleChildren: Set[Decision]): Decision = {
     require(possibleChildren.size > 0, "Sequence must not be empty otherwise we cannot pick an index from it")
@@ -19,5 +19,5 @@ final case class LegalGamer @Inject()(rng: RandomNumberGenerator) extends Select
   }
 
   override def canAddAnother(accLength: Int,
-                             factoryLimit: Int): Boolean = accLength < factoryLimit
+    factoryLimit: Int): Boolean = accLength < factoryLimit
 }

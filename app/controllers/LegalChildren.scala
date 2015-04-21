@@ -9,7 +9,7 @@ import play.api.mvc.Action
 import play.api.mvc.Controller
 import utils.PozInt
 
-final class LegalChildren @Inject()(lookupChildren: LookupChildren) extends Controller {
+final class LegalChildren @Inject() (lookupChildren: LookupChildren) extends Controller {
 
   private[controllers] val form = Form(
     LookupChildrenRequest.Form.Mapping

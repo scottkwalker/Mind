@@ -11,10 +11,9 @@ import scala.async.Async.await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-case class ValDclInFunctionParamFactoryImpl @Inject()(
-                                                       creator: CreateNode,
-                                                       lookupChildren: LookupChildrenWithFutures
-                                                       ) extends ValDclInFunctionParamFactory with UpdateScopeIncrementVals {
+case class ValDclInFunctionParamFactoryImpl @Inject() (
+    creator: CreateNode,
+    lookupChildren: LookupChildrenWithFutures) extends ValDclInFunctionParamFactory with UpdateScopeIncrementVals {
 
   override val nodesToChooseFrom = Set(IntegerMFactory.id)
 

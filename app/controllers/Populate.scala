@@ -10,7 +10,7 @@ import play.api.mvc.Controller
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final class Populate @Inject()(generator: Generator) extends Controller {
+final class Populate @Inject() (generator: Generator) extends Controller {
 
   private[controllers] val form = Form(
     PopulateRequest.Form.Mapping

@@ -27,9 +27,10 @@ final case class TypeTree(nodes: Seq[Step]) extends Step with UpdateScopeThrows 
     require(nodes.length > 0, "must not be empty as then we have nothing to replace")
     val init = Future.successful(AccumulateInstructions(instructions = Seq.empty[Step], scope = scope))
     val fNodesWithoutEmpties = nodes.foldLeft(init) {
-      (previousResult, currentInstruction) => previousResult.flatMap { previous =>
-        fillEmptySteps(scope = previous.scope, currentInstruction = currentInstruction, acc = previous.instructions, factoryLookup = factoryLookup)
-      }
+      (previousResult, currentInstruction) =>
+        previousResult.flatMap { previous =>
+          fillEmptySteps(scope = previous.scope, currentInstruction = currentInstruction, acc = previous.instructions, factoryLookup = factoryLookup)
+        }
     }
     val nodesWithoutEmpties = await(fNodesWithoutEmpties)
     TypeTree(nodesWithoutEmpties.instructions)

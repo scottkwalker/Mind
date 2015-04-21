@@ -17,8 +17,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.language.implicitConversions
 
-class RepositoryWithFutures @Inject()(factoryLookup: FactoryLookup)
-  extends Memoize2Impl[IScope, PozInt, Future[Boolean]](factoryLookup.version)(writes) {
+class RepositoryWithFutures @Inject() (factoryLookup: FactoryLookup)
+    extends Memoize2Impl[IScope, PozInt, Future[Boolean]](factoryLookup.version)(writes) {
 
   override def funcCalculate(scope: IScope, neighbourId: PozInt): Future[Boolean] =
     async {
@@ -32,8 +32,7 @@ class RepositoryWithFutures @Inject()(factoryLookup: FactoryLookup)
           }
           Future.sequence(futures).map(_.contains(true))
         }
-      }
-      else false
+      } else false
     }
 
   override def size: Int = cache.size
