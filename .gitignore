@@ -34,3 +34,5 @@ dist
 .css/
 .img/
 projectFilesBackup
+scala-abide/
+scalaxy-streams/
