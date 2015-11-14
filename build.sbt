@@ -64,13 +64,16 @@ autoCompilerPlugins := true
 // Scalaxy/Streams compiler plugin
 // https://github.com/ochafik/Scalaxy
 
-// Scalaxy/Streams plugin
-addCompilerPlugin("com.nativelibs4java" %% "scalaxy-streams" % "0.3.4")
-
 // Ensure Scalaxy/Streams's plugin is used.
 scalacOptions += "-Xplugin-require:scalaxy-streams"
 
 scalacOptions ++= Seq("-optimise", "-Yinline-warnings", "-Yclosure-elim", "-Yinline")
+
+scalacOptions in Test ~= (_ filterNot (_ == "-Xplugin-require:scalaxy-streams"))
+
+scalacOptions in Test += "-Xplugin-disable:scalaxy-streams"
+
+addCompilerPlugin("com.nativelibs4java" %% "scalaxy-streams" % "0.4-SNAPSHOT")
 
 // End Scalaxy
 /////////////////////////////////////
@@ -85,7 +88,7 @@ scalacOptions ++= Seq("-optimise", "-Yinline-warnings", "-Yclosure-elim", "-Yinl
 
 import scalariform.formatter.preferences._
 
-defaultScalariformSettings
+scalariformSettings
 
 // End scalariform
 /////////////////////////////////////
