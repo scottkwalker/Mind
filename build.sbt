@@ -7,7 +7,7 @@ version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
 // Disable documentation generation to save time for the CI build process
 sources in doc in Compile := List()
@@ -32,7 +32,7 @@ libraryDependencies ++= Seq(
   "com.google.inject" % "guice" % "4.0-beta5",// withSources() withJavadoc(),
   "org.scalatestplus" %% "play" % "1.2.0" % "test",// withSources() withJavadoc(),
   "com.twitter" %% "util-core" % "6.22.1",// withSources() withJavadoc(),
-  "org.scala-lang" % "scala-compiler" % "2.11.7",// withSources() withJavadoc(),
+  "org.scala-lang" % "scala-compiler" % "2.11.8",// withSources() withJavadoc(),
   "org.scala-lang.modules" %% "scala-async" % "0.9.2",// withSources() withJavadoc(),
 //  "org.scalactic" %% "scalactic" % "2.2.1",// withSources() withJavadoc(),
 //  "com.typesafe" %% "abide-core" % "0.1-SNAPSHOT" % "abide",
