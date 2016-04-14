@@ -50,8 +50,7 @@ final class LegalGamerSpec extends UnitTestHelpers with TestComposition {
           val f = new AddTwoInts(typeTree)
           f.fitness
         }(config = patienceConfig)
-      }
-      catch {
+      } catch {
         case e: Throwable => fail("must not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
       }
     }

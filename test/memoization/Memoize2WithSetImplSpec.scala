@@ -48,7 +48,7 @@ final class Memoize2WithSetImplSpec extends UnitTestHelpers {
                   JsString("2|2")
                 )
               )
-              )
+            )
           )
         )
       )
@@ -68,7 +68,7 @@ final class Memoize2WithSetImplSpec extends UnitTestHelpers {
                 JsString("2|2")
               )
             )
-            )
+          )
         )
       )
 

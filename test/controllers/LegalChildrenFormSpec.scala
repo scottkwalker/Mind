@@ -154,15 +154,15 @@ final class LegalChildrenFormSpec extends UnitTestHelpers with TestComposition {
   }
 
   private def formBuilder(numVals: String,
-                          numFuncs: String,
-                          numObjects: String,
-                          height: String,
-                          maxExpressionsInFunc: String,
-                          maxFuncsInObject: String,
-                          maxParamsInFunc: String,
-                          maxObjectsInTree: String,
-                          maxHeight: String,
-                          currentNode: String) = {
+    numFuncs: String,
+    numObjects: String,
+    height: String,
+    maxExpressionsInFunc: String,
+    maxFuncsInObject: String,
+    maxParamsInFunc: String,
+    maxObjectsInTree: String,
+    maxHeight: String,
+    currentNode: String) = {
     legalChildren.form.bind(
       Map(
         s"$ScopeId.$NumValsId" -> numVals,

@@ -26,7 +26,7 @@ final class PopulateUnitSpec extends UnitTestHelpers with TestComposition {
     }
 
     "contain a form that POSTs to the expected action" in {
-      contentAsString(present)(timeout) must include( """form action="/mind/populate" method="POST"""")
+      contentAsString(present)(timeout) must include("""form action="/mind/populate" method="POST"""")
     }
   }
 

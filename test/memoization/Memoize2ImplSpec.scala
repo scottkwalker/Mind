@@ -154,7 +154,7 @@ final class Memoize2ImplSpec extends UnitTestHelpers {
                     ("2|2", JsNumber(4))
                   )
                 )
-                )
+              )
             )
           )
         )
@@ -174,7 +174,7 @@ final class Memoize2ImplSpec extends UnitTestHelpers {
                 ("2|2", JsNumber(4))
               )
             )
-            )
+          )
         )
       )
 

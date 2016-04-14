@@ -7,7 +7,7 @@ import composition.StubFactoryLookupAnyBinding.leaf2Id
 import composition.StubFactoryLookupAnyBinding.numberOfFactories
 import composition.StubFactoryLookupAnyBinding.leaf1Id
 import composition._
-import models.common.{IScope, Scope}
+import models.common.{ IScope, Scope }
 import models.domain.scala.FactoryLookup
 import org.mockito.Matchers
 import org.mockito.Matchers._

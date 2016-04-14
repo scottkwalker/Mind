@@ -1,13 +1,13 @@
 package models.domain.scala
 
-import composition.{StubFactoryLookupBindingBuilder, TestComposition, UnitTestHelpers}
+import composition.{ StubFactoryLookupBindingBuilder, TestComposition, UnitTestHelpers }
 import models.common.IScope
 import models.domain.Step
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import utils.ScopeHelper._
 
-import scala.concurrent.{Await, Future}
+import scala.concurrent.{ Await, Future }
 
 final class FunctionMSpec extends UnitTestHelpers with TestComposition {
 

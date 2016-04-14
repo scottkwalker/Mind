@@ -104,9 +104,9 @@ class Eval(target: Option[File]) {
           new FilesystemResolver(new File(".")),
           new FilesystemResolver(new File("." + File.separator + "config"))
         ) ++ (
-          Option(System.getProperty("com.twitter.util.Eval.includePath")) map { path =>
-            new FilesystemResolver(new File(path))
-          }
+            Option(System.getProperty("com.twitter.util.Eval.includePath")) map { path =>
+              new FilesystemResolver(new File(path))
+            }
           )
       )
     )
@@ -355,7 +355,7 @@ class Eval(target: Option[File]) {
       if (nestedClassPath eq null) {
         Nil
       } else {
-        nestedClassPath.split(" ").map { f => new File(relativeRoot, f).getAbsolutePath}.toList
+        nestedClassPath.split(" ").map { f => new File(relativeRoot, f).getAbsolutePath }.toList
       }
     } else {
       Nil

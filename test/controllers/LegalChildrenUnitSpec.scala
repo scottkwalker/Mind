@@ -4,7 +4,7 @@ import composition.StubLookupChildrenBinding
 import composition.StubSelectionStrategyBinding
 import composition.TestComposition
 import composition.UnitTestHelpers
-import decision.{FunctionMFactory, ObjectFactory, TypeTreeFactory}
+import decision.{ FunctionMFactory, ObjectFactory, TypeTreeFactory }
 import models.common.IScope
 import models.common.LookupChildrenRequest
 import models.common.Scope
@@ -14,7 +14,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{OK, BAD_REQUEST, contentAsString}
+import play.api.test.Helpers.{ OK, BAD_REQUEST, contentAsString }
 import utils.PozInt
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -29,7 +29,7 @@ final class LegalChildrenUnitSpec extends UnitTestHelpers with TestComposition {
     }
 
     "contain a form that POSTs to the expected action" in {
-      contentAsString(present)(timeout) must include( """form action="/mind/legal-children" method="POST"""")
+      contentAsString(present)(timeout) must include("""form action="/mind/legal-children" method="POST"""")
     }
   }
 

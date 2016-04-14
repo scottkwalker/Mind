@@ -108,18 +108,18 @@ final class ScopeSpec extends UnitTestHelpers {
         incrementFuncs.
         incrementObjects.
         decrementHeight match {
-        case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree, maxHeight) =>
-          numVals must equal(1)
-          numFuncs must equal(1)
-          numObjects must equal(1)
-          height must equal(1)
-          maxExpressionsInFunc must equal(0)
-          maxFuncs must equal(0)
-          maxParamsInFunc must equal(0)
-          maxObjectsInTree must equal(0)
-          maxHeight must equal(10)
-        case _ => fail("must have matched")
-      }
+          case Scope(numVals, numFuncs, numObjects, height, maxExpressionsInFunc, maxFuncs, maxParamsInFunc, maxObjectsInTree, maxHeight) =>
+            numVals must equal(1)
+            numFuncs must equal(1)
+            numObjects must equal(1)
+            height must equal(1)
+            maxExpressionsInFunc must equal(0)
+            maxFuncs must equal(0)
+            maxParamsInFunc must equal(0)
+            maxObjectsInTree must equal(0)
+            maxHeight must equal(10)
+          case _ => fail("must have matched")
+        }
     }
   }
 

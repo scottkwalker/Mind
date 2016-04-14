@@ -231,28 +231,28 @@ final class Memoize1ImplSpec extends UnitTestHelpers {
                   ("intContent", JsNumber(1))
                 )
               )
-              ),
+            ),
             ("2",
               JsObject(
                 Seq(
                   ("intContent", JsNumber(1))
                 )
               )
-              ),
+            ),
             ("0",
               JsObject(
                 Seq(
                   ("intContent", JsNumber(0))
                 )
               )
-              ),
+            ),
             ("3",
               JsObject(
                 Seq(
                   ("intContent", JsNumber(2))
                 )
               )
-              )
+            )
           )
         )
 
@@ -324,8 +324,8 @@ final class Memoize1ImplSpec extends UnitTestHelpers {
         case (k, v) => v.isRight // Only completed values.
       }.
         map {
-        case (k, v) => k.toString -> v // Key must be string
-      }
+          case (k, v) => k.toString -> v // Key must be string
+        }
 
       Json.toJson(filtered)
     }

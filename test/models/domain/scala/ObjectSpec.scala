@@ -1,7 +1,7 @@
 package models.domain.scala
 
-import composition.{StubFactoryLookupBindingBuilder, TestComposition, UnitTestHelpers}
-import models.common.{IScope, Scope}
+import composition.{ StubFactoryLookupBindingBuilder, TestComposition, UnitTestHelpers }
+import models.common.{ IScope, Scope }
 import models.domain.Step
 import org.mockito.Matchers._
 import org.mockito.Mockito._

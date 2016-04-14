@@ -36,7 +36,7 @@ final class PopulateUiSpec extends UiTestHelper {
       // Must be on a page before you can set a cookie.
       val key = Play.langCookieName
       val value = "cy" // Code for Welsh
-      add cookie(key, value)
+      add cookie (key, value)
 
       go to page
 

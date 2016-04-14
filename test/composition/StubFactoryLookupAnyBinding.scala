@@ -2,13 +2,13 @@ package composition
 
 import com.google.inject.AbstractModule
 import composition.StubFactoryLookupAnyBinding._
-import decision.{AccumulateInstructions, Decision}
+import decision.{ AccumulateInstructions, Decision }
 import models.common.IScope
 import models.domain.Step
 import models.domain.scala.FactoryLookup
 import org.mockito.Matchers
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{mock, when}
+import org.mockito.Mockito.{ mock, when }
 import org.scalatest.mock.MockitoSugar
 import utils.PozInt
 
@@ -56,7 +56,7 @@ final class StubFactoryLookupBindingBuilder extends AbstractModule with MockitoS
     when(stub.convert(Matchers.eq(doesNotTerminateId))).thenReturn(doesNotTerminate)
     // factories
     when(stub.factories).thenReturn(Set(doesNotTerminateId))
-   this
+    this
   }
 
   override def configure(): Unit = bind(classOf[FactoryLookup]).toInstance(stub)

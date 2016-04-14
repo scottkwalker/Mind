@@ -55,8 +55,7 @@ final class AcoSpec extends UnitTestHelpers with TestComposition {
             f.fitness
           }(config = patienceConfig)
         }
-      }
-      catch {
+      } catch {
         case e: Throwable => fail("must not have thrown exception: " + e + ", stacktrace: " + e.getStackTrace)
       }
     }

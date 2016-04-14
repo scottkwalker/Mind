@@ -149,12 +149,12 @@ final class PopulateFormSpec extends UnitTestHelpers with TestComposition {
   }
 
   private def formBuilder(
-                           height: String,
-                           maxFuncsInObject: String,
-                           maxParamsInFunc: String,
-                           maxObjectsInTree: String,
-                           maxHeight: String,
-                           currentNode: String) = {
+    height: String,
+    maxFuncsInObject: String,
+    maxParamsInFunc: String,
+    maxObjectsInTree: String,
+    maxHeight: String,
+    currentNode: String) = {
     populate.form.bind(
       Map(
         s"$MaxScopeId.$HeightId" -> height,
@@ -167,15 +167,15 @@ final class PopulateFormSpec extends UnitTestHelpers with TestComposition {
   }
 
   private def formBuilderWithIgnoredFields(numVals: String,
-                                           numFuncs: String,
-                                           numObjects: String,
-                                           height: String,
-                                           maxExpressionsInFunc: String,
-                                           maxFuncsInObject: String,
-                                           maxParamsInFunc: String,
-                                           maxObjectsInTree: String,
-                                           maxHeight: String,
-                                           currentNode: String) = {
+    numFuncs: String,
+    numObjects: String,
+    height: String,
+    maxExpressionsInFunc: String,
+    maxFuncsInObject: String,
+    maxParamsInFunc: String,
+    maxObjectsInTree: String,
+    maxHeight: String,
+    currentNode: String) = {
     populate.form.bind(
       Map(
         s"$MaxScopeId.$NumValsId" -> numVals,
