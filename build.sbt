@@ -67,13 +67,13 @@ autoCompilerPlugins := true
 // Ensure Scalaxy/Streams's plugin is used.
 scalacOptions += "-Xplugin-require:scalaxy-streams"
 
-scalacOptions ++= Seq("-optimise", "-Yinline-warnings", "-Yclosure-elim", "-Yinline")
+scalacOptions ++= Seq("-optimise", "-Yinline-warnings", "-Yclosure-elim", "-Yinline", "-Ybackend:GenBCode")
 
 scalacOptions in Test ~= (_ filterNot (_ == "-Xplugin-require:scalaxy-streams"))
 
 scalacOptions in Test += "-Xplugin-disable:scalaxy-streams"
 
-addCompilerPlugin("com.nativelibs4java" %% "scalaxy-streams" % "0.4-SNAPSHOT")
+addCompilerPlugin("com.nativelibs4java" %% "scalaxy-streams" % "0.3.4")
 
 // End Scalaxy
 /////////////////////////////////////
