@@ -28,14 +28,14 @@ libraryDependencies ++= Seq(
   //cache,
   //ws
   filters,
-  "org.mockito" % "mockito-core" % "2.0.5-beta" % "test",// withSources() withJavadoc(),
-  "com.google.inject" % "guice" % "4.0-beta5",// withSources() withJavadoc(),
-  "org.scalatestplus" %% "play" % "1.2.0" % "test",// withSources() withJavadoc(),
-  "com.twitter" %% "util-core" % "6.22.1",// withSources() withJavadoc(),
-  "org.scala-lang" % "scala-compiler" % "2.11.8",// withSources() withJavadoc(),
-  "org.scala-lang.modules" %% "scala-async" % "0.9.2",// withSources() withJavadoc(),
-//  "org.scalactic" %% "scalactic" % "2.2.1",// withSources() withJavadoc(),
-//  "com.typesafe" %% "abide-core" % "0.1-SNAPSHOT" % "abide",
+  "org.mockito" % "mockito-core" % "2.0.5-beta" % "test", // withSources() withJavadoc(),
+  "com.google.inject" % "guice" % "4.0-beta5", // withSources() withJavadoc(),
+  "org.scalatestplus" %% "play" % "1.2.0" % "test", // withSources() withJavadoc(),
+  "com.twitter" %% "util-core" % "6.22.1", // withSources() withJavadoc(),
+  "org.scala-lang" % "scala-compiler" % "2.11.8", // withSources() withJavadoc(),
+  "org.scala-lang.modules" %% "scala-async" % "0.9.2", // withSources() withJavadoc(),
+  //  "org.scalactic" %% "scalactic" % "2.2.1",// withSources() withJavadoc(),
+  //  "com.typesafe" %% "abide-core" % "0.1-SNAPSHOT" % "abide",
   "org.scala-lang" % "scala-compiler" % scalaVersion.value
 )
 
@@ -54,8 +54,8 @@ incOptions := incOptions.value.withNameHashing(nameHashing = true)
 
 
 
-fork in Test := false 	// Fixes Exception in thread "Thread-4" java.io.EOFException
-			//	at java.io.ObjectInputStream$BlockDataInputStream.peekByte(ObjectInputStream.java:2601)
+fork in Test := false // Fixes Exception in thread "Thread-4" java.io.EOFException
+//	at java.io.ObjectInputStream$BlockDataInputStream.peekByte(ObjectInputStream.java:2601)
 
 autoCompilerPlugins := true
 
@@ -78,8 +78,6 @@ showCurrentGitBranch
 // https://github.com/sbt/sbt-scalariform
 // Run with 'sbt scalariformFormat'
 
-import scalariform.formatter.preferences._
-
 scalariformSettings
 
 // End scalariform
@@ -92,7 +90,28 @@ scalariformSettings
 // Flexible Scala code linting tool
 // https://github.com/puffnfresh/wartremover
 
+def makeExcludedFiles(rootDir:File):Seq[sbt.File] = {
+  val excluded = findPlayConfFiles(rootDir) ++ findSbtFiles(rootDir)
+  println(s"[auto-code-review] excluding the following files: ${excluded.mkString(",")}")
+  excluded
+}
+
+def findSbtFiles(rootDir: File): Seq[sbt.File] =
+  if(rootDir.getName == "project") rootDir.listFiles()
+  else Seq()
+
+def findPlayConfFiles(rootDir: File): Seq[sbt.File] = new File(rootDir, "conf").listFiles()
+
+wartremoverExcluded ++= makeExcludedFiles(baseDirectory.value)
+
+wartremoverExcluded ++= Seq(
+  baseDirectory.value / "target" / "scala-2.11" / "src_managed" / "main" / "routes_routing.scala",
+  baseDirectory.value / "target" / "scala-2.11" / "src_managed" / "main" / "routes_reverseRouting.scala"
+)
+
 //wartremoverErrors ++= Warts.unsafe
+
+//wartremoverErrors ++= Seq(Wart.Any)
 
 // End WartRemover
 /////////////////////////////////////
