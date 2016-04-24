@@ -21,15 +21,15 @@ final case class ValDclInFunctionParam(name: String, primitiveType: Step) extend
     }
   }
 
-  override def fillEmptySteps(scope: IScope, factoryLookup: FactoryLookup): Future[Step] = async {
+  override def fillEmptySteps(scope: IScope, factoryLookup: FactoryLookup): Future[Step] = {
     val instruction = primitiveType match {
       case _: Empty =>
         def decision = factoryLookup.convert(IntegerMFactory.id)
         decision.fillEmptySteps(scope)
       case nonEmpty: PrimitiveType => nonEmpty.fillEmptySteps(scope = updateScope(scope.decrementHeight), factoryLookup = factoryLookup)
-      case _ => throw new RuntimeException("the child needs to be either type Empty or type PrimitiveType")
+      case _ => Future.failed(new RuntimeException("the child needs to be either type Empty or type PrimitiveType"))
     }
-    ValDclInFunctionParam(name, await(instruction))
+    instruction.map(step => ValDclInFunctionParam(name, step))
   }
 
   override def height: Int = 1 + primitiveType.height

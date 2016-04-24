@@ -6,8 +6,6 @@ import models.common.IScope
 import models.domain.Step
 import models.domain.scala.AddOperatorImpl
 
-import scala.async.Async.async
-import scala.async.Async.await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -17,12 +15,15 @@ case class AddOperatorFactoryImpl @Inject() (
 
   override val nodesToChooseFrom = Set(ValueRefFactory.id)
 
-  override def fillEmptySteps(scope: IScope): Future[Step] = async {
+  override def fillEmptySteps(scope: IScope): Future[Step] = {
     val possibleNodes = lookupChildren.get(scope, nodesToChooseFrom)
-    val (updatedScope, left) = await(creator.create(possibleNodes, scope))
-    val (_, right) = await(creator.create(possibleNodes, updatedScope))
-    AddOperatorImpl(left = left,
-      right = right)
+    creator.create(possibleNodes, scope).flatMap {
+      case (updatedScope, left) =>
+        creator.create(possibleNodes, updatedScope).map {
+          case (_, right) =>
+            AddOperatorImpl(left, right)
+        }
+    }
   }
 
   override def createParams(scope: IScope): Future[AccumulateInstructions] = throw new RuntimeException("calling this method is not possible as there will be no params")

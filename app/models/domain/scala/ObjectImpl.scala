@@ -34,8 +34,8 @@ final case class ObjectImpl(nodes: Seq[Step], name: String) extends Object {
     }
   }
 
-  override def fillEmptySteps(scope: IScope, factoryLookup: FactoryLookup): Future[Step] = async {
-    require(nodes.length > 0, "must not be empty as then we have nothing to replace")
+  override def fillEmptySteps(scope: IScope, factoryLookup: FactoryLookup): Future[Step] = {
+    require(nodes.nonEmpty, "must not be empty as then we have nothing to replace")
     val init = Future.successful(AccumulateInstructions(instructions = Seq.empty[Step], scope = scope))
     val fNodesWithoutEmpties = nodes.foldLeft(init) {
       (previousResult, currentInstruction) =>
@@ -43,8 +43,7 @@ final case class ObjectImpl(nodes: Seq[Step], name: String) extends Object {
           fillEmptySteps(scope = previous.scope, currentInstruction = currentInstruction, acc = previous.instructions, factoryLookup = factoryLookup)
         }
     }
-    val nodesWithoutEmpties = await(fNodesWithoutEmpties)
-    ObjectImpl(nodesWithoutEmpties.instructions, name)
+    fNodesWithoutEmpties.map(nodesWithoutEmpties => ObjectImpl(nodesWithoutEmpties.instructions, name))
   }
 
   override def height: Int = 1 + nodes.map(_.height).reduceLeft(math.max)

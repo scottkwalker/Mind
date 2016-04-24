@@ -51,31 +51,23 @@ ScoverageKeys.coverageHighlighting := true
 
 incOptions := incOptions.value.withNameHashing(nameHashing = true)
 
-showCurrentGitBranch // https://github.com/sbt/sbt-git
+
+
 
 fork in Test := false 	// Fixes Exception in thread "Thread-4" java.io.EOFException
 			//	at java.io.ObjectInputStream$BlockDataInputStream.peekByte(ObjectInputStream.java:2601)
 
 autoCompilerPlugins := true
 
+
 /////////////////////////////////////
-// Scalaxy
+// sbt-git
 //
-// Scalaxy/Streams compiler plugin
-// https://github.com/ochafik/Scalaxy
+// https://github.com/sbt/sbt-git
 
-// Ensure Scalaxy/Streams's plugin is used.
-scalacOptions += "-Xplugin-require:scalaxy-streams"
+showCurrentGitBranch
 
-scalacOptions ++= Seq("-optimise", "-Yinline-warnings", "-Yclosure-elim", "-Yinline", "-Ybackend:GenBCode")
-
-scalacOptions in Test ~= (_ filterNot (_ == "-Xplugin-require:scalaxy-streams"))
-
-scalacOptions in Test += "-Xplugin-disable:scalaxy-streams"
-
-addCompilerPlugin("com.nativelibs4java" %% "scalaxy-streams" % "0.3.4")
-
-// End Scalaxy
+// End sbt-git
 /////////////////////////////////////
 
 
@@ -91,4 +83,38 @@ import scalariform.formatter.preferences._
 scalariformSettings
 
 // End scalariform
+/////////////////////////////////////
+
+
+/////////////////////////////////////
+// WartRemover
+//
+// Flexible Scala code linting tool
+// https://github.com/puffnfresh/wartremover
+
+//wartremoverErrors ++= Warts.unsafe
+
+// End WartRemover
+/////////////////////////////////////
+
+
+/////////////////////////////////////
+// Scalaxy
+//
+// Scalaxy/Streams compiler plugin
+// https://github.com/ochafik/Scalaxy
+
+// Ensure Scalaxy/Streams's plugin is used.
+
+scalacOptions += "-Xplugin-require:scalaxy-streams"
+
+scalacOptions ++= Seq("-optimise", "-Yinline-warnings", "-Yclosure-elim", "-Yinline", "-Ybackend:GenBCode")
+
+scalacOptions in Test ~= (_ filterNot (_ == "-Xplugin-require:scalaxy-streams"))
+
+scalacOptions in Test += "-Xplugin-disable:scalaxy-streams"
+
+addCompilerPlugin("com.nativelibs4java" %% "scalaxy-streams" % "0.3.4")
+
+// End Scalaxy
 /////////////////////////////////////

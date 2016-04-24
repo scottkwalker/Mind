@@ -5,10 +5,7 @@ import memoization.LookupChildrenWithFutures
 import models.common.IScope
 import models.domain.Step
 import models.domain.scala.ObjectImpl
-import models.domain.scala.ObjectImpl$
 
-import scala.async.Async.async
-import scala.async.Async.await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -18,12 +15,11 @@ case class ObjectFactoryImpl @Inject() (
 
   override val nodesToChooseFrom = Set(FunctionMFactory.id)
 
-  override def fillEmptySteps(scope: IScope): Future[Step] = async {
-    val nodesWithoutEmpties = await(createNodes(scope))
-
-    ObjectImpl(nodes = nodesWithoutEmpties.instructions,
-      index = scope.numObjects)
-  }
+  override def fillEmptySteps(scope: IScope): Future[Step] =
+    createNodes(scope).map { nodesWithoutEmpties =>
+      ObjectImpl(nodes = nodesWithoutEmpties.instructions,
+        index = scope.numObjects)
+    }
 
   override def createNodes(scope: IScope): Future[AccumulateInstructions] = {
     val acc: Seq[Step] = Seq.empty

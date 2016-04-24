@@ -21,19 +21,17 @@ class RepositoryWithFutures @Inject() (factoryLookup: FactoryLookup)
     extends Memoize2Impl[IScope, PozInt, Future[Boolean]](factoryLookup.version)(writes) {
 
   override def funcCalculate(scope: IScope, neighbourId: PozInt): Future[Boolean] =
-    async {
-      if (scope.hasHeightRemaining) {
-        val possibleNeighbourIds = factoryLookup.convert(neighbourId).nodesToChooseFrom
-        if (possibleNeighbourIds.isEmpty) true
-        else await {
-          // TODO can this use Observable to turn it into a stream of futures and then it wouldn't need to Await for all the results to complete.
-          val futures = possibleNeighbourIds.map { possNeighbourId =>
-            missing(key1 = scope.decrementHeight, key2 = possNeighbourId)
-          }
-          Future.sequence(futures).map(_.contains(true))
+    if (scope.hasHeightRemaining) {
+      val possibleNeighbourIds = factoryLookup.convert(neighbourId).nodesToChooseFrom
+      if (possibleNeighbourIds.isEmpty) Future.successful(true)
+      else {
+        // TODO can this use Observable to turn it into a stream of futures and then it wouldn't need to Await for all the results to complete.
+        val futures = possibleNeighbourIds.map { possNeighbourId =>
+          missing(key1 = scope.decrementHeight, key2 = possNeighbourId)
         }
-      } else false
-    }
+        Future.sequence(futures).map(_.contains(true))
+      }
+    } else Future.successful(false)
 
   override def size: Int = cache.size
 }
