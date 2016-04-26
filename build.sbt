@@ -111,7 +111,7 @@ wartremoverExcluded ++= Seq(
 
 //wartremoverErrors ++= Warts.unsafe
 
-//wartremoverErrors ++= Seq(Wart.DefaultArguments)
+//wartremoverErrors ++= Seq(Wart.DefaultArguments) // todo
 
 // End WartRemover
 /////////////////////////////////////

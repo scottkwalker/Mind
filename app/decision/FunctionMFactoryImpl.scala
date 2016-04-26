@@ -9,7 +9,7 @@ import models.domain.scala.FunctionMImpl
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-case class FunctionMFactoryImpl @Inject() (
+final case class FunctionMFactoryImpl @Inject() (
     creator: CreateSeqNodes,
     lookupChildren: LookupChildrenWithFutures) extends FunctionMFactory with UpdateScopeIncrementFuncs {
 

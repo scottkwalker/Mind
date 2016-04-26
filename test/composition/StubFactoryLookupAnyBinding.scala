@@ -3,7 +3,7 @@ package composition
 import com.google.inject.AbstractModule
 import composition.StubFactoryLookupAnyBinding._
 import decision.{ AccumulateInstructions, Decision }
-import models.common.IScope
+import models.common.{ IScope, Scope }
 import models.domain.Step
 import models.domain.scala.FactoryLookup
 import org.mockito.Matchers
@@ -23,8 +23,7 @@ final class StubFactoryLookupBindingBuilder extends AbstractModule with MockitoS
       val decision = mock[Decision]
       val step = mock[Step]
       when(decision.fillEmptySteps(any[IScope])).thenReturn(Future.successful(step))
-      val accumulateInstructions = mock[AccumulateInstructions]
-      when(accumulateInstructions.instructions).thenReturn(Seq(step))
+      val accumulateInstructions = AccumulateInstructions(instructions = Seq(step), Scope())
       when(decision.createParams(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
       when(decision.createNodes(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
       decision
@@ -73,8 +72,7 @@ object StubFactoryLookupAnyBinding {
     val decision = mock(classOf[Decision])
     val step = mock(classOf[Step])
     when(decision.fillEmptySteps(any[IScope])).thenReturn(Future.successful(step))
-    val accumulateInstructions = mock(classOf[AccumulateInstructions])
-    when(accumulateInstructions.instructions).thenReturn(Seq(step))
+    val accumulateInstructions = AccumulateInstructions(instructions = Seq(step), Scope())
     when(decision.createParams(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
     when(decision.createNodes(any[IScope])).thenReturn(Future.successful(accumulateInstructions))
     decision

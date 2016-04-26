@@ -9,7 +9,7 @@ import models.domain.scala.ValDclInFunctionParam
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-case class ValDclInFunctionParamFactoryImpl @Inject() (
+final case class ValDclInFunctionParamFactoryImpl @Inject() (
     creator: CreateNode,
     lookupChildren: LookupChildrenWithFutures) extends ValDclInFunctionParamFactory with UpdateScopeIncrementVals {
 

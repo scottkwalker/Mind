@@ -9,7 +9,7 @@ import models.domain.scala.AddOperatorImpl
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-case class AddOperatorFactoryImpl @Inject() (
+final case class AddOperatorFactoryImpl @Inject() (
     creator: CreateNode,
     lookupChildren: LookupChildrenWithFutures) extends AddOperatorFactory with UpdateScopeNoChange {
 

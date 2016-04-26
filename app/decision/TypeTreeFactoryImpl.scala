@@ -9,7 +9,7 @@ import models.domain.scala.TypeTree
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-case class TypeTreeFactoryImpl @Inject() (
+final case class TypeTreeFactoryImpl @Inject() (
     creator: CreateSeqNodes,
     lookupChildren: LookupChildrenWithFutures) extends TypeTreeFactory with UpdateScopeThrows {
 

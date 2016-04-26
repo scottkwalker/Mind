@@ -12,7 +12,7 @@ trait Pheromone {
   def evaporate: Pheromone
 }
 
-case class PheromoneConstantEvaporation(value: Double) extends Pheromone {
+final case class PheromoneConstantEvaporation(value: Double) extends Pheromone {
 
   override def drop(amount: Double) = this.copy(value = value + amount)
 

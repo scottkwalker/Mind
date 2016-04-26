@@ -9,7 +9,7 @@ import models.domain.scala.ObjectImpl
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-case class ObjectFactoryImpl @Inject() (
+final case class ObjectFactoryImpl @Inject() (
     creator: CreateSeqNodes,
     lookupChildren: LookupChildrenWithFutures) extends ObjectFactory with UpdateScopeIncrementObjects {
 
