@@ -18,6 +18,7 @@ import models.common.Scope.Form._
 
 import scala.collection.immutable.BitSet
 
+@SuppressWarnings(Array("org.brianmckenna.wartremover.warts.IsInstanceOf"))
 final class PlayJsonExperimentationSpec extends UnitTestHelpers {
 
   "experiment with json serialization" must {
