@@ -109,9 +109,12 @@ wartremoverExcluded ++= Seq(
   baseDirectory.value / "target" / "scala-2.11" / "src_managed" / "main" / "routes_reverseRouting.scala"
 )
 
+wartremoverExcluded += baseDirectory.value / "app" / "fitness" / "Eval.scala"
+
 //wartremoverErrors ++= Warts.unsafe
 
 //wartremoverErrors ++= Seq(Wart.DefaultArguments) // todo
+//wartremoverErrors ++= Seq(Wart.Nothing) // doesn't work, maybe it does in the snapshot version
 
 // End WartRemover
 /////////////////////////////////////

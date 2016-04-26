@@ -73,7 +73,6 @@ object Eval extends Eval {
  * - contruct an instance of that class
  * - return the result of `apply()`
  */
-@SuppressWarnings(Array("org.brianmckenna.wartremover.warts.ListOps", "org.brianmckenna.wartremover.warts.Nothing", "org.brianmckenna.wartremover.warts.Null"))
 class Eval(target: Option[File]) {
 
   /**
