@@ -38,7 +38,8 @@ trait IScope extends IScopeWithMax with IScopeWithCurrent {
 
 object IScope {
 
-  implicit val jsonReads: Reads[IScope] = __.read[Scope](Json.reads[Scope]).map(x => x: Scope)
+  implicit val jsonReads: Reads[IScope] =
+    __.read[Scope](Json.reads[Scope]).map(x => x: Scope)
 
   implicit val jsonWrites = Writes[IScope] {
     case s: Scope => models.common.Scope.jsonFormat.writes(s)

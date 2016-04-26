@@ -15,13 +15,17 @@ trait SelectionStrategy {
 
   def chooseChild(possibleChildren: Future[Set[Decision]]): Future[Decision] = {
     possibleChildren map { children =>
-      require(children.nonEmpty, s"Sequence possibleChildren must not be empty otherwise we cannot pick a node from it, contained: $possibleChildren")
+      require(
+          children.nonEmpty,
+          s"Sequence possibleChildren must not be empty otherwise we cannot pick a node from it, contained: $possibleChildren")
       chooseChild(children)
     }
   }
 
-  def canAddAnother(accLength: Int,
-    factoryLimit: Int): Boolean = accLength == 0 || (accLength < factoryLimit && rng.nextBoolean)
+  def canAddAnother(
+      accLength: Int,
+      factoryLimit: Int
+  ): Boolean = accLength == 0 || (accLength < factoryLimit && rng.nextBoolean)
 
   def generateLengthOfSeq(factoryLimit: Int): Integer = {
     require(factoryLimit > 0, "cannot make a random seq when limit is zero")

@@ -11,7 +11,8 @@ trait LookupChildrenWithFutures {
 
   val factoryLookup: FactoryLookup
 
-  def get(scope: IScope, childrenToChooseFrom: Set[PozInt]): Future[Set[Decision]]
+  def get(
+      scope: IScope, childrenToChooseFrom: Set[PozInt]): Future[Set[Decision]]
 
   def get(scope: IScope, parent: PozInt): Future[Set[PozInt]]
 

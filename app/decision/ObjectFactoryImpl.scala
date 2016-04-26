@@ -9,27 +9,33 @@ import models.domain.scala.ObjectImpl
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final case class ObjectFactoryImpl @Inject() (
+final case class ObjectFactoryImpl @Inject()(
     creator: CreateSeqNodes,
-    lookupChildren: LookupChildrenWithFutures) extends ObjectFactory with UpdateScopeIncrementObjects {
+    lookupChildren: LookupChildrenWithFutures
+)
+    extends ObjectFactory with UpdateScopeIncrementObjects {
 
   override val nodesToChooseFrom = Set(FunctionMFactory.id)
 
   override def fillEmptySteps(scope: IScope): Future[Step] =
     createNodes(scope).map { nodesWithoutEmpties =>
-      ObjectImpl(nodes = nodesWithoutEmpties.instructions,
-        index = scope.numObjects)
+      ObjectImpl(
+          nodes = nodesWithoutEmpties.instructions,
+          index = scope.numObjects
+      )
     }
 
   override def createNodes(scope: IScope): Future[AccumulateInstructions] = {
     val acc: Seq[Step] = Seq.empty[Step]
     creator.create(
-      possibleChildren = lookupChildren.get(scope, nodesToChooseFrom),
-      scope = scope,
-      acc = acc,
-      factoryLimit = scope.maxFuncsInObject
+        possibleChildren = lookupChildren.get(scope, nodesToChooseFrom),
+        scope = scope,
+        acc = acc,
+        factoryLimit = scope.maxFuncsInObject
     )
   }
 
-  override def createParams(scope: IScope): Future[AccumulateInstructions] = throw new RuntimeException("calling this method is not possible as there will be no params")
+  override def createParams(scope: IScope): Future[AccumulateInstructions] =
+    throw new RuntimeException(
+        "calling this method is not possible as there will be no params")
 }

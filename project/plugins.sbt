@@ -14,8 +14,6 @@ resolvers += "jgit-repo" at "http://download.eclipse.org/jgit/maven"
 // Use the Play sbt plugin for Play projects
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.7")
 
-//addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.4.0")
-
 // Plugin for publishing scoverage results to coveralls
 resolvers += Classpaths.sbtPluginReleases
 
@@ -28,6 +26,17 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.8.0")
 
 //addSbtPlugin("com.typesafe" % "sbt-abide" % "0.1-SNAPSHOT")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-scalariform" % "1.3.0")
+
+/////////////////////////////////////
+// scalafmt
+//
+// support for source code formatting
+// https://github.com/olafurpg/scalafmt
+// Run with 'sbt scalafmt'
+
+addSbtPlugin("com.geirsson" %% "sbt-scalafmt" % "0.2.3")
+
+// End scalafmt
+/////////////////////////////////////
 
 addSbtPlugin("org.brianmckenna" % "sbt-wartremover" % "0.13")

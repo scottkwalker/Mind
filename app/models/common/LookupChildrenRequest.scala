@@ -20,9 +20,8 @@ object LookupChildrenRequest {
     val CurrentNodeMaxLength = 2
 
     val Mapping = mapping(
-      ScopeId -> Scope.Form.MappingWithCurrentAndMax,
-      CurrentNodeId -> number(min = CurrentNodeMin, max = CurrentNodeMax)
+        ScopeId -> Scope.Form.MappingWithCurrentAndMax,
+        CurrentNodeId -> number(min = CurrentNodeMin, max = CurrentNodeMax)
     )(LookupChildrenRequest.apply)(LookupChildrenRequest.unapply)
   }
-
 }

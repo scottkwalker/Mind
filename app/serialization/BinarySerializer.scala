@@ -11,7 +11,8 @@ final class BinarySerializer {
   }
 
   def read[A](buffer: Array[Byte]): A = {
-    val in = new java.io.ObjectInputStream(new java.io.ByteArrayInputStream(buffer))
+    val in =
+      new java.io.ObjectInputStream(new java.io.ByteArrayInputStream(buffer))
     in.readObject().asInstanceOf[A]
   }
 }

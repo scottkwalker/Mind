@@ -14,8 +14,7 @@ object PopulateRequest {
     val MaxScopeId = "maxScope"
 
     val Mapping = mapping(
-      MaxScopeId -> Scope.Form.MappingMax
+        MaxScopeId -> Scope.Form.MappingMax
     )(PopulateRequest.apply)(PopulateRequest.unapply)
   }
-
 }

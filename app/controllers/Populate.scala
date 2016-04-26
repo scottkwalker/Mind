@@ -10,10 +10,10 @@ import play.api.mvc.Controller
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final class Populate @Inject() (generator: Generator) extends Controller {
+final class Populate @Inject()(generator: Generator) extends Controller {
 
   private[controllers] val form = Form(
-    PopulateRequest.Form.Mapping
+      PopulateRequest.Form.Mapping
   )
 
   def present = Action { implicit request =>
@@ -22,14 +22,17 @@ final class Populate @Inject() (generator: Generator) extends Controller {
 
   def calculate = Action.async { implicit request =>
     form.bindFromRequest.fold(
-      invalidForm => {
-        Future.successful(BadRequest(views.html.populate(invalidForm)))
-      },
-      validForm => {
-        generator.calculateAndUpdate(maxScope = validForm.maxScope).map { result =>
-          Ok(s"repository now contains $result")
+        invalidForm =>
+          {
+            Future.successful(BadRequest(views.html.populate(invalidForm)))
+        },
+        validForm =>
+          {
+            generator.calculateAndUpdate(maxScope = validForm.maxScope).map {
+              result =>
+                Ok(s"repository now contains $result")
+            }
         }
-      }
     )
   }
 }

@@ -6,16 +6,20 @@ import models.common.IScope
 import models.domain.scala.FactoryLookup
 import utils.PozInt
 
-final class LookupChildrenImpl @Inject() (
+final class LookupChildrenImpl @Inject()(
     override val factoryLookup: FactoryLookup,
-    repository: Memoize2WithSet[IScope, PozInt]) extends LookupChildren {
+    repository: Memoize2WithSet[IScope, PozInt]
+)
+    extends LookupChildren {
 
-  override def get(scope: IScope, childrenToChooseFrom: Set[PozInt]): Set[Decision] =
-    fetchFromRepository(scope, childrenToChooseFrom).
-      map(factoryLookup.convert)
+  override def get(
+      scope: IScope, childrenToChooseFrom: Set[PozInt]): Set[Decision] =
+    fetchFromRepository(scope, childrenToChooseFrom).map(factoryLookup.convert)
 
-  private def fetchFromRepository(scope: IScope, neighbours: Set[PozInt]): Set[PozInt] =
-    neighbours.filter { neighbourId => // For each neighbour, only keep the ones that are in the repository.
+  private def fetchFromRepository(
+      scope: IScope, neighbours: Set[PozInt]): Set[PozInt] =
+    neighbours.filter { neighbourId =>
+      // For each neighbour, only keep the ones that are in the repository.
       repository.contains(key1 = scope, key2 = neighbourId) // Boolean value from repository.
     }
 

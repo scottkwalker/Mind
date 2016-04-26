@@ -7,14 +7,16 @@ import models.domain.Step
 
 import scala.concurrent.Future
 
-final case class Empty @Inject() () extends Step with UpdateScopeThrows {
+final case class Empty @Inject()() extends Step with UpdateScopeThrows {
 
   override def toCompilable: String = throw new scala.RuntimeException
 
   override def hasNoEmptySteps(scope: IScope): Boolean = false
 
-  override def fillEmptySteps(scope: IScope, factoryLookup: FactoryLookup): Future[Step] =
-    throw new scala.RuntimeException("cannot call fillEmptySteps on an Empty type as it has no child nodes")
+  override def fillEmptySteps(
+      scope: IScope, factoryLookup: FactoryLookup): Future[Step] =
+    throw new scala.RuntimeException(
+        "cannot call fillEmptySteps on an Empty type as it has no child nodes")
 
   override def height: Int = 0
 }

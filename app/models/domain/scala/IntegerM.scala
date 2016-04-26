@@ -12,7 +12,9 @@ final case class IntegerM() extends PrimitiveType with UpdateScopeNoChange {
 
   override def hasNoEmptySteps(scope: IScope): Boolean = true
 
-  override def fillEmptySteps(scope: IScope, factoryLookup: FactoryLookup): Future[Step] = Future.successful(this)
+  override def fillEmptySteps(
+      scope: IScope, factoryLookup: FactoryLookup): Future[Step] =
+    Future.successful(this)
 
   override def height = 1
 }

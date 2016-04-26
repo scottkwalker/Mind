@@ -29,5 +29,7 @@ trait UpdateScopeIncrementObjects extends UpdateScope {
 
 trait UpdateScopeThrows extends UpdateScope {
 
-  override def updateScope(scope: IScope): IScope = throw new scala.RuntimeException("Should not happen as you cannot have more than one TypeTree, it is the root")
+  override def updateScope(scope: IScope): IScope =
+    throw new scala.RuntimeException(
+        "Should not happen as you cannot have more than one TypeTree, it is the root")
 }

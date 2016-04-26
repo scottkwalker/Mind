@@ -9,9 +9,11 @@ import utils.PozInt
 
 import scala.concurrent.Future
 
-class GeneratorImpl @Inject() (
+class GeneratorImpl @Inject()(
     factoryLookup: FactoryLookup,
-    repository: Memoize2WithSet[IScope, PozInt]) extends Generator {
+    repository: Memoize2WithSet[IScope, PozInt]
+)
+    extends Generator {
 
   // Calculate all values from the minimum Scope up to the maxScope. Add those that can terminate to the repository.
   override def calculateAndUpdate(maxScope: IScope): Future[Int] = {
@@ -22,14 +24,14 @@ class GeneratorImpl @Inject() (
       numVals <- (0 to maxScope.maxParamsInFunc).par
       numObjects <- (0 to maxScope.maxObjectsInTree).par
       currentScope: IScope = Scope(
-        numVals = numVals,
-        numFuncs = numFuncs,
-        numObjects = numObjects,
-        height = height,
-        maxFuncsInObject = maxScope.maxFuncsInObject,
-        maxParamsInFunc = maxScope.maxParamsInFunc,
-        maxObjectsInTree = maxScope.maxObjectsInTree,
-        maxHeight = maxScope.maxHeight
+          numVals = numVals,
+          numFuncs = numFuncs,
+          numObjects = numObjects,
+          height = height,
+          maxFuncsInObject = maxScope.maxFuncsInObject,
+          maxParamsInFunc = maxScope.maxParamsInFunc,
+          maxObjectsInTree = maxScope.maxObjectsInTree,
+          maxHeight = maxScope.maxHeight
       )
     } {
       // We can evaluate across all the types of factories in parallel as they all depend on results calculated
@@ -56,9 +58,11 @@ class GeneratorImpl @Inject() (
     // Else there is no height remaining so no child can be added
   }
 
-  private def isLeaf(decision: Decision): Boolean = decision.nodesToChooseFrom.isEmpty
+  private def isLeaf(decision: Decision): Boolean =
+    decision.nodesToChooseFrom.isEmpty
 
-  private def hasChildTheTerminates(scope: IScope, decision: Decision): Boolean =
+  private def hasChildTheTerminates(
+      scope: IScope, decision: Decision): Boolean =
     decision.nodesToChooseFrom.exists { child =>
       repository.contains(key1 = scope.decrementHeight, key2 = child)
     }

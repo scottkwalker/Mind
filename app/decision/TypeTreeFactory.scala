@@ -9,7 +9,8 @@ import scala.concurrent.Future
 trait TypeTreeFactory extends Decision {
 
   // This is an extra fuction for the top level of a tree that is passed some pre-made children.
-  def fillEmptySteps(scope: IScope, premadeChildren: Seq[Decision]): Future[Step]
+  def fillEmptySteps(
+      scope: IScope, premadeChildren: Seq[Decision]): Future[Step]
 }
 
 object TypeTreeFactory {

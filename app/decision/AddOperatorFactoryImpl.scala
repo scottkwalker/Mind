@@ -9,9 +9,11 @@ import models.domain.scala.AddOperatorImpl
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-final case class AddOperatorFactoryImpl @Inject() (
+final case class AddOperatorFactoryImpl @Inject()(
     creator: CreateNode,
-    lookupChildren: LookupChildrenWithFutures) extends AddOperatorFactory with UpdateScopeNoChange {
+    lookupChildren: LookupChildrenWithFutures
+)
+    extends AddOperatorFactory with UpdateScopeNoChange {
 
   override val nodesToChooseFrom = Set(ValueRefFactory.id)
 
@@ -26,7 +28,11 @@ final case class AddOperatorFactoryImpl @Inject() (
     }
   }
 
-  override def createParams(scope: IScope): Future[AccumulateInstructions] = throw new RuntimeException("calling this method is not possible as there will be no params")
+  override def createParams(scope: IScope): Future[AccumulateInstructions] =
+    throw new RuntimeException(
+        "calling this method is not possible as there will be no params")
 
-  override def createNodes(scope: IScope): Future[AccumulateInstructions] = throw new RuntimeException("calling this method is not possible as there will be no child nodes")
+  override def createNodes(scope: IScope): Future[AccumulateInstructions] =
+    throw new RuntimeException(
+        "calling this method is not possible as there will be no child nodes")
 }

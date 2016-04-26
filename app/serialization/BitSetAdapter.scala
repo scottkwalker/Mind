@@ -10,5 +10,6 @@ object BitSetAdapter {
     def writes(data: BitSet): JsValue = Json.obj("bitMask" -> data.toBitMask)
   }
 
-  implicit val readJsonBitMaskToBitset: Reads[BitSet] = (__ \ "bitMask").read[Array[Long]].map(BitSet.fromBitMask)
+  implicit val readJsonBitMaskToBitset: Reads[BitSet] =
+    (__ \ "bitMask").read[Array[Long]].map(BitSet.fromBitMask)
 }

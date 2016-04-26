@@ -6,11 +6,11 @@ import play.api.libs.json.Json.parse
 
 object JsonDeserialiser {
 
-  def deserialize[A: Reads](data: String): A = {
+  def deserialize[A : Reads](data: String): A = {
     deserialize(parse(data))
   }
 
-  def deserialize[A: Reads](data: JsValue): A = {
+  def deserialize[A : Reads](data: JsValue): A = {
     val fromJson = Json.fromJson[A](data)
     fromJson match {
       case JsSuccess(model, _) => model

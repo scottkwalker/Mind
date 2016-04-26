@@ -6,5 +6,6 @@ import memoization.GeneratorImpl
 
 final class GeneratorBinding extends AbstractModule {
 
-  override def configure(): Unit = bind(classOf[Generator]).to(classOf[GeneratorImpl]).asEagerSingleton()
+  override def configure(): Unit =
+    bind(classOf[Generator]).to(classOf[GeneratorImpl]).asEagerSingleton()
 }

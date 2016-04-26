@@ -17,12 +17,15 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.language.implicitConversions
 
-class RepositoryWithFutures @Inject() (factoryLookup: FactoryLookup)
-    extends Memoize2Impl[IScope, PozInt, Future[Boolean]](factoryLookup.version)(writes) {
+class RepositoryWithFutures @Inject()(factoryLookup: FactoryLookup)
+    extends Memoize2Impl[IScope, PozInt, Future[Boolean]](
+        factoryLookup.version)(writes) {
 
-  override def funcCalculate(scope: IScope, neighbourId: PozInt): Future[Boolean] =
+  override def funcCalculate(
+      scope: IScope, neighbourId: PozInt): Future[Boolean] =
     if (scope.hasHeightRemaining) {
-      val possibleNeighbourIds = factoryLookup.convert(neighbourId).nodesToChooseFrom
+      val possibleNeighbourIds =
+        factoryLookup.convert(neighbourId).nodesToChooseFrom
       if (possibleNeighbourIds.isEmpty) Future.successful(true)
       else {
         // TODO can this use Observable to turn it into a stream of futures and then it wouldn't need to Await for all the results to complete.
@@ -38,31 +41,38 @@ class RepositoryWithFutures @Inject() (factoryLookup: FactoryLookup)
 
 object RepositoryWithFutures {
 
-  private[memoization] implicit val writes = new Writes[Map[String, Either[CountDownLatch, Future[Boolean]]]] {
-    def writes(cache: Map[String, Either[CountDownLatch, Future[Boolean]]]): JsValue = {
-      def computedKeyValues: Map[String, Boolean] = cache.flatMap {
-        case (key, Right(value)) if value.isCompleted =>
-          val computed = Await.result(value, finiteTimeout) // It should be OK to use blocking Await here are the result is already computed so should instantly be returned.
-          Some(key -> computed) // Only store the computed values (the 'right-side').
-        case _ => None
+  private[memoization] implicit val writes =
+    new Writes[Map[String, Either[CountDownLatch, Future[Boolean]]]] {
+      def writes(cache: Map[String, Either[CountDownLatch, Future[Boolean]]])
+        : JsValue = {
+        def computedKeyValues: Map[String, Boolean] = cache.flatMap {
+          case (key, Right(value)) if value.isCompleted =>
+            val computed =
+              Await.result(value, finiteTimeout) // It should be OK to use blocking Await here are the result is already computed so should instantly be returned.
+            Some(key -> computed) // Only store the computed values (the 'right-side').
+          case _ => None
+        }
+        Json.toJson(computedKeyValues)
       }
-      Json.toJson(computedKeyValues)
     }
-  }
 
-  private[memoization] implicit def reads(factoryLookup: FactoryLookup): Reads[RepositoryWithFutures] =
+  private[memoization] implicit def reads(
+      factoryLookup: FactoryLookup): Reads[RepositoryWithFutures] =
     (__ \ "versioning").read[String].flatMap[RepositoryWithFutures] {
       case versioningFromFile =>
-        require(versioningFromFile == factoryLookup.version, s"version info from file ($versioningFromFile) did not match the intended versioning (${factoryLookup.version})")
-        (__ \ "cache").read[Map[String, Boolean]].map {
-          keyValueMap =>
-            val cache = keyValueMap.map {
-              case (key, value) => key -> Right[CountDownLatch, Future[Boolean]](Future.successful(value))
-            }
+        require(
+            versioningFromFile == factoryLookup.version,
+            s"version info from file ($versioningFromFile) did not match the intended versioning (${factoryLookup.version})")
+        (__ \ "cache").read[Map[String, Boolean]].map { keyValueMap =>
+          val cache = keyValueMap.map {
+            case (key, value) =>
+              key -> Right[CountDownLatch, Future[Boolean]](
+                  Future.successful(value))
+          }
 
-            val neighboursRepository = new RepositoryWithFutures(factoryLookup)
-            neighboursRepository.cache = cache // Overwrite the empty cache with values from the file.
-            neighboursRepository
+          val neighboursRepository = new RepositoryWithFutures(factoryLookup)
+          neighboursRepository.cache = cache // Overwrite the empty cache with values from the file.
+          neighboursRepository
         }
     }
 }

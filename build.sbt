@@ -72,19 +72,6 @@ showCurrentGitBranch
 
 
 /////////////////////////////////////
-// scalariform
-//
-// support for source code formatting
-// https://github.com/sbt/sbt-scalariform
-// Run with 'sbt scalariformFormat'
-
-scalariformSettings
-
-// End scalariform
-/////////////////////////////////////
-
-
-/////////////////////////////////////
 // WartRemover
 //
 // Flexible Scala code linting tool
@@ -115,6 +102,7 @@ wartremoverExcluded += baseDirectory.value / "app" / "fitness" / "Eval.scala"
 
 //wartremoverErrors ++= Seq(Wart.DefaultArguments) // todo
 //wartremoverErrors ++= Seq(Wart.Nothing) // doesn't work, maybe it does in the snapshot version
+//wartremoverErrors ++= Seq(Wart.Throw) // todo
 
 // End WartRemover
 /////////////////////////////////////

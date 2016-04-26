@@ -3,7 +3,8 @@ package models.common
 import play.api.data.Forms._
 import play.api.libs.json.Json
 
-final case class Scope(numVals: Int = 0,
+final case class Scope(
+    numVals: Int = 0,
     numFuncs: Int = 0,
     numObjects: Int = 0,
     height: Int = 0,
@@ -11,9 +12,13 @@ final case class Scope(numVals: Int = 0,
     maxFuncsInObject: Int = 0,
     maxParamsInFunc: Int = 0,
     maxObjectsInTree: Int = 0,
-    maxHeight: Int = 0) extends IScope {
+    maxHeight: Int = 0
+)
+    extends IScope {
 
-  require(height <= maxHeight, s"scope's height ($height) must not be greater than max height ($maxHeight)")
+  require(
+      height <= maxHeight,
+      s"scope's height ($height) must not be greater than max height ($maxHeight)")
 
   def incrementVals: IScope = copy(numVals = numVals + 1)
 
@@ -91,28 +96,34 @@ object Scope {
     val MaxHeightMaxLength = 2
 
     val MappingMax = mapping(
-      s"$NumValsId" -> ignored(NumValsMin),
-      s"$NumFuncsId" -> ignored(NumFuncsMin),
-      s"$NumObjectsId" -> ignored(NumObjectsMin),
-      s"$HeightId" -> number(min = HeightMin, max = HeightMax),
-      s"$MaxExpressionsInFuncId" -> ignored(MaxExpressionsInFuncMin),
-      s"$MaxFuncsInObjectId" -> number(min = MaxFuncsInObjectMin, max = MaxFuncsInObjectMax),
-      s"$MaxParamsInFuncId" -> number(min = MaxParamsInFuncMin, max = MaxParamsInFuncMax),
-      s"$MaxObjectsInTreeId" -> number(min = MaxObjectsInTreeMin, max = MaxObjectsInTreeMax),
-      s"$MaxHeightId" -> number(min = MaxHeightMin, max = MaxHeightMax)
+        s"$NumValsId" -> ignored(NumValsMin),
+        s"$NumFuncsId" -> ignored(NumFuncsMin),
+        s"$NumObjectsId" -> ignored(NumObjectsMin),
+        s"$HeightId" -> number(min = HeightMin, max = HeightMax),
+        s"$MaxExpressionsInFuncId" -> ignored(MaxExpressionsInFuncMin),
+        s"$MaxFuncsInObjectId" -> number(min = MaxFuncsInObjectMin,
+                                         max = MaxFuncsInObjectMax),
+        s"$MaxParamsInFuncId" -> number(min = MaxParamsInFuncMin,
+                                        max = MaxParamsInFuncMax),
+        s"$MaxObjectsInTreeId" -> number(min = MaxObjectsInTreeMin,
+                                         max = MaxObjectsInTreeMax),
+        s"$MaxHeightId" -> number(min = MaxHeightMin, max = MaxHeightMax)
     )(Scope.apply)(Scope.unapply)
 
     val MappingWithCurrentAndMax = mapping(
-      s"$NumValsId" -> number(min = NumValsMin, max = NumValsMax),
-      s"$NumFuncsId" -> number(min = NumFuncsMin, max = NumFuncsMax),
-      s"$NumObjectsId" -> number(min = NumObjectsMin, max = NumObjectsMax),
-      s"$HeightId" -> number(min = HeightMin, max = HeightMax),
-      s"$MaxExpressionsInFuncId" -> number(min = MaxExpressionsInFuncMin, max = MaxExpressionsInFuncMax),
-      s"$MaxFuncsInObjectId" -> number(min = MaxFuncsInObjectMin, max = MaxFuncsInObjectMax),
-      s"$MaxParamsInFuncId" -> number(min = MaxParamsInFuncMin, max = MaxParamsInFuncMax),
-      s"$MaxObjectsInTreeId" -> number(min = MaxObjectsInTreeMin, max = MaxObjectsInTreeMax),
-      s"$MaxHeightId" -> number(min = MaxHeightMin, max = MaxHeightMax)
+        s"$NumValsId" -> number(min = NumValsMin, max = NumValsMax),
+        s"$NumFuncsId" -> number(min = NumFuncsMin, max = NumFuncsMax),
+        s"$NumObjectsId" -> number(min = NumObjectsMin, max = NumObjectsMax),
+        s"$HeightId" -> number(min = HeightMin, max = HeightMax),
+        s"$MaxExpressionsInFuncId" -> number(min = MaxExpressionsInFuncMin,
+                                             max = MaxExpressionsInFuncMax),
+        s"$MaxFuncsInObjectId" -> number(min = MaxFuncsInObjectMin,
+                                         max = MaxFuncsInObjectMax),
+        s"$MaxParamsInFuncId" -> number(min = MaxParamsInFuncMin,
+                                        max = MaxParamsInFuncMax),
+        s"$MaxObjectsInTreeId" -> number(min = MaxObjectsInTreeMin,
+                                         max = MaxObjectsInTreeMax),
+        s"$MaxHeightId" -> number(min = MaxHeightMin, max = MaxHeightMax)
     )(Scope.apply)(Scope.unapply)
   }
-
 }

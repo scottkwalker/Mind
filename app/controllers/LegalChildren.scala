@@ -9,10 +9,11 @@ import play.api.mvc.Action
 import play.api.mvc.Controller
 import utils.PozInt
 
-final class LegalChildren @Inject() (lookupChildren: LookupChildren) extends Controller {
+final class LegalChildren @Inject()(lookupChildren: LookupChildren)
+    extends Controller {
 
   private[controllers] val form = Form(
-    LookupChildrenRequest.Form.Mapping
+      LookupChildrenRequest.Form.Mapping
   )
 
   def present = Action { implicit request =>
@@ -21,16 +22,18 @@ final class LegalChildren @Inject() (lookupChildren: LookupChildren) extends Con
 
   def calculate = Action { implicit request =>
     form.bindFromRequest.fold(
-      invalidForm => {
-        BadRequest(views.html.legalChildren(invalidForm))
-      },
-      validForm => {
-        val scope = validForm.scope
-        val parent = PozInt(validForm.currentNode)
-        val children = lookupChildren.get(scope = scope, parent = parent)
-        val childrenJson = toJson(children.map(_.value))
-        Ok(childrenJson).as(JSON)
-      }
+        invalidForm =>
+          {
+            BadRequest(views.html.legalChildren(invalidForm))
+        },
+        validForm =>
+          {
+            val scope = validForm.scope
+            val parent = PozInt(validForm.currentNode)
+            val children = lookupChildren.get(scope = scope, parent = parent)
+            val childrenJson = toJson(children.map(_.value))
+            Ok(childrenJson).as(JSON)
+        }
     )
   }
 

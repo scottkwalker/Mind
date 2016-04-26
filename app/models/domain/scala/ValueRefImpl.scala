@@ -11,7 +11,9 @@ final case class ValueRefImpl(name: String) extends ValueRef {
 
   override def hasNoEmptySteps(scope: IScope): Boolean = !name.isEmpty
 
-  override def fillEmptySteps(scope: IScope, factoryLookup: FactoryLookup): Future[Step] = Future.successful(this)
+  override def fillEmptySteps(
+      scope: IScope, factoryLookup: FactoryLookup): Future[Step] =
+    Future.successful(this)
 
   override def height: Int = 1
 }

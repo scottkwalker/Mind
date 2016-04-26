@@ -11,6 +11,7 @@ final class DecisionBindings extends AbstractModule {
     bind(classOf[ValueRefFactory]).to(classOf[ValueRefFactoryImpl])
     bind(classOf[FunctionMFactory]).to(classOf[FunctionMFactoryImpl])
     bind(classOf[AddOperatorFactory]).to(classOf[AddOperatorFactoryImpl])
-    bind(classOf[ValDclInFunctionParamFactory]).to(classOf[ValDclInFunctionParamFactoryImpl])
+    bind(classOf[ValDclInFunctionParamFactory])
+      .to(classOf[ValDclInFunctionParamFactoryImpl])
   }
 }
