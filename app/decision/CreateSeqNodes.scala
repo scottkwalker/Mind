@@ -9,6 +9,6 @@ trait CreateSeqNodes {
 
   def create(possibleChildren: => Future[Set[Decision]],
     scope: IScope,
-    acc: Seq[Step] = Seq.empty,
+    acc: Seq[Step],
     factoryLimit: Int): Future[AccumulateInstructions]
 }

@@ -29,7 +29,7 @@ case class FunctionMFactoryImpl @Inject() (
     creator.create(
       possibleChildren = lookupChildren.get(scope, childrenToChooseFromForParams),
       scope = scope,
-      acc = Seq.empty,
+      acc = Seq.empty[Step],
       factoryLimit = scope.maxParamsInFunc
     )
   }
@@ -38,7 +38,7 @@ case class FunctionMFactoryImpl @Inject() (
     creator.create(
       possibleChildren = lookupChildren.get(scope, nodesToChooseFrom),
       scope = scope,
-      acc = Seq.empty,
+      acc = Seq.empty[Step],
       factoryLimit = scope.maxExpressionsInFunc
     )
   }

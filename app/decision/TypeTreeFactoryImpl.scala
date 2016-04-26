@@ -25,7 +25,7 @@ case class TypeTreeFactoryImpl @Inject() (
     }
 
   override def createNodes(scope: IScope): Future[AccumulateInstructions] = {
-    val acc: Seq[Step] = Seq.empty
+    val acc: Seq[Step] = Seq.empty[Step]
     creator.create(
       possibleChildren = lookupChildren.get(scope, nodesToChooseFrom),
       scope = scope,

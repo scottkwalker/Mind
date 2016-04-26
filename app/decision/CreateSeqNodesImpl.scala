@@ -12,7 +12,7 @@ final case class CreateSeqNodesImpl @Inject() (createNode: CreateNode, ai: Selec
 
   def create(possibleChildren: => Future[Set[Decision]],
     initScope: IScope,
-    initAcc: Seq[Step] = Seq.empty, // Default the accumulator to empty.
+    initAcc: Seq[Step], // Default the accumulator to empty.
     factoryLimit: Int): Future[AccumulateInstructions] = {
     // Create a seq of nodes (of a random length) from a pool of possible children.
     val lengthOfSeq = ai.generateLengthOfSeq(factoryLimit) - initAcc.length

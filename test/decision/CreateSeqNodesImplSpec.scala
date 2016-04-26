@@ -20,6 +20,7 @@ final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition 
 
       val created = createSeqNodes.create(possibleChildren = possibleChildren,
         initScope = scope,
+        initAcc = Seq.empty[Step],
         factoryLimit = scope.maxFuncsInObject
       )
 
@@ -37,6 +38,7 @@ final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition 
 
       val created = createSeqNodes.create(possibleChildren = possibleChildren,
         initScope = scope,
+        initAcc = Seq.empty[Step],
         factoryLimit = scope.maxFuncsInObject
       )
 
@@ -54,6 +56,7 @@ final class CreateSeqNodesImplSpec extends UnitTestHelpers with TestComposition 
 
       val created = createSeqNodes.create(possibleChildren = possibleChildren,
         initScope = scope,
+        initAcc = Seq.empty[Step],
         factoryLimit = scope.maxFuncsInObject
       )
 

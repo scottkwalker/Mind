@@ -90,14 +90,14 @@ scalariformSettings
 // Flexible Scala code linting tool
 // https://github.com/puffnfresh/wartremover
 
-def makeExcludedFiles(rootDir:File):Seq[sbt.File] = {
+def makeExcludedFiles(rootDir: File): Seq[sbt.File] = {
   val excluded = findPlayConfFiles(rootDir) ++ findSbtFiles(rootDir)
   println(s"[auto-code-review] excluding the following files: ${excluded.mkString(",")}")
   excluded
 }
 
 def findSbtFiles(rootDir: File): Seq[sbt.File] =
-  if(rootDir.getName == "project") rootDir.listFiles()
+  if (rootDir.getName == "project") rootDir.listFiles()
   else Seq()
 
 def findPlayConfFiles(rootDir: File): Seq[sbt.File] = new File(rootDir, "conf").listFiles()
@@ -111,7 +111,7 @@ wartremoverExcluded ++= Seq(
 
 //wartremoverErrors ++= Warts.unsafe
 
-//wartremoverErrors ++= Seq(Wart.Any)
+//wartremoverErrors ++= Seq(Wart.DefaultArguments)
 
 // End WartRemover
 /////////////////////////////////////
@@ -125,15 +125,15 @@ wartremoverExcluded ++= Seq(
 
 // Ensure Scalaxy/Streams's plugin is used.
 
-scalacOptions += "-Xplugin-require:scalaxy-streams"
-
-scalacOptions ++= Seq("-optimise", "-Yinline-warnings", "-Yclosure-elim", "-Yinline", "-Ybackend:GenBCode")
-
-scalacOptions in Test ~= (_ filterNot (_ == "-Xplugin-require:scalaxy-streams"))
-
-scalacOptions in Test += "-Xplugin-disable:scalaxy-streams"
-
-addCompilerPlugin("com.nativelibs4java" %% "scalaxy-streams" % "0.3.4")
+//scalacOptions += "-Xplugin-require:scalaxy-streams"
+//
+//scalacOptions ++= Seq("-optimise", "-Yinline-warnings", "-Yclosure-elim", "-Yinline", "-Ybackend:GenBCode")
+//
+//scalacOptions in Test ~= (_ filterNot (_ == "-Xplugin-require:scalaxy-streams"))
+//
+//scalacOptions in Test += "-Xplugin-disable:scalaxy-streams"
+//
+//addCompilerPlugin("com.nativelibs4java" %% "scalaxy-streams" % "0.3.4")
 
 // End Scalaxy
 /////////////////////////////////////
