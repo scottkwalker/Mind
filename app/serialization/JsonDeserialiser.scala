@@ -1,9 +1,8 @@
 package serialization
 
-import play.api.libs.json.JsValue
-import play.api.libs.json.Json
+import play.api.data.validation.ValidationError
+import play.api.libs.json._
 import play.api.libs.json.Json.parse
-import play.api.libs.json.Reads
 
 object JsonDeserialiser {
 
@@ -13,9 +12,9 @@ object JsonDeserialiser {
 
   def deserialize[A: Reads](data: JsValue): A = {
     val fromJson = Json.fromJson[A](data)
-    fromJson.asEither match {
-      case Left(errors) => throw JsonValidationException(errors)
-      case Right(model) => model
+    fromJson match {
+      case JsSuccess(model, _) => model
+      case JsError(errors) => throw JsonValidationException(errors)
     }
   }
 }
