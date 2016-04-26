@@ -34,8 +34,7 @@ object RepositoryReturningBool {
   private[memoization] implicit val writes = new Writes[Map[String, Either[CountDownLatch, Boolean]]] {
     def writes(cache: Map[String, Either[CountDownLatch, Boolean]]): JsValue = {
       def computedKeyValues: Map[String, Boolean] = cache.flatMap {
-        case (key, Right(value)) =>
-          Some(key -> value)
+        case (key, Right(value)) => Some(key -> value)
         case _ => None
       }
       Json.toJson(computedKeyValues)
