@@ -39,4 +39,4 @@ addSbtPlugin("com.geirsson" %% "sbt-scalafmt" % "0.2.3")
 // End scalafmt
 /////////////////////////////////////
 
-addSbtPlugin("org.brianmckenna" % "sbt-wartremover" % "0.13")
+addSbtPlugin("org.brianmckenna" % "sbt-wartremover" % "0.14")
